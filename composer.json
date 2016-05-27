@@ -1,0 +1,32 @@
+{
+    "name":         "celtic34fr/graphic-object-templating",
+    "description":  "build and react with your HTML5 pages throu object ",
+    "type":         "library",
+    "license":      "GPL 3.0",
+    "homepage":     "https://github.com/celtic34fr/graphic-object-templating",
+    "keywords": [
+        "zf2",
+        "twig"
+    ],
+    "authors": [
+        {
+            "name":      "Gilbert ARMENGAUD",
+            "email":     "gilbert.armengaud@gmail.com",
+            "role":      "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5",
+        "zendframework/zendframework": "~2.4",
+        "zf-commons/zfc-twig" : "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "GraphicObjectTemplating\\": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
