@@ -36,22 +36,24 @@ use GraphicObjectTemplating\Objects\ODContent;
  */
 class OCInput extends ODContent
 {
-    const TYPE_TEXT     = 'text';
-    const TYPE_PASSWORD = 'password';
-    const TYPE_HIDDEN   = 'hidden';
+    const TYPE =array(
+        'TEXT'     => 'text',
+        'PASSWORD' => 'password',
+        'HIDDEN'   => 'hidden');
 
-    const STATE_ENABLE  = true;
-    const STATE_DISABLE = false;
+    const STATE = array(
+        'ENABLE'  => true,
+        'DISABLE' => false);
 
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/ocinput/ocinput.config.phtml");
         $this->setDisplay();
     }
 
-    public function setType($type = self::TYPE_TEXT) {
+    public function setType($type = self::TYPE['TEXT']) {
         $types = $this->getTypesConstants();
         $type = (string) $type;
-        if (!in_array($type, $types)) $type = self::TYPE_TEXT;
+        if (!in_array($type, $types)) $type = self::TYPE['TEXT'];
 
         $properties         = $this->getProperties();
         $properties['type'] = $type;
@@ -116,7 +118,7 @@ class OCInput extends ODContent
     public function enable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE_ENABLE;
+        $properties['state'] = self::STATE['ENABLE'];
         $this->setProperties($properties);
         return $this;
     }
@@ -124,7 +126,7 @@ class OCInput extends ODContent
     public function disable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE_DISABLE;
+        $properties['state'] = self::STATE['DISABLE'];
         $this->setProperties($properties);
         return $this;
     }
@@ -228,12 +230,7 @@ class OCInput extends ODContent
 
     private function getTypesConstants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'TYPE_');
-            if ($pos === false) unset($constants[$key]);
-        }
-        return $constants;
+        return self::TYPE;
     }
 
 }

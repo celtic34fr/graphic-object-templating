@@ -8,9 +8,7 @@
 
 namespace GraphicObjectTemplating\Controller;
 
-use Application\Controller\IndexController;
 use GraphicObjectTemplating\Objects\OObject;
-use Zend\Config\Config;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -47,18 +45,9 @@ class GOTController extends AbstractActionController
                 $controller = ucfirst(substr($callback, 0, $pos));
                 $method = substr($callback, $pos + 1);
 
-                if ($module != "GraphicObjectTemplating") {
-                    $nomController = $module."/Controller/".$controller."Controller";
-                } else {
-                    $nomController = $module."/Objects/OMComposed/".$controller;
-                }
+                $nomController = $module."/Controller/".$controller."Controller";
                 $nomController = str_replace("/", chr(92), $nomController);
-
-                if ($module != "GraphicObjectTemplating") {
-                    $object = new $nomController;
-                } else {
-                    $object = new $nomController("dummy");
-                }
+                $object = new $nomController;
 
                 // traitement en cas de formulaire
                 if (isset($form) && !empty($form)) {
@@ -91,15 +80,6 @@ class GOTController extends AbstractActionController
                     }
                     $params['form'] = $formDatas;
                 }
-
-                // appel preprement dit namespace controlleur + méthode(Action)
-                if ($module != "GraphicObjectTemplaing") {
-                    $result = call_user_func_array(array($object, $method),
-                        array(
-                            'sl' => $this->getServiceLocator(),
-                            $params
-                        ));
-                }
                 $data = new JsonModel($result);
 
                 $response = $this->getResponse();
@@ -121,45 +101,6 @@ class GOTController extends AbstractActionController
             case 'odcontent' :
                 $html->setTemplate($template);
                 $html->setVariable('objet', $properties);
-                break;
-            case 'omcomposed' :
-                $children = $objet->getChildren();
-                if (!empty($children)) {
-                    switch ($objet->getObject()){
-                        case "omtable":
-                            if (empty($properties['loadDatas'])) {
-                                $start = intval($objet->getStart());
-                                if (empty($start)) $start = 0;
-                                $length = $objet->getLength();
-                                if (empty($length)) $length = 10;
-                                if (is_array($length)) $length = $length[0];
-
-                                $dataLines = $objet->getDataLines();
-                                $maxRow  = sizeof($properties['datas']);
-                                $tabArray  = [];
-                                for ($i =0; $i < $length; $i++) {
-                                    if (($start + $i) < $maxRow) {
-                                        $tabArray[$i + 1] = $dataLines[$start + $i + 1];
-                                    } else {
-                                        break;
-                                    }
-                                }
-                                $objet->table->setLines($tabArray);
-                                $html->setVariable('table', $objet->table);
-                                $noPage = $start / $length + 0.5;
-                                $noPage = round($noPage);
-                                $objet->buildNavBar($noPage, sizeof($dataLines), $sl);
-                            }
-                            break;
-                    }
-                    foreach ($children as $key => $child) {
-                        $child = OObject::buildObject($child->getId());
-                        $name = substr($child->getId(), strlen($properties['id']) + 1);
-                        $html->setVariable($name, $child);
-                    }
-                    $html->setTemplate($template);
-                    $html->setVariable('objet', $properties);
-                }
                 break;
             case 'oscontainer':
                 $content  = "";
