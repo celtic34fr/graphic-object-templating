@@ -12,6 +12,7 @@
 .idea/copyright/*
 .idea/graphic-object-templating.iml
 .idea/m*
+.idea/composerJson.xml
 
 
 # Sensitive or high-churn files:
