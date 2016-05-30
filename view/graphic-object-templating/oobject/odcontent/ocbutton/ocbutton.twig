@@ -1,0 +1,79 @@
+{# tremplate pour l'objet OCButton #}
+
+<!--p>ocbutton.twig<br/><{#{ dump(objet) }#}</p-->
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+{% if objet.nature is not empty %}
+    {%  set objClass = objet.nature ~ " " ~ objClass %}
+{% endif %}
+{% if objet.allow is defined %} {# bouton inactif #}
+    {% if objet.allow == 'DENIED' %}
+        {%  set objClass = objClass ~ " disabled"  %}
+    {% endif %}
+{% endif %}
+{% if objet.display is defined %} {# bouton mode affichage #}
+    {%  set objClass = objClass ~ "display-" ~ objet.display ~ " " %}
+{% endif %}
+
+{% if objet.style is not empty %}
+<style>
+    #{{ objet.id }} {
+        {{ objet.style | raw }}
+    }
+</style>
+{% endif %}
+
+{% if objet.type == 'link' %}
+    {% if objet.event.click is defined %}
+        {% set callback = objet.event.click %}
+        {% set posR = strpos(callback, "/") %}
+        {% set route = substr(callback, 0, posR ) %}
+        {% set posC = strpos(callback, "/", posR + 1) %}
+        {% set controller = substr(callback, posR + 1, posC - posR - 1) %}
+        {% set action = substr(callback, posC + 1) %}
+        {% set params = [] %}
+        {% set params = params|merge({'controller':controller}) %}
+        {% set params = params|merge({'action':action}) %}
+        {% set params = params|merge({'id':objet.value}) %}
+        {% set routeUrl = ( url(route ~ '/default', params) ) %}
+    {% endif %}
+{% endif %}
+
+<button id="{{ objet.id }}" data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
+    {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+    {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+    value="{{ objet.value }}"
+
+    {% if objet.infoBulle is not empty %}
+        data-tooltip="{{ objet.infoBulle }}" data-tooltip-position="{{ objet.iBPosition }}"
+    {% endif %}
+
+    {% if objet.event is not empty %}
+        {% for evt, callback in objet.event %}
+            data-{{ evt }} = "{{ callback }}"
+        {% endfor %}
+    {% endif %}
+    {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+    {% if objet.type == 'link' %}
+        onclick="location.href='{{ routeUrl }}'"
+    {% endif %}
+    {% if objet.state == false %}
+        disabled
+    {% endif %}
+>
+    <i class="{{ objet.icon }}"></i> {{ objet.label }}
+</button>
+
+{% if objet.event is defined and objet.event is not empty and objet.typ != 'link' and objet.state == true %}
+<script id="{{ objet.id }}Script">
+    $('document').ready(
+        {% if objet.event is not empty %}
+            {% for evt, callback in objet.event %}
+    $('#{{ objet.id }}').on('{{ evt }}', function() {
+        invokeAjax(ocbutton_getData($('#{{ objet.id }}'),'{{ evt }}'));
+    })
+            {% endfor %}
+        {% endif %}
+    );
+</script>
+{% endif %}

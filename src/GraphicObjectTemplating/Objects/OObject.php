@@ -36,15 +36,19 @@ use Zend\View\Model\ViewModel;
 class OObject
 {
 
-    const DISPLAY_NONE    = 'none';
-    const DISPLAY_BLOCK   = 'block';
-    const DISPLAY_INLINE  = 'inline';
-    const DISPLAY_INBLOCK = 'inline-block';
+    const DISPLAY = array(
+        'NONE'    => 'none',
+        'BLOCK'   => 'block',
+        'INLINE'  => 'inline',
+        'INBLOCK' => 'inline-block'
+    );
 
-    const TOOLTIP_LEFT    = "left";
-    const TOOLTIP_BOTTOM  = "bottom";
-    const TOOLTIP_RIGHT   = "right";
-    const TOOLTIP_TOP     = "top";
+    const TOOLTIP = array(
+        'LEFT'    => "left",
+        'BOTTOM'  => "bottom",
+        'RIGHT'   => "right",
+        'TOP'     => "top"
+    );
 
     protected $id;
     protected $properties;
@@ -159,10 +163,10 @@ class OObject
         return ((array_key_exists('template', $properties)) ? $properties['template'] : false);
     }
 
-    public function setDisplay($display = OObject::DISPLAY_BLOCK)
+    public function setDisplay($display = OObject::DISPLAY['BLOCK'])
     {
         $displays = $this->getDisplayConstants();
-        if (!in_array($display, $displays)) $display = OObject::DISPLAY_BLOCK;
+        if (!in_array($display, $displays)) $display = OObject::DISPLAY['BLOCK'];
 
         $properties            = $this->getProperties();
         $properties['display'] = $display;
@@ -247,10 +251,10 @@ class OObject
         return ((array_key_exists('infoBulle', $properties)) ? $properties['infoBulle'] : false);
     }
 
-    public function setInfoBullePosition($iBPosition = self::TOOLTIP_TOP)
+    public function setInfoBullePosition($iBPosition = self::TOOLTIP['TOP'])
     {
         $constantes = $this->getTooltipsConst();
-        if (!in_array($iBPosition, $constantes)) $iBPosition = self::TOOLTIP_TOP;
+        if (!in_array($iBPosition, $constantes)) $iBPosition = self::TOOLTIP['TOP'];
 
         $properties               = $this->getProperties();
         $properties['iBPosition'] = $iBPosition;
@@ -479,22 +483,12 @@ class OObject
 
     private function getDisplayConstants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($constant, 'DISPLAY_');
-            if ($pos === false) unset($constants[$key]);
-        }
-        return $constants;
+        return self::DISPLAY;
     }
 
     private function getTooltipsConst()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'TOOLTIP_');
-            if ($pos === false) unset($constants[$key]);
-        }
-        return $constants;
+        return self::TOOLTIP;
     }
 
 

@@ -1,0 +1,21 @@
+{# template de l'objet OCContent #}
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+{% if objet.style is not empty %}
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+        {{ objet.style | raw }}
+    }
+</style>
+{% endif %}
+
+<div id="{{ objet.id }}"
+    {% if objet.infoBulle is not empty %}
+        data-tooltip="{{ objet.infoBulle }}" data-tooltip-position="{{ objet.iBPosition }}"
+    {% endif %}
+        {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    {{ objet.content | raw}}
+</div>

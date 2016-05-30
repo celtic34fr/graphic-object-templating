@@ -9,7 +9,6 @@
 namespace GraphicObjectTemplating\Objects;
 
 use GraphicObjectTemplating\Objects\OObject;
-use Zend\Config\Config;
 
 /**
  * Class OSContainer

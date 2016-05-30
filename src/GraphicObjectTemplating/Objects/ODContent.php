@@ -9,14 +9,13 @@
 namespace GraphicObjectTemplating\Objects;
 
 
-use Zend\Config\Config;
-
 class ODContent extends OObject
 {
-    const ICON_SEARCH = "fa fa-search";
-    const ICON_EDIT   = "fa fa-edit";
-    const ICON_USER   = 'fa fa-user';
-    const ICON_DELETE = "fa fa-trash-o";
+    const ICON = array(
+        'SEARCH' => "fa fa-search",
+        'EDIT'   => "fa fa-edit",
+        'USER'   => 'fa fa-user',
+        'DELETE' => "fa fa-trash-o");
 
     protected $form;
     protected $name;

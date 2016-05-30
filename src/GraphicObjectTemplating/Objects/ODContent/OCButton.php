@@ -9,7 +9,6 @@
 namespace GraphicObjectTemplating\Objects\ODContent;
 
 use GraphicObjectTemplating\Objects\ODContent;
-use Zend\Config\Config;
 
 /**
  * Class OCButton
@@ -40,21 +39,24 @@ use Zend\Config\Config;
  */
 class OCButton extends ODContent
 {
-    const TYPE_CUSTOM   = "custom";
-    const TYPE_SUBMIT   = "submit";
-    const TYPE_RESET    = "reset";
-    const TYPE_LINK     = "link";
+    const TYPE = array(
+        'CUSTOM'   => "custom",
+        'SUBMIT'   => "submit",
+        'RESET'    => "reset",
+        'LINK'     => "link");
 
-    const STATE_ENABLE  = true;
-    const STATE_DISABLE = false;
+    const STATE = array(
+        'ENABLE'  => true,
+        'DISABLE' => false);
 
-    const NATURE_DEFAULT = 'btn btn-default';
-    const NATURE_PRIMARY = 'btn btn-primary';
-    const NATURE_SUCCESS = 'btn btn-success';
-    const NATURE_INFO    = 'btn btn-info';
-    const NATURE_WARNING = 'btn btn-warning';
-    const NATURE_DANGER  = 'btn btn-danger';
-    const NATURE_LINK    = 'btn btn-link';
+    const NATURE = array(
+        'DEFAULT' => 'btn btn-default',
+        'PRIMARY' => 'btn btn-primary',
+        'SUCCESS' => 'btn btn-success',
+        'INFO'    => 'btn btn-info',
+        'WARNING' => 'btn btn-warning',
+        'DANGER'  => 'btn btn-danger',
+        'LINK'    => 'btn btn-link');
 
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/ocbutton/ocbutton.config.phtml");
@@ -79,7 +81,7 @@ class OCButton extends ODContent
     public function enable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE_ENABLE;
+        $properties['state'] = self::STATE['ENABLE'];
         $this->setProperties($properties);
         return $this;
     }
@@ -87,7 +89,7 @@ class OCButton extends ODContent
     public function disable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE_DISABLE;
+        $properties['state'] = self::STATE['DISABLE'];
         $this->setProperties($properties);
         return $this;
     }
@@ -121,21 +123,21 @@ class OCButton extends ODContent
         $callback   = $properties['callback'];
         switch(true) {
             case (empty($callback)):
-                $properties['type'] = self::TYPE_RESET;  break;
+                $properties['type'] = self::TYPE['RESET'];  break;
             case (!empty($callback)):
-                $properties['type'] = self::TYPE_SUBMIT; break;
+                $properties['type'] = self::TYPE['SUBMIT']; break;
         }
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setType($type = self::TYPE_CUSTOM)
+    public function setType($type = self::TYPE['CUSTOM'])
     {
         $types = $this->getTypesConstants();
         $type  = (string) $type;
-        if (!in_array($type, $types)) $type = self::TYPE_CUSTOM;
+        if (!in_array($type, $types)) $type = self::TYPE['CUSTOM'];
 
-        if ($type == self::TYPE_LINK) {
+        if ($type == self::TYPE['LINK']) {
             if (isset($properties['event']['click']))
                 $properties['event']['click'] = mb_strtolower($properties['event']['click']);
         }
@@ -162,12 +164,12 @@ class OCButton extends ODContent
         $form     = $properties['form'];
         switch(true) {
             case (empty($form)):
-                $properties['type'] = self::TYPE_CUSTOM; break;
+                $properties['type'] = self::TYPE['CUSTOM']; break;
             case (!empty($form)):
-                $properties['type'] = self::TYPE_SUBMIT; break;
+                $properties['type'] = self::TYPE['SUBMIT']; break;
         }
         
-        if (isset($properties['type']) && ($properties['type'] == self::TYPE_LINK)) {
+        if (isset($properties['type']) && ($properties['type'] == self::TYPE['LINK'])) {
             $properties['event']['click'] = mb_strtolower($callback);
         }
 
@@ -183,10 +185,10 @@ class OCButton extends ODContent
         return $this;
     }
 
-    public function setNature($nature = self::NATURE_DEFAULT)
+    public function setNature($nature = self::NATURE['DEFAULT'])
     {
         $natures = $this->getNatureConst();
-        if (!in_array($nature, $natures)) $nature = self::NATURE_DEFAULT;
+        if (!in_array($nature, $natures)) $nature = self::NATURE['DEFAULT'];
 
         $properties = $this->getProperties();
         $properties['nature'] = $nature;
@@ -205,21 +207,11 @@ class OCButton extends ODContent
 
     private function getTypesConstants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'TYPE_');
-            if ($pos === false) unset($constants[$key]);
-        }
-        return $constants;
+        return self::TYPE;
     }
 
     private function getNatureConst()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'NATURE');
-            if ($pos === false) unset($constants[$key]);
-        }
-        return $constants;
+        return self::NATURE;
     }
 }

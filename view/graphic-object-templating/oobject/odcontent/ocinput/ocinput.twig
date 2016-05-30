@@ -1,0 +1,61 @@
+{# template de l'objet OCInput #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+{% set labelClass = gotBootstrap(objet.labelWidthBT) %}
+
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+    {% if objet.style is not empty %}
+        {{ objet.style | raw }}
+    {% endif %}
+    }
+</style>
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}"
+    {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+    {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+    {% if objet.event is not empty %}
+        {% for evt, callback in objet.event %}
+            data-{{ evt }} = "{{ callback }}"
+        {% endfor %}
+    {% endif %}
+>
+    {%  if objet.label is not empty or objet.icon is not empty %}
+        <label for="{{ objet.id }}"
+        {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %}
+        >
+            {% if objet.icon is defined %}
+                <i class="{{ objet.icon }}"></i>
+            {% endif %}
+            {{ objet.label }}
+        </label>
+    {% endif %}
+    <input id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.name }}" type="{{ objet.type }}" value="{{ objet.value }}"
+            {% if objet.size is not empty %} size="{{ objet.size }}" {% endif %}
+            {% if objet.maxlength is not empty %} maxlength="{{ objet.maxlength }}" {% endif %}
+            {% if objet.state == false %} disabled {% endif %}
+            {% if objet.classes is not empty %} class="{{ objet.classes }}" {% endif %}
+            {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+    />
+    {% if objet.type != "hidden" %}
+    <div class="errors">{{ objet.errMessage }}</div>
+    {% endif %}
+</div>
+
+{% if objet.type != "hidden" %}
+    {% if objet.event is defined and objet.event is not empty %}
+        <script id="{{ objet.id }}Script">
+            $('document').ready(
+                {% if objet.event is not empty %}
+                    {% for evt, callback in objet.event %}
+                        $('#{{ objet.id }}_{{ objet.type }}').on('{{ evt }}', function() {
+                            invokeAjax(ocbutton_getData($('#{{ objet.id }}_{{ objet.type }}'),'{{ evt }}'));
+                        })
+                    {% endfor %}
+                {% endif %}
+            );
+        </script>
+    {% endif %}
+{% endif %}

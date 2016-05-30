@@ -1,0 +1,25 @@
+{# template de l'objet OSDiv #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+{% if objClass is empty %}
+    {% set objClass = gotBootstrap(12) %}
+{% endif %}
+
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+    {% if objet.style is not empty %}
+        {{ objet.style | raw }}
+    {% endif %}
+    }
+</style>
+
+<div id="{{ objet.id }}"
+        {% if objet.infoBulle is not empty %}
+            data-tooltip="{{ objet.infoBulle }}" data-tooltip-position="{{ objet.iBPosition }}"
+        {% endif %}
+        {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes  %} {% endif %}
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    {{ content | raw }}
+</div>
