@@ -15,6 +15,7 @@
         data-tooltip="{{ objet.infoBulle }}" data-tooltip-position="{{ objet.iBPosition }}"
     {% endif %}
         {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
 >
     {{ objet.content | raw}}

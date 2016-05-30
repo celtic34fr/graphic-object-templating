@@ -10,7 +10,6 @@ namespace GraphicObjectTemplating\View\Helper;
 
 use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
-use Zend\Config\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
