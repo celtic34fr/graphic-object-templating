@@ -12,8 +12,9 @@
     {% endif %}
 {% endif %}
 {% if objet.display is defined %} {# bouton mode affichage #}
-    {%  set objClass = objClass ~ "display-" ~ objet.display ~ " " %}
+    {%  set objClass = objClass ~ " display-" ~ objet.display ~ " " %}
 {% endif %}
+    {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
 {% if objet.style is not empty %}
 <style>
@@ -40,7 +41,6 @@
 {% endif %}
 
 <button id="{{ objet.id }}" data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
-    {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
     {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
     value="{{ objet.value }}"
 
@@ -64,7 +64,7 @@
     <i class="{{ objet.icon }}"></i> {{ objet.label }}
 </button>
 
-{% if objet.event is defined and objet.event is not empty and objet.typ != 'link' and objet.state == true %}
+{% if objet.event is defined and objet.event is not empty and objet.type != 'link' and objet.state == true %}
 <script id="{{ objet.id }}Script">
     $('document').ready(
         {% if objet.event is not empty %}

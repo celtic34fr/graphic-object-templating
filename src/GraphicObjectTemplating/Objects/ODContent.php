@@ -8,7 +8,6 @@
 
 namespace GraphicObjectTemplating\Objects;
 
-
 class ODContent extends OObject
 {
     const ICON = array(
@@ -23,7 +22,7 @@ class ODContent extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties  = new Config(include(__DIR__ ."/../../../view/graphic-object-templating/oobject/odcontent/odcontent.config.phtml"));
+        $properties  = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/odcontent/odcontent.config.phtml");
         parent::__construct($id, $adrProperties);
         $properties  = array_merge($this->getProperties(), $properties->toArray());
         $this->form  = $properties['form'];

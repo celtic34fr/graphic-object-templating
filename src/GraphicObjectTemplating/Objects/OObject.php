@@ -8,10 +8,7 @@
 
 namespace GraphicObjectTemplating\Objects;
 
-use Zend\Config\Config;
-use Zend\Server\Reflection\ReflectionClass;
 use Zend\Session\Container;
-use Zend\View\Model\ViewModel;
 
 /**
  * Class OObject
@@ -474,12 +471,6 @@ class OObject
     /*
      * méthode interne à la classe OObject
      */
-
-    protected function getConstants()
-    {
-        $ref = new \ReflectionClass($this);
-        return $ref->getConstants();
-    }
 
     private function getDisplayConstants()
     {

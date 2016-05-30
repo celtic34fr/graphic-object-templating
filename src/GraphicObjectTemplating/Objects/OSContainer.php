@@ -23,7 +23,7 @@ class OSContainer extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties = new Config(include(__DIR__ ."/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.phtml"));
+        $properties = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.phtml");
         parent::__construct($id, $adrProperties);
         $properties = array_merge($this->getProperties(), $properties->toArray());
         $this->setProperties($properties);
