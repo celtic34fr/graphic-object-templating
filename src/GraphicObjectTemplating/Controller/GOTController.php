@@ -90,7 +90,7 @@ class GOTController extends AbstractActionController
         }
     }
 
-    static public function gotRender($objet, $sl)
+    static public function gotRender($objet, $twig)
     {
         $html       = new ViewModel();
         $properties = $objet->getProperties();
@@ -109,7 +109,7 @@ class GOTController extends AbstractActionController
                     foreach ($children as $key => $child) {
                         $child = OObject::buildObject($child->getId());
 
-                        $rendu    = self::__invoke($child);
+                        $rendu    = self::gotRender($child);
                         $content .= $rendu;
                     }
                 }
@@ -119,7 +119,7 @@ class GOTController extends AbstractActionController
                 break;
         }
 
-        $renduHtml = $sl->get('ZfcTwigRenderer')->render($html);
+        $renduHtml = $twig->render($html);
         return $renduHtml;
     }
 }
