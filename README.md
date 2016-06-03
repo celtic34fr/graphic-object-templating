@@ -27,9 +27,9 @@ Templating engine oriented object
 
    Installation :
 
-   After installing excute the following command in a shell, at the root folder of your project :
+   After installing excute the following command in a shell, at the public folder of your project :
 
-   Après installation dui module, exécutez la commande suivante dans un terminal, à la racine de votre projet :
+   Après installation dui module, exécutez la commande suivante dans un terminal, dans le répertoire public de votre projet :
 
-   ln -s ./vendor/celtic34fr/grapic-object-templating/public ./public/graphic-object-templating
+   ln -s ../vendor/celtic34fr/graphic-object-templating/GraphicObjectTemplating/public/ ./graphicobjecttemplating
 
