@@ -1,0 +1,9 @@
+/* fichier style principal */
+
+.btn i {
+    font-size: 1.3em;
+}
+
+.display-none {
+    display: none;
+}

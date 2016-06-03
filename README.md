@@ -3,6 +3,14 @@
 
 Templating engine oriented object
 
+   Installation :
+
+   After installing excute the following command in a shell, at the root folder of your project :
+
+   Après installation dui module, exécutez la commande suivante dans un terminal, à la racine de votre projet :
+
+   ln -s ./vendor/celtic34fr/grapic-object-templating/public ./public/graphic-object-templating
+
 
 => in development / en développement
 
@@ -15,3 +23,13 @@ Templating engine oriented object
    cette bibliothèque est en cours de mise au point, elle ne peut être utilisée en l'état.
    
    Dés que possible, une première version sera finalisée
+
+
+   Installation :
+
+   After installing excute the following command in a shell, at the root folder of your project :
+
+   Après installation dui module, exécutez la commande suivante dans un terminal, à la racine de votre projet :
+
+   ln -s ./vendor/celtic34fr/grapic-object-templating/public ./public/graphic-object-templating
+
