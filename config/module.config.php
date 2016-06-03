@@ -22,7 +22,9 @@ return array(
     ),
 
     'service_manager' => array(
-
+		'factories' => array(
+			'GraphicObjectTemplating\Service\GotServices' => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory'
+		)
     ),
 
     'router' => array(

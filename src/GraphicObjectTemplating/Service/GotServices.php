@@ -1,37 +1,27 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gilbert
- * Date: 25/02/16
- * Time: 11:40
- */
+namespace GraphicObjectTemplating\Service;
 
-namespace GraphicObjectTemplating\View\Helper;
-
-use GraphicObjectTemplating\Objects\ODContent;
 use GraphicObjectTemplating\Objects\OObject;
 use Zend\ServiceManager\ServiceManager;
-use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 
-class GotRender extends AbstractHelper
+class GotServices
 {
-    /** @var  ServiceManager $sl */
-    protected $sl;
-    protected $viewManager;
-
-    public function __construct($sl)
-    {
-        /** @var ServiceManager sl */
-        $this->sl = $sl;
-        $this->viewManager = $this->sl->get('ViewManager');
-        return $this;
-    }
-
-    public function __invoke($objet)
-    {
-        $html       = new ViewModel();
-        $properties = $objet->getProperties();
+	private $_sm;
+	private $_vm;
+	
+	public function __construct(ServiceLocatorInterface $sm)
+	{
+		$this->_sm = $sm;
+		$this->_vm = $sm->get('ViewManager');
+		return $this;
+	}
+	
+	public function render($object)
+	{
+		$twigRender = $this->_sm->get('ZfcTwigRenderer');
+		$html       = new ViewModel();
+        $properties = $object->getProperties();
         $template   = $properties['template'];
         $allow      = 'ALLOW';
 
@@ -42,7 +32,7 @@ class GotRender extends AbstractHelper
                 break;
             case 'oscontainer':
                 $content  = "";
-                $children = $objet->getChildren();
+                $children = $object->getChildren();
                 if (!empty($children)) {
                     foreach ($children as $key => $child) {
                         $child = OObject::buildObject($child->getId());
@@ -56,8 +46,7 @@ class GotRender extends AbstractHelper
                 $html->setVariable('content', $content);
                 break;
         }
-        $renduHtml = $this->sl->get('ZfcTwigRenderer')->render($html);
-        return $renduHtml;
-    }
+		$renduHtml = $twigRender->render($html);
+		return $renduHtml;
+	}
 }
-?>
