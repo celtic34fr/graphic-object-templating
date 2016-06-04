@@ -23,7 +23,8 @@ return array(
 
     'service_manager' => array(
 		'factories' => array(
-			'GraphicObjectTemplating\Service\GotServices' => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory'
+            'GraphicObjectTemplating\Service\GotServices' => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory',
+			'graphic.object.templating.services'          => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory'
 		)
     ),
 

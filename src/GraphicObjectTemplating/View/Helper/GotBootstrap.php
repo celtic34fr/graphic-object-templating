@@ -17,50 +17,19 @@ use Zend\View\Model\ViewModel;
 class GotBootstrap extends AbstractHelper
 {
     protected $sl;
-    protected $viewManager;
+    protected $gotServices;
 
     public function __construct($sl)
     {
         /** @var ServiceManager sl */
         $this->sl = $sl;
-        $this->viewManager = $this->sl->get('ViewManager');
+        $this->gotServices = $sl->get("graphic.object.templating.services");
         return $this;
     }
 
     public function __invoke($widthBT)
     {
-        if (is_numeric($widthBT)) {
-            $class  = " col-xs-" . $widthBT . " ";
-            $class .= " col-sm-" . $widthBT . " ";
-            $class .= " col-md-" . $widthBT . " ";
-            $class .= " col-lg-" . $widthBT . " ";
-        } else {
-            $widths = explode(":", $widthBT);
-            $class = "";
-            foreach ($widths as $width) {
-                $media = strtoupper(substr($width, 0, 2));
-                $larg = intval(substr($width, 2));
-
-                switch ($media) {
-                    case "WX":
-                        $class .= " col-xs-" . $larg . " ";             break;
-                    case "WS":
-                        $class .= " col-sm-" . $larg . " ";             break;
-                    case "WM":
-                        $class .= " col-md-" . $larg . " ";             break;
-                    case "WL":
-                        $class .= " col-lg-" . $larg . " ";             break;
-                    case "OX":
-                        $class .= " col-xs-offset-" . $larg . " ";      break;
-                    case "OS":
-                        $class .= " col-sm-offset-" . $larg . " ";      break;
-                    case "OM":
-                        $class .= " col-md-offset-" . $larg . " ";      break;
-                    case "OL":
-                        $class .= " col-lg-offset-" . $larg . " ";      break;
-                }
-            }
-        }
+        $class = $this->gotServices->bootstrapClass($widthBT);
         return $class;
     }
 }

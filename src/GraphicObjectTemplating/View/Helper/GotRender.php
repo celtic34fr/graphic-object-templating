@@ -18,46 +18,20 @@ class GotRender extends AbstractHelper
 {
     /** @var  ServiceManager $sl */
     protected $sl;
-    protected $viewManager;
+    protected $gotServices;
 
     public function __construct($sl)
     {
         /** @var ServiceManager sl */
         $this->sl = $sl;
-        $this->viewManager = $this->sl->get('ViewManager');
+        $this->gotServices = $sl->get("graphic.object.templating.services");
         return $this;
     }
 
-    public function __invoke($objet)
+    public function __invoke($object)
     {
-        $html       = new ViewModel();
-        $properties = $objet->getProperties();
-        $template   = $properties['template'];
-        $allow      = 'ALLOW';
-
-        switch($properties['typeObj']) {
-            case 'odcontent' :
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                break;
-            case 'oscontainer':
-                $content  = "";
-                $children = $objet->getChildren();
-                if (!empty($children)) {
-                    foreach ($children as $key => $child) {
-                        $child = OObject::buildObject($child->getId());
-
-                        $rendu    = self::__invoke($child);
-                        $content .= $rendu;
-                    }
-                }
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                $html->setVariable('content', $content);
-                break;
-        }
-        $renduHtml = $this->sl->get('ZfcTwigRenderer')->render($html);
-        return $renduHtml;
+        $html = $this->gotServices->render($object);
+        return $html;
     }
 }
 ?>

@@ -14,7 +14,9 @@ class GotServicesFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new GotServices($serviceLocator);
+        $twigRender  = $serviceLocator->get('ZfcTwigRenderer');
+        
+        return new GotServices($twigRender);
     } 
 }
 ?>
