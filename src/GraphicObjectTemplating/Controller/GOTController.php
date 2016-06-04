@@ -89,37 +89,4 @@ class GOTController extends AbstractActionController
             }
         }
     }
-
-    static public function gotRender($objet, $twig)
-    {
-        $html       = new ViewModel();
-        $properties = $objet->getProperties();
-        $template   = $properties['template'];
-        $allow      = 'ALLOW';
-
-        switch($properties['typeObj']) {
-            case 'odcontent' :
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                break;
-            case 'oscontainer':
-                $content  = "";
-                $children = $objet->getChildren();
-                if (!empty($children)) {
-                    foreach ($children as $key => $child) {
-                        $child = OObject::buildObject($child->getId());
-
-                        $rendu    = self::gotRender($child);
-                        $content .= $rendu;
-                    }
-                }
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                $html->setVariable('content', $content);
-                break;
-        }
-
-        $renduHtml = $twig->render($html);
-        return $renduHtml;
-    }
 }
