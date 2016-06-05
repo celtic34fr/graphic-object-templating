@@ -8,8 +8,8 @@ GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces dernier
 
 Installation
 ------------
-par composer, dans un shel à la racine de votre projet :
-    composer require celtic34fr/graphic-object-templating
+par composer, dans un shell à la racine de votre projet :
+\n    composer require celtic34fr/graphic-object-templating
     
 Puis, tapez les commandes suivantes:
     cd public
