@@ -20,5 +20,5 @@ Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
 Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, applications :
--> avec le service 'graphic-object-templating-services',
--> avec des ViewHelpers dans vos templates de pages.
+/-> avec le service 'graphic-object-templating-services',
+/-> avec des ViewHelpers dans vos templates de pages.
