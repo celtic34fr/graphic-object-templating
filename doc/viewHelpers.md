@@ -1,4 +1,4 @@
-Les ViewHelper proposé par GOT ne sont que la traduction des méthode accessible au travers du [service 'graphic-object-templating-services'](doc/service.md) .
+Les ViewHelper proposé par GOT ne sont que la traduction des méthode accessible au travers du [service 'graphic-object-templating-services'](service.md) .
 
 ViewHelper :
 * gotRender : (méthode render) rendu HTML d'objet
