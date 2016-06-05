@@ -1,0 +1,4 @@
+méthodes :
+* render
+* header
+* bootstrapClass
