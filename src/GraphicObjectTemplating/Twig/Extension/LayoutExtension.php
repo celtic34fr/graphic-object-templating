@@ -16,9 +16,9 @@ class LayoutExtension extends \Twig_Extension
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('instanceof', array($this, 'isInstanceOf')),
-            new \Twig_SimpleTest('instring', array($this, 'inString')),
-            'typeOf' => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
+            'instanceof' => new \Twig_Function_Method($this, 'isInstanceOf'),
+            'instring'   => new \Twig_Function_Method($this, 'inString'),
+            'typeOf'     => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
         );
     }
 
