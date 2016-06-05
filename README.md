@@ -10,11 +10,15 @@ GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces dernier
 Installation
 ------------
 par composer, dans un shell à la racine de votre projet :
+
 ``composer require celtic34fr/graphic-object-templating``
     
 Puis, tapez les commandes suivantes:
+
 ``cd public``
+
 ``ln -s ../vendor/celtic34fr/grapic-object-templating/public ./graphic-object-templating``
+
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
 Utilisation
