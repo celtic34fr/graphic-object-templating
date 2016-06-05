@@ -1,5 +1,6 @@
 
-# Graphic Object Templating
+Graphic Object Templating
+=========================
 
 Introduction
 ------------
@@ -9,16 +10,16 @@ GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces dernier
 Installation
 ------------
 par composer, dans un shell à la racine de votre projet :
-\n    composer require celtic34fr/graphic-object-templating
+composer require celtic34fr/graphic-object-templating
     
 Puis, tapez les commandes suivantes:
-    cd public
-    ln -s ../vendor/celtic34fr/grapic-object-templating/public ./graphic-object-templating
+cd public
+ln -s ../vendor/celtic34fr/grapic-object-templating/public ./graphic-object-templating
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
 Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, applications :
-/-> avec le service 'graphic-object-templating-services',
-/-> avec des ViewHelpers dans vos templates de pages.
+* avec le service 'graphic-object-templating-services',
+* avec des ViewHelpers dans vos templates de pages.
