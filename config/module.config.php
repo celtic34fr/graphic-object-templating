@@ -54,5 +54,13 @@ return array(
                 )
             )
         ),
-    )
+    ),
+
+    'zfctwig' => array(
+        'extensions' => array(
+            \GraphicObjectTemplating\Twig\Extension\LayoutExtension::class,
+            \GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension::class,
+        ),
+    ),
+
 );
