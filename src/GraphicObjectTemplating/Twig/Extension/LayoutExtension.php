@@ -13,15 +13,6 @@ use Exception;
 class LayoutExtension extends \Twig_Extension
 {
 
-    public function getTests()
-    {
-        return array(
-            'instanceof' => new \Twig_Function_Method($this, 'isInstanceOf'),
-            'instring'   => new \Twig_Function_Method($this, 'inString'),
-            'typeOf'     => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
-        );
-    }
-
     public function getFunctions() {
         return array(
             'getclass'       => new \Twig_Function_Method($this, 'getClass'),
@@ -30,6 +21,9 @@ class LayoutExtension extends \Twig_Extension
             'checkBoolean'   => new \Twig_Function_Method($this, 'isBoolean'), // KALANTwigExtension @author LAURE
             'substr'         => new \Twig_Function_Method($this, 'subString'),
             'strpos'         => new \Twig_Function_Method($this, 'strPos'),
+            'instanceof'     => new \Twig_Function_Method($this, 'isInstanceOf'),
+            'instring'       => new \Twig_Function_Method($this, 'inString'),
+            'typeOf'         => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
         );
     }
 
