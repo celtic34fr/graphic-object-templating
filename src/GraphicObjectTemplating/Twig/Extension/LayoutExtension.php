@@ -21,7 +21,7 @@ class LayoutExtension extends \Twig_Extension
             'checkBoolean'   => new \Twig_Function_Method($this, 'isBoolean'), // KALANTwigExtension @author LAURE
             'substr'         => new \Twig_Function_Method($this, 'subString'),
             'strpos'         => new \Twig_Function_Method($this, 'strPos'),
-            'instanceof'     => new \Twig_Function_Method($this, 'isInstanceOf'),
+            'objInstanceOf'  => new \Twig_Function_Method($this, 'objInstanceOf'),
             'instring'       => new \Twig_Function_Method($this, 'inString'),
             'typeOf'         => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
         );
@@ -38,7 +38,7 @@ class LayoutExtension extends \Twig_Extension
     }
 
 
-    public function isInstanceOf($object, $class)
+    public function objInstanceOf($object, $class)
     {
         $reflectionClass = new \ReflectionClass($class);
         return $reflectionClass->isInstance($object);
