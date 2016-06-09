@@ -44,7 +44,7 @@ class LayoutExtension extends \Twig_Extension
     }
 
 
-    public function objInstanceOf($object, $class)
+    public function ObjectInstanceOf($object, $class)
     {
         $reflectionClass = new \ReflectionClass($class);
         return $reflectionClass->isInstance($object);
