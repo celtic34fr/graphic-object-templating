@@ -22,8 +22,14 @@ class LayoutExtension extends \Twig_Extension
             'substr'         => new \Twig_Function_Method($this, 'subString'),
             'strpos'         => new \Twig_Function_Method($this, 'strPos'),
             'instring'       => new \Twig_Function_Method($this, 'inString'),
-            'typeOf'         => new \Twig_Function_Method($this, 'typeOf'), // KALANTwigExtension @author LAURE
-            'objInstanceOf'  => new \Twig_SimpleFunction('objInstanceOf', array($this, 'objInstanceOf')),
+        );
+    }
+
+    public function getTests()
+    {
+        return array(
+            'typeOf'        => new \Twig_Function_Method($this, 'typeOf'),
+            'objInstanceOf' => new \Twig_Function_Method($this,'ObjectInstanceOf'),
         );
     }
 
