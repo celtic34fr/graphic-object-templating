@@ -21,7 +21,7 @@ Puis, tapez les commandes suivantes:
 
 ``cd public``
 
-``ln -s ../vendor/celtic34fr/grapic-object-templating/public ./graphic-object-templating``
+``ln -s ../vendor/celtic34fr/graphic-object-templating/GraphicObjectTemplating/public ./graphic-object-templating``
 
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
