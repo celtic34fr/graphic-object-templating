@@ -142,8 +142,8 @@
     function ocinput_getData(obj, evt) {
         console.log(obj);
         var chps = "id=" + obj.attr("id");
-        var chps = chps + "&value='"+obj.children("input[type='text']").val()+"'";
-        var chps = chps + "&type='"+obj.children("input[type='text']").attr('type')+"'";
+        var chps = chps + "&value='"+obj.children("input").val()+"'";
+        var chps = chps + "&type='"+obj.children("input").attr('type')+"'";
         if(evt.length > 0) {
             var dataEvt = 'data-'+ evt;
             var routine = obj.attr(dataEvt);
