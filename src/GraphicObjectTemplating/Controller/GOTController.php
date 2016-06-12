@@ -80,6 +80,11 @@ class GOTController extends AbstractActionController
                     }
                     $params['form'] = $formDatas;
                 }
+                $result = call_user_func_array(array($object, $method),
+                    array(
+                        'sl' => $this->getServiceLocator(),
+                        $params
+                    ));
                 $data = new JsonModel($result);
 
                 $response = $this->getResponse();
