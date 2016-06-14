@@ -123,7 +123,7 @@
             case "custom":  break;
             case "submit":
                 var formName = obj.attr('data-form');
-                var dataForm = '[' + getFormDatas(formName) + ']';
+                var dataForm = '(' + getFormDatas(formName) + ')';
                 chps = chps + "&form='" + dataForm + "'";
                 return chps;
             case "reset":   break;
