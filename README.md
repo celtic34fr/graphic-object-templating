@@ -25,6 +25,13 @@ Puis, tapez les commandes suivantes:
 
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
+Il faut ajouter dans votre modèle 'layout.html.twig' la ligne suivante pour permettre les appels Ajax utile à G.O.T.
+
+Il faut la mettre juste au début du blcok (balise div) ayant pour classe 'container'
+
+``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>``
+
+
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
