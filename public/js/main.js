@@ -5,8 +5,9 @@
  * appel du module de gestion des appels aux callbacks 
  */
     function invokeAjax(datas) {
+        var urlGotCallback = $("#gotCallback").html();
         $.ajax({
-            url: '/got/callback',
+            url: urlGotCallback,
             type: 'POST',
             data: datas,
             success: function(returnDatas){
