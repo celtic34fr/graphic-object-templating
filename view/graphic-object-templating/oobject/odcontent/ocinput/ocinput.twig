@@ -23,7 +23,7 @@
     {% endif %}
 >
     {%  if objet.label is not empty or objet.icon is not empty %}
-        <label for="{{ objet.id }}"
+        <label for="{{ objet.id }}_{{ objet.type }}"
         {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %}
         >
             {% if objet.icon is defined %}

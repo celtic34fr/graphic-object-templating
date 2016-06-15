@@ -1,0 +1,32 @@
+{# termplate pour l'objet OCCaptcha #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+{% set labelClass = gotBootstrap(objet.labelWidthBT) %}
+
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+        {% if objet.style is not empty %}
+        {{ objet.style | raw }}
+        {% endif %}
+    }
+</style>
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}"
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    <label for="{{ objet.id }}_{{ objet.type }}"
+            {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %}
+    >
+        {{ objet.label }}
+    </label>
+    <input type="text" id="{{ objet.id }}Captcha" name="{{ objet.name }}">
+</div>
+
+<script>
+    $(function () {
+        $('#{{ objet.id }}').realperson();
+    });
+</script>
