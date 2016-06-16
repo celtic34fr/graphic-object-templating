@@ -18,8 +18,19 @@ class OCCaptcha extends ODContent
         $this->setDisplay();
     }
 
-    public function validSaisie()
+    public function isRealPerson($capcha)
     {
-        
+        return ((rpHash($capcha) == $capcha) ? true : false );
     }
+    
+    private function rpHash($value)
+    {
+        $hash = 5381;
+        $value = strtoupper($value);
+        for ($i = 0; $i < strlen($value); $i++) {
+            $hash = (($hash << 5) + $hash) + ord(substr($value, $i));
+        }
+        return $hash;
+    }
+    
 }
