@@ -22,7 +22,37 @@ class OCCaptcha extends ODContent
     {
         return ((rpHash($capcha) == $capcha) ? true : false );
     }
-    
+
+    public function setLabel($label)
+    {
+        $label = (string) $label;
+        $properties          = $this->getProperties();
+        $properties['label'] = $label;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getLabel()
+    {
+        $properties            = $this->getProperties();
+        return ((array_key_exists('label', $properties)) ? $properties['label'] : false);
+    }
+
+    public function setLabelWidthBT($widthBT)
+    {
+        $properties                 = $this->getProperties();
+        $properties['labelWidthBT'] = $widthBT;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getLabelWidthBT()
+    {
+        $properties                = $this->getProperties();
+        return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
+    }
+
+
     private function rpHash($value)
     {
         $hash = 5381;
