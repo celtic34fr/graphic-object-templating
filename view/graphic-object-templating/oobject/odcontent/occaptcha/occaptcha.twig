@@ -29,7 +29,7 @@
     $(function () {
         $('#{{ objet.id }}').realperson({
             length: {{ objet.length }},
-            includeNumbers: {{ objet.includeNumbers }},
+            includeNumbers: {% if objet.includeNumbers %} true {% else %} false {% endif %},
             chars: '{{ objet.chars }}'
         });
     });
