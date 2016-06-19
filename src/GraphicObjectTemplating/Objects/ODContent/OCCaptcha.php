@@ -14,8 +14,8 @@ use GraphicObjectTemplating\Objects\ODContent;
 class OCCaptcha extends ODContent
 {
     const ALPHABETIC   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const NUMBERIC     = '0123456789';
-    const ALPHANUMERIC = self::ALPHABETIC + self::NUMERIC;
+    const NUMERIC      = '0123456789';
+    const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/occaptcha/occaptcha.config.phtml");
