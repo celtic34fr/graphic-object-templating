@@ -27,7 +27,7 @@
 
 <script>
     $(function () {
-        $('#{{ objet.id }}').realperson({
+        $('#{{ objet.id }}Captcha').realperson({
             length: {{ objet.length }},
             includeNumbers: {% if objet.includeNumbers %} true {% else %} false {% endif %},
             chars: '{{ objet.chars }}'
