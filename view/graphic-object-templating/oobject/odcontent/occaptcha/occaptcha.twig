@@ -27,17 +27,10 @@
 
 <script>
     $(function () {
-        $('#{{ objet.id }}').realperson();
-
-        {% if objet.length is defined and objet.length is not empty %}
-        ('#{{ objet.id }}').realperson( 'option', 'length', {{ objet.length }});
-        {% endif %}
-        {% if objet.includeNumbers is defined and objet.includeNumbers is not empty %}
-        ('#{{ objet.id }}').realperson( 'option', 'includeNumbers', {{ objet.includeNumbers }});
-        {% endif %}
-        {% if objet.chars is defined and objet.chars is not empty %}
-        ('#{{ objet.id }}').realperson( 'option', 'chars', {{ objet.chars }});
-        {% endif %}
-
+        $('#{{ objet.id }}').realperson({
+            length: {{ objet.length }},
+            includeNumbers: {{ objet.includeNumbers }},
+            chars: '{{ objet.chars }}'
+        });
     });
 </script>
