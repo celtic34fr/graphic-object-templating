@@ -88,7 +88,7 @@ class OCCaptcha extends ODContent
 
     public function setChars($chars = self::ALPHANUMERIC)
     {
-        $charsType = array(self::ALPHANUMERIC, self::ALPHABETIC, self::NUMBERIC);
+        $charsType = array(self::ALPHANUMERIC, self::ALPHABETIC, self::NUMERIC);
         if (!in_array($chars, $charsType)) $chars = self::ALPHANUMERIC;
         $properties                   = $this->getProperties();
         $properties['chars']          = $chars;
