@@ -63,6 +63,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
                 'gotRender'    => 'GraphicObjectTemplating\View\Helper\GotRenderFactory',
                 'gotBootstrap' => 'GraphicObjectTemplating\View\Helper\GotBootstrapFactory',
                 'gotHeader'    => 'GraphicObjectTemplating\View\Helper\GotHeaderFactory',
+                'gotAjax'      => 'GraphicObjectTemplating\View\Helper\GotAjaxFactory',
             ),
         );
     }
