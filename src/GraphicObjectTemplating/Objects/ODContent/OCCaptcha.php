@@ -102,6 +102,59 @@ class OCCaptcha extends ODContent
         return ((!empty($properties['chars'])) ? $properties['chars'] : false) ;
     }
 
+    public function setColor($color = "000000")
+    {
+        $color = (string) $color;
+        $properties                   = $this->getProperties();
+        $properties['color']          = $color;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getColor()
+    {
+        $properties                   = $this->getProperties();
+        return ((!empty($properties['color'])) ? $properties['color'] : false) ;
+    }
+
+    public function setBackgroud($background = "FFA077")
+    {
+        $background = (string) $background;
+        $properties                   = $this->getProperties();
+        $properties['background']     = $background;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getBackground()
+    {
+        $properties                   = $this->getProperties();
+        return ((!empty($properties['background'])) ? $properties['background'] : false) ;
+    }
+
+    public function generateCaptcha()
+    {
+        session_start();
+
+        $chars = $this->getChars();
+        $length = $this->getLength();
+        $captcha_code = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $captcha_code .= substr($chars, rand(strlen($chars)), 1);
+        }
+
+        $_SESSION["captcha".$this->getId()] = $captcha_code;
+
+        $target_layer = imagecreatetruecolor(70, 30);
+        $captcha_background = imagecolorallocate($target_layer, 255, 160, 119);
+        imagefill($target_layer, 0, 0, $captcha_background);
+        $captcha_text_color = imagecolorallocate($target_layer, 0, 0, 0);
+        imagestring($target_layer, 5, 5, 5, $captcha_code, $captcha_text_color);
+        header("Content-type: image/jpeg");
+        imagejpeg($target_layer);
+    }
+
 
     private function rpHash($value)
     {
@@ -112,5 +165,4 @@ class OCCaptcha extends ODContent
         }
         return $hash;
     }
-    
 }
