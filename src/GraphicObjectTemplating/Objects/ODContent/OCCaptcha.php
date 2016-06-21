@@ -10,6 +10,7 @@ namespace GraphicObjectTemplating\Objects\ODContent;
 
 
 use GraphicObjectTemplating\Objects\ODContent;
+use Zend\Session\Container;
 
 class OCCaptcha extends ODContent
 {
@@ -132,27 +133,45 @@ class OCCaptcha extends ODContent
         return ((!empty($properties['background'])) ? $properties['background'] : false) ;
     }
 
+    public function setFont($font)
+    {
+        $font = (string) $font;
+        $properties                   = $this->getProperties();
+        $properties['font']           = $font;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getFont()
+    {
+        $properties                   = $this->getProperties();
+        return ((!empty($properties['font'])) ? $properties['font'] : false) ;
+    }
+
     public function generateCaptcha()
     {
-        session_start();
+        $session = new Container("captcha".$this->getId());
+        $dir = '../fonts/';
 
         $chars = $this->getChars();
         $length = $this->getLength();
+        $font = $this->getFont(); 
         $captcha_code = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $captcha_code .= substr($chars, rand(strlen($chars)), 1);
+            $captcha_code .= substr($chars, rand(strlen($chars) - 1), 1);
         }
 
-        $_SESSION["captcha".$this->getId()] = $captcha_code;
+        $session->code = $captcha_code;
 
         $target_layer = imagecreatetruecolor(70, 30);
         $captcha_background = imagecolorallocate($target_layer, 255, 160, 119);
         imagefill($target_layer, 0, 0, $captcha_background);
         $captcha_text_color = imagecolorallocate($target_layer, 0, 0, 0);
-        imagestring($target_layer, 5, 5, 5, $captcha_code, $captcha_text_color);
+        imagettftext ($target_layer, 30, 0, 10, 40, $captcha_text_color, $dir.$font, $captcha_code);
+
         header("Content-type: image/jpeg");
-        imagejpeg($target_layer);
+        return imagejpeg($target_layer);
     }
 
 
