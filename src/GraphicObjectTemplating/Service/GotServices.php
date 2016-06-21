@@ -171,4 +171,9 @@ class GotServices
 
         return  array('css' => $cssScripts, 'js' => $jsScripts);
     }
+
+    public function execAjax($id, $callback)
+    {
+        
+    }
 }

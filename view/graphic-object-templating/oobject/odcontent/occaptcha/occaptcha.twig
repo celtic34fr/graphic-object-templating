@@ -26,7 +26,8 @@
         {{ objet.label }}
     </label>
     <div id="captcha-wrap">
-        <img src="./img/refresh.jpg" alt="refresh captcha" id="refresh-captcha" /> <img src="./php/newCaptcha.php" alt="" id="captcha" />
+        <img src="./img/refresh.jpg" alt="refresh captcha" id="refresh-captcha" />
+        <img src="{{ gotAjax("#{{ objet.id }} #captcha","Objects/OCCaptcha/generateCaptcha") }}" alt="" id="captcha" />
     </div>
     <input class="narrow text input" id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.id }}_{{ objet.type }}" type="text" placeholder="Verification Code">
 </div>
