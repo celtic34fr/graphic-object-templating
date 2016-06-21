@@ -13,6 +13,9 @@
     }
 </style>
 
+    <input type="text" id="{{ objet.id }}Captcha" name="{{ objet.name }}Captcha">
+</div>
+
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}"
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
@@ -22,15 +25,8 @@
     >
         {{ objet.label }}
     </label>
-    <input type="text" id="{{ objet.id }}Captcha" name="{{ objet.name }}Captcha">
+    <div id="captcha-wrap">
+        <img src="./img/refresh.jpg" alt="refresh captcha" id="refresh-captcha" /> <img src="./php/newCaptcha.php" alt="" id="captcha" />
+    </div>
+    <input class="narrow text input" id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.id }}_{{ objet.type }}" type="text" placeholder="Verification Code">
 </div>
-
-<script>
-    $( document ).ready(function () {
-        $('#{{ objet.id }}Captcha').realperson({
-            length: {{ objet.length }},
-            includeNumbers: {% if objet.includeNumbers %} true {% else %} false {% endif %},
-            chars: '{{ objet.chars }}'
-        });
-    });
-</script>
