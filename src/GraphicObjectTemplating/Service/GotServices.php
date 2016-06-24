@@ -135,6 +135,32 @@ class GotServices
         return $renduHtml;
     }
 
+    public function execAjax($callback, $params)
+    {
+        $pos = strpos($callback, '/');
+        $module = ucfirst(substr($callback, 0, $pos));
+        $callback = substr($callback, $pos + 1);
+        $pos = strpos($callback, '/');
+        $controller = ucfirst(substr($callback, 0, $pos));
+        $method = substr($callback, $pos + 1);
+
+        $nomController = $module."/Controller/".$controller."Controller";
+        $nomController = str_replace("/", chr(92), $nomController);
+        $object = new $nomController;
+
+        $result = call_user_func_array(array($object, $method),
+            array(
+                'sl' => $this->getServiceLocator(),
+                $params
+            ));
+        $data = new JsonModel($result);
+
+        $response = $this->getResponse();
+        $response->setStatusCode(200);
+        $response->setContent($data->serialize());
+        return $response;
+    }
+
 
 
     private function headerChild($objet)
@@ -172,8 +198,4 @@ class GotServices
         return  array('css' => $cssScripts, 'js' => $jsScripts);
     }
 
-    public function execAjax($id, $callback)
-    {
-        
-    }
 }
