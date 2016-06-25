@@ -23,7 +23,7 @@ class GotAjax extends AbstractHelper
         return $this;
     }
 
-    public function __invoke($callback, $params)
+    public function __invoke($callback, $params = [])
     {
         $class = $this->gotServices->execAjax($callback, $params);
         return $class;

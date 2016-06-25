@@ -135,7 +135,7 @@ class GotServices
         return $renduHtml;
     }
 
-    public function execAjax($callback, $params)
+    public function execAjax($callback, $params = array())
     {
         $pos = strpos($callback, '/');
         $module = ucfirst(substr($callback, 0, $pos));
@@ -144,7 +144,20 @@ class GotServices
         $controller = ucfirst(substr($callback, 0, $pos));
         $method = substr($callback, $pos + 1);
 
-        $nomController = $module."/Controller/".$controller."Controller";
+        switch (true) {
+            case (strpos('Controller', $controller)) :
+                $nomController = $module."/Controller/".$controller."Controller";
+                break;
+            case (substr($controller, 0, 2) == 'OC') :
+                $nomController = "GraphicObjectTemplating/Objects/ODContent/".$controller;
+                break;
+            case (substr($controller, 0, 2) == 'OS') :
+                $nomController = "GraphicObjectTemplating/Objects/OSContainer/".$controller;
+                break;
+            default:
+                $nomController = $module.'/'.$controller;
+                break;
+        }
         $nomController = str_replace("/", chr(92), $nomController);
         $object = new $nomController;
 
@@ -153,7 +166,23 @@ class GotServices
                 'sl' => $this->getServiceLocator(),
                 $params
             ));
-        $data = new JsonModel($result);
+
+        /**
+         * traitement du mode de restitution
+         */
+        if (!isset($params) || !isset($params['mode']) || empty($params['mode']))
+        {
+            if (!isset($params)) $params =[];
+            $params['mode'] = 'std';
+        }
+        switch ($params['mode']) {
+            case 'std':
+                $data = new JsonModel($result);
+                break;
+            case 'raw':
+                $data = $result[0]['html'];
+        }
+
 
         $response = $this->getResponse();
         $response->setStatusCode(200);

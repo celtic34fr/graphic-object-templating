@@ -148,7 +148,7 @@ class OCCaptcha extends ODContent
         return ((!empty($properties['font'])) ? $properties['font'] : false) ;
     }
 
-    public function generateCaptcha()
+    public function generateCaptcha($sl, $params)
     {
         $session = new Container("captcha".$this->getId());
         $dir = '../fonts/';
@@ -171,7 +171,18 @@ class OCCaptcha extends ODContent
         imagettftext ($target_layer, 30, 0, 10, 40, $captcha_text_color, $dir.$font, $captcha_code);
 
         header("Content-type: image/jpeg");
-        return imagejpeg($target_layer);
+        $image = imagejpeg($target_layer);
+
+        /**
+         * formulation du rtetour comme pour invoke_ajax dans main.js
+         */
+        $ret = [];
+        $item = [];
+        $item['id'] = 'occaptcha';
+        $item['mode'] = 'append';
+        $item['html'] = $image;
+        $ret[] = $item;
+        return $ret;
     }
 
 
