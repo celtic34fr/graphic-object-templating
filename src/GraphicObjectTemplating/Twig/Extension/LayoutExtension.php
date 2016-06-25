@@ -29,7 +29,7 @@ class LayoutExtension extends \Twig_Extension
     {
         return array(
             'typeOf'        => new \Twig_Function_Method($this, 'typeOf'),
-            'objInstanceOf' => new \Twig_Function_Method($this,'ObjectInstanceOf'),
+            'objInstanceOf' => new \Twig_Function_Method($this, 'ObjectInstanceOf'),
         );
     }
 

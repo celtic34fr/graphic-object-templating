@@ -2,6 +2,8 @@
 namespace GraphicObjectTemplating\Service;
 
 use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Objects\OSContainer;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /*

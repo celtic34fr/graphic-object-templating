@@ -9,7 +9,6 @@
 namespace GraphicObjectTemplating\Objects\ODContent;
 
 use GraphicObjectTemplating\Objects\ODContent;
-use Zend\Config\Config;
 
 /**
  * Class OCContent

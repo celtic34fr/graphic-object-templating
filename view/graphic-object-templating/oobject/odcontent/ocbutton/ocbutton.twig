@@ -1,7 +1,5 @@
 {# tremplate pour l'objet OCButton #}
 
-<!--p>ocbutton.twig<br/><{#{ dump(objet) }#}</p-->
-
 {% set objClass = gotBootstrap(objet.widthBT) %}
 {% if objet.nature is not empty %}
     {%  set objClass = objet.nature ~ " " ~ objClass %}
