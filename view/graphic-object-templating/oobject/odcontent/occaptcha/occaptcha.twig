@@ -26,8 +26,10 @@
         {{ objet.label }}
     </label>
     <div id="captcha-wrap">
-        <img src="./img/refresh.jpg" alt="refresh captcha" id="refresh-captcha" />
-        <img src="{{ gotAjax("#{{ objet.id }} #captcha","Objects/OCCaptcha/generateCaptcha") }}" alt="" id="captcha" />
+        <img src="{{ basePath('/graphicobjecttemplating/occaptcha/img/refresh.svg') }}" alt="refresh captcha" width="32"/>
+        {% set params = [] %}
+        {% set params = params|merge({ 'id': '#'~ objet.id ~ ' #captcha' }) %}
+        <!-- img src="{#{ gotAjax('Objects/OCCaptcha/generateCaptcha', params) }#}" alt="" id="{#{ objet.id }#}_captcha" /-->
     </div>
     <input class="narrow text input" id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.id }}_{{ objet.type }}" type="text" placeholder="Verification Code">
 </div>

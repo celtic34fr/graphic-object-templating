@@ -147,7 +147,7 @@ class GotServices
         $method = substr($callback, $pos + 1);
 
         switch (true) {
-            case (strpos('Controller', $controller)) :
+            case (strpos($controller, 'Controller')) :
                 $nomController = $module."/Controller/".$controller."Controller";
                 break;
             case (substr($controller, 0, 2) == 'OC') :
@@ -169,6 +169,8 @@ class GotServices
                 $params
             ));
 
+        exit();
+        
         /**
          * traitement du mode de restitution
          */

@@ -23,7 +23,7 @@ class ODContent extends OObject
     public function __construct($id, $adrProperties)
     {
         $properties  = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/odcontent/odcontent.config.phtml");
-        parent::__construct($id, $adrProperties);
+        parent::__construct($id, trim($adrProperties));
         $properties  = array_merge($this->getProperties(), $properties);
         $this->form  = $properties['form'];
         $this->name  = $properties['name'];

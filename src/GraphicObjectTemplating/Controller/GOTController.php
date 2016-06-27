@@ -45,7 +45,20 @@ class GOTController extends AbstractActionController
                 $controller = ucfirst(substr($callback, 0, $pos));
                 $method = substr($callback, $pos + 1);
 
-                $nomController = $module."/Controller/".$controller."Controller";
+                switch (true) {
+                    case ( strpos($controller, 'Controller') !== false ) :
+                        $nomController = $module."/Controller/".$controller;
+                        break;
+                    case (substr($controller, 0, 2) == 'OC') :
+                        $nomController = "GraphicObjectTemplating/ODContent/".$controller;
+                        break;
+                    case (substr($controller, 0, 2) == 'OS') :
+                        $nomController = "GraphicObjectTemplating/OSContainer/".$controller;
+                        break;
+                    default:
+                        $nomController = $module."/".$controller;
+                        break;
+                }
                 $nomController = str_replace("/", chr(92), $nomController);
                 $object = new $nomController;
 

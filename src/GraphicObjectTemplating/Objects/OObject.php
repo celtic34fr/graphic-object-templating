@@ -57,7 +57,7 @@ class OObject
 
     public function initProperties($id, $arrayData)
     {
-        $properties = include(__DIR__ ."/../../../view/graphic-object-templating/" .$arrayData);
+        $properties = include(__DIR__ ."/../../../view/graphic-object-templating/" .trim($arrayData));
         $properties['id']   = $id;
         $properties['name'] = $id;
         $templateName  = 'graphic-object-templating/oobject/'.$properties['typeObj'];
@@ -75,6 +75,7 @@ class OObject
         $session = new Container($id);
         $session->properties = serialize($properties);
 
+        $this->id         = $id;
         $this->properties = $properties;
         return $this;
     }

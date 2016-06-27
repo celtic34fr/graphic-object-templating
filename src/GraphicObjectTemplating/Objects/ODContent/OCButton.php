@@ -22,19 +22,30 @@ use GraphicObjectTemplating\Objects\ODContent;
  *      ENABLE  = bouton actif (peut déclencher une action par un clic)
  *      DISABLE = bouton déactivé (n'est plus accessible
  *
- * setLabel
- * getLabel
- * enable
- * disable
- * getState
- * setIcon
- * getIcon
- * setForm
- * setType
- * getType
- * evtClick
- * disClick
- * setNature
+ * setLabel     : affectation du texte présenté dans le bouton
+ * getLabel     : récupération du texte présenté dans le bouton
+ * enable       : activation du bouton
+ * disable      : désactivation du bouton
+ * getState     : restitue l'état du bouton : activé ou désactivé
+ * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
+ * getIcon      : récupère le nom de l'icône affecté au bouton
+ * setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
+ * setType      : affectation du type de bouton
+ *      CUSTOM      : type divers
+ *      SUBMIT      : type soumission (de formuulaire)
+ *      RESET       : type remise à zéro des champs (de formulaire)
+ *      LINK        : type lien HTML
+ * getType      : récupération du type du bouton
+ * evtClick     : activation et paramètrage de l'évènement 'click' sur le bouton
+ * disClick     : désactivation de lm'évènement 'click' sur le bouton
+ * setNature    : affectation de la nature du bouton
+ *      DEFAULT     : nature par défaut (valeur par défaut)
+ *      PRIMARY     : nature primaire (bleu roi)
+ *      SUCCESS     : nature succès (vert)
+ *      INFO        : nature information (gris bleu)
+ *      WARNING     : nature avertissement alerte (orange)
+ *      DANGER      : nature danger, erreur (rouge)
+ *      LINK        : nature lien (lien HTML, plus bouton alors)
  * getNature
  */
 class OCButton extends ODContent
