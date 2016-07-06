@@ -1,8 +1,18 @@
 {# template de l'objet OCInput #}
 
 {% set objClass = gotBootstrap(objet.widthBT) %}
+{% set labelClass = "" %}
+{% set inputClass = "" %}
 
-{% set labelClass = gotBootstrap(objet.labelWidthBT) %}
+{% if objet.type != "hidden" and objet.errMessage is defined and objet.errMessage is not empty %}
+    {% set objClass   = objClass ~ " has-error " %}
+    {% set labelClass = "control-label " %}
+    {% set inputClass = " form-control " %}
+{% endif %}
+{% set labelClass = labelClass ~ gotBootstrap(objet.labelWidthBT) %}
+{% if objet.classes is not empty %}
+    {% set inputClass = inputClass ~ " " ~ objet.classes %}
+{% endif %}
 
 <style>
     #{{ objet.id }} {
@@ -36,15 +46,19 @@
         {% if objet.size is not empty %} size="{{ objet.size }}" {% endif %}
         {% if objet.maxlength is not empty %} maxlength="{{ objet.maxlength }}" {% endif %}
         {% if objet.state == false %} disabled {% endif %}
-        {% if objet.classes is not empty %} class="{{ objet.classes }}" {% endif %}
+        {% if inputClass is not empty %} class="{{ inputClass }}" {% endif %}
         {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
-        {% if objet.infoBulle is not empty %}
+        {% if objet.infoBulle is not empty or (objet.errMessage is not defined or objet.errMessage is empty) %}
             {%  set infoBulle = objet.infoBulle %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
+        {% if objet.type != "hidden" and objet.errMessage is defined and objet.errMessage is not empty %}
+            {%  set infoBulle = objet.errMessage %}
             {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
     />
     {% if objet.type != "hidden" %}
-    <div class="errors">{{ objet.errMessage }}</div>
+    <div class="control-group error">{{ objet.errMessage }}</div>
     {% endif %}
 </div>
 
