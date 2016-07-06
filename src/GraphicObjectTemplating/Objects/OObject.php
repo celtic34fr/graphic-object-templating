@@ -44,7 +44,20 @@ class OObject
         'LEFT'    => "left",
         'BOTTOM'  => "bottom",
         'RIGHT'   => "right",
-        'TOP'     => "top"
+        'TOP'     => "top",
+        'AUTO'    => 'auto',
+    );
+    
+    const TYPE = array(
+        'TOOLTIP' => 'tooltip',
+        'POPOVER' => 'popover',
+    );
+    
+    const TRIGGER = array(
+        'CLICK'   => 'click',
+        'HOVER'   => 'hover',
+        'FOCUS'   => 'focus',
+//      'MANUAL'    => 'manual'; pas mis en oeuvre => question du déclenchement non réglé  
     );
 
     protected $id;
@@ -72,10 +85,15 @@ class OObject
         $objName = str_replace("/", chr(92), $objName);
         $properties['className'] = $objName;
 
+        /** ajout des attribut de base de chaque objet */
+        $objProperties = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/oobject.config.phtml");
+        $properties    = array_merge($objProperties, $properties);
+
         $session = new Container($id);
         $session->properties = serialize($properties);
 
         $this->id         = $id;
+        $this->name       = $id;
         $this->properties = $properties;
         return $this;
     }
@@ -83,9 +101,11 @@ class OObject
     public function mergeProperties($id, $arrayData)
     {
         $properties = $this->getProperties();
-        $nProperties = include(__DIR__ ."/../../../view/graphic-object-templating/" .$arrayData);
-        $properties = array_merge($properties, $nProperties);
-        $this->setProperties($properties);
+        if ($id == $properties['id']) {
+            $nProperties = include(__DIR__ ."/../../../view/graphic-object-templating/" .$arrayData);
+            $properties = array_merge($properties, $nProperties);
+            $this->setProperties($properties);
+        }
         return $this;
     }
 
@@ -234,11 +254,21 @@ class OObject
         return ((array_key_exists('classes', $properties)) ? $properties['classes'] : false);
     }
 
-    public function setInfoBulle($infoBulle)
+    public function setInfoBulle($titre, $contenu = "", $type = self::TYPE['TOOLTIP'], array $params = null)
     {
-        $infoBulle               = (string) $infoBulle;
+        $titre                   = (string) $titre;
+        $contenu                 = (string) $contenu;
+        if (!in_array($type, self::TYPE)) $type = self::TYPE['TOOLTIP'];
         $properties              = $this->getProperties();
-        $properties['infoBulle'] = $infoBulle;
+        
+        if (!array_key_exists('infoBulle', $properties)) $properties['infoBulle'] = [];
+        $properties['infoBulle']['title']   = $titre;
+        $properties['infoBulle']['content'] = $contenu;
+        $properties['infoBulle']['type']    = $type;
+        if (!empty($params)) {
+            $this->setInfoBulleParams($params);
+        }
+        
         $this->setProperties($properties);
         return $this;
     }
@@ -249,21 +279,33 @@ class OObject
         return ((array_key_exists('infoBulle', $properties)) ? $properties['infoBulle'] : false);
     }
 
-    public function setInfoBullePosition($iBPosition = self::TOOLTIP['TOP'])
-    {
-        $constantes = $this->getTooltipsConst();
-        if (!in_array($iBPosition, $constantes)) $iBPosition = self::TOOLTIP['TOP'];
-
-        $properties               = $this->getProperties();
-        $properties['iBPosition'] = $iBPosition;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getInfoBullePosition()
+    public function setInfoBulleParams(array $params = null)
     {
         $properties = $this->getProperties();
-        return ((array_key_exists('iBPosition', $properties)) ? $properties['iBPosition'] : false);
+
+        if (!empty($params)){
+            if (!array_key_exists('infoBulle', $properties)) $properties['infoBulle'] = [];
+            foreach ($params as $key => $param) {
+                switch (strtoupper($key)) {
+                    case 'PLACEMENT': // placement simple pas composé (TOP ou LEFT ou BOTTOM ou RIGHT)
+                        $placement = strtoupper($param);
+                        if (!array_key_exists($placement, self::TOOLTIP)) $placement = self::TOOLTIP['TOP'];
+                        $properties['infoBulle']['placement'] = $param;
+                        break;
+                    case 'TRIGGER': // mode de déclenchement
+                        $trigger = strtoupper($param);
+                        if (!array_key_exists($trigger, self::TRIGGER)) $trigger = self::TRIGGER['HOVER'];
+                        $properties['infoBulle']['trigger'] = $param;
+                        break;
+                    default:
+                        $properties['infoBulle'][$key] = $param;
+                        break;
+                }
+            }
+        }
+        
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function setWidthBT($widthBT)

@@ -70,7 +70,8 @@ class OCButton extends ODContent
         'LINK'    => 'btn btn-link');
 
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontent/ocbutton/ocbutton.config.phtml");
+        $parent = parent::__construct($id, "oobject/odcontent/ocbutton/ocbutton.config.phtml");
+        $this->properties = $parent->properties;
         $this->setDisplay();
     }
 

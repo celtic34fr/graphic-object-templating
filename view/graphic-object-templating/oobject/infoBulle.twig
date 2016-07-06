@@ -1,0 +1,34 @@
+{# template pour l'ajout d'infoBulle à tout objet #}
+
+rel= "{{ infoBulle.type }}"
+{% if infoBulle.type == 'tooltip' %}
+    {% if infoBulle.title is not empty %}
+        data-original-title= "{{ infoBulle.title }}"
+        {% if infoBulle.content is not empty %}
+            data-original-title= data-original-title ~ " : {{ infoBulle.content }}"
+        {% endif %}
+    {% elseif infoBulle.content is not empty %}
+        data-original-title= "{{ infoBulle.content }}"
+    {% endif %}
+{% else %}
+    data-original-title= "{{ infoBulle.title }}"
+    data-content= "{{ infoBulle.content }}"
+{% endif %}
+
+{% if infoBulle.delay-show is defined %}
+    {% set delay = '{show: ' ~ infoBulle.delay-show %}
+{% else %}
+    {% set delay = '{show: 0' %}
+{% endif %}
+{% if infoBulle.delay-hide is defined %}
+    {% set delay = delay ~ ', hide: ' ~ infoBulle.delay-show ~ '}' %}
+{% else %}
+    {% set delay = delay ~ ', hide: 400}' %}
+{% endif %}
+    data-delay="{{ delay }}"
+
+{% for key, param in infoBulle %}
+    {% if key not in ['title', 'content', 'type', 'delay-show', 'delay-hide'] %}
+    data-{{ key }} = "{{ param }}"
+    {% endif %}
+{% endfor %}

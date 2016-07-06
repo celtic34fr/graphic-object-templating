@@ -169,8 +169,6 @@ class GotServices
                 $params
             ));
 
-        exit();
-        
         /**
          * traitement du mode de restitution
          */
