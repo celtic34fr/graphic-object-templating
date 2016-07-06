@@ -63,27 +63,30 @@ class OObject
     protected $id;
     protected $properties;
 
-    public function __construct($id, $adrProperties)
+    public function __construct($id, $adrProperties = null)
     {
         $this->initProperties($id, $adrProperties);
     }
 
-    public function initProperties($id, $arrayData)
+    public function initProperties($id, $arrayData = null)
     {
-        $properties = include(__DIR__ ."/../../../view/graphic-object-templating/" .trim($arrayData));
+        $properties = [];
+        if (!empty($arrayData)) $properties = include(__DIR__ ."/../../../view/graphic-object-templating/" .trim($arrayData));
         $properties['id']   = $id;
         $properties['name'] = $id;
-        $templateName  = 'graphic-object-templating/oobject/'.$properties['typeObj'];
-        $templateName .= '/'.$properties['object'].'/'.$properties['template'];
-        $properties['template'] = $templateName;
+        if (array_key_exists('typeObj', $properties)) {
+            $templateName  = 'graphic-object-templating/oobject/'.$properties['typeObj'];
+            $templateName .= '/'.$properties['object'].'/'.$properties['template'];
+            $properties['template'] = $templateName;
 
-        $objName = "GraphicObjectTemplating/Objects/";
-        $objName .= strtoupper(substr($properties['typeObj'], 0, 3));
-        $objName .= strtolower(substr($properties['typeObj'], 3)).'/';
-        $objName .= strtoupper(substr($properties['object'], 0, 3));
-        $objName .= strtolower(substr($properties['object'], 3));
-        $objName = str_replace("/", chr(92), $objName);
-        $properties['className'] = $objName;
+            $objName = "GraphicObjectTemplating/Objects/";
+            $objName .= strtoupper(substr($properties['typeObj'], 0, 3));
+            $objName .= strtolower(substr($properties['typeObj'], 3)).'/';
+            $objName .= strtoupper(substr($properties['object'], 0, 3));
+            $objName .= strtolower(substr($properties['object'], 3));
+            $objName = str_replace("/", chr(92), $objName);
+            $properties['className'] = $objName;
+        }
 
         /** ajout des attribut de base de chaque objet */
         $objProperties = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/oobject.config.phtml");
@@ -310,8 +313,57 @@ class OObject
 
     public function setWidthBT($widthBT)
     {
+        $wxs = 0; $oxs = 0;
+        $wsm = 0; $osm = 0;
+        $wmd = 0; $omd = 0;
+        $wlg = 0; $olg = 0;
+
+        switch (true) {
+            case (is_numeric($widthBT)):
+                $wxs = $widthBT; $oxs = 0;
+                $wsm = $widthBT; $osm = 0;
+                $wmd = $widthBT; $omd = 0;
+                $wlg = $widthBT; $olg = 0;
+                break;
+            default:
+                /** widthBT chaîne de caractères */
+                $widthBT = explode(":", $widthBT);
+                foreach ($widthBT as $item) {
+                    $key = strtoupper(substr($item, 0, 2));
+                    switch ($key) {
+                        case "WX" : $wxs = intval(substr($item,2)); break;
+                        case "WS" : $wsm = intval(substr($item,2)); break;
+                        case "WM" : $wmd = intval(substr($item,2)); break;
+                        case "WL" : $wlg = intval(substr($item,2)); break;
+                        case "OX" : $oxs = intval(substr($item,2)); break;
+                        case "OS" : $osm = intval(substr($item,2)); break;
+                        case "OM" : $omd = intval(substr($item,2)); break;
+                        case "OL" : $olg = intval(substr($item,2)); break;
+                        default:
+                            if (substr($key,0,1) == "W") {
+                                $wxs = intval(substr($item,1));
+                                $wsm = intval(substr($item,1));
+                                $wmd = intval(substr($item,1));
+                                $wlg = intval(substr($item,1));
+                            }
+                            if (substr($key,0,1) == "O") {
+                                $oxs = intval(substr($item,1));
+                                $osm = intval(substr($item,1));
+                                $omd = intval(substr($item,1));
+                                $olg = intval(substr($item,1));
+                            }
+                    }
+                }
+        }
         $properties = $this->getProperties();
-        $properties['widthBT'] = $widthBT;
+        $properties['widthBT']['wxs'] = $wxs;
+        $properties['widthBT']['wsm'] = $wsm;
+        $properties['widthBT']['wmd'] = $wmd;
+        $properties['widthBT']['wlg'] = $wlg;
+        $properties['widthBT']['oxs'] = $oxs;
+        $properties['widthBT']['osm'] = $osm;
+        $properties['widthBT']['omd'] = $omd;
+        $properties['widthBT']['olg'] = $olg;
         $this->setProperties($properties);
         return $this;
     }
