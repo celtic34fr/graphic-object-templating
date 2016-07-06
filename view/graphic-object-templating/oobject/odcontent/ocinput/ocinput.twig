@@ -33,11 +33,15 @@
         </label>
     {% endif %}
     <input id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.name }}" type="{{ objet.type }}" value="{{ objet.value }}"
-            {% if objet.size is not empty %} size="{{ objet.size }}" {% endif %}
-            {% if objet.maxlength is not empty %} maxlength="{{ objet.maxlength }}" {% endif %}
-            {% if objet.state == false %} disabled {% endif %}
-            {% if objet.classes is not empty %} class="{{ objet.classes }}" {% endif %}
-            {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+        {% if objet.size is not empty %} size="{{ objet.size }}" {% endif %}
+        {% if objet.maxlength is not empty %} maxlength="{{ objet.maxlength }}" {% endif %}
+        {% if objet.state == false %} disabled {% endif %}
+        {% if objet.classes is not empty %} class="{{ objet.classes }}" {% endif %}
+        {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+        {% if objet.infoBulle is not empty %}
+            {%  set infoBulle = objet.infoBulle %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
     />
     {% if objet.type != "hidden" %}
     <div class="errors">{{ objet.errMessage }}</div>
@@ -58,4 +62,10 @@
             );
         </script>
     {% endif %}
+{% endif %}
+
+{% if objet.infoBulle is not empty %}
+    {%  set type = objet.infoBulle.type %}
+    {%  set id = objet.id ~ "_" ~ objet.type %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}

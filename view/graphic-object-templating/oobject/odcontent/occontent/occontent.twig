@@ -12,11 +12,18 @@
 
 <div id="{{ objet.id }}"
     {% if objet.infoBulle is not empty %}
-        data-tooltip="{{ objet.infoBulle }}" data-tooltip-position="{{ objet.iBPosition }}"
+        {%  set infoBulle = objet.infoBulle %}
+        {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
     {% endif %}
-        {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+    {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
-        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+    {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
 >
     {{ objet.content | raw}}
 </div>
+
+{% if objet.infoBulle is not empty %}
+    {%  set type = objet.infoBulle.type %}
+    {%  set id = objet.id %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+{% endif %}
