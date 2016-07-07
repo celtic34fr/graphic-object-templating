@@ -1,0 +1,14 @@
+{# template pour l'objet OCSelect #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}"
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    <select id="{{ objet.id }}Select">
+        {% for value, libel in objet.options %}
+        <option value="{{ value }}">{{ libel }}</option>
+        {% endfor %}
+    </select>
+</div>
