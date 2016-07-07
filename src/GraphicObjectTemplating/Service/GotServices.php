@@ -67,11 +67,11 @@ class GotServices
         $class = "";
         foreach ($widthBT as $key => $value) {
             if (substr($key, 0, 1) == "w" && $value > 0) {
-                $class  .= " col-".$key."-" . $value. " ";
+                $class  .= " col-".substr($key, 1)."-" . $value. " ";
             }
 
             if (substr($key, 0, 1) == "o" && $value > 0) {
-                $class  .= " col-".$key."-offset-" . $value. " ";
+                $class  .= " col-".substr($key, 1)."-offset-" . $value. " ";
             }
         }
         return $class;
