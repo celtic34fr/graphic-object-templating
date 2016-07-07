@@ -60,6 +60,10 @@ class OObject
 //      'MANUAL'    => 'manual'; pas mis en oeuvre => question du déclenchement non réglé  
     );
 
+    const STATE = array(
+        'ENABLE'  => true,
+        'DISABLE' => false);
+
     protected $id;
     protected $properties;
 
@@ -563,7 +567,29 @@ class OObject
         $properties = $this->getProperties();
         return ((array_key_exists('className', $properties)) ? $properties['className'] : false);
     }
-    
+
+    public function enable()
+    {
+        $properties          = $this->getProperties();
+        $properties['state'] = self::STATE['ENABLE'];
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disable()
+    {
+        $properties          = $this->getProperties();
+        $properties['state'] = self::STATE['DISABLE'];
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getState()
+    {
+        $properties          = $this->getProperties();
+        return (($properties['state'] === true) ? 'enable' : 'disable');
+    }
+
     /*
      * méthode interne à la classe OObject
      */
@@ -577,6 +603,5 @@ class OObject
     {
         return self::TOOLTIP;
     }
-
 
 }

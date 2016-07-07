@@ -1,0 +1,44 @@
+{# template pour l'objet OCSelect #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}"
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    <select id="{{ objet.id }}Select" {% if objet.multiple %} name="{{ objet.name }}" multiple {% endif %}
+            {% if objet.state != true %} disabled {% endif %}
+            {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+    >
+        {% for value, options in objet.options %}
+            <option value="{{ value }}"
+                    {% if options.selected %} selected {% endif %}
+                    {% if options.enable == false %} disabled {% endif %}>
+                {{ options.libel }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+{% if objet.select2 %}
+<script type="application/javascript">
+    $(document).ready(function () {
+        {% set params = objet.paramsSelect2 %}
+        $("#{{ objet.id }}Select").select2({
+        {% if params.placeholder is not empty %} placeholder: {{ params.placeholder }}, {% endif %}
+        {{ parms.allowClear ? 'allowClear: true,' : 'allowClear: false,' }}
+        });
+    });
+</script>
+{% endif %}
+
+{% if objet.infoBulle.title is not empty %}
+    {% if objet.select2 == true %}
+        {% set type = objet.infoBulle.type %}
+        {% set id = objet.id ~ "_" ~ objet.type %}
+    {% else %}
+        {% set type = objet.infoBulle.type %}
+        {% set id = objet.id ~ "Select .select2-container" %}
+    {% endif %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+{% endif %}

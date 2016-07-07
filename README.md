@@ -37,3 +37,12 @@ pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer pag
 Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, applications :
 * avec le [service 'graphic-object-templating-services'](doc/service.md) ,
 * avec des [ViewHelpers](doc/viewHelpers.md) dans vos templates de pages.
+
+Objets actuellement disponibles
+-------------------------------
+[OCButton](doc/objets/OCButton.md)    : bouton (avec exécution de méthode [callback] possible)
+OCContent   : objet pour affichage de contenu non typé
+OCInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
+OSDiv       : section non typé de page html
+En cours de développement :
+OCSelect    : liste déroulante (HTML ou jQuery Select2)

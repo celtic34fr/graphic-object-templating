@@ -21,8 +21,6 @@ use GraphicObjectTemplating\Objects\ODContent;
  * getMaxlength
  * setLabel
  * getLabel
- * enable
- * disable
  * setPlaceholder
  * getPlaceholder
  * setLabelWidthBT
@@ -40,10 +38,6 @@ class OCInput extends ODContent
         'TEXT'     => 'text',
         'PASSWORD' => 'password',
         'HIDDEN'   => 'hidden');
-
-    const STATE = array(
-        'ENABLE'  => true,
-        'DISABLE' => false);
 
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/ocinput/ocinput.config.phtml");
@@ -113,22 +107,6 @@ class OCInput extends ODContent
     {
         $properties            = $this->getProperties();
         return ((array_key_exists('label', $properties)) ? $properties['label'] : false);
-    }
-
-    public function enable()
-    {
-        $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['ENABLE'];
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disable()
-    {
-        $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['DISABLE'];
-        $this->setProperties($properties);
-        return $this;
     }
 
     public function setPlaceholder($placeholder)

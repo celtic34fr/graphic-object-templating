@@ -18,15 +18,9 @@ use GraphicObjectTemplating\Objects\ODContent;
  *      CUSTOM  = bouton divers permettant de déclencher un action
  *      SUBMIT  = bouton de déclenchement du pseudo formulaire auquel il est lié
  *      RESET   = bouton de réinitialisation du pseudo formulaire auquel il est lié
- * l'état du bouton est donné par l'attribut 'state'
- *      ENABLE  = bouton actif (peut déclencher une action par un clic)
- *      DISABLE = bouton déactivé (n'est plus accessible
  *
  * setLabel     : affectation du texte présenté dans le bouton
  * getLabel     : récupération du texte présenté dans le bouton
- * enable       : activation du bouton
- * disable      : désactivation du bouton
- * getState     : restitue l'état du bouton : activé ou désactivé
  * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
  * getIcon      : récupère le nom de l'icône affecté au bouton
  * setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
@@ -56,10 +50,6 @@ class OCButton extends ODContent
         'RESET'    => "reset",
         'LINK'     => "link");
 
-    const STATE = array(
-        'ENABLE'  => true,
-        'DISABLE' => false);
-
     const NATURE = array(
         'DEFAULT' => 'btn btn-default',
         'PRIMARY' => 'btn btn-primary',
@@ -88,28 +78,6 @@ class OCButton extends ODContent
     {
         $properties          = $this->getProperties();
         return ((!empty($properties['label'])) ? $properties['label'] : false) ;
-    }
-
-    public function enable()
-    {
-        $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['ENABLE'];
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disable()
-    {
-        $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['DISABLE'];
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getState()
-    {
-        $properties          = $this->getProperties();
-        return (($properties['state'] === true) ? 'enable' : 'disable');
     }
 
     public function setIcon($icon)
