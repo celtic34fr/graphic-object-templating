@@ -63,7 +63,7 @@ class GotServices
             $obj->setWidthBT($widthBT);
             $widthBT = $obj->getWidthBT();
         }
-        
+
         $class = "";
         foreach ($widthBT as $key => $value) {
             if (substr($key, 0, 1) == "w" && $value > 0) {
