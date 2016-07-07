@@ -148,8 +148,52 @@ class OCInput extends ODContent
 
     public function setLabelWidthBT($widthBT)
     {
-        $properties                 = $this->getProperties();
-        $properties['labelWidthBT'] = $widthBT;
+        $lxs = 0; $ixs = 0;
+        $lsm = 0; $ism = 0;
+        $lmd = 0; $imd = 0;
+        $llg = 0; $ilg = 0;
+
+        switch (true) {
+            case (is_numeric($widthBT)):
+                $lxs = $widthBT; $ixs = 12 - $widthBT;
+                $lsm = $widthBT; $ism = 12 - $widthBT;
+                $lmd = $widthBT; $imd = 12 - $widthBT;
+                $llg = $widthBT; $ilg = 12 - $widthBT;
+                break;
+            default:
+                /** widthBT chaîne de caractères */
+                $widthBT = explode(":", $widthBT);
+                foreach ($widthBT as $item) {
+                    $key = strtoupper(substr($item, 0, 2));
+                    switch ($key) {
+                        case "WX" : $lxs = intval(substr($item,2)); break;
+                        case "WS" : $lsm = intval(substr($item,2)); break;
+                        case "WM" : $lmd = intval(substr($item,2)); break;
+                        case "WL" : $llg = intval(substr($item,2)); break;
+                        default:
+                            if (substr($key,0,1) == "W") {
+                                $wxs = intval(substr($item,1));
+                                $wsm = intval(substr($item,1));
+                                $wmd = intval(substr($item,1));
+                                $wlg = intval(substr($item,1));
+                            }
+                    }
+                }
+                $ixs = 12 - $lxs;
+                $ism = 12 - $lsm;
+                $imd = 12 - $lmd;
+                $ilg = 12 - $llg;
+                break;
+        }
+        $properties = $this->getProperties();
+        $properties['labelWidthBT']['lxs'] = $lxs;
+        $properties['labelWidthBT']['lsm'] = $lsm;
+        $properties['labelWidthBT']['lmd'] = $lmd;
+        $properties['labelWidthBT']['llg'] = $llg;
+        $properties['labelWidthBT']['ixs'] = $ixs;
+        $properties['labelWidthBT']['ism'] = $ism;
+        $properties['labelWidthBT']['imd'] = $imd;
+        $properties['labelWidthBT']['ilg'] = $ilg;
         $this->setProperties($properties);
         return $this;
     }

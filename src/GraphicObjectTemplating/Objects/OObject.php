@@ -66,6 +66,7 @@ class OObject
     public function __construct($id, $adrProperties = null)
     {
         $this->initProperties($id, $adrProperties);
+        return $this;
     }
 
     public function initProperties($id, $arrayData = null)

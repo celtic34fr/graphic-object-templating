@@ -9,7 +9,19 @@
     {% set labelClass = "control-label " %}
     {% set inputClass = " form-control " %}
 {% endif %}
-{% set labelClass = labelClass ~ gotBootstrap(objet.labelWidthBT) %}
+{% set labelWidth = [] %}
+{% set inputWidth = [] %}
+{% for key, value in objet.labelWidthBT %}
+    {% if (substr(key, 0, 1) == 'l') %}
+        {% set cle = 'w' ~ substr(key, 1) %}
+        {% set labelWidth = labelWidth|merge([ cle: value ]) %}
+    {% elseif (substr(key, 0, 1) == 'i') %}
+        {% set cle = 'w' ~ substr(key, 1) %}
+        {% set inputWidth = inputWidth|merge([ cle: value ]) %}
+    {% endif %}
+{% endfor %}
+{% set labelClass = labelClass ~ gotBootstrap(labelWidth) %}
+{% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
 {% if objet.classes is not empty %}
     {% set inputClass = inputClass ~ " " ~ objet.classes %}
 {% endif %}

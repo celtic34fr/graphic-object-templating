@@ -9,6 +9,8 @@
 namespace GraphicObjectTemplating\Twig\Extension;
 
 use Exception;
+use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParser_Switch;
+use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParserSwitch;
 
 class LayoutExtension extends \Twig_Extension
 {
@@ -30,6 +32,13 @@ class LayoutExtension extends \Twig_Extension
         return array(
             'typeOf'        => new \Twig_Function_Method($this, 'typeOf'),
             'objInstanceOf' => new \Twig_Function_Method($this, 'ObjectInstanceOf'),
+        );
+    }
+
+    public function getTokenParsers()
+    {
+        return array(
+            new TokenParserSwitch(), // unaccepted token (fabpot) update maxgalbu to work with Twig >= 1.12
         );
     }
 
