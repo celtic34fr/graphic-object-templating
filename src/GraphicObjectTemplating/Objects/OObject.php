@@ -16,19 +16,60 @@ use Zend\Session\Container;
  *
  * properties   : tableau (objet Config()) stockant l'ensemble des attributs de l'objet
  *
- * id           : identifiant unique de l'objet
- * template     : chaîne de caractère donnant le nom et chemin d'accès au template de l'objet
- * display      : indique la notion d'afficahge de l'objet
+ *  id           : identifiant unique de l'objet
+ *  template     : chaîne de caractère donnant le nom et chemin d'accès au template de l'objet
+ *  display      : indique la notion d'afficahge de l'objet
  *      none            : l'objet est invisible
  *      block           : affichage en mode bloc
  *      inline          : affichage en mode 'inline' (insersion de ligne)
  *      inline-block    : affiche en mode mixte inline & block
- * style        : style spécifique à l'objet
- * classes      : classe CSS affectée(s) à lobjet
- * infoBulle    : texte explicatif qui apparaît au survol de l'objet
- * iBPosition   : position de l'infoBulle (gauche, dessous, droite, dessus)
- * resources    : liste en 2 tableau des fichies CSS et JS utilies à l'objet
- * aclReference : resource ACL associé à l'objet
+ *  style        : style spécifique à l'objet
+ *  classes      : classe CSS affectée(s) à lobjet
+ *  resources    : liste en 2 tableau des fichies CSS et JS utilies à l'objet
+ *  aclReference : resource ACL associé à l'objet
+ *
+ * initProperties
+ * mergeProperties
+ * setProperties
+ * getProiperties
+ * setId
+ * getId
+ * setName
+ * getName
+ * setTemplate
+ * getTemplate
+ * setDisplay
+ * getDisplay
+ * setStyle
+ * addStyle
+ * getStyle
+ * setClasses
+ * addClass
+ * getClasses
+ * setInfoBulle
+ * getInfoBulle
+ * setInfoBulleParams
+ * setWidthBT
+ * getWidthBT
+ * static buildObject
+ * getResources
+ * addCssResource
+ * getCssResource
+ * setCssResource
+ * addJsResource
+ * getJsResource
+ * setJsResource
+ * setAclReference
+ * getAclReference
+ * setObject
+ * getObject
+ * setTypeObj
+ * getTypeObj
+ * setClassName
+ * getClassName
+ * enable
+ * disable
+ * getState
  */
 class OObject
 {

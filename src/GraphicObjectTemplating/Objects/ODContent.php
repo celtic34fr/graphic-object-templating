@@ -8,6 +8,19 @@
 
 namespace GraphicObjectTemplating\Objects;
 
+/**
+ * Class ODContent
+ * @package GraphicObjectTemplating\Objects
+ * 
+ * setName
+ * getName
+ * setValue
+ * getValue
+ * setForm
+ * getForm
+ * convertValue
+ * getConverted
+ */
 class ODContent extends OObject
 {
     const ICON = array(

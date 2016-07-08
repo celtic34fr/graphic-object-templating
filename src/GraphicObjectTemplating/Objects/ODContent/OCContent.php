@@ -14,10 +14,10 @@ use GraphicObjectTemplating\Objects\ODContent;
  * Class OCContent
  * @package GraphicObjectTemplating\Objects\ODContent
  *
- * setContent
- * getContent
- * setValue
- * getValue
+ * setContent   : affecte un contenu à l'objet
+ * getContent   : réstitue le contenu actuelle de l'objet
+ * setValue     : alias pour setContenu
+ * getValue     : alias pour getContenu
  */
 class OCContent extends  ODContent
 {

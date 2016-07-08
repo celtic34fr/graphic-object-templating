@@ -7,12 +7,19 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /*
+ */
+
+/**
+ * Class GotServices
+ * @package GraphicObjectTemplating\Service
+ *
  * Service pour exécution des méthode utilises en services et viewHelper
- * 
+ *
  * render($objetc) : rendu HTML d'un objet
  * header($object) : génération du bloc à insérezr dans <header></header> des resources CSS & JS utiles à GOT
  * bootstrapClass  : module restituant suivant le contenu de $widthBT, la chaîne de craractères codant les classes
  *                   Bootstrap Twitter à mettre dans la page, l'objet GOT
+ * execAjax
  */
 class GotServices
 {

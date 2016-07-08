@@ -17,6 +17,19 @@ use GraphicObjectTemplating\Objects\OObject;
  * width
  * height
  * children
+ * 
+ * setWidth
+ * getWidth
+ * setHeight
+ * getHeight
+ * addChild
+ * removeChild
+ * getChild
+ * isChild
+ * hasChild
+ * getChildren
+ * convertValue
+ * getConverted
  */
 class OSContainer extends OObject
 {

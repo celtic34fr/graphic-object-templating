@@ -10,6 +10,26 @@ namespace GraphicObjectTemplating\Objects\ODContent;
 
 use GraphicObjectTemplating\Objects\ODContent;
 
+/**
+ * Class OCSelect
+ * @package GraphicObjectTemplating\Objects\ODContent
+ * 
+ * addOption
+ * removeOption
+ * clearOptions
+ * enaOption
+ * disOption
+ * selOption
+ * unselOption
+ * setOptions
+ * getOptions
+ * enaMultiple
+ * disMultiple
+ * enaSelect2
+ * disSelect2
+ * setPlaceholder
+ * getPlaceholder
+ */
 class OCSelect extends ODContent
 {
     public function __construct($id) {
