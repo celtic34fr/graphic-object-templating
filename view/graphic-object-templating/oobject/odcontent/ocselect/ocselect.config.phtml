@@ -6,8 +6,18 @@ return array(
     'options'       => array(),
     'multiple'      => false,
     'select2'       => false,
+    'placeholder'   => "",
+    'label'         => "",
     'paramsSelect2' => array(
-        'placeholder'   => "",
         'allowClear'    => false,
+        'searchBox'     => true,
+        'langue'        => 'fr',
+    ),
+    "resources" => array(
+        "css"           => array(
+            "css/select2.css",
+            "css/select2-bootstrap.css",
+        ),
+        "js"            => array( "js/select2.js" ),
     ),
 );

@@ -2,22 +2,38 @@
 
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
+{% if objet.select2 == false and objet.placeholder is not empty %}
+<style>
+    select option[data-default] {
+        color: #999;
+    }
+</style>
+{% endif %}
+
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}"
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
 >
-    <select id="{{ objet.id }}Select" {% if objet.multiple %} name="{{ objet.name }}" multiple {% endif %}
-            {% if objet.state != true %} disabled {% endif %}
-            {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-    >
-        {% for value, options in objet.options %}
-            <option value="{{ value }}"
-                    {% if options.selected %} selected {% endif %}
-                    {% if options.enable == false %} disabled {% endif %}>
-                {{ options.libel }}
-            </option>
-        {% endfor %}
-    </select>
+    <label for="{{ objet.id }}Select">
+        {{ objet.label }}
+        <select id="{{ objet.id }}Select" name="{{ objet.name }}" {% if objet.multiple != false %} multiple {% endif %}
+                {% if objet.state != true %} disabled {% endif %}
+                {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        >
+            {% if objet.select2 == false and objet.placeholder is not empty %}
+                <option value="" selected data-default disabled >{{ objet.placeholder }}</option>
+            {% elseif objet.select2 == true and objet.placeholder is not empty %}
+                <option value=""  ></option>
+            {% endif %}
+            {% for value, options in objet.options %}
+                <option value="{{ value }}"
+                        {% if options.selected %} selected {% endif %}
+                        {% if options.enable == false %} disabled {% endif %}>
+                    {{ options.libel }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
 </div>
 
 {% if objet.select2 %}
@@ -25,8 +41,13 @@
     $(document).ready(function () {
         {% set params = objet.paramsSelect2 %}
         $("#{{ objet.id }}Select").select2({
-        {% if params.placeholder is not empty %} placeholder: {{ params.placeholder }}, {% endif %}
-        {{ parms.allowClear ? 'allowClear: true,' : 'allowClear: false,' }}
+            theme: "bootstrap",
+        {% if objet.placeholder is not empty %} placeholder: "{{ objet.placeholder }}", {% endif %}
+        {{ ( parms.allowClear is defined and parms.allowClear ) ? 'allowClear: true,' : 'allowClear: false,' }}
+        {% if objet.multiple is typeOf('int') %} maximumSelectionLength: {{ objet.multiple }}, {% endif %}
+        {% if params.searchBox == false %} minimumResultsForSearch: Infinity, {% endif %}
+        {% if params.language is defined and params.language is not empty %} language: "{{ params.language }}", {% endif %}
+            width: '100%'
         });
     });
 </script>

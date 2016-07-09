@@ -100,12 +100,12 @@ class GotServices
                 $jsList  = $rscs['js'];
                 if (!empty($cssList)) {
                     foreach ($cssList as $item) {
-                        if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/'.$item;
+                        if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/objets/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                     }
                 }
                 if (!empty($jsList)) {
                     foreach ($jsList as $item) {
-                        if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/'.$item;
+                        if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objets/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                     }
                 }
             }
@@ -190,18 +190,19 @@ class GotServices
         $cssScripts = [];
         $jsScripts  = [];
         $rscs = $objet->getResources();
+        $properties = $objet->getProperties();
 
         if (!empty($rscs) && ($rscs !== false)) {
             $cssList = $rscs['css'];
             $jsList = $rscs['js'];
             if (!empty($cssList)) {
                 foreach ($cssList as $item) {
-                    if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/' . $item;
+                    if (!in_array($item, $cssScripts)) $cssScripts[] =  'graphicobjecttemplating/objets/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                 }
             }
             if (!empty($jsList)) {
                 foreach ($jsList as $item) {
-                    if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/' . $item;
+                    if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objets/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                 }
             }
         }
