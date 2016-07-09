@@ -88,6 +88,12 @@ function getFormDatas(form) {
             case "ocinput":
                 var datas = ocinput_getData(obj, '');
                 break;
+            case "ocselect":
+                var datas = ocselect_getData(obj, '');
+                break;
+            case "occheckbox":
+                var  datas = occheckbox_getData(obj, '');
+                break;
         }
 
         if (datas.length > 0) {
@@ -171,10 +177,9 @@ function ocbutton_getData(obj, evt) {
  * pour les objet de type OCInput
  */
 function ocinput_getData(obj, evt) {
-    console.log(obj);
     var chps = "id=" + obj.attr("id");
-    var chps = chps + "&value='" + obj.children("input").val() + "'";
-    var chps = chps + "&type='" + obj.children("input").attr('type') + "'";
+    chps = chps + "&value='" + obj.children("input").val() + "'";
+    chps = chps + "&type='" + obj.children("input").attr('type') + "'";
     if (evt.length > 0) {
         var dataEvt = 'data-' + evt;
         var routine = obj.attr(dataEvt);
@@ -182,7 +187,44 @@ function ocinput_getData(obj, evt) {
             chps = chps + "&callback='" + routine + "'";
         }
     }
-    console.log(obj);
+    return chps;
+}
+
+function ocselect_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+}
+
+function occheckbox_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    var checked = [];
+    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
+        checked.push($(this).val());
+    });
+    chps = chps + "&value='" + checked.join("$") + "'";
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.attr(dataEvt);
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
+    return chps;
+}
+
+function ocradio_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    var checked = [];
+    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
+        checked.push($(this).val());
+    });
+    chps = chps + "&value='" + checked.join("$") + "'";
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.attr(dataEvt);
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
     return chps;
 }
 
@@ -208,6 +250,18 @@ function ocbutton_setData(obj, data) {
  */
 function ocinput_setData(obj, data) {
     obj.val(data);
+}
+
+function ocselect_setData(obj, data) {
+
+}
+
+function occheckbox_setData(obj, data) {
+
+}
+
+function ocradio_setData(obj, data) {
+    
 }
 
 /**

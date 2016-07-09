@@ -24,6 +24,8 @@ class OCContent extends  ODContent
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/occontent/occontent.config.phtml");
         $this->setDisplay();
+        $width = $this->getWidthBT();
+        if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
     public function setContent($content)

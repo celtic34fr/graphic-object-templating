@@ -42,7 +42,7 @@ class OCSelect extends ODContent
         $this->properties = $parent->properties;
         $this->setDisplay();
         $width = $this->getWidthBT();
-        if (is_array($width) && empty($width)) $this->setWidthBT(12);
+        if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
     public function addOption($value, $libel, $selected = false, $enable = true)

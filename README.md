@@ -46,3 +46,5 @@ OCInput     : zone de saisie standart [pris en charge : texte (text), caché (hi
 OSDiv       : section non typé de page html
 En cours de développement :
 OCSelect    : liste déroulante (HTML ou jQuery Select2)
+OCCheckbox  : case à cocher
+OCRadio     : radio bouton
