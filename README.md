@@ -40,11 +40,11 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-[OCButton](doc/objets/OCButton.md)    : bouton (avec exécution de méthode [callback] possible)
-OCContent   : objet pour affichage de contenu non typé
-OCInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
-OSDiv       : section non typé de page html
-En cours de développement :
-OCSelect    : liste déroulante (HTML ou jQuery Select2)
-OCCheckbox  : case à cocher
-OCRadio     : radio bouton
+[OCButton](doc/objets/OCButton.md)    : bouton (avec exécution de méthode [callback] possible) 
+OCContent   : objet pour affichage de contenu non typé 
+OCInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
+OSDiv       : section non typé de page html 
+En cours de développement : 
+OCSelect    : liste déroulante (HTML ou jQuery Select2) 
+OCCheckbox  : case à cocher 
+OCRadio     : radio bouton 
