@@ -49,3 +49,4 @@ En cours de développement :
 * OCSelect    : liste déroulante (HTML ou jQuery Select2) 
 * OCCheckbox  : case à cocher 
 * OCRadio     : radio bouton 
+* OCMessage   : affichage de message à l'écran (façon Windows 8)
