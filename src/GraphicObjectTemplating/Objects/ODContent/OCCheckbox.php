@@ -84,31 +84,47 @@ class OCCheckbox extends ODContent
         return ((array_key_exists('options',$properties)) ? $properties['options'] : false);
     }
 
-    public function check($value)
+    public function check($value = null)
     {
         $properties = $this->getProperties();
         if (array_key_exists('options', $properties)) {
             $options = $properties['options'];
-            if (array_key_exists($value, $options)) {
+            if (!empty($value) && array_key_exists($value, $options)) {
                 $options[$value]['check'] = self::CHECKBOX_CHECK;
                 $properties['options'] = $options;
                 $this->setProperties($properties);
                 return $this;
+            } elseif (empty($value)) {
+                $options = $properties['options'];
+                if (empty($options) || array_key_exists($properties['label'], $options)) {
+                    $options[$properties['label']] = self::CHECKBOX_CHECK;
+                    $properties['options'] = $options;
+                    $this->setProperties($properties);
+                    return $this;
+                }
             }
         }
         return false;
     }
 
-    public function uncheck($value)
+    public function uncheck($value = null)
     {
         $properties = $this->getProperties();
         if (array_key_exists('options', $properties)) {
             $options = $properties['options'];
-            if (array_key_exists($value, $options)) {
+            if (!empty($value) && array_key_exists($value, $options)) {
                 $options[$value]['check'] = self::CHECKBOX_UNCHECK;
                 $properties['options'] = $options;
                 $this->setProperties($properties);
                 return $this;
+            } elseif (empty($value)) {
+                $options = $properties['options'];
+                if (empty($options) || array_key_exists($properties['label'], $options)) {
+                    $options[$properties['label']] = self::CHECKBOX_UNCHECK;
+                    $properties['options'] = $options;
+                    $this->setProperties($properties);
+                    return $this;
+                }
             }
         }
         return false;
@@ -120,7 +136,7 @@ class OCCheckbox extends ODContent
         if (array_key_exists('options', $properties)) {
             $options = $properties['options'];
             foreach ($options as $key => $option) {
-                $option['check'] = false;
+                $option['check'] = self::CHECKBOX_UNCHECK;
                 $options[$key]   = $option;
             }
             $properties['options'] = $options;
@@ -130,12 +146,31 @@ class OCCheckbox extends ODContent
         return false;
     }
     
-    public function getCheck($value)
+    public function getCheck($value = null)
+    {
+        $properties = $this->getProperties();
+        if (!empty($value) && array_key_exists('options', $properties)) {
+            $options = $properties['options'];
+            return ((array_key_exists($value, $options)) ? $options[$value]['check'] : false);
+        }  elseif (empty($value) && !empty($properties['options'])) {
+            $options = $properties['options'];
+            $label   = $properties['label'];
+            return ((array_key_exists($label, $options)) ? $options[$label]['check'] : false);
+        }
+        return false;
+    }
+
+    public function getChecked()
     {
         $properties = $this->getProperties();
         if (array_key_exists('options', $properties)) {
-            $options = $properties['options'];
-            return ((array_key_exists($value, $options)) ? $options[$value]['check'] : false);
+            $checked = [];
+            foreach ($properties['options'] as $value => $option) {
+                if ($option['check'] == self::CHECKBOX_CHECK) {
+                    $checked[] = $value;
+                }
+            }
+            return $checked;
         }
         return false;
     }
