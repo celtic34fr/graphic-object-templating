@@ -43,6 +43,11 @@ class OCCheckbox extends ODContent
     public function addOptions($value, $libel)
     {
         $properties = $this->getProperties();
+        $label      = (array_key_exists('label', $properties)) ? $properties['label'] : "";
+        if (array_key_exists('options',$properties) && sizeof($properties['options']) == 1 && array_key_exists($label, $properties['options'])) {
+            $properties['options'] = [];
+        }
+
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;
@@ -179,7 +184,19 @@ class OCCheckbox extends ODContent
     {
         $label = (string)$label;
         $properties = $this->getProperties();
+        $oldLabel   = (array_key_exists('label',$properties)) ? $properties['label'] : "";
         $properties['label'] = $label;
+
+        if (empty($properties['options'])
+            || sizeof($properties['options']) == 1 && array_key_exists($oldLabel, $properties['options'])) {
+            $options = [];
+            $item = [];
+            $item['libel'] = $label;
+            $item['check'] = self::CHECKBOX_UNCHECK;
+            $options[$label] = $item;
+            $properties['options'] = $options;
+        }
+        
         $this->setProperties($properties);
         return $this;
     }
