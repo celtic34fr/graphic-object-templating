@@ -25,12 +25,14 @@
             {% endfor %}
         {% endif %}
 >
+    {% if objet.options|length > 1 %}
     <div {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %} >
         {{ objet.label }}
     </div>
+    {% endif %}
     {% for value, options in objet.options %}
     <label><input type="checkbox" name="{{ objet.name }}" value="{{ value }}"
-        class="{{ objClass }}" id="{{ objet.id ~ value }}"
+        class="{{ objClass }}" id="{{ objet.id ~ value}}"
         {% if (options.check == 'check') %} checked="checked" {% endif %}
     >{{ options.libel }}</label>
     {% endfor %}
