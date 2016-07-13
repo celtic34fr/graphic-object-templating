@@ -19,6 +19,11 @@
         <select id="{{ objet.id }}Select" name="{{ objet.name }}" {% if objet.multiple != false %} multiple {% endif %}
                 {% if objet.state != true %} disabled {% endif %}
                 {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+
+                {% if objet.infoBulle is not empty %}
+                    {%  set infoBulle = objet.infoBulle %}
+                    {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+                {% endif %}
         >
             {% if objet.select2 == false and objet.placeholder is not empty %}
                 <option value="" selected data-default disabled >{{ objet.placeholder }}</option>

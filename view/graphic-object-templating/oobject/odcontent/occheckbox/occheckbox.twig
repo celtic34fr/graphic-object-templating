@@ -24,6 +24,11 @@
                 data-{{ evt }} = "{{ callback }}"
             {% endfor %}
         {% endif %}
+
+        {% if objet.infoBulle is not empty %}
+            {%  set infoBulle = objet.infoBulle %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
 >
     {% if objet.options|length > 1 %}
     <div {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %} >
@@ -50,4 +55,10 @@
             {% endif %}
         );
     </script>
+{% endif %}
+
+{% if objet.infoBulle is not empty %}
+    {%  set type = objet.infoBulle.type %}
+    {%  set id = objet.id %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}

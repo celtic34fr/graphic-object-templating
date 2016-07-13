@@ -24,6 +24,11 @@
                 data-{{ evt }} = "{{ callback }}"
             {% endfor %}
         {% endif %}
+
+        {% if objet.infoBulle is not empty %}
+            {%  set infoBulle = objet.infoBulle %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
 >
     {% for value, options in objet.options %}
         <label><input type="radio" name="{{ objet.name }}" value="{{ value }}"
@@ -45,4 +50,10 @@
             {% endif %}
         );
     </script>
+{% endif %}
+
+{% if objet.infoBulle is not empty %}
+    {%  set type = objet.infoBulle.type %}
+    {%  set id = objet.id %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}
