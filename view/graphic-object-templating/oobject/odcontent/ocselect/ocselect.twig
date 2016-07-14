@@ -59,12 +59,12 @@
 {% endif %}
 
 {% if objet.infoBulle.title is not empty %}
-    {% if objet.select2 == true %}
+    {% if objet.select2 == false %}
         {% set type = objet.infoBulle.type %}
-        {% set id = objet.id ~ "_" ~ objet.type %}
+        {% set id = objet.id ~ "Select" %}
     {% else %}
         {% set type = objet.infoBulle.type %}
-        {% set id = objet.id ~ "Select .select2-container" %}
+        {% set id = objet.id ~ " .select2-container" %}
     {% endif %}
     {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}

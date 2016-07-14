@@ -314,11 +314,11 @@ class OObject
         $properties['infoBulle']['title']   = $titre;
         $properties['infoBulle']['content'] = $contenu;
         $properties['infoBulle']['type']    = $type;
+        $this->setProperties($properties);
         if (!empty($params)) {
             $this->setInfoBulleParams($params);
         }
         
-        $this->setProperties($properties);
         return $this;
     }
 
@@ -338,13 +338,13 @@ class OObject
                 switch (strtoupper($key)) {
                     case 'PLACEMENT': // placement simple pas composé (TOP ou LEFT ou BOTTOM ou RIGHT)
                         $placement = strtoupper($param);
-                        if (!array_key_exists($placement, self::TOOLTIP)) $placement = self::TOOLTIP['TOP'];
-                        $properties['infoBulle']['placement'] = $param;
+                        if (!array_key_exists($placement, self::TOOLTIP)) $placement = 'TOP';
+                        $properties['infoBulle']['placement'] = self::TOOLTIP[$placement];
                         break;
                     case 'TRIGGER': // mode de déclenchement
                         $trigger = strtoupper($param);
-                        if (!array_key_exists($trigger, self::TRIGGER)) $trigger = self::TRIGGER['HOVER'];
-                        $properties['infoBulle']['trigger'] = $param;
+                        if (!array_key_exists($trigger, self::TRIGGER)) $trigger = 'HOVER';
+                        $properties['infoBulle']['trigger'] = self::TRIGGER[$trigger];
                         break;
                     default:
                         $properties['infoBulle'][$key] = $param;
@@ -352,7 +352,6 @@ class OObject
                 }
             }
         }
-        
         $this->setProperties($properties);
         return $this;
     }

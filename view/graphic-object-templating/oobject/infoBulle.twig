@@ -3,10 +3,11 @@
 rel= "{{ infoBulle.type }}"
 {% if infoBulle.type == 'tooltip' %}
     {% if infoBulle.title is not empty %}
-        data-original-title= "{{ infoBulle.title }}"
+        {% set dataOriginalTitle = infoBulle.title %}
         {% if infoBulle.content is not empty %}
-            data-original-title= data-original-title ~ " : {{ infoBulle.content }}"
+            {% set dataOriginalTitle = dataOriginalTitle ~ ' : ' ~ infoBulle.content %}
         {% endif %}
+        data-original-title= "{{ dataOriginalTitle }}"
     {% elseif infoBulle.content is not empty %}
         data-original-title= "{{ infoBulle.content }}"
     {% endif %}
