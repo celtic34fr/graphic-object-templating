@@ -70,6 +70,8 @@ use Zend\Session\Container;
  * enable
  * disable
  * getState
+ * setErreur
+ * getErreur
  */
 class OObject
 {
@@ -628,6 +630,27 @@ class OObject
     {
         $properties          = $this->getProperties();
         return (($properties['state'] === true) ? 'enable' : 'disable');
+    }
+
+    public function setErreur($libel,  $backgroundColor = "FFEEEE0", $color = "FF0000")
+    {
+        $libel = (string) $libel;
+        if (!empty($libel)) {
+            $properties = $this->getProperties();
+            if (!array_key_exists('erreur', $properties)) $properties['erreur'] = [];
+            $properties['erreur']['libel'] = $libel;
+            $properties['erreur']['backgroundColor'] = $backgroundColor;
+            $properties['erreur']['color'] = $color;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function getErreur()
+    {
+        $properties          = $this->getProperties();
+        return (array_key_exists('erreur', $properties) ? $properties['erreur'] : false);
     }
 
     /*

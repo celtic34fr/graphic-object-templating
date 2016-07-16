@@ -11,6 +11,9 @@ namespace GraphicObjectTemplating\Twig\Extension;
 use Exception;
 use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParser_Switch;
 use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParserSwitch;
+use Traversable;
+use Twig_Error_Runtime;
+use Twig_SimpleFilter;
 
 class LayoutExtension extends \Twig_Extension
 {
@@ -39,6 +42,13 @@ class LayoutExtension extends \Twig_Extension
     {
         return array(
             new TokenParserSwitch(), // unaccepted token (fabpot) update maxgalbu to work with Twig >= 1.12
+        );
+    }
+
+    public function getFilters()
+    {
+        return array(
+            new Twig_SimpleFilter('update', 'twig_array_update'),
         );
     }
 
@@ -168,5 +178,43 @@ class LayoutExtension extends \Twig_Extension
         } else {
             return strpos($str, $search);
         }
+    }
+
+    /**
+     * Merges an array with another one.
+     *
+     * <pre>
+     *  {% set items = { 'apple': 'fruit', 'orange': 'fruit' } %}
+     *
+     *  {% set items = items|update({ 'apple': 'granny' }) %}
+     *
+     *  {# items now contains { 'apple': 'granny', 'orange': 'fruit' } #}
+     * </pre>
+     *
+     * @param array|Traversable $arr1 An array
+     * @param array|Traversable $arr2 An array (of keys / value)
+     *
+     * @return array The replace values in array by array of keys / values
+     */
+    function twig_array_update($arr1, $arr2)
+    {
+        /*
+        if ($arr1 instanceof Traversable) {
+            $arr1 = iterator_to_array($arr1);
+        } elseif (!is_array($arr1)) {
+            throw new Twig_Error_Runtime(sprintf('The merge filter only works with arrays or "Traversable", got "%s" as first argument.', gettype($arr1)));
+        }
+
+        if ($arr2 instanceof Traversable) {
+            $arr2 = iterator_to_array($arr2);
+        } elseif (!is_array($arr2)) {
+            throw new Twig_Error_Runtime(sprintf('The merge filter only works with arrays or "Traversable", got "%s" as second argument.', gettype($arr2)));
+        }
+
+        foreach ($arr2 as $key => $value) {
+            if (array_key_exists($key, $arr1)) $arr1[$key] = $value;
+        }
+        */
+        return $arr1;
     }
 }

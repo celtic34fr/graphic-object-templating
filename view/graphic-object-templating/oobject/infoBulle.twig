@@ -29,7 +29,7 @@ rel= "{{ infoBulle.type }}"
     data-delay="{{ delay }}"
 
 {% for key, param in infoBulle %}
-    {% if key not in ['title', 'content', 'type', 'delay-show', 'delay-hide'] %}
+    {% if key not in ['title', 'content', 'type', 'delay-show', 'delay-hide', 'css'] %}
     data-{{ key }} = "{{ param }}"
     {% endif %}
 {% endfor %}

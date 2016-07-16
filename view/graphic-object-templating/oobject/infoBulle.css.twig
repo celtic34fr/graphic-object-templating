@@ -1,0 +1,9 @@
+{% switch type %}
+    {% case 'tooltip' %}
+        {% set content = '> tooltip-inner' %}
+    {% case 'popover' %}
+        {% set content = '' %}
+{% endswitch %}
+#{{ id }} + .{{ type }} {{ content }} {
+    {{ css | raw }}
+}
