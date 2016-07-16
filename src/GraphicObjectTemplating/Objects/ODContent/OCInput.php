@@ -49,10 +49,11 @@ use GraphicObjectTemplating\Objects\ODContent;
  */
 class OCInput extends ODContent
 {
-    const TYPE =array(
-        'TEXT'     => 'text',
-        'PASSWORD' => 'password',
-        'HIDDEN'   => 'hidden');
+    const INPTYPE_TEXT     = "text";
+    const INPTYPE_PASSWORD = "password";
+    const INPTYPE_HIDDEN   = 'hidden';
+
+    protected $const_inpType;
 
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontent/ocinput/ocinput.config.phtml");
@@ -61,10 +62,10 @@ class OCInput extends ODContent
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function setType($type = self::TYPE['TEXT']) {
-        $types = $this->getTypesConstants();
+    public function setType($type = self::INPTYPE_TEXT) {
+        $types = $this->getInpTypesConstants();
         $type = (string) $type;
-        if (!in_array($type, $types)) $type = self::TYPE['TEXT'];
+        if (!in_array($type, $types)) $type = self::INPTYPE_TEXT;
 
         $properties         = $this->getProperties();
         $properties['type'] = $type;
@@ -267,9 +268,19 @@ class OCInput extends ODContent
      * méthode interne à la classe OObject
      */
 
-    private function getTypesConstants()
+    private function getInpTypesConstants()
     {
-        return self::TYPE;
+        if (empty($this->const_inpType)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_inpType = $constants;
+        } else {
+            $constants = $this->const_inpType;
+        }
+        return $constants;
     }
 
 }

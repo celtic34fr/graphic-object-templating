@@ -50,11 +50,10 @@ use GraphicObjectTemplating\Objects\ODContent;
  */
 class OCButton extends ODContent
 {
-    const TYPE = array(
-        'CUSTOM'   => "custom",
-        'SUBMIT'   => "submit",
-        'RESET'    => "reset",
-        'LINK'     => "link");
+    const BTNTYPE_CUSTOM = 'custom';
+    const BTNTYPE_SUBMIT = 'submit';
+    const BTNTYPE_RESET  = 'reset';
+    const BTNTYPE_LINK   = 'link';
 
     const NATURE = array(
         'DEFAULT' => 'btn btn-default',
@@ -64,6 +63,9 @@ class OCButton extends ODContent
         'WARNING' => 'btn btn-warning',
         'DANGER'  => 'btn btn-danger',
         'LINK'    => 'btn btn-link');
+
+    protected $const_btntype;
+    protected $const_nature;
 
     public function __construct($id) {
         $parent = parent::__construct($id, "oobject/odcontent/ocbutton/ocbutton.config.phtml");
@@ -111,21 +113,21 @@ class OCButton extends ODContent
         $callback   = $properties['callback'];
         switch(true) {
             case (empty($callback)):
-                $properties['type'] = self::TYPE['RESET'];  break;
+                $properties['type'] = self::BTNTYPE_RESET;  break;
             case (!empty($callback)):
-                $properties['type'] = self::TYPE['SUBMIT']; break;
+                $properties['type'] = self::BTNTYPE_SUBMIT; break;
         }
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setType($type = self::TYPE['CUSTOM'])
+    public function setType($type = self::BTNTYPE_CUSTOM)
     {
-        $types = $this->getTypesConstants();
+        $types = $this->getBtnTypesConstants();
         $type  = (string) $type;
-        if (!in_array($type, $types)) $type = self::TYPE['CUSTOM'];
+        if (!in_array($type, $types)) $type = self::BTNTYPE_CUSTOM;
 
-        if ($type == self::TYPE['LINK']) {
+        if ($type == self::BTNTYPE_LINK) {
             if (isset($properties['event']['click']))
                 $properties['event']['click'] = mb_strtolower($properties['event']['click']);
         }
@@ -152,12 +154,12 @@ class OCButton extends ODContent
         $form     = $properties['form'];
         switch(true) {
             case (empty($form)):
-                $properties['type'] = self::TYPE['CUSTOM']; break;
+                $properties['type'] = self::BTNTYPE_CUSTOM; break;
             case (!empty($form)):
-                $properties['type'] = self::TYPE['SUBMIT']; break;
+                $properties['type'] = self::BTNTYPE_SUBMIT; break;
         }
         
-        if (isset($properties['type']) && ($properties['type'] == self::TYPE['LINK'])) {
+        if (isset($properties['type']) && ($properties['type'] == self::BTNTYPE_LINK)) {
             $properties['event']['click'] = mb_strtolower($callback);
         }
 
@@ -176,7 +178,7 @@ class OCButton extends ODContent
     public function setNature($nature = self::NATURE['DEFAULT'])
     {
         $natures = $this->getNatureConst();
-        if (!in_array($nature, $natures)) $nature = self::NATURE['DEFAULT'];
+        if (!in_array($nature, $natures)) $nature = self::NATURE_DEFAULT;
 
         $properties = $this->getProperties();
         $properties['nature'] = $nature;
@@ -193,13 +195,34 @@ class OCButton extends ODContent
      * méthode interne à la classe OObject
      */
 
-    private function getTypesConstants()
+    private function getBtnTypesConstants()
     {
-        return self::TYPE;
+        if (empty($this->const_btntype)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_btntype = $constants;
+        } else {
+            $constants = $this->const_btntype;
+        }
+        return $constants;
     }
 
     private function getNatureConst()
     {
-        return self::NATURE;
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_nature = $constants;
+        } else {
+            $constants = $this->const_nature;
+        }
+        return $constants;
     }
+
 }

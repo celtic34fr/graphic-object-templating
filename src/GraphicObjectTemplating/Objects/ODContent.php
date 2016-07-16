@@ -23,15 +23,16 @@ namespace GraphicObjectTemplating\Objects;
  */
 class ODContent extends OObject
 {
-    const ICON = array(
-        'SEARCH' => "fa fa-search",
-        'EDIT'   => "fa fa-edit",
-        'USER'   => 'fa fa-user',
-        'DELETE' => "fa fa-trash-o");
+    const ICON_SEARCH = "fa fa-search";
+    const ICON_EDIT   = "fa fa-edit";
+    const ICON_USER   = "fa fa-user";
+    const ICON_DELETE = "fa fa-trash-o";
 
     protected $form;
     protected $name;
     protected $value;
+
+    protected $const_icon;
 
     public function __construct($id, $adrProperties)
     {
@@ -111,4 +112,18 @@ class ODContent extends OObject
 
     public function getConverted() { return $this->getValue(); }
 
+    private function getIconsConst()
+    {
+        if (empty($this->const_icon)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TRIGGER');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_icon = $constants;
+        } else {
+            $constants = $this->const_icon;
+        }
+        return $constants;
+    }
 }

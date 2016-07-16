@@ -76,39 +76,35 @@ use Zend\Session\Container;
 class OObject
 {
 
-    const DISPLAY = array(
-        'NONE'    => 'none',
-        'BLOCK'   => 'block',
-        'INLINE'  => 'inline',
-        'INBLOCK' => 'inline-block'
-    );
+    const DISPLAY_NONE    = 'none';
+    const DISPLAY_BLOCK   = 'block';
+    const DISPLAY_INLINE  = 'inline';
+    const DISPLAY_INBLOCK = 'inline-block';
 
-    const TOOLTIP = array(
-        'LEFT'    => "left",
-        'BOTTOM'  => "bottom",
-        'RIGHT'   => "right",
-        'TOP'     => "top",
-        'AUTO'    => 'auto',
-    );
-    
-    const TYPE = array(
-        'TOOLTIP' => 'tooltip',
-        'POPOVER' => 'popover',
-    );
-    
-    const TRIGGER = array(
-        'CLICK'   => 'click',
-        'HOVER'   => 'hover',
-        'FOCUS'   => 'focus',
-//      'MANUAL'    => 'manual'; pas mis en oeuvre => question du déclenchement non réglé  
-    );
+    const INFOBULLE_LEFT    = "left";
+    const INFOBULLE_BOTTOM  = "bottom";
+    const INFOBULLE_RIGHT   = "right";
+    const INFOBULLE_TOP     = "top";
 
-    const STATE = array(
-        'ENABLE'  => true,
-        'DISABLE' => false);
+    const TYPE_TOOLTIP = 'tooltip';
+    const TYPE_POPOVER = 'popover';
+    
+    const TRIGGER_CLICK = 'click';
+    const TRIGGER_HOVER = 'hover';
+    const TRIGGER_FOCUS = 'focus';
+//    const TRIGGER_MANUAL = 'manual'; pas mis en oeuvre => question du déclenchement non réglé
+
+    const STATE_ENABLE  = true;
+    const STATE_DISABLE = false;
 
     protected $id;
     protected $properties;
+
+    protected $const_display;
+    protected $const_infoBulle;
+    protected $const_type;
+    protected $const_trigger;
+    protected $const_state;
 
     public function __construct($id, $adrProperties = null)
     {
@@ -232,10 +228,10 @@ class OObject
         return ((array_key_exists('template', $properties)) ? $properties['template'] : false);
     }
 
-    public function setDisplay($display = OObject::DISPLAY['BLOCK'])
+    public function setDisplay($display = OObject::DISPLAY_BLOCK)
     {
         $displays = $this->getDisplayConstants();
-        if (!in_array($display, $displays)) $display = OObject::DISPLAY['BLOCK'];
+        if (!in_array($display, $displays)) $display = OObject::DISPLAY_BLOCK;
 
         $properties            = $this->getProperties();
         $properties['display'] = $display;
@@ -305,11 +301,12 @@ class OObject
         return ((array_key_exists('classes', $properties)) ? $properties['classes'] : false);
     }
 
-    public function setInfoBulle($titre, $contenu = "", $type = self::TYPE['TOOLTIP'], array $params = null)
+    public function setInfoBulle($titre, $contenu = "", $type = self::TYPE_TOOLTIP, array $params = null)
     {
         $titre                   = (string) $titre;
         $contenu                 = (string) $contenu;
-        if (!in_array($type, self::TYPE)) $type = self::TYPE['TOOLTIP'];
+        $types                   = $this->getTypesConst();
+        if (!in_array($type, $types)) $type = self::TYPE_TOOLTIP;
         $properties              = $this->getProperties();
         
         if (!array_key_exists('infoBulle', $properties)) $properties['infoBulle'] = [];
@@ -613,7 +610,7 @@ class OObject
     public function enable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['ENABLE'];
+        $properties['state'] = self::STATE_ENABLE;
         $this->setProperties($properties);
         return $this;
     }
@@ -621,7 +618,7 @@ class OObject
     public function disable()
     {
         $properties          = $this->getProperties();
-        $properties['state'] = self::STATE['DISABLE'];
+        $properties['state'] = self::STATE_DISABLE;
         $this->setProperties($properties);
         return $this;
     }
@@ -657,14 +654,88 @@ class OObject
      * méthode interne à la classe OObject
      */
 
-    private function getDisplayConstants()
+    /*
+     * méthode interne à la classe OObject
+     */
+    protected function getConstants()
     {
-        return self::DISPLAY;
+        $ref = new \ReflectionClass($this);
+        return $ref->getConstants();
     }
 
-    private function getTooltipsConst()
+    private function getDisplayConstants()
     {
-        return self::TOOLTIP;
+        if (empty($this->const_display)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($constant, 'DISPLAY_');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_display = $constants;
+        } else {
+            $constants = $this->const_display;
+        }
+        return $constants;
+    }
+
+    private function getInfoBullesConst()
+    {
+        if (empty($this->const_infoBulle)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'INFOBULLE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_infoBulle = $constants;
+        } else {
+            $constants = $this->const_infoBulle;
+        }
+        return $constants;
+    }
+
+    private function getTypesConst()
+    {
+        if (empty($this->const_type)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_type = $constants;
+        } else {
+            $constants = $this->const_type;
+        }
+        return $constants;
+    }
+
+    private function getTriggersConst()
+    {
+        if (empty($this->const_trigger)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TRIGGER');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_trigger = $constants;
+        } else {
+            $constants = $this->const_trigger;
+        }
+        return $constants;
+    }
+
+    private function getStatesConst()
+    {
+        if (empty($this->const_state)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TRIGGER');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_state = $constants;
+        } else {
+            $constants = $this->const_state;
+        }
+        return $constants;
     }
 
 }

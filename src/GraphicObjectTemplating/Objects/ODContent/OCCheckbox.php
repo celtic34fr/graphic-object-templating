@@ -32,6 +32,8 @@ class OCCheckbox extends ODContent
     const CHECKBOX_CHECK = "check";
     const CHECKBOX_UNCHECK = "uncheck";
 
+    protected $const_checkbox;
+
     public function __construct($id)
     {
         parent::__construct($id, "oobject/odcontent/occheckbox/occheckbox.config.phtml");
@@ -225,4 +227,21 @@ class OCCheckbox extends ODContent
         if (isset($properties['event']['change'])) unset($properties['event']['change']);
         $this->setProperties($properties);
         return $this;
-    }}
+    }
+
+    private function getCheckboxConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'CHECKBOX');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_checkbox = $constants;
+        } else {
+            $constants = $this->const_checkbox;
+        }
+        return $constants;
+    }
+
+}
