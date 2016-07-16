@@ -214,7 +214,7 @@ class OCButton extends ODContent
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TYPE');
+                $pos = strpos($key, 'NATURE');
                 if ($pos === false) unset($constants[$key]);
             }
             $this->const_nature = $constants;
