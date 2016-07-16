@@ -336,14 +336,14 @@ class OObject
             foreach ($params as $key => $param) {
                 switch (strtoupper($key)) {
                     case 'PLACEMENT': // placement simple pas composé (TOP ou LEFT ou BOTTOM ou RIGHT)
-                        $placement = strtoupper($param);
-                        if (!array_key_exists($placement, self::TOOLTIP)) $placement = 'TOP';
-                        $properties['infoBulle']['placement'] = self::TOOLTIP[$placement];
+                        $infoBulles = $this->getInfoBullesConst();
+                        if (!in_array($param, $infoBulles)) $param = self::INFOBULLE_TOP;
+                        $properties['infoBulle']['placement'] = $param;
                         break;
                     case 'TRIGGER': // mode de déclenchement
-                        $trigger = strtoupper($param);
-                        if (!array_key_exists($trigger, self::TRIGGER)) $trigger = 'HOVER';
-                        $properties['infoBulle']['trigger'] = self::TRIGGER[$trigger];
+                        $triggers = $this->getTriggersConst();
+                        if (!in_array($param, $triggers)) $param = self::TRIGGER_HOVER;
+                        $properties['infoBulle']['trigger'] = $param;
                         break;
                     default:
                         $properties['infoBulle'][$key] = $param;
@@ -629,7 +629,7 @@ class OObject
         return (($properties['state'] === true) ? 'enable' : 'disable');
     }
 
-    public function setErreur($libel,  $backgroundColor = "FFEEEE0", $color = "FF0000")
+    public function setErreur($libel,  $backgroundColor = "FFEEEE", $color = "FF0000")
     {
         $libel = (string) $libel;
         if (!empty($libel)) {

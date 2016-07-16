@@ -48,7 +48,7 @@ class LayoutExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('update', 'twig_array_update'),
+            'update' => new \Twig_Filter_Method($this, 'twig_array_update'),
         );
     }
 
@@ -198,7 +198,6 @@ class LayoutExtension extends \Twig_Extension
      */
     function twig_array_update($arr1, $arr2)
     {
-        /*
         if ($arr1 instanceof Traversable) {
             $arr1 = iterator_to_array($arr1);
         } elseif (!is_array($arr1)) {
@@ -214,7 +213,6 @@ class LayoutExtension extends \Twig_Extension
         foreach ($arr2 as $key => $value) {
             if (array_key_exists($key, $arr1)) $arr1[$key] = $value;
         }
-        */
         return $arr1;
     }
 }
