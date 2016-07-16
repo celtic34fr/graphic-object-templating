@@ -55,14 +55,13 @@ class OCButton extends ODContent
     const BTNTYPE_RESET  = 'reset';
     const BTNTYPE_LINK   = 'link';
 
-    const NATURE = array(
-        'DEFAULT' => 'btn btn-default',
-        'PRIMARY' => 'btn btn-primary',
-        'SUCCESS' => 'btn btn-success',
-        'INFO'    => 'btn btn-info',
-        'WARNING' => 'btn btn-warning',
-        'DANGER'  => 'btn btn-danger',
-        'LINK'    => 'btn btn-link');
+    const NATURE_DEFAULT = "btn btn-default";
+    const NATURE_PRIMARY = 'btn btn-primary';
+    const NATURE_SUCCESS = 'btn btn-success';
+    const NATURE_INFO    = 'btn btn-info';
+    const NATURE_WARNING = 'btn btn-warning';
+    const NATURE_DANGER  = 'btn btn-danger';
+    const NATURE_LINK    = 'btn btn-link';
 
     protected $const_btntype;
     protected $const_nature;
