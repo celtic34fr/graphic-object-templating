@@ -8,40 +8,79 @@
 {% endif %}
 {% set labelClass = gotBootstrap(objet.labelWidthBT) %}
 
-{% if objet.style is not empty %}
-    <style>
-        #{{ objet.id }} {
-            display: {{ objet.display }};
-        {{ objet.style | raw }}
-        }
-    </style>
-{% endif %}
+<style>
+    {% if objet.style is not empty %}
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+    {{ objet.style | raw }}
+    }
+    {% endif %}
+    {% if objet.forme == 'horizontal' %}
+    #{{ objet.id }} .checkbox {
+        float: left;
+        margin: 5px;
+    }
+    {% endif %}
 
-<div id="{{ objet.id }}"
-        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% set id = objet.id %}
+    {% set type = objet.infoBulle.type %}
+    {% set css = objet.infoBulle.css %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% elseif objet.erreur.libel is not empty %}
+    {% set erreur = objet.erreur %}
+    {% set id = objet.id %}
+    {% set type = 'tooltip' %}
+    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+
+    #{{ id }} {
+        border:  solid 2px #{{ erreur.color }};
+    }
+    {% endif %}
+</style>
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}" data-type="{{ objet.typeObj }}"
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+
+        {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
+            {%  set infoBulle = objet.infoBulle %}
+        {% elseif objet.erreur.libel is not empty %}
+            {% set infoBulle = objet.infoBulle %}
+            {% set erreur = objet.erreur %}
+            {% set infoBulle =
+            infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+        {% endif %}
+        {% if infoBulle is defined and infoBulle is not empty %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
+
         {% if objet.event is not empty %}
             {% for evt, callback in objet.event %}
                 data-{{ evt }} = "{{ callback }}"
             {% endfor %}
         {% endif %}
-
-        {% if objet.infoBulle is not empty %}
-            {%  set infoBulle = objet.infoBulle %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objet.state == false %}
+            disabled
         {% endif %}
 >
-    {% if objet.options|length > 1 %}
-    <div {% if labelClass is not empty %} class="{{ labelClass }}" {% endif %} >
-        {{ objet.label }}
-    </div>
+    {% if objet.options|length > 1 or objet.options.0.libel != objet.label %}
+    <label>{{ objet.label }}</label>
     {% endif %}
-    {% for value, options in objet.options %}
-    <label><input type="checkbox" name="{{ objet.name }}" value="{{ value }}"
-        class="{{ objClass }}" id="{{ objet.id ~ value}}"
-        {% if (options.check == 'check') %} checked="checked" {% endif %}
-    >{{ options.libel }}</label>
-    {% endfor %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        {% for options in objet.options %}
+            <div class="{{ options.type }}">
+                <input id="{{ objet.id ~ loop.index0 }}" class="styled" type="checkbox" value="{{ options.value }}"
+                       {% if not options.state %}disabled{% endif %} {% if options.check == 'check' %}checked{% endif %}>
+                <label for="{{ objet.id ~ loop.index0 }}">
+                    {{ options.libel }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
 </div>
+
 
 {% if objet.event is defined and objet.event is not empty %}
     <script id="{{ objet.id }}Script">
@@ -58,7 +97,7 @@
 {% endif %}
 
 {% if objet.infoBulle is not empty %}
-    {%  set type = objet.infoBulle.type %}
+    {%  set type = infoBulle.type %}
     {%  set id = objet.id %}
     {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}

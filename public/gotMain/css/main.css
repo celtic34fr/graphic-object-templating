@@ -7,3 +7,23 @@
 .display-none {
     display: none;
 }
+
+.btn span.glyphicon {
+    opacity: 0;
+}
+.btn.active span.glyphicon {
+    opacity: 1;
+}
+
+.btn { padding: 2px 5px !important;}
+
+.btn + span {
+    position: relative;
+    top: 3px;
+    left: 5px;
+}
+
+footer {
+    position: absolute;
+    bottom: 30px;
+}

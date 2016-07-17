@@ -26,13 +26,27 @@ use GraphicObjectTemplating\Objects\ODContent;
  * getLabel
  * evtChange
  * disChange
+ * setForme
+ * getForme
  */
 class OCCheckbox extends ODContent
 {
     const CHECKBOX_CHECK = "check";
     const CHECKBOX_UNCHECK = "uncheck";
 
+    const CHECKTYPE_DEFAULT = "checkbox";
+    const CHECKTYPE_PRIMARY = "checkbox checkbox-primary";
+    const CHECKTYPE_SUCCESS = "checkbox checkbox-success";
+    const CHECKTYPE_INFO    = "checkbox checkbox-info";
+    const CHECKTYPE_WARNING = "checkbox checkbox-warning";
+    const CHECKTYPE_DANGER  = "checkbox checkbox-danger";
+
+    const CHECKFORME_HORIZONTAL = 'horizontal';
+    const CHECKFORME_VERTICAL   = 'vertical';
+
     protected $const_checkbox;
+    protected $const_checkType;
+    protected $const_checkForme;
 
     public function __construct($id)
     {
@@ -42,19 +56,26 @@ class OCCheckbox extends ODContent
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function addOptions($value, $libel)
+    public function addOptions($value, $libel, $type = self::CHECKTYPE_DEFAULT, $state = self::STATE_ENABLE)
     {
         $properties = $this->getProperties();
         $label      = (array_key_exists('label', $properties)) ? $properties['label'] : "";
-        if (array_key_exists('options',$properties) && sizeof($properties['options']) == 1 && array_key_exists($label, $properties['options'])) {
+        if (array_key_exists('options',$properties) && sizeof($properties['options']) == 1 && $label == $properties['options'][0]['libel']) {
             $properties['options'] = [];
         }
+        $types = $this->getCheckTypeConst();
+        if (!in_array($type, $types)) $type = self::CHECKTYPE_DEFAULT;
+        $state = $state && true;
+
 
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;
         $item['check'] = false;
-        $properties['options'][$value] = $item;
+        $item['type']  = $type;
+        $item['state'] = $state;
+        $item['value'] = $value;
+        $properties['options'][] = $item;
         $this->setProperties($properties);
         return $this;
     }
@@ -189,16 +210,19 @@ class OCCheckbox extends ODContent
         $oldLabel   = (array_key_exists('label',$properties)) ? $properties['label'] : "";
         $properties['label'] = $label;
 
-        if (empty($properties['options'])
-            || sizeof($properties['options']) == 1 && array_key_exists($oldLabel, $properties['options'])) {
+        if ((!empty($oldLabel) && sizeof($properties['options']) == 1 && $properties['options'][0]['libel'] == $oldLabel)
+            || (empty($properties['options']))) {
             $options = [];
             $item = [];
             $item['libel'] = $label;
             $item['check'] = self::CHECKBOX_UNCHECK;
-            $options[$label] = $item;
+            $item['type']  = self::CHECKTYPE_DEFAULT;
+            $item['state'] = self::STATE_ENABLE;
+            $item['value'] = "";
+            $options[0] = $item;
             $properties['options'] = $options;
         }
-        
+
         $this->setProperties($properties);
         return $this;
     }
@@ -229,7 +253,24 @@ class OCCheckbox extends ODContent
         return $this;
     }
 
-    private function getCheckboxConst()
+    public function setForme($forme = self::CHECKFORM_HORIZONTAL)
+    {
+        $formes = $this->getCheckFormeConst();
+        if (!in_array($forme, $formes)) $forme = self::CHECKFORME_HORIZONTAL;
+        $properties = $this->getProperties();
+        $properties['forme'] = $forme;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getForme()
+    {
+        $properties = $this->getProperties();
+        return ((array_key_exists('forme',$properties)) ? $properties['forme'] : false);
+    }
+
+
+    protected function getCheckboxConst()
     {
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
@@ -240,6 +281,36 @@ class OCCheckbox extends ODContent
             $this->const_checkbox = $constants;
         } else {
             $constants = $this->const_checkbox;
+        }
+        return $constants;
+    }
+
+    protected function getCheckTypeConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'CHECKTYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_checkType = $constants;
+        } else {
+            $constants = $this->const_checkType;
+        }
+        return $constants;
+    }
+
+    protected function getCheckFormeConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'CHECKFORME');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_checkForme = $constants;
+        } else {
+            $constants = $this->const_checkForme;
         }
         return $constants;
     }

@@ -97,6 +97,18 @@ class OObject
     const STATE_ENABLE  = true;
     const STATE_DISABLE = false;
 
+    const BG_DANGER  = "FFEEEE";
+    const BG_WARNING = "FFDE89";
+    const BG_INFO    = "";
+    const BG_SUCCESS = "";
+    const BG_PRIMARY = "";
+
+    const TX_DANGER  = "FF0000";
+    const TX_WARNING = "FF7719";
+    const TX_INFO    = "";
+    const TX_SUCCESS = "";
+    const TX_PRIMARY = "";
+
     protected $id;
     protected $properties;
 
@@ -663,7 +675,7 @@ class OObject
         return $ref->getConstants();
     }
 
-    private function getDisplayConstants()
+    protected function getDisplayConstants()
     {
         if (empty($this->const_display)) {
             $constants = $this->getConstants();
@@ -678,7 +690,7 @@ class OObject
         return $constants;
     }
 
-    private function getInfoBullesConst()
+    protected function getInfoBullesConst()
     {
         if (empty($this->const_infoBulle)) {
             $constants = $this->getConstants();
@@ -693,7 +705,7 @@ class OObject
         return $constants;
     }
 
-    private function getTypesConst()
+    protected function getTypesConst()
     {
         if (empty($this->const_type)) {
             $constants = $this->getConstants();
@@ -708,7 +720,7 @@ class OObject
         return $constants;
     }
 
-    private function getTriggersConst()
+    protected function getTriggersConst()
     {
         if (empty($this->const_trigger)) {
             $constants = $this->getConstants();
@@ -723,7 +735,7 @@ class OObject
         return $constants;
     }
 
-    private function getStatesConst()
+    protected function getStatesConst()
     {
         if (empty($this->const_state)) {
             $constants = $this->getConstants();
