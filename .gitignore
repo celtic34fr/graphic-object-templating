@@ -52,7 +52,7 @@ fabric.properties
 ### ZendFramework template
 # Composer files
 composer.phar
-composer.lock
+*composer.lock
 vendor/
 
 # Local configs
