@@ -27,12 +27,12 @@ Windows :``mklink .\graphicobjecttemplating ..\vendor\celtic34fr\graphic-object-
 
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
-Il faut ajouter dans votre modèle 'layout.html.twig' les ligne suivantes pour permettre les appels Ajax utile à G.O.T.
+Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour permettre les appels Ajax utile à G.O.T. dans le bloc head :
 ``<link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">``
 
-Et il faut ajouter les deux lignes suivantes a debut du block body
+Et il faut ajouter les deux lignes suivantes au début du block body
 ``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
 <div id="divWork" style="display: none"></div>``
 
