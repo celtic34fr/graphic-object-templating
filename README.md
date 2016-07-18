@@ -37,9 +37,6 @@ Et il faut ajouter les deux lignes suivantes a debut du block body
 <div id="divWork" style="display: none"></div>``
 
 
-``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>``
-
-
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
