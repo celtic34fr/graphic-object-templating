@@ -32,7 +32,7 @@ Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour 
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">``
 
-Et il faut ajouter les deux lignes suivantes au début du block body
+Et il faut ajouter les deux lignes suivantes au début du bloc body
 ``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
 <div id="divWork" style="display: none"></div>``
 
