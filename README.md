@@ -29,18 +29,14 @@ Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à
 
 Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour permettre les appels Ajax utile à G.O.T. dans le bloc head :
 
-``
-<link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
+``<link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
 <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>
-``
+<script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>``
 
 Et il faut ajouter les deux lignes suivantes au début du bloc body
-``
-<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
-<div id="divWork" style="display: none"></div>`
-`
+``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
+<div id="divWork" style="display: none"></div>``
 
 
 Utilisation
