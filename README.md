@@ -35,6 +35,7 @@ Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour 
 <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>``
 
 Et il faut ajouter les deux lignes suivantes au début du bloc body
+
 ``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
 <div id="divWork" style="display: none"></div>``
 
