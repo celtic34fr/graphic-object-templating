@@ -1,40 +1,37 @@
 {# template de l'objet OSDiv #}
-
 {% set objClass = gotBootstrap(objet.widthBT) %}
-{% if objClass is empty %}
-    {% set objClass = gotBootstrap(12) %}
-{% endif %}
 
 <style>
     #{{ objet.id }} {
         display: {{ objet.display }};
     {% if objet.style is not empty %}
-        {{ objet.style | raw }}
+    {{ objet.style | raw }}
     {% endif %}
     }
 
     {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-        {% set id = objet.id %}
-        {% set type = objet.infoBulle.type %}
-        {% set css = objet.infoBulle.css %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% set id = objet.id %}
+    {% set type = objet.infoBulle.type %}
+    {% set css = objet.infoBulle.css %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
     {% elseif objet.erreur.libel is not empty %}
-        {% set id = objet.id %}
-        {% set type = 'tooltip' %}
-        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% set erreur = objet.erreur %}
+    {% set id = objet.id %}
+    {% set type = 'tooltip' %}
+    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+
+    #{{ id }} {
+        border:  solid 2px #{{ erreur.color }};
+    }
     {% endif %}
+
 </style>
 
+
 <div id="{{ objet.id }}"
-        {% if objet.infoBulle is not empty or (objet.errMessage is not defined or objet.errMessage is empty) %}
+        {% if objet.infoBulle is not empty %}
             {%  set infoBulle = objet.infoBulle %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
-        {% endif %}
-        {% if objet.erreur.libel is not empty %}
-            {% set infoBulle = objet.infoBulle %}
-            {% set libel = objet.erreur.libel %}
-            {#% set infoBulle = infoBulle | update({'titre': libel, 'content': "", 'type': 'tooltip' }) %#}
             {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
         {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes  %} {% endif %}
