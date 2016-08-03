@@ -1,14 +1,32 @@
 {# template de l'objet OCContent #}
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
-{% if objet.style is not empty %}
 <style>
     #{{ objet.id }} {
         display: {{ objet.display }};
+    {% if objet.style is not empty %}
         {{ objet.style | raw }}
+    {% endif %}
     }
+
+    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {% set id = objet.id %}
+        {% set type = objet.infoBulle.type %}
+        {% set css = objet.infoBulle.css %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% elseif objet.erreur.libel is not empty %}
+        {% set erreur = objet.erreur %}
+        {% set id = objet.id %}
+        {% set type = 'tooltip' %}
+        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+
+    #{{ id }} {
+        border:  solid 2px #{{ erreur.color }};
+    }
+    {% endif %}
+
 </style>
-{% endif %}
 
 <div id="{{ objet.id }}"
     {% if objet.infoBulle is not empty %}
