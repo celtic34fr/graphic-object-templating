@@ -12,7 +12,7 @@
 {% if objet.display is defined %} {# bouton mode affichage #}
     {%  set objClass = objClass ~ " display-" ~ objet.display ~ " " %}
 {% endif %}
-    {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+{% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
 <style>
     {% if objet.style is not empty %}
@@ -21,20 +21,20 @@
     }
     {% endif %}
 
-    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-    {% set id = objet.id %}
-    {% set type = objet.infoBulle.type %}
-    {% set css = objet.infoBulle.css %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {% set id = objet.id %}
+        {% set type = objet.infoBulle.type %}
+        {% set css = objet.infoBulle.css %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
     {% elseif objet.erreur.libel is not empty %}
-    {% set erreur = objet.erreur %}
-    {% set id = objet.id %}
-    {% set type = 'tooltip' %}
-    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+        {% set erreur = objet.erreur %}
+        {% set id = objet.id %}
+        {% set type = 'tooltip' %}
+        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
 
     #{{ id }} {
-        border:  solid 2px #{{ erreur.color }};
+        border:  solid 2px #{{ erreur.color }} !important;
     }
     {% endif %}
 </style>
@@ -60,7 +60,7 @@
     {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
     {% if objet.value is defined %} value="{{ objet.value }}" {% endif %}
 
-    {% if objet.infoBulle.titre is not empty and objet.erreur.libel is empty %}
+    {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
         {%  set infoBulle = objet.infoBulle %}
     {% elseif objet.erreur.libel is not empty %}
         {% set infoBulle = objet.infoBulle %}
@@ -85,7 +85,7 @@
         disabled
     {% endif %}
 >
-    <i class="{{ objet.icon }}"></i> {{ objet.label }}
+    {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ objet.label }}
 </button>
 
 {% if objet.event is defined and objet.event is not empty and objet.type != 'link' and objet.state == true %}
@@ -102,7 +102,7 @@
 </script>
 {% endif %}
 
-{% if infoBulle is not empty %}
+{% if infoBulle.title is not empty %}
     {%  set type = infoBulle.type %}
     {%  set id = objet.id %}
     {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}

@@ -9,7 +9,7 @@
     {% endif %}
     }
 
-    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
         {% set id = objet.id %}
         {% set type = objet.infoBulle.type %}
         {% set css = objet.infoBulle.css %}
@@ -29,8 +29,17 @@
 </style>
 
 <div id="{{ objet.id }}"
-    {% if objet.infoBulle is not empty %}
+    {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
         {%  set infoBulle = objet.infoBulle %}
+    {% endif %}
+    {% if objet.erreur.libel is not empty %}
+        {% set infoBulle = objet.infoBulle %}
+        {% set erreur = objet.erreur %}
+        {% set infoBulle =
+        infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+    {% endif %}
+        {#{ dump(infoBulle) }#}
+    {% if infoBulle is defined and infoBulle is not empty %}
         {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
     {% endif %}
     {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
@@ -40,8 +49,8 @@
     {{ objet.content | raw}}
 </div>
 
-{% if objet.infoBulle is not empty %}
-    {%  set type = objet.infoBulle.type %}
+{% if infoBulle.title is not empty %}
+    {%  set type = infoBulle.type %}
     {%  set id = objet.id %}
     {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
 {% endif %}
