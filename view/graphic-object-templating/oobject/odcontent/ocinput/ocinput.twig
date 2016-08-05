@@ -34,14 +34,14 @@
     {% endif %}
     }
 
-    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-    {% set id = objet.id %}
+    {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% set id = objet.id ~ " input" %}
     {% set type = objet.infoBulle.type %}
     {% set css = objet.infoBulle.css %}
     {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
     {% elseif objet.erreur.libel is not empty and objet.type != "hidden" %}
     {% set erreur = objet.erreur %}
-    {% set id = objet.id %}
+    {% set id = objet.id ~ " input" %}
     {% set type = 'tooltip' %}
     {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
     {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
@@ -77,10 +77,10 @@
         {% if objet.state == false %} disabled {% endif %}
         {% if inputClass is not empty %} class="{{ inputClass }}" {% endif %}
         {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
-        {% if objet.infoBulle is not empty or (objet.errMessage is not defined or objet.errMessage is empty) %}
+        {% if objet.infoBulle is not empty or (objet.erreur.libel is empty) %}
             {%  set infoBulle = objet.infoBulle %}
         {% endif %}
-        {% if objet.type != "hidden" and objet.errMessage is defined and objet.errMessage is not empty %}
+        {% if objet.type != "hidden" and objet.erreur.libel is not empty %}
             {% set infoBulle = objet.infoBulle %}
             {% set erreur = objet.erreur %}
             {% set infoBulle =

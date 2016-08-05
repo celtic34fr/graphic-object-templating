@@ -28,8 +28,6 @@ use GraphicObjectTemplating\Objects\ODContent;
  * getPlaceholder   : restitue le texte affiché quand la zone de saisie est vide
  * setLabelWidthBT  : attribut une largeur (Bootstrap Twitter) au label (tableau de valeur en rapport des 4 médias gérés)
  * getLabelWidthBT  : restitue la largeur (Bootstrap Twitter) du label (tableau de valeur en rapport des 4 médias gérés)
- * setErrMessage    : permet de faire remonter et apparaître un message d'erreur sur saisie éronée
- * getErrMessage    : restitue le message d'erreur (s'il en existe un)
  * evtChange        : évènement changement de valeur, paramètre callback
  *      callback : "nomModule/nomObjet/nomMéthode"
  *          si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
@@ -44,8 +42,8 @@ use GraphicObjectTemplating\Objects\ODContent;
  *              si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"
  *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"
  * disKeyup         : désactivation de l'évènement touche frappée
- * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
- * getIcon      : récupère le nom de l'icône affecté au bouton
+ * setIcon          : affecte une icône après le label (font awesome / glyphicon)
+ * getIcon          : récupère le nom de l'icône affecté après le label
  */
 class OCInput extends ODContent
 {

@@ -22,7 +22,7 @@
     }
     {% endif %}
 
-    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
     {% set id = objet.id %}
     {% set type = objet.infoBulle.type %}
     {% set css = objet.infoBulle.css %}
@@ -36,6 +36,22 @@
 
     #{{ id }} {
         border:  solid 2px #{{ erreur.color }};
+    }
+    {% endif %}
+
+    {% if objet.place == "right" %}
+    {# positionne le label à droite du coché #}
+    .checkbox label{
+        position: relative;
+        left: -1.7em;
+    }
+    .checkbox label::before {
+        right: -1.7em;
+        left: auto;
+    }
+    .checkbox label::after {
+        right: -2.1em;
+        left: auto;
     }
     {% endif %}
 </style>
@@ -71,7 +87,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         {% for options in objet.options %}
             <div class="{{ options.type }}">
-                <input id="{{ objet.id ~ loop.index0 }}" class="styled" type="checkbox" value="{{ options.value }}"
+                <input id="{{ objet.id ~ loop.index0 }}" type="checkbox" value="{{ options.value }}"
                        {% if not options.state %}disabled{% endif %} {% if options.check == 'check' %}checked{% endif %}>
                 <label for="{{ objet.id ~ loop.index0 }}">
                     {{ options.libel }}
@@ -82,21 +98,21 @@
 </div>
 
 
-{% if objet.event is defined and objet.event is not empty %}
-    <script id="{{ objet.id }}Script">
-        $('document').ready(
-            {% if objet.event is not empty %}
-                {% for evt, callback in objet.event %}
-                    $('#{{ objet.id }}').unbind().on('{{ evt }}', function() {
-                        invokeAjax(occheckbox_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                    })
-                {% endfor %}
-            {% endif %}
-        );
-    </script>
-{% endif %}
+<script id="{{ objet.id }}Script">
+    {% if objet.event is defined and objet.event is not empty %}
+    $('document').ready(
+        {% if objet.event is not empty %}
+            {% for evt, callback in objet.event %}
+                $('#{{ objet.id }}').unbind().on('{{ evt }}', function() {
+                    invokeAjax(occheckbox_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                })
+            {% endfor %}
+        {% endif %}
+    );
+    {% endif %}
+</script>
 
-{% if objet.infoBulle is not empty %}
+{% if objet.infoBulle.title is not empty %}
     {%  set type = infoBulle.type %}
     {%  set id = objet.id %}
     {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}

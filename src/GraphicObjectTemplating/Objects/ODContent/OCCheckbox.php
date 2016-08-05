@@ -28,6 +28,8 @@ use GraphicObjectTemplating\Objects\ODContent;
  * disChange
  * setForme
  * getForme
+ * setPlacement
+ * getPlacement
  */
 class OCCheckbox extends ODContent
 {
@@ -43,6 +45,9 @@ class OCCheckbox extends ODContent
 
     const CHECKFORME_HORIZONTAL = 'horizontal';
     const CHECKFORME_VERTICAL   = 'vertical';
+
+    const CHECKPLACE_LEFT  = "left";
+    const CHECKPLACE_RIGHT = "right";
 
     protected $const_checkbox;
     protected $const_checkType;
@@ -269,6 +274,22 @@ class OCCheckbox extends ODContent
         return ((array_key_exists('forme',$properties)) ? $properties['forme'] : false);
     }
 
+    public function setPlacement($placement = self::CHECKPLACE_LEFT)
+    {
+        $placements = $this->getCheckpLACEConst();
+        if (!in_array($placement, $placements)) $forme = self::CHECKPLACE_LEFT;
+        $properties = $this->getProperties();
+        $properties['place'] = $placement;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getPlacement()
+    {
+        $properties = $this->getProperties();
+        return ((array_key_exists('place',$properties)) ? $properties['place'] : false);
+    }
+
 
     protected function getCheckboxConst()
     {
@@ -306,6 +327,21 @@ class OCCheckbox extends ODContent
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKFORME');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_checkForme = $constants;
+        } else {
+            $constants = $this->const_checkForme;
+        }
+        return $constants;
+    }
+
+    protected function getCheckPlaceConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'CHECKPLACE');
                 if ($pos === false) unset($constants[$key]);
             }
             $this->const_checkForme = $constants;
