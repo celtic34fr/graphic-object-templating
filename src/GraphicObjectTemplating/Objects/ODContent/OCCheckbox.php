@@ -72,7 +72,6 @@ class OCCheckbox extends ODContent
         if (!in_array($type, $types)) $type = self::CHECKTYPE_DEFAULT;
         $state = $state && true;
 
-
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;

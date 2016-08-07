@@ -129,7 +129,10 @@ class OObject
         $properties = [];
         if (!empty($arrayData)) $properties = include(__DIR__ ."/../../../view/graphic-object-templating/" .trim($arrayData));
         $properties['id']   = $id;
+        $this->id           = $id;
         $properties['name'] = $id;
+        $this->name         = $id;
+
         if (array_key_exists('typeObj', $properties)) {
             $templateName  = 'graphic-object-templating/oobject/'.$properties['typeObj'];
             $templateName .= '/'.$properties['object'].'/'.$properties['template'];
@@ -151,8 +154,6 @@ class OObject
         $session = new Container($id);
         $session->properties = serialize($properties);
 
-        $this->id         = $id;
-        $this->name       = $id;
         $this->properties = $properties;
         return $this;
     }

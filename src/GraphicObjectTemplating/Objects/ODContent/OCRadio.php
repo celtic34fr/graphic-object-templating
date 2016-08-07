@@ -8,11 +8,36 @@
 
 namespace GraphicObjectTemplating\Objects\ODContent;
 
-
 use GraphicObjectTemplating\Objects\ODContent;
 
+/**
+ * Class OCRadio
+ * @package GraphicObjectTemplating\Objects\ODContent
+ *
+ * addOptions
+ * removeOption
+ * setOptions
+ * getOptions
+ * check
+ * uncheck
+ * uncheckAll
+ * getCheck
+ * setLabel
+ * getLabel
+ * evtChange
+ * disChange
+ */
 class OCRadio extends ODContent
 {
+    const RADIOTYPE_DEFAULT = "radio";
+    const RADIOTYPE_PRIMARY = "radio radio-primary";
+    const RADIOTYPE_SUCCESS = "radio radio-success";
+    const RADIOTYPE_INFO    = "radio radio-info";
+    const RADIOTYPE_WARNING = "radio radio-warning";
+    const RADIOTYPE_DANGER  = "radio radio-danger";
+
+    protected $const_radioType;
+
     public function __construct($id)
     {
         parent::__construct($id, "oobject/odcontent/ocradio/ocradio.config.phtml");
@@ -21,13 +46,20 @@ class OCRadio extends ODContent
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function addOptions($value, $libel)
+    public function addOptions($value, $libel, $type = self::RADIOTYPE_DEFAULT, $state = self::STATE_ENABLE)
     {
         $properties = $this->getProperties();
+        $types = $this->getRadioTypeConst();
+        if (!in_array($type, $types)) $type = self::RADIOTYPE_DEFAULT;
+        $state = $state && true;
+
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;
         $item['check'] = false;
+        $item['type']  = $type;
+        $item['state'] = $state;
+        $item['value'] = $value;
         $properties['options'][$value] = $item;
         $this->setProperties($properties);
         return $this;
@@ -156,4 +188,20 @@ class OCRadio extends ODContent
         $this->setProperties($properties);
         return $this;
     }
+
+    protected function getRadioTypeConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'RADIOTYPE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_checkType = $constants;
+        } else {
+            $constants = $this->const_radioType;
+        }
+        return $constants;
+    }
+
 }
