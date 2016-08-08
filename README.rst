@@ -8,8 +8,8 @@ Graphic Object Templating (GOT) est un framework pour construire des pages HTML5
 GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces derniers, il vise à faciliter la création et gestion de page inter et intranet.
 
 Les objets que met en oeuvre GOT, sont de 2 types :
-* les objets de type contenu_  : présente, aide à l'aciquisition de données,
-* les objets de type contenant_  : aide à l'organisation de la page et à la présention des informations à travers d'autres objets quelqu'en soit le type
+- les objets de type contenu_  : présente, aide à l'aciquisition de données,
+- les objets de type contenant_  : aide à l'organisation de la page et à la présention des informations à travers d'autres objets quelqu'en soit le type
 
 Installation
 ------------
