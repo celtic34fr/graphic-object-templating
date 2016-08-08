@@ -23,3 +23,8 @@ On peut, comme sur tout objet, avoir une bulle d'aide information grâce aux fon
 Cette information pourra prendre 2 aspects : information sur une ligne (tooltip), panneau explicatif (popover).
 
 le contenu du bouton peut être texte (affectation d'un label) et/ou icône (affectation d'une font awesome / glyphicon par classe suivbant disponibilité)
+
+Méthode de l'objet ODButton
+---------------------------
+
+Il contient les méthodes communes aux objets [OObject](OObject.md)  et [ODContained](ODContained.md) avant d'avoir des méthodes spéfifiques :
