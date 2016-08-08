@@ -16,7 +16,7 @@ Installation
 ------------
 par composer, dans un shell à la racine de votre projet :
 
-``composer require celtic34fr/graphic-object-templating``
+:: composer require celtic34fr/graphic-object-templating
     
 Puis, tapez les commandes suivantes:
 
