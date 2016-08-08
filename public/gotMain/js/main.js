@@ -83,16 +83,16 @@ function getFormDatas(form) {
         var datas = '';
 
         switch (object) { // traitement suivant l'objet (type ODContent)
-            case "ocbutton":
+            case "odbutton":
                 break;
-            case "ocinput":
-                var datas = ocinput_getData(obj, '');
+            case "odinput":
+                var datas = odinput_getData(obj, '');
                 break;
-            case "ocselect":
-                var datas = ocselect_getData(obj, '');
+            case "odselect":
+                var datas = odselect_getData(obj, '');
                 break;
-            case "occheckbox":
-                var  datas = occheckbox_getData(obj, '');
+            case "odcheckbox":
+                var  datas = odcheckbox_getData(obj, '');
                 break;
         }
 
@@ -120,11 +120,11 @@ function resetFormDatas(form) {
         var object = obj.attrb('data-objet');
 
         switch (object) {
-            case "ocbutton":
-                ocbutton_setData(obj, "");
+            case "odbutton":
+                odbutton_setData(obj, "");
                 break;
-            case "ocinput":
-                ocinput_setData(obj, "");
+            case "odinput":
+                odinput_setData(obj, "");
                 break;
         }
     })
@@ -133,15 +133,15 @@ function resetFormDatas(form) {
 /* méthode de restitution des valeurs d'objets */
 
 /**
- * méthode ocbutton_getData
- * @param obj objet de type OCButton
+ * méthode odbutton_getData
+ * @param obj objet de type ODButton
  * @param evt évènement déclencheur
  * @returns {string}
  *
- * méthode de formatage de la zone de ciommunication avec le gestionnaire de callback
- * pour les objet de type OCButton
+ * méthode de formatage de la zone de communication avec le gestionnaire de callback
+ * pour les objet de type ODButton
  */
-function ocbutton_getData(obj, evt) {
+function odbutton_getData(obj, evt) {
     var chps = "id=" + obj.attr("id") + "&value='" + obj.val() + "'";
     if (evt.length > 0) {
         var routine = obj.attr('data-' + evt);
@@ -168,15 +168,15 @@ function ocbutton_getData(obj, evt) {
 }
 
 /**
- * méthode ocinput_getData
+ * méthode odinput_getData
  * @param obj
  * @param evt
  * @returns {string}
  *
  * méthode de formatage de la zone de ciommunication avec le gestionnaire de callback
- * pour les objet de type OCInput
+ * pour les objet de type ODInput
  */
-function ocinput_getData(obj, evt) {
+function odinput_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     chps = chps + "&value='" + obj.children("input").val() + "'";
     chps = chps + "&type='" + obj.children("input").attr('type') + "'";
@@ -190,28 +190,11 @@ function ocinput_getData(obj, evt) {
     return chps;
 }
 
-function ocselect_getData(obj, evt) {
+function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
 }
 
-function occheckbox_getData(obj, evt) {
-    var chps = "id=" + obj.attr("id");
-    var checked = [];
-    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
-        checked.push($(this).val());
-    });
-    chps = chps + "&value='" + checked.join("$") + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
-        }
-    }
-    return chps;
-}
-
-function ocradio_getData(obj, evt) {
+function odcheckbox_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
     $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
@@ -228,16 +211,33 @@ function ocradio_getData(obj, evt) {
     return chps;
 }
 
-/* méthode d'affection de valeur aux objetx */
+function odradio_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    var checked = [];
+    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
+        checked.push($(this).val());
+    });
+    chps = chps + "&value='" + checked.join("$") + "'";
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.attr(dataEvt);
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
+    return chps;
+}
+
+/* méthode d'affection de valeur aux objets */
 
 /**
- * méthode ocbutton_setData
+ * méthode odbutton_setData
  * @param obj
  * @param data
  *
- * méthode visant à affecter une valeur à un objet de type OCButton
+ * méthode visant à affecter une valeur à un objet de type ODButton
  */
-function ocbutton_setData(obj, data) {
+function odbutton_setData(obj, data) {
     obj.val(data);
 }
 
@@ -248,19 +248,19 @@ function ocbutton_setData(obj, data) {
  *
  * méthode visant à affecter une valeur à un objet de type OCInput
  */
-function ocinput_setData(obj, data) {
+function odinput_setData(obj, data) {
     obj.val(data);
 }
 
-function ocselect_setData(obj, data) {
+function odselect_setData(obj, data) {
 
 }
 
-function occheckbox_setData(obj, data) {
+function odcheckbox_setData(obj, data) {
 
 }
 
-function ocradio_setData(obj, data) {
+function odradio_setData(obj, data) {
     
 }
 

@@ -413,6 +413,7 @@ class OObject
                 }
         }
         $properties = $this->getProperties();
+        $properties['widthBT'] = [];
         $properties['widthBT']['wxs'] = $wxs;
         $properties['widthBT']['wsm'] = $wsm;
         $properties['widthBT']['wmd'] = $wmd;

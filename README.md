@@ -8,7 +8,7 @@ Graphic Object Templating (GOT) est un framework pour construire des pages HTML5
 GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces derniers, il vise à faciliter la création et gestion de page inter et intranet.
 
 Les objets que met en oeuvre GOT, sont de 2 types :
-* les [objets de type contenu](doc/objectDataContent.md) : présente, aide à l'aciquisition de données,
+* les [objets de type contenu](doc/objectDataContained.md) : présente, aide à l'aciquisition de données,
 * les [objets de type contenant](doc/objectStructureContainer.md) : aide à l'organisation de la page et à la présention des informations à travers d'autres objets quelqu'en soit le type
 
 Installation
@@ -49,13 +49,13 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-* [OCButton](doc/objets/OCButton.md)    : bouton (avec exécution de méthode [callback] possible) 
-* OCContent   : objet pour affichage de contenu non typé 
-* OCInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
+* [ODButton](doc/objets/ODButton.md)    : bouton (avec exécution de méthode [callback] possible) 
+* ODContent   : objet pour affichage de contenu non typé 
+* ODInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
 * OSDiv       : section non typé de page html 
 
 En cours de développement : 
-* OCSelect    : liste déroulante (HTML ou jQuery Select2) 
-* OCCheckbox  : case à cocher 
-* OCRadio     : radio bouton 
-* OCMessage   : affichage de message à l'écran (façon Windows 8)
+* ODSelect    : liste déroulante (HTML ou jQuery Select2) 
+* ODCheckbox  : case à cocher 
+* ODRadio     : radio bouton 
+* ODMessage   : affichage de message à l'écran (façon Windows 8)

@@ -39,7 +39,7 @@ class GotServices
         $allow      = 'ALLOW';
 
         switch($properties['typeObj']) {
-            case 'odcontent' :
+            case 'odcontained' :
                 $html->setTemplate($template);
                 $html->setVariable('objet', $properties);
                 break;

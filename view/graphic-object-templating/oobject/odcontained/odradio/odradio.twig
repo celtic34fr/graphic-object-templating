@@ -1,0 +1,97 @@
+{# temàplate de l'objet ODRadio #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+{% if objet.state is defined %}
+    {% if objet.state == false %}
+        {%  set objClass = "radio " ~ objClass ~ " disabled"  %}
+    {% endif %}
+{% endif %}
+{% set labelClass = gotBootstrap(objet.labelWidthBT) %}
+
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+    {% if objet.style is not empty %}
+    {{ objet.style | raw }}
+    {% endif %}
+    }
+
+    {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% set id = objet.id %}
+    {% set type = objet.infoBulle.type %}
+    {% set css = objet.infoBulle.css %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% elseif objet.erreur.libel is not empty and objet.type != "hidden" %}
+    {% set erreur = objet.erreur %}
+    {% set id = objet.id %}
+    {% set type = 'tooltip' %}
+    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+
+    #{{ id }} {
+        border:  solid 2px #{{ erreur.color }};
+    }
+    {% endif %}
+</style>
+
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}" data-type="{{ objet.typeObj }}"
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+
+        {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
+            {%  set infoBulle = objet.infoBulle %}
+        {% elseif objet.erreur.libel is not empty %}
+            {% set infoBulle = objet.infoBulle %}
+            {% set erreur = objet.erreur %}
+            {% set infoBulle =
+            infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+        {% endif %}
+        {% if infoBulle is defined and infoBulle is not empty %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
+
+        {% if objet.event is not empty %}
+            {% for evt, callback in objet.event %}
+                data-{{ evt }} = "{{ callback }}"
+            {% endfor %}
+        {% endif %}
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objet.state == false %}
+            disabled
+        {% endif %}
+>
+    {% if objet.options|length > 1 %}
+        <label>{{ objet.label }}</label>
+    {% endif %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        {% for options in objet.options %}
+            <div class="{{ options.type }}">
+                <input id="{{ objet.id ~ loop.index0 }}" type="radio" value="{{ options.value }}" name="{{ objet.name }}"
+                       {% if not options.state %}disabled{% endif %} {% if options.check == 'check' %}checked{% endif %}>
+                <label for="{{ objet.id ~ loop.index0 }}">
+                    {{ options.libel }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if objet.event is defined and objet.event is not empty %}
+    <script id="{{ objet.id }}Script">
+        $('document').ready(
+            {% if objet.event is not empty %}
+                {% for evt, callback in objet.event %}
+                    $('#{{ objet.id }}').unbind().on('{{ evt }}', function() {
+                        invokeAjax(odradio_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                    })
+                {% endfor %}
+            {% endif %}
+        );
+    </script>
+{% endif %}
+
+{% if infoBulle is not empty %}
+    {%  set type = infoBulle.type %}
+    {%  set id = objet.id %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+{% endif %}
