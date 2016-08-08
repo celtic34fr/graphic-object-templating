@@ -62,7 +62,7 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 |            | - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                       |
 |            | - si nomModule == 'Object' :                                                                            |
 |            |                                                                                                         |
-|            |   - si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"    |
+|            |   - si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"  |
 |            |   - si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"  |
 +------------+---------------------------------------------------------------------------------------------------------+
 | disClick   | désactivation de lm'évènement 'click' sur le bouton                                                     |
