@@ -49,7 +49,7 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-* 'ODButton <doc/objets/ODButton.rst>'    : bouton (avec exécution de méthode [callback] possible)
+* ODButton_.    : bouton (avec exécution de méthode [callback] possible)
 * ODContent   : objet pour affichage de contenu non typé 
 * ODInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
 * OSDiv       : section non typé de page html 
@@ -59,3 +59,5 @@ En cours de développement :
 * ODCheckbox  : case à cocher 
 * ODRadio     : radio bouton 
 * ODMessage   : affichage de message à l'écran (façon Windows 8)
+
+.. _ODButton: doc/objets/ODButton.rst
