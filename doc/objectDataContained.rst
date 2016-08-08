@@ -11,6 +11,6 @@ Ils donnent aussi des éléments de contrôle, de dérivation, d'acccès à d'au
 * ODInput_ :
     zone de saisie de base utilisable dans toute page, formulaire.
 
-.. _ODButton: doc/objets/ODButton.rst
-.. _ODContent: doc/objets/ODContent.rst
-.. _ODInput: doc/objets/ODInput.rst
+.. _ODButton: objets/ODButton.rst
+.. _ODContent: objets/ODContent.rst
+.. _ODInput: objets/ODInput.rst
