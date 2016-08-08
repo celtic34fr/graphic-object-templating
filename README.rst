@@ -41,20 +41,23 @@ Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour 
     <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>``
+    <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>
 
 Et il faut ajouter les deux lignes suivantes au début du bloc body
 
-``<div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
-<div id="divWork" style="display: none"></div>``
+::
+
+    <div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
+    <div id="divWork" style="display: none"></div>
 
 
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
 Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, applications :
-* avec le [service 'graphic-object-templating-services'](doc/service.md),
-* avec des [ViewHelpers](doc/viewHelpers.md) dans vos templates de pages.
+
+* avec le service_ 'graphic-object-templating-services',
+* avec des ViewHelpers_ dans vos templates de pages.
 
 Objets actuellement disponibles
 -------------------------------
@@ -81,3 +84,5 @@ En cours de développement :
 
 .. _contenu: doc/objectDataContained.rst
 .. _contenant: doc/objectStructureContainer.rst
+.. _service: doc/service.rst
+.. _ViewHelpers: doc/viewHelpers.rst
