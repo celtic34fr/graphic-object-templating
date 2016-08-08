@@ -1,7 +1,7 @@
 Méthode de l'objet ODSelect
 ---------------------------
 
-Il contient les méthodes communes aux objets [OObject](OObject.rst)  et [ODContained](ODContained.rts) avant d'avoir des méthodes spéfifiques :
+Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
 
 addOption       :
@@ -24,3 +24,6 @@ setLabel        :
 getLabel        :
 showSearchBox   :
 hideSearchBox   :
+
+.. _OObject: OObject.rst
+.. _ODContained: ODContained.rst

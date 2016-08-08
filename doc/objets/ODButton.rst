@@ -27,7 +27,7 @@ le contenu du bouton peut être texte (affectation d'un label) et/ou icône (aff
 Méthode de l'objet ODButton
 ---------------------------
 
-Il contient les méthodes communes aux objets [OObject](OObject.rst)  et [ODContained](ODContained.rts) avant d'avoir des méthodes spéfifiques :
+Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
 setLabel	: affectation du texte présenté dans le bouton
 getLabel	: récupération du texte présenté dans le bouton
@@ -56,3 +56,6 @@ setNature : affectation de la nature du bouton
 	DANGER	: nature danger, erreur (rouge)
 	LINK	: nature lien (lien HTML, plus bouton alors)
 getNature : restitue la nature actuelle du bouton
+
+.. _OObject: OObject.rst
+.. _ODContained: ODContained.rst

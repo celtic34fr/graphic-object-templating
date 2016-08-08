@@ -1,7 +1,7 @@
 Méthode de l'objet ODInput
 --------------------------
 
-Il contient les méthodes communes aux objets [OObject](OObject.rst)  et [ODContained](ODContained.rts) avant d'avoir des méthodes spéfifiques :
+Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
 setType         : affecte le type de saisie
 	TEXT	 : mode texte
@@ -35,3 +35,6 @@ evtKeyup	: évènement touche frappée (à chaque saisie de caractère), paramè
 disKeyup	: désactivation de l'évènement touche frappée
 setIcon 	: affecte une icône après le label (font awesome / glyphicon)
 getIcon	    : récupère le nom de l'icône affecté après le label
+
+.. _OObject: OObject.rst
+.. _ODContained: ODContained.rst

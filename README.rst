@@ -8,8 +8,8 @@ Graphic Object Templating (GOT) est un framework pour construire des pages HTML5
 GOT s'appuie sur la sémentique HTML5 qu'il transforme en objet. Par ces derniers, il vise à faciliter la création et gestion de page inter et intranet.
 
 Les objets que met en oeuvre GOT, sont de 2 types :
-* les [objets de type contenu](doc/objectDataContained.md) : présente, aide à l'aciquisition de données,
-* les [objets de type contenant](doc/objectStructureContainer.md) : aide à l'organisation de la page et à la présention des informations à travers d'autres objets quelqu'en soit le type
+* les objets de type contenu_  : présente, aide à l'aciquisition de données,
+* les objets de type contenant_  : aide à l'organisation de la page et à la présention des informations à travers d'autres objets quelqu'en soit le type
 
 Installation
 ------------
@@ -49,15 +49,25 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-* ODButton_.    : bouton (avec exécution de méthode [callback] possible)
-* ODContent   : objet pour affichage de contenu non typé 
-* ODInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
-* OSDiv       : section non typé de page html 
+* ODButton_    : bouton (avec exécution de méthode [callback] possible)
+* ODContent_   : objet pour affichage de contenu non typé
+* ODInput_     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
+* OSDiv       : section non typé de page html
 
 En cours de développement : 
-* ODSelect    : liste déroulante (HTML ou jQuery Select2) 
-* ODCheckbox  : case à cocher 
-* ODRadio     : radio bouton 
+* ODSelect_    : liste déroulante (HTML ou jQuery Select2)
+* ODCheckbox_  : case à cocher
+* ODRadio_     : radio bouton
 * ODMessage   : affichage de message à l'écran (façon Windows 8)
+* ODTable_     : objet balise HTML <table></table>
 
 .. _ODButton: doc/objets/ODButton.rst
+.. _ODContent: doc/objets/ODContent.rst
+.. _ODCheckbox: doc/objets/ODCheckbox.rst
+.. _ODInput: doc/objets/ODInput.rst
+.. _ODRadio:: doc/objets/ODRadio.rst
+.. _ODSelect: doc/objets/ODSelect.rst
+.. _ODTable: doc/objets/ODTable.rst
+
+.. _contenu: doc/objectDataContained.rst
+.. _contenant: doc/objectStructureContainer.rst

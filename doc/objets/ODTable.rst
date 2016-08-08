@@ -1,7 +1,7 @@
 Méthode de l'objet ODTable
 --------------------------
 
-Il contient les méthodes communes aux objets [OObject](OObject.rst)  et [ODContained](ODContained.rts) avant d'avoir des méthodes spéfifiques :
+Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
 setTitle()          	: affecte un titre ou légende au tableau
 getTitle()	            : restitué le titre ou légende du tableau
@@ -61,3 +61,6 @@ setSelectedCell(nCol, nLine)	: sélectionne la cellule nCol, nLine pour affichag
 setSelectedCells(array())	    : sélectionne un groupe de cellules descrites dans array() par leus coordonnées dans le tableau pour affichage marqué de ces dernières
 unselectCell(nCol, nLine)   	: désélectionne la cellule nCol, nLine pour affichage non marqué de cette dernière
 unselectAllCells()          	: désélectionne l'ensemble des cellules sélectionnées (retour total désélectionné)
+
+.. _OObject: OObject.rst
+.. _ODContained: ODContained.rst
