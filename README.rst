@@ -50,18 +50,18 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-* ODButton_    : bouton (avec exécution de méthode [callback] possible)
-* ODContent_   : objet pour affichage de contenu non typé
-* ODInput_     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
-* OSDiv       : section non typé de page html
+* ODButton_ : bouton (avec exécution de méthode [callback] possible)
+* ODContent_ : objet pour affichage de contenu non typé
+* ODInput_ : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
+* OSDiv : section non typé de page html
 
 En cours de développement :
 
-* ODSelect_    : liste déroulante (HTML ou jQuery Select2)
-* ODCheckbox_  : case à cocher
-* ODRadio_     : radio bouton
-* ODMessage   : affichage de message à l'écran (façon Windows 8)
-* ODTable_     : objet balise HTML <table></table>
+* ODSelect_ : liste déroulante (HTML ou jQuery Select2)
+* ODCheckbox_ : case à cocher
+* ODRadio_ : radio bouton
+* ODMessage : affichage de message à l'écran (façon Windows 8)
+* ODTable_ : objet balise HTML <table></table>
 
 .. _ODButton: doc/objets/ODButton.rst
 .. _ODContent: doc/objets/ODContent.rst
