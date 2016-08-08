@@ -27,4 +27,32 @@ le contenu du bouton peut être texte (affectation d'un label) et/ou icône (aff
 Méthode de l'objet ODButton
 ---------------------------
 
-Il contient les méthodes communes aux objets [OObject](OObject.md)  et [ODContained](ODContained.md) avant d'avoir des méthodes spéfifiques :
+Il contient les méthodes communes aux objets [OObject](OObject.rst)  et [ODContained](ODContained.rts) avant d'avoir des méthodes spéfifiques :
+
+setLabel	: affectation du texte présenté dans le bouton
+getLabel	: récupération du texte présenté dans le bouton
+setIcon	    : affecte une icône au bouton (font awesome / glyphicon)
+getIcon	    : récupère le nom de l'icône affecté au bouton
+setForm	    : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire) peut induire une modification du type du bouton
+setType	    : affectation du type de bouton
+	CUSTOM : type divers
+	SUBMIT : type soumission (de formuulaire)
+	RESET  : type remise à zéro des champs (de formulaire)
+	LINK   : type lien HTML
+getType	récupération du type du bouton
+evtClick	: activation et paramètrage de l'évènement 'click' sur le bouton
+	callback     : "nomModule/nomObjet/nomMéthode"
+		si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
+		si nomModule == 'Object' :
+
+
+disClick  : désactivation de lm'évènement 'click' sur le bouton
+setNature : affectation de la nature du bouton
+	DEFAULT	: nature par défaut (valeur par défaut)
+	PRIMARY	: nature primaire (bleu roi)
+	SUCCESS	: nature succès (vert)
+	INFO	: nature information (gris bleu)
+	WARNING	: nature avertissement alerte (orange)
+	DANGER	: nature danger, erreur (rouge)
+	LINK	: nature lien (lien HTML, plus bouton alors)
+getNature : restitue la nature actuelle du bouton
