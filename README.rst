@@ -14,17 +14,23 @@ Les objets que met en oeuvre GOT, sont de 2 types :
 
 Installation
 ------------
-par composer, dans un shell à la racine de votre projet ::
+par composer, dans un shell à la racine de votre projet
 
-composer require celtic34fr/graphic-object-templating
+::
+
+    composer require celtic34fr/graphic-object-templating
     
 Puis, tapez les commandes suivantes::
 
-cd public
+    cd public
 
-Unix    :: ln -s ../vendor/celtic34fr/graphic-object-templating/GraphicObjectTemplating/public ./graphicobjecttemplating
+Unix::
 
-Windows :: mklink .\graphicobjecttemplating ..\vendor\celtic34fr\graphic-object-templating\GraphicObjectTemplating\public
+    ln -s ../vendor/celtic34fr/graphic-object-templating/GraphicObjectTemplating/public ./graphicobjecttemplating
+
+Windows::
+
+    mklink .\graphicobjecttemplating ..\vendor\celtic34fr\graphic-object-templating\GraphicObjectTemplating\public
 
 Ceci permet de mettre en oeuvre les liens vers les resources CSS et JS utiles à GOT.
 
