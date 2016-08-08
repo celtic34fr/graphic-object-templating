@@ -3,10 +3,10 @@ l'objet ODButton
 
 On peut affecter à un bouton un type de fonctionnement : (pouvant être réaffecté suivant d'autre attribut)
 
-    - CUSTOM    = bouton divers permettant de déclencher un action
-    - SUBMIT    = bouton de déclenchement du pseudo formulaire auquel il est lié
-    - RESET     = bouton de réinitialisation du pseudo formulaire auquel il est lié
-    - LINK      = lien pour accès à une resource interne ou externe au site à l'application (type HTML)
+	- CUSTOM	= bouton divers permettant de déclencher un action
+	- SUBMIT	= bouton de déclenchement du pseudo formulaire auquel il est lié
+	- RESET		= bouton de réinitialisation du pseudo formulaire auquel il est lié
+	- LINK		= lien pour accès à une resource interne ou externe au site à l'application (type HTML)
 
 L'affectation de la nature à un bouton en détermine son aspect (couleur de fond) :
     DEFAULT = nature par défaut (valeur par défaut)
