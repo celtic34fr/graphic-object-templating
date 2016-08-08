@@ -49,7 +49,7 @@ Puis, il s'offre à vous 2 manières de générer les pages HTML5 de vos sites, 
 
 Objets actuellement disponibles
 -------------------------------
-* [ODButton](doc/objets/ODButton.md)    : bouton (avec exécution de méthode [callback] possible) 
+* :doc:`ODButton </doc/objets/ODButton.rst>`    : bouton (avec exécution de méthode [callback] possible)
 * ODContent   : objet pour affichage de contenu non typé 
 * ODInput     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)] 
 * OSDiv       : section non typé de page html 
