@@ -67,7 +67,7 @@ En cours de développement :
 .. _ODContent: doc/objets/ODContent.rst
 .. _ODCheckbox: doc/objets/ODCheckbox.rst
 .. _ODInput: doc/objets/ODInput.rst
-.. _ODRadio:: doc/objets/ODRadio.rst
+.. _ODRadio: doc/objets/ODRadio.rst
 .. _ODSelect: doc/objets/ODSelect.rst
 .. _ODTable: doc/objets/ODTable.rst
 
