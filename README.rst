@@ -55,7 +55,8 @@ Objets actuellement disponibles
 * ODInput_     : zone de saisie standart [pris en charge : texte (text), caché (hidden) et mot de passe (password)]
 * OSDiv       : section non typé de page html
 
-En cours de développement : 
+En cours de développement :
+
 * ODSelect_    : liste déroulante (HTML ou jQuery Select2)
 * ODCheckbox_  : case à cocher
 * ODRadio_     : radio bouton
