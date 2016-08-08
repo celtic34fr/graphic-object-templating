@@ -47,10 +47,11 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 |            | peut induire une modification du type du bouton                                                         +
 +------------+---------------------------------------------------------------------------------------------------------+
 |setType     | affectation du type de bouton                                                                           +
-|            | CUSTOM : type divers                                                                                    +
-|            | SUBMIT : type soumission (de formuulaire)                                                               +
-|            | RESET  : type remise à zéro des champs (de formulaire)                                                  +
-|            | LINK   : type lien HTML                                                                                 +
+|            |                                                                                                         +
+|            | - CUSTOM : type divers                                                                                  +
+|            | - SUBMIT : type soumission (de formuulaire)                                                             +
+|            | - RESET  : type remise à zéro des champs (de formulaire)                                                +
+|            | - LINK   : type lien HTML                                                                               +
 +------------+---------------------------------------------------------------------------------------------------------+
 getType	récupération du type du bouton
 evtClick	: activation et paramètrage de l'évènement 'click' sur le bouton
