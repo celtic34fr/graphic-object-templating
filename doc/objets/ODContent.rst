@@ -6,13 +6,13 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +-------------+--------------------------------------------------------------------------------------------------------+
 | Méthode     + Fonctionnalité                                                                                         +
 +=============+========================================================================================================+
-|setContent	  | affecte un contenu à l'objet                                                                           +
+|setContent   | affecte un contenu à l'objet                                                                           +
 +-------------+--------------------------------------------------------------------------------------------------------+
-|getContent	  | réstitue le contenu actuelle de l'objet                                                                +
+|getContent   | réstitue le contenu actuelle de l'objet                                                                +
 +-------------+--------------------------------------------------------------------------------------------------------+
-|setValue	  | alias pour setContenu                                                                                  +
+|setValue     | alias pour setContenu                                                                                  +
 +-------------+--------------------------------------------------------------------------------------------------------+
-|getValue	  | alias pour getContenu                                                                                  +
+|getValue     | alias pour getContenu                                                                                  +
 +-------------+--------------------------------------------------------------------------------------------------------+
 
 .. _OObject: OObject.rst
