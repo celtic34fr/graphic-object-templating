@@ -6,7 +6,7 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +-------------+--------------------------------------------------------------------------------------------------------+
 | Méthode     + Fonctionnalité                                                                                         +
 +=============+========================================================================================================+
-|addOption	  | ajoute une case à cocher au groupe (valeur, label, type, état)                                         +
+|addOption    | ajoute une case à cocher au groupe (valeur, label, type, état)                                         +
 +-------------+--------------------------------------------------------------------------------------------------------+
 |removeOption | supprime une case à cocher du groupe à partir de sa valeur associé                                     +
 +-------------+--------------------------------------------------------------------------------------------------------+
