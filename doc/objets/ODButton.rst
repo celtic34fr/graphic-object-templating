@@ -53,23 +53,27 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 |            | - RESET  : type remise à zéro des champs (de formulaire)                                                +
 |            | - LINK   : type lien HTML                                                                               +
 +------------+---------------------------------------------------------------------------------------------------------+
-getType	récupération du type du bouton
-evtClick	: activation et paramètrage de l'évènement 'click' sur le bouton
-	callback     : "nomModule/nomObjet/nomMéthode"
-		si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
-		si nomModule == 'Object' :
-
-
-disClick  : désactivation de lm'évènement 'click' sur le bouton
-setNature : affectation de la nature du bouton
-	DEFAULT	: nature par défaut (valeur par défaut)
-	PRIMARY	: nature primaire (bleu roi)
-	SUCCESS	: nature succès (vert)
-	INFO	: nature information (gris bleu)
-	WARNING	: nature avertissement alerte (orange)
-	DANGER	: nature danger, erreur (rouge)
-	LINK	: nature lien (lien HTML, plus bouton alors)
-getNature : restitue la nature actuelle du bouton
-
+|getType	 | récupération du type du bouton                                                                          +
++------------+---------------------------------------------------------------------------------------------------------+
+|evtClick	 | activation et paramètrage de l'évènement 'click' sur le bouton                                          +
+|            | callback     : "nomModule/nomObjet/nomMéthode"                                                          +
+|            |	  si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                      +
+|            |	  si nomModule == 'Object' :                                                                           +
+|            |       si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"  +
+|            |       si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"+
++------------+---------------------------------------------------------------------------------------------------------+
+|disClick    | désactivation de lm'évènement 'click' sur le bouton                                                    +
++------------+---------------------------------------------------------------------------------------------------------+
+|setNature   | affectation de la nature du bouton                                                                      +
+|            | - DEFAULT : nature par défaut (valeur par défaut)                                                       +
+|            | - PRIMARY : nature primaire (bleu roi)                                                                  +
+|            | - SUCCESS : nature succès (vert)                                                                        +
+|            | - INFO	 : nature information (gris bleu)                                                              +
+|            | - WARNING : nature avertissement alerte (orange)                                                        +
+|            | - DANGER	 : nature danger, erreur (rouge)                                                               +
+|            | - LINK	 : nature lien (lien HTML, plus bouton alors)                                                  +
++------------+---------------------------------------------------------------------------------------------------------+
+|getNature   | restitue la nature actuelle du bouton                                                                   +
++------------+---------------------------------------------------------------------------------------------------------+
 .. _OObject: OObject.rst
 .. _ODContained: ODContained.rst
