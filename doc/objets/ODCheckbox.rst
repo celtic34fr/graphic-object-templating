@@ -34,9 +34,9 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +-------------+--------------------------------------------------------------------------------------------------------+
 |getForme     |                                                                                                        +
 +-------------+--------------------------------------------------------------------------------------------------------+
-|setPlacement | permet de positionner le label à droite ou à gauche de la case à cocher (pour le groupe)               |
+|setPlacement | permet de positionner le label à droite ou à gauche de la case à cocher (pour le groupe)               +
 +-------------+--------------------------------------------------------------------------------------------------------+
-|getPlacement | restitue le positionnement du label par rapport à la case à cocher (pour le groupe)                    |
+|getPlacement | restitue le positionnement du label par rapport à la case à cocher (pour le groupe)                    +
 +-------------+--------------------------------------------------------------------------------------------------------+
 
 .. _OObject: OObject.rst
