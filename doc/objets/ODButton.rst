@@ -33,47 +33,52 @@ Méthode de l'objet ODButton
 Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
 +------------+---------------------------------------------------------------------------------------------------------+
-| Méthode    + Fonctionnalité                                                                                          +
+| Méthode    + Fonctionnalité                                                                                          |
 +============+=========================================================================================================+
-| setLabel   | affectation du texte présenté dans le bouton                                                            +
+| setLabel   | affectation du texte présenté dans le bouton                                                            |
 +------------+---------------------------------------------------------------------------------------------------------+
-| getLabel   | récupération du texte présenté dans le bouton                                                           +
+| getLabel   | récupération du texte présenté dans le bouton                                                           |
 +------------+---------------------------------------------------------------------------------------------------------+
-| setIcon    | affecte une icône au bouton (font awesome / glyphicon)                                                  +
+| setIcon    | affecte une icône au bouton (font awesome / glyphicon)                                                  |
 +------------+---------------------------------------------------------------------------------------------------------+
-| getIcon    | récupère le nom de l'icône affecté au bouton                                                            +
+| getIcon    | récupère le nom de l'icône affecté au bouton                                                            |
 +------------+---------------------------------------------------------------------------------------------------------+
-| setForm    | surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)       +
-|            | peut induire une modification du type du bouton                                                         +
+| setForm    | surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)       |
+|            | peut induire une modification du type du bouton                                                         |
 +------------+---------------------------------------------------------------------------------------------------------+
-|setType     | affectation du type de bouton                                                                           +
-|            |                                                                                                         +
-|            | - CUSTOM : type divers                                                                                  +
-|            | - SUBMIT : type soumission (de formuulaire)                                                             +
-|            | - RESET  : type remise à zéro des champs (de formulaire)                                                +
-|            | - LINK   : type lien HTML                                                                               +
+| setType    | affectation du type de bouton                                                                           |
+|            |                                                                                                         |
+|            | - CUSTOM : type divers                                                                                  |
+|            | - SUBMIT : type soumission (de formuulaire)                                                             |
+|            | - RESET  : type remise à zéro des champs (de formulaire)                                                |
+|            | - LINK   : type lien HTML                                                                               |
 +------------+---------------------------------------------------------------------------------------------------------+
-|getType	 | récupération du type du bouton                                                                          +
+| getType    | récupération du type du bouton                                                                          |
 +------------+---------------------------------------------------------------------------------------------------------+
-|evtClick	 | activation et paramètrage de l'évènement 'click' sur le bouton                                          +
-|            | callback     : "nomModule/nomObjet/nomMéthode"                                                          +
-|            |	  si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                      +
-|            |	  si nomModule == 'Object' :                                                                           +
-|            |       si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"  +
-|            |       si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"+
+| evtClick   | activation et paramètrage de l'évènement 'click' sur le bouton                                          |
+|            |                                                                                                         |
+|            | callback     : "nomModule/nomObjet/nomMéthode"                                                          |
+|            |                                                                                                         |
+|            | - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                       |
+|            | - si nomModule == 'Object' :                                                                            |
+|            |                                                                                                         |
+|            |   - si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"  |
+|            |   - si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"  |
 +------------+---------------------------------------------------------------------------------------------------------+
-|disClick    | désactivation de lm'évènement 'click' sur le bouton                                                    +
+| disClick   | désactivation de lm'évènement 'click' sur le bouton                                                     |
 +------------+---------------------------------------------------------------------------------------------------------+
-|setNature   | affectation de la nature du bouton                                                                      +
-|            | - DEFAULT : nature par défaut (valeur par défaut)                                                       +
-|            | - PRIMARY : nature primaire (bleu roi)                                                                  +
-|            | - SUCCESS : nature succès (vert)                                                                        +
-|            | - INFO	 : nature information (gris bleu)                                                              +
-|            | - WARNING : nature avertissement alerte (orange)                                                        +
-|            | - DANGER	 : nature danger, erreur (rouge)                                                               +
-|            | - LINK	 : nature lien (lien HTML, plus bouton alors)                                                  +
+| setNature  | affectation de la nature du bouton                                                                      |
+|            |                                                                                                         |
+|            | - DEFAULT : nature par défaut (valeur par défaut)                                                       |
+|            | - PRIMARY : nature primaire (bleu roi)                                                                  |
+|            | - SUCCESS : nature succès (vert)                                                                        |
+|            | - INFO : nature information (gris bleu)                                                                 |
+|            | - WARNING : nature avertissement alerte (orange)                                                        |
+|            | - DANGER : nature danger, erreur (rouge)                                                                |
+|            | - LINK : nature lien (lien HTML, plus bouton alors)                                                     |
 +------------+---------------------------------------------------------------------------------------------------------+
-|getNature   | restitue la nature actuelle du bouton                                                                   +
+| getNature  | restitue la nature actuelle du bouton                                                                   |
 +------------+---------------------------------------------------------------------------------------------------------+
+
 .. _OObject: OObject.rst
 .. _ODContained: ODContained.rst
