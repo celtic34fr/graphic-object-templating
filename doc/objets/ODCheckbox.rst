@@ -3,7 +3,6 @@ Méthode de l'objet ODCheckbox
 
 Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'avoir des méthodes spéfifiques :
 
-
 +-------------+--------------------------------------------------------------------------------------------------------+
 | Méthode     + Fonctionnalité                                                                                         +
 +=============+========================================================================================================+
