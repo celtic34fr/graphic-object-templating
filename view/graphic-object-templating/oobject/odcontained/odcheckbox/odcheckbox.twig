@@ -26,13 +26,15 @@
     {% set id = objet.id %}
     {% set type = objet.infoBulle.type %}
     {% set css = objet.infoBulle.css %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% set placement = objet.infoBulle.placement %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
     {% elseif objet.erreur.libel is not empty %}
     {% set erreur = objet.erreur %}
     {% set id = objet.id %}
     {% set type = 'tooltip' %}
     {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+    {% set placement = objet.infoBulle.placement %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
     #{{ id }} {
         border:  solid 2px #{{ erreur.color }};

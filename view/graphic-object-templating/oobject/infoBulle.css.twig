@@ -1,4 +1,13 @@
 {% switch type %}
+    {% case 'tooltip_err' %}
+    {% set dColor = strpos(css, ";color: #") + 8 %}
+    {% set fColor = strpos(css, ";", dColor) %}
+    {% set color  = substr(css, dColor, fColor - dColor)%}
+        #{{ id }} + .tooltip > .tooltip-arrow {
+            border-{{ placement }}-color: {{ color }} !important;
+        }
+    #{{ id }} + .tooltip > .tooltip-inner {
+        border: 1px dotted {{ color }};
     {% case 'tooltip' %}
     #{{ id }} + .{{ type }} > .tooltip-inner {
     {% case 'popover' %}

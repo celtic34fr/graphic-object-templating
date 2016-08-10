@@ -9,6 +9,7 @@
 namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
+use Zend\Session\Container;
 
 /**
  * Class ODTable
@@ -26,30 +27,32 @@ use GraphicObjectTemplating\Objects\ODContained;
  * !removeLine(nLine)                      : supprime la ligne nLine du tableau (les lignes nLine + 1 à fin deviennent nLine à fin -1)
  * !removeLines()                          : supprime toutes les lignes de données du tableau (par les entêtes de colonnes)
  * !clearTable()                           : supprime tout le contenu du tableau, entête comprise
- * addColTitle(title[, array(),[, nCol]]) : ajoute une colone en fin de tableau (niveau entête) si nCol est indiqué, insersion en colone nCol
- * setColValues(nCol, array())            : met à jour les valeuyrs contenues dans la colonne nCol avec le tabelau array()
- * getCol(nCol)                           : restitue le contenu de la colonne nCol sous forme d'un array()
- * removeCol(nCol)                        : supprimme la colonne nCol en valeurs et entête
+ * !addColTitle(title[, array(),[, nCol]]) : ajoute une colone en fin de tableau (niveau entête) si nCol est indiqué, insersion en colone nCol
+ * !setColValues(nCol, array())            : remplace les valeurs contenues dans la colonne nCol avec le tabllau array() (mise à vide de indice manquant)
+ * !getCol(nCol)                           : restitue le contenu de la colonne nCol sous forme d'un array()
+ * !removeCol(nCol)                        : supprimme la colonne nCol en valeurs et entête
+ * !setCell(nCol,nLine, value)             : affecte à la colone nCol, ligne nLine, le contenu value
+ * !getCell(nCol, nLine)                   : restitue le cotenu de la cellule colone nCol, ligne nLine
  * !addTableStyle(style)                   : ajout le contenu de la chaîne style au style actuel du tableau
  * !setTableStyle(style)                   : affecte au style du tableau le contenu de la chaîne style
  * !getTableStyle()                        : restitue le style actuel du tableau
  * !clearTableStyle()                      : supprime tout style au tableau (niveau tableau, pas lignes ou colonnes)
- * toggleTableStyle([style])              : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
+ * !toggleTableStyle([style])              : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
  * !addColStyle(nCol, style)               : ajout le contenu de la chaîne style au style actuel de la colonne nCol
  * !setColStyle(nCol, style)               : affecte au style de la colonne nCol le contenu de la chaîne style
  * !getColStyle(nCol)                      : restitue le style actuel de la colonne nCol
  * !clearColStyle(nCol)                    : supprime tout style à la colonne nCol
- * toggleColStyle(nCol[, style])          : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
+ * !toggleColStyle(nCol[, style])          : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
  * !addLineStyle(nLine, style)             : ajout le contenu de la chaîne style au style actuel de la ligne nLine
  * !setLineStyle(nLine, style)             : affecte au style de la ligne Nline le contenu de la chaîne style
  * !getLineStyle(nLine)                    : restitue le style actuel de la ligne nLine
  * !clearLineStyle(nLine)                  : supprime tout style à la ligne nLine
- * toggleLineStyle(nLine[, style])        : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
+ * !toggleLineStyle(nLine[, style])        : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
  * !addCellStyle(nCol, nLine, style)       : ajout le contenu de la chaîne style au style actuel de la cellule nCol, nLine
  * !setCellStyle(nCol, nLine, style)       : affecte au style de la ligne Nline le contenu de la cellule nCol, nLine
  * !getCellStyle(nCol, nLine)              : restitue le style actuel de la cellule nCol, nLine
  * !clearCellStyle(nCol, nLine)            : supprime tout style à la cellule nCol, nLine
- * toggleCellStyle(nCol, nLine[, style])  : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
+ * !toggleCellStyle(nCol, nLine[, style])  : permutte le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne style avec l'actuel qu'il sauvegarde alors
  * evtColClick(nCol, callback)            : positionnement un évènement onClick sur la colonne nCol, et demande l'exécution de callback
  * disColClick(nCol)                      : déactive l'évènement onClick sur la colonne nCol
  * evtLineClick(nLine, callback)          : positionnement un évènement onClick sur la ligne nLine, et demande l'exécution de callback
@@ -71,6 +74,10 @@ use GraphicObjectTemplating\Objects\ODContained;
  * setSelectedCells(array())              : sélectionne un groupe de cellules descrites dans array() par leus coordonnées dans le tableau pour affichage marqué de ces dernières
  * unselectCell(nCol, nLine)              : désélectionne la cellule nCol, nLine pour affichage non marqué de cette dernière
  * unselectAllCells()                     : désélectionne l'ensble des cellules sélectionnées (retour total désélectionné)
+ * showLine(nLine)                        : précise que la ligne nLine sera affichée
+ * hideLine(nLine)                        : précise que la ligne nLine ne sera pas affichée
+ * showCol(nCol, boolean)                 : précise que la colonne nCol sera affichée
+ * hideCol(nCol, boolean)                 : précise que la colonne nCol ne sera pas affichée
  */
 class ODTable extends ODContained
 {
@@ -85,7 +92,7 @@ class ODTable extends ODContained
 
     public function setTitle($title)
     {
-        $title = (string) $title;
+        $title = (string)$title;
         $properties = $this->getProperties();
         $properties['title'] = $title;
         $this->setProperties($properties);
@@ -98,7 +105,8 @@ class ODTable extends ODContained
         return (array_key_exists('title', $properties) ? $properties['title'] : false);
     }
 
-    public function initColsHead(array $cols = null) {
+    public function initColsHead(array $cols = null)
+    {
         if (empty($cols)) return false;
         $properties = $this->getProperties();
         $properties['cols'] = $cols;
@@ -116,10 +124,10 @@ class ODTable extends ODContained
     {
         if (empty($line)) return false;
         $properties = $this->getProperties();
-        $nbCols     = sizeof($properties['cols']);
+        $nbCols = sizeof($properties['cols']);
         if ($nbCols != sizeof($line)) return false;
 
-        $properties['datas'][] = $line;
+        $properties['datas'][sizeof($properties['datas']) + 1] = $line;
         $this->setProperties($properties);
         return (key(end($properties['datas'])));
     }
@@ -127,11 +135,18 @@ class ODTable extends ODContained
     public function setLine($nLine, array $line = null)
     {
         $properties = $this->getProperties();
-        $nbCols     = sizeof($properties['cols']);
-        $nbLines    = sizeof($properties['datas']);
+        $nbCols = sizeof($properties['cols']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines == 0) return false;
-        if ($nLine >= $nbLines) return false;
+        if ($nLine > $nbLines) return false;
         if ($nbCols != sizeof($line)) return false;
+
+        $tmpL = [];
+        /* remise en séquence des champs de la ligne */
+        foreach ($line as $col) {
+            $tmpL[sizeof($tmpL) + 1] = $col;
+        }
+        $line = $tmpL;
 
         $properties['datas'][$nLine] = $line;
         $this->setProperties($properties);
@@ -142,13 +157,22 @@ class ODTable extends ODContained
     {
         if (empty($lines)) return false;
         $properties = $this->getProperties();
-        $nbCols     = sizeof($properties['cols']);
+        $nbCols = sizeof($properties['cols']);
         // vérification des lignes de lines qui doivent avoir le bon nombre de colonnes
         foreach ($lines as $line) {
             if ($nbCols != sizeof($line)) return false;
         }
 
-        $properties['datas'] = $lines;
+        $properties['datas'] = [];
+        foreach ($lines as $line) {
+            $tmpL = [];
+            /* remise en séquence des champs de la ligne */
+            foreach ($line as $col) {
+                $tmpL[sizeof($tmpL) + 1] = $col;
+            }
+            $line = $tmpL;
+            $properties['datas'][sizeof($properties['datas']) + 1] = $line;
+        }
         $this->setProperties($properties);
         return $this;
     }
@@ -156,9 +180,9 @@ class ODTable extends ODContained
     public function getLine($nLine)
     {
         $properties = $this->getProperties();
-        $nbLines    = sizeof($properties['datas']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines == 0) return false;
-        if ($nLine >= $nbLines) return false;
+        if ($nLine > $nbLines) return false;
 
         return $properties['datas'][$nLine];
     }
@@ -172,11 +196,15 @@ class ODTable extends ODContained
     public function removeLine($nLine)
     {
         $properties = $this->getProperties();
-        $nbLines    = sizeof($properties['datas']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines == 0) return false;
-        if ($nLine >= $nbLines) return false;
+        if ($nLine > $nbLines) return false;
 
-        unset($properties['datas'][$nLine]);
+        /* remise en séquence des lignes restantes */
+        for ($i = $nLine; $i < $nbLines - 1; $i++) {
+            $properties['datas'][$i] = $properties['datas'][$i + 1];
+        }
+        unset($properties['datas'][$nbLines]);
         $this->setProperties($properties);
         return $this;
     }
@@ -199,19 +227,145 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function addTableStyle($style){
-        $style = (string) $style;
+    public function addColTitle($title, array $cDatas = null, $nCol = 0)
+    {
+        /* attention les indice de $cDatas doivent commencer à 1 pour le plus petit */
+        /* ils sont obligatoirement numérique */
+        $title = (string)$title;
         $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        $datas = $properties['datas'];
+        if ($nCol > $nbCols || $nCol < 0) return false;
 
-        if (!isset($properties['styles'])) $properties['styles'] = array(array());
-        if (!isset($properties['styles'][0][0])) $properties['styles'][0][0] = "";
-        $properties['styles'][0][0] .= " " .$style;
+        if ($nCol < 1) {
+            $properties['cols'][sizeof($properties['cols']) + 1] = $title;
+            foreach ($datas as $key => $data) {
+                $data[] = (isset($cDatas[$key])) ? $cDatas[$key] : "";
+                $datas[$key] = $data;
+            }
+        } else {
+            $tCols = [];
+            for ($i = 1; $i < $nCol - 1; $i++) {
+                $tCols[$i] = $properties['cols'][$i];
+            }
+            $tCols[$nCol] = $title;
+            for ($i = $nCol; $i <= $nbCols; $i++) {
+                $tCols[$i + 1] = $properties['cols'][$i];
+            }
+            $properties['cols'] = $tCols;
+
+            foreach ($datas as $key => $data) {
+                for ($i = $nbCols; $i > $nCol; $i--) {
+                    $data[$i + 1] = $data[$i];
+                }
+                $data[$nCol] = (isset($cDatas[$key])) ? $cDatas[$key] : "";
+                $datas[$key] = $data;
+            }
+        }
+        $properties['datas'] = $datas;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setTableStyle($style) {
-        $style = (string) $style;
+    public function setColValues($nCol, array $cDatas)
+    {
+        /* attention les indice de $cDatas doivent commencer à 1 pour le plus petit */
+        /* ils sont obligatoirement numérique */
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+
+        $datas = $properties['datas'];
+        foreach ($datas as $key => $data) {
+            for ($i = $nbCols; $i > $nCol; $i--) {
+                $data[$i + 1] = $data[$i];
+            }
+            $data[$nCol] = (isset($cDatas[$key])) ? $cDatas[$key] : "";
+            $datas[$key] = $data;
+        }
+    }
+
+    public function getCol($nCol)
+    {
+        $properties = $this->getProperties();
+        $nbCols     = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+
+        $datas = $properties['datas'];
+        $cols  = [];
+        foreach ($datas as $data) {
+            $cols[sizeof($cols) + 1] = $data[$nCol];
+        }
+        return $cols;
+    }
+
+    public function removeCol($nCol)
+    {
+        $properties = $this->getProperties();
+        $nbCols     = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+
+        /* suppression de l'entête */
+        $tCols = [];
+        for ($i = 1; $i < $nCol - 1; $i++) {
+            $tCols[$i] = $properties['cols'][$i];
+        }
+        for ($i = $nCol; $i <= $nbCols; $i++) {
+            $tCols[$i] = $properties['cols'][$i + 1];
+        }
+        $properties['cols'] = $tCols;
+
+        /* suppression des données de la colonne */
+        $datas = $properties['datas'];
+        foreach ($datas as $key => $data) {
+            for ($i = $nCol; $i < $nbCols; $i++) {
+                $data[$i] = $data[$i + 1];
+            }
+            unset($data[$nbCols]);
+            $datas[$key] = $data;
+        }
+    }
+
+    public function setCell($nCol, $nLine, $val)
+    {
+        $properties = $this->getProperties();
+        $nbCols     = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        $nbLines = sizeof($properties['datas']);
+        if ($nbLines == 0) return false;
+        if ($nLine > $nbLines) return false;
+
+        $properties['datas'][$nLine][$nCol] = $val;
+        return $this;
+    }
+
+    public function getCell($nCol, $nLine)
+    {
+        $properties = $this->getProperties();
+        $nbCols     = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        $nbLines = sizeof($properties['datas']);
+        if ($nbLines == 0) return false;
+        if ($nLine > $nbLines) return false;
+
+        return $properties['datas'][$nLine][$nCol];
+    }
+
+    public function addTableStyle($style)
+    {
+        $style = (string)$style;
+        $properties = $this->getProperties();
+
+        if (!isset($properties['styles'])) $properties['styles'] = array(array());
+        if (!isset($properties['styles'][0][0])) $properties['styles'][0][0] = "";
+        $properties['styles'][0][0] .= " " . $style;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setTableStyle($style)
+    {
+        $style = (string)$style;
         $properties = $this->getProperties();
 
         if (!isset($properties['styles'])) $properties['styles'] = array(array());
@@ -220,9 +374,10 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function getTableStyle() {
+    public function getTableStyle()
+    {
         $properties = $this->getProperties();
-        return ((isset($properties['styles'][0][0])) ? $properties['styles'][0][0] : false) ;
+        return ((isset($properties['styles'][0][0])) ? $properties['styles'][0][0] : false);
     }
 
     public function clearTableStyle()
@@ -231,24 +386,42 @@ class ODTable extends ODContained
         if (isset($properties['styles'][0][0])) $properties['styles'][0][0] = null;
     }
 
-    public function addColStyle($nCol, $style) {
-        $nCol                              = (int) $nCol;
-        $style                             = (string) $style;
-        $properties                        = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
-        if ($nbCols <= $nCol) return false;
-        if (!isset($properties['styles'])) $properties['styles'] = array(array());
-        if (!isset($properties['styles'][0][$nCol])) $properties['styles'][0][$nCol] = "";
-        $properties['styles'][0][$nCol] .= " " .$style;
+    public function toggleTableStyle($style = null)
+    {
+        $properties = $this->getProperties();
+        if (!isset($properties['style'][0][0])) return false;
+
+        $id = $properties['id'];
+        $cStyle = $properties['style'][0][0];
+        $oStyle = "";
+        $session = new Container("styleTable_" . $id);
+        if ($session->offsetExists('style')) $oStyle = $session->offsetGet('style');
+        $session->offsetSet('style', $cStyle);
+        $properties['style'][0][0] = (!empty($style)) ? $style : $oStyle;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setColStyle($nCol, $style) {
-        $nCol                             = (int) $nCol;
-        $style                            = (string) $style;
-        $properties                       = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
+    public function addColStyle($nCol, $style)
+    {
+        $nCol = (int)$nCol;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if ($nbCols <= $nCol) return false;
+        if (!isset($properties['styles'])) $properties['styles'] = array(array());
+        if (!isset($properties['styles'][0][$nCol])) $properties['styles'][0][$nCol] = "";
+        $properties['styles'][0][$nCol] .= " " . $style;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setColStyle($nCol, $style)
+    {
+        $nCol = (int)$nCol;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
         if ($nbCols <= $nCol) return false;
         if (!isset($properties['styles'])) $properties['styles'] = array(array());
         $properties['styles'][0][$nCol] = $style;
@@ -256,44 +429,65 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function getColStyle($nCol) {
-        $nCol  = (int) $nCol;
-        $properties                        = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
+    public function getColStyle($nCol)
+    {
+        $nCol = (int)$nCol;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
         if ($nbCols <= $nCol) return false;
-        return ((isset($properties['styles'][0][$nCol])) ? $properties['styles'][0][$nCol] : false) ;
+        return ((isset($properties['styles'][0][$nCol])) ? $properties['styles'][0][$nCol] : false);
     }
 
     public function clearColStyle($nCol)
     {
-        $nCol  = (int) $nCol;
-        $properties                        = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
+        $nCol = (int)$nCol;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
         if ($nbCols <= $nCol) return false;
-        $properties['styles'][0][$nCol]    = "";
+        $properties['styles'][0][$nCol] = "";
         $this->setProperties($properties);
         return $this;
     }
 
-    public function addLineStyle($nLine, $style) {
-        $nLine = (int) $nLine;
-        $style = (string) $style;
-        $properties                         = $this->getProperties();
-        $nbLines                            = sizeof($properties['datas']);
+    public function toogleColStyle($nCol, $style = null)
+    {
+        $nCol = (int)$nCol;
+        if ($nCol < 1) return false;
+        $properties = $this->getProperties();
+        if (!isset($properties['style'][0][$nCol])) return false;
+
+        $id = $properties['id'];
+        $cStyle = $properties['style'][0][$nCol];
+        $oStyle = "";
+        $session = new Container("styleTable_" . $id);
+        if ($session->offsetExists('styleC' . $nCol)) $oStyle = $session->offsetGet('styleC' . $nCol);
+        $session->offsetSet('styleC' . $nCol, $cStyle);
+        $properties['style'][0][$nCol] = (!empty($style)) ? $style : $oStyle;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function addLineStyle($nLine, $style)
+    {
+        $nLine = (int)$nLine;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines <= $nLine) return false;
 
         if (!isset($properties['styles'])) $properties['styles'] = array(array());
         if (!isset($properties['styles'][$nLine][0])) $properties['styles'][$nLine][0] = "";
-        $properties['styles'][$nLine][0] .= " " .$style;
+        $properties['styles'][$nLine][0] .= " " . $style;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setLineStyle($nLine, $style) {
-        $nLine = (int) $nLine;
-        $style = (string) $style;
-        $properties                        = $this->getProperties();
-        $nbLines                            = sizeof($properties['datas']);
+    public function setLineStyle($nLine, $style)
+    {
+        $nLine = (int)$nLine;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines <= $nLine) return false;
 
         if (!isset($properties['styles'])) $properties['styles'] = array(array());
@@ -302,20 +496,21 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function getLineStyle($nLine) {
-        $nLine = (int) $nLine;
-        $properties                         = $this->getProperties();
-        $nbLines                            = sizeof($properties['datas']);
+    public function getLineStyle($nLine)
+    {
+        $nLine = (int)$nLine;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines <= $nLine) return false;
 
-        return ((isset($properties['styles'][$nLine][0])) ? $properties['styles'][$nLine][0] : false) ;
+        return ((isset($properties['styles'][$nLine][0])) ? $properties['styles'][$nLine][0] : false);
     }
 
     public function clearLineStyle($nLine)
     {
-        $nLine = (int) $nLine;
-        $properties                         = $this->getProperties();
-        $nbLines                            = sizeof($properties['datas']);
+        $nLine = (int)$nLine;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
         if ($nbLines <= $nLine) return false;
 
         $properties['styles'][$nLine][0] = "";
@@ -323,30 +518,50 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function addCellStyle($nCol, $nLine, $style) {
-        $nCol  = (int) $nCol;
-        $nLine = (int) $nLine;
-        $style = (string) $style;
-        $properties                        = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
-        $nbLines                           = sizeof($properties['datas']);
+    public function toggleLineStyle($nLine, $style = null)
+    {
+        $nLine = (int)$nLine;
+        if ($nLine < 1) return false;
+        $properties = $this->getProperties();
+        if (!isset($properties['style'][$nLine][0])) return false;
+
+        $id = $properties['id'];
+        $cStyle = $properties['style'][$nLine][0];
+        $oStyle = "";
+        $session = new Container("styleTable_");
+        if ($session->offsetExists('styleL' . $nLine)) $oStyle = $session->offsetGet('styleL' . $nLine);
+        $session->offsetSet('styleL' . $nLine, $cStyle);
+        $properties['style'][$nLine][0] = (!empty($style)) ? $style : $oStyle;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function addCellStyle($nCol, $nLine, $style)
+    {
+        $nCol = (int)$nCol;
+        $nLine = (int)$nLine;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbCols <= $nCol) return false;
         if ($nbLines <= $nLine) return false;
 
         if (!isset($properties['styles'])) $properties['styles'] = array(array());
         if (!isset($properties['styles'][$nLine][$nCol])) $properties['styles'][$nLine][$nCol] = "";
-        $properties['styles'][$nLine][$nCol] .= " " .$style;
+        $properties['styles'][$nLine][$nCol] .= " " . $style;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function setCellStyle($nCol, $nLine, $style) {
-        $nCol  = (int) $nCol;
-        $nLine = (int) $nLine;
-        $style = (string) $style;
-        $properties                              = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
-        $nbLines                           = sizeof($properties['datas']);
+    public function setCellStyle($nCol, $nLine, $style)
+    {
+        $nCol = (int)$nCol;
+        $nLine = (int)$nLine;
+        $style = (string)$style;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbCols <= $nCol) return false;
         if ($nbLines <= $nLine) return false;
 
@@ -356,29 +571,50 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function getCellStyle($nCol, $nLine) {
-        $nCol  = (int) $nCol;
-        $nLine = (int) $nLine;
-        $properties                               = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
-        $nbLines                           = sizeof($properties['datas']);
+    public function getCellStyle($nCol, $nLine)
+    {
+        $nCol = (int)$nCol;
+        $nLine = (int)$nLine;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbCols <= $nCol) return false;
         if ($nbLines <= $nLine) return false;
 
-        return ((isset($properties['styles'][$nLine][$nCol])) ? $properties['styles'][$nLine][$nCol] : false) ;
+        return ((isset($properties['styles'][$nLine][$nCol])) ? $properties['styles'][$nLine][$nCol] : false);
     }
 
     public function clearCellStyle($nCol, $nLine)
     {
-        $nCol  = (int) $nCol;
-        $nLine = (int) $nLine;
-        $properties                               = $this->getProperties();
-        $nbCols                            = sizeof($properties['cols']);
-        $nbLines                           = sizeof($properties['datas']);
+        $nCol = (int)$nCol;
+        $nLine = (int)$nLine;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        $nbLines = sizeof($properties['datas']);
         if ($nbCols <= $nCol) return false;
         if ($nbLines <= $nLine) return false;
 
-        $properties['styles'][$nLine][$nCol]= "";
+        $properties['styles'][$nLine][$nCol] = "";
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function toggleCellStyle($nCol, $nLine, $style = null)
+    {
+        $nCol = (int)$nCol;
+        if ($nCol < 1) return false;
+        $nLine = (int)$nLine;
+        if ($nLine < 1) return false;
+        $properties = $this->getProperties();
+        if (!isset($properties['style'][$nLine][$nCol])) return false;
+
+        $id = $properties['id'];
+        $cStyle = $properties['style'][$nLine][$nCol];
+        $oStyle = "";
+        $session = new Container("styleTable_" . $id);
+        if ($session->offsetExists('styleC' . $nCol . 'L' . $nLine)) $oStyle = $session->offsetGet('styleC' . $nCol . 'L' . $nLine);
+        $session->offsetSet('styleC' . $nCol . 'L' . $nLine, $cStyle);
+        $properties['style'][$nLine][$nCol] = (!empty($style)) ? $style : $oStyle;
         $this->setProperties($properties);
         return $this;
     }
