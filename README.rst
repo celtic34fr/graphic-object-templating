@@ -50,6 +50,12 @@ Et il faut ajouter les deux lignes suivantes au début du bloc body
     <div id="gotCallback" style="display: none;">{{ url("got/callback") }}</div>
     <div id="divWork" style="display: none"></div>
 
+puis on doit activer les modules dans le fichier config\application.config.php :
+::
+
+        'ZfcTwig',
+        'GraphicObjectTemplating',
+
 
 Utilisation
 -----------
