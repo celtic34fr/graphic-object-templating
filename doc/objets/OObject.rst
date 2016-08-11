@@ -42,8 +42,8 @@ Méthode de l'objet parent OObject
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setInfoBulle       | permet d’affecter une infoBulle (texte d’explication) à l’objet                                   |
 |                   |  - title :   titre de l’infoBulle (utile dans le cas d’affichage type POPOVER), il est obligatoire|
-|                   |  - content :   le texte des explications proprement dit, facultatif                               |
-|                   |  - type :   type d’affichage : TOOLTIP ou POPOVER (par défaut : TOOLTIP si absent)                |
+|                   |  - content : le texte des explications proprement dit, facultatif                                 |
+|                   |  - type :    type d’affichage : TOOLTIP ou POPOVER (par défaut : TOOLTIP si absent)               |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getInfoBulle       | restitution du tableau de paramétrage de l’infoBulle                                              |
 +-------------------+---------------------------------------------------------------------------------------------------+
@@ -58,14 +58,14 @@ Méthode de l'objet parent OObject
 |                   | delay-hide  :   temps de disparition de l’infoBulle en millisecondes (defaut:400)                 |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setWidthBT         | permet d’affecter la largeur de l’objet dans une grille Bootstreap Twitter                        |
-|	            | valeur numérique	    : même taille quelque soit le média                                         |
-|	            | O+chiffrte:W+chiffre    : O signale un offset                                                     |
-|	            | (décalage en nombre de colonne), W une largeur pour tous les médias                               |
-|	            | W+[X,S,M,L]+chiffre	    : ici largeur pour chaque média X : xs, S : sm, M : md, L : lg      |
-|	            | On peut faire de même avec O                                                                      |  
-|	            | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
+|	                | valeur numérique	    : même taille quelque soit le média                                         |
+|	                | O+chiffrte:W+chiffre    : O signale un offset                                                     |
+|	                | (décalage en nombre de colonne), W une largeur pour tous les médias                               |
+|	                | W+[X,S,M,L]+chiffre	    : ici largeur pour chaque média X : xs, S : sm, M : md, L : lg          |
+|	                | On peut faire de même avec O                                                                      |
+|	                | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|getWidthBT	    | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
+|getWidthBT	        | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |static buildObject | méthode statique permettant de reconstruire un objet à partir                                     |
 |                   | de son identifiant et de ses propriétés sauvegardées en session                                   |
