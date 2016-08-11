@@ -58,12 +58,12 @@ Méthode de l'objet parent OObject
 |                   | delay-hide  :   temps de disparition de l’infoBulle en millisecondes (defaut:400)                 |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setWidthBT         | permet d’affecter la largeur de l’objet dans une grille Bootstreap Twitter                        |
-|	                | valeur numérique	    : même taille quelque soit le média                                         |
-|	                | O+chiffrte:W+chiffre    : O signale un offset                                                     |
-|	                | (décalage en nombre de colonne), W une largeur pour tous les médias                               |
-|	                | W+[X,S,M,L]+chiffre	    : ici largeur pour chaque média X : xs, S : sm, M : md, L : lg          |
-|	                | On peut faire de même avec O                                                                      |
-|	                | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
+|                   | valeur numérique	    : même taille quelque soit le média                                         |
+|                   | O+chiffrte:W+chiffre    : O signale un offset                                                     |
+|                   | (décalage en nombre de colonne), W une largeur pour tous les médias                               |
+|                   | W+[X,S,M,L]+chiffre	    : ici largeur pour chaque média X : xs, S : sm, M : md, L : lg            |
+|                   | On peut faire de même avec O                                                                      |
+|	                  | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getWidthBT	        | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
 +-------------------+---------------------------------------------------------------------------------------------------+
