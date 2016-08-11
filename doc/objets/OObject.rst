@@ -63,7 +63,7 @@ Méthode de l'objet parent OObject
 |                   | tous les médias                                                                                   |
 |                   | W+[X,S,M,L]+chiffre  : ici largeur pour chaque média X : xs, S : sm, M : md, L : lg               |
 |                   | On peut faire de même avec O                                                                      |
-|	                  | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
+|                   | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getWidthBT	        | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
 +-------------------+---------------------------------------------------------------------------------------------------+
