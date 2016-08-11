@@ -28,50 +28,52 @@ use Zend\Session\Container;
  *  resources    : liste en 2 tableau des fichies CSS et JS utilies à l'objet
  *  aclReference : resource ACL associé à l'objet
  *
- * initProperties
- * mergeProperties
- * setProperties
- * getProiperties
- * setId
- * getId
- * setName
- * getName
- * setTemplate
- * getTemplate
- * setDisplay
- * getDisplay
- * setStyle
- * addStyle
- * getStyle
- * setClasses
- * addClass
- * getClasses
- * setInfoBulle
- * getInfoBulle
- * setInfoBulleParams
- * setWidthBT
- * getWidthBT
- * static buildObject
- * getResources
- * addCssResource
- * getCssResource
- * setCssResource
- * addJsResource
- * getJsResource
- * setJsResource
- * setAclReference
- * getAclReference
- * setObject
- * getObject
- * setTypeObj
- * getTypeObj
- * setClassName
- * getClassName
- * enable
- * disable
- * getState
- * setErreur
- * getErreur
+ * initProperties       :
+ * mergeProperties      :
+ * setProperties        !
+ * getProiperties       :
+ * setId                :
+ * getId                :
+ * setName              :
+ * getName              :
+ * setTemplate          :
+ * getTemplate          :
+ * setDisplay           :
+ * getDisplay           :
+ * setStyle             :
+ * addStyle             :
+ * getStyle             :
+ * setClasses           :
+ * addClass             :
+ * getClasses           :
+ * setInfoBulle         :
+ * getInfoBulle         :
+ * setInfoBulleParams   :
+ * setWidthBT           :
+ * getWidthBT           :
+ * static buildObject   :
+ * getResources         :
+ * addCssResource       :
+ * getCssResource       :
+ * setCssResource       :
+ * addJsResource        :
+ * getJsResource        :
+ * setJsResource        :
+ * setAclReference      :
+ * getAclReference      :
+ * setObject            :
+ * getObject            :
+ * setTypeObj           : permet d'affecter le type de l'objet
+ * getTypeObj           : restitue le type de l'objet
+ * setClassName         :
+ * getClassName         :
+ * enable               : active l'objet
+ * disable              : dactive l'objet
+ * getState             :
+ * setErreur            : affecte un messa  ge d'erreur à l'objet
+ * getErreur            : restitue le message d'erreur de l'objet (si lieu)
+ * enaAutoCenter        : active l'auto centrage pour l'affichage de l'objet
+ * disAutoCenter        ; desactive l'auto centrage pour l'affichage de l'objet
  */
 class OObject
 {
@@ -662,6 +664,22 @@ class OObject
     {
         $properties          = $this->getProperties();
         return (array_key_exists('erreur', $properties) ? $properties['erreur'] : false);
+    }
+
+    public function enaAutoCenter()
+    {
+        $properties = $this->getProperties();
+        $properties['autoCenter'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disAutoCenter()
+    {
+        $properties = $this->getProperties();
+        $properties['autoCenter'] = false;
+        $this->setProperties($properties);
+        return $this;
     }
 
     /*
