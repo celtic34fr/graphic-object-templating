@@ -35,8 +35,10 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +----------------+--------------------------------------------------------------------------------------------------------+
 |evtChange       | évènement changement de valeur, paramètre callback                                                     +
 |                | callback  "nomModule/nomObjet/nomMéthode"                                                              +
+|                |                                                                                                        +
 |                |  - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                     +
 |                |  - si nomModule == 'Object' :                                                                          +
+|                |                                                                                                        +
 |                |    - si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"  +
 |                |    - si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"+
 +----------------+--------------------------------------------------------------------------------------------------------+
@@ -44,8 +46,8 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +----------------+--------------------------------------------------------------------------------------------------------+
 |evtKeyup        | évènement touche frappée (à chaque saisie de caractère), paramètre callback                            +
 |                | callback : "nomModule/nomObjet/nomMéthode"                                                             +
-|		         |  - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                     +
-|		         |  - si nomModule == 'Object' :                                                                          +
+|                |  - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                     +
+|                |  - si nomModule == 'Object' :                                                                          +
 |                |    - si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"  +
 |                |    - si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/OCContainer/nomObjet/nomMéthode"+
 +----------------+--------------------------------------------------------------------------------------------------------+
