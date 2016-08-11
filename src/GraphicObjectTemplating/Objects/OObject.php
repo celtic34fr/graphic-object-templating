@@ -72,7 +72,7 @@ use Zend\Session\Container;
  * getState             :
  * setErreur            : affecte un messa  ge d'erreur à l'objet
  * getErreur            : restitue le message d'erreur de l'objet (si lieu)
- * enaAutoCenter        : active l'auto centrage pour l'affichage de l'objet
+ * enaAutoCenter(w,h)   : active l'auto centrage pour l'affichage de l'objet
  * disAutoCenter        ; desactive l'auto centrage pour l'affichage de l'objet
  */
 class OObject
@@ -666,10 +666,12 @@ class OObject
         return (array_key_exists('erreur', $properties) ? $properties['erreur'] : false);
     }
 
-    public function enaAutoCenter()
+    public function enaAutoCenter(string $width, string $height)
     {
         $properties = $this->getProperties();
         $properties['autoCenter'] = true;
+        $properties['autoCenterPx'] = $width;
+        $properties['autoCenterPy'] = $height;
         $this->setProperties($properties);
         return $this;
     }
