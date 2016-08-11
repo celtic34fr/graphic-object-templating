@@ -152,7 +152,7 @@ class ODButton extends ODContained
 
         $form     = $properties['form'];
         switch(true) {
-            case (empty($form)):
+            case (empty($form) && $properties['type'] != self::BTNTYPE_LINK ):
                 $properties['type'] = self::BTNTYPE_CUSTOM; break;
             case (!empty($form)):
                 $properties['type'] = self::BTNTYPE_SUBMIT; break;
