@@ -42,8 +42,8 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +----------------+--------------------------------------------------------------------------------------------------------+
 |disChange       | désactivation de l'évènement changement de valeur                                                      +
 +----------------+--------------------------------------------------------------------------------------------------------+
-|evtKeyup        |évènement touche frappée (à chaque saisie de caractère), paramètre callback                             +
-|                |callback : "nomModule/nomObjet/nomMéthode"                                                              +
+|evtKeyup        | évènement touche frappée (à chaque saisie de caractère), paramètre callback                            +
+|                | callback : "nomModule/nomObjet/nomMéthode"                                                             +
 |		         |  - si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"                     +
 |		         |  - si nomModule == 'Object' :                                                                          +
 |                |    - si nomObjet commence par 'OC' -> "GraphicObjectTemplating/Objects/ODContent/nomObjet/nomMéthode"  +
