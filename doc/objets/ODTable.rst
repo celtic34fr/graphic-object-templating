@@ -6,25 +6,25 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +--------------------------------------+--------------------------------------------------------------------------------------+
 | Méthode                              + Fonctionnalité                                                                       |
 +======================================+======================================================================================+
-|setTitle()          	                 | affecte un titre ou légende au tableau                                               |
+|setTitle()                            | affecte un titre ou légende au tableau                                               |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getTitle()	                           | restitué le titre ou légende du tableau                                              |
+|getTitle()                            | restitué le titre ou légende du tableau                                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|initColsHead(array())	               | affecte au colonnes leurs titre ou entêtes                                           |
+|initColsHead(array())                 | affecte au colonnes leurs titre ou entêtes                                           |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getColsHead()	                       | restitue les titres des colonnes                                                     |
+|getColsHead()                         | restitue les titres des colonnes                                                     |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |addLine(array())                      | ajoute une ligne de données au tableau                                               |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setLine(nLine, array())	             | ajout ou met à jour la ligne nLine dans le tableau                                   |
+|setLine(nLine, array())               | ajout ou met à jour la ligne nLine dans le tableau                                   |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setLines(array())	                   | remplace l'ensermble des lignes du tableau avec le contenu de array()                |
+|setLines(array())                     | remplace l'ensermble des lignes du tableau avec le contenu de array()                |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getLine(nLine)	                       | restitue le tableau de valeur formant la ligne nLine                                 |
+|getLine(nLine)                        | restitue le tableau de valeur formant la ligne nLine                                 |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getLines()	                           | restitue le tableau des tableau de valeurs formant les lignes du tableau             |
+|getLines()                            | restitue le tableau des tableau de valeurs formant les lignes du tableau             |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|removeLine(nLine)	                   | supprime la ligne nLine du tableau (les lignes nLine + 1 à fin deviennent nLine à    |
+|removeLine(nLine)                     | supprime la ligne nLine du tableau (les lignes nLine + 1 à fin deviennent nLine à    |
 |                                      | fin -1)                                                                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |removeLines()	                       | supprime toutes les lignes de données du tableau (par les entêtes de colonnes)       |
