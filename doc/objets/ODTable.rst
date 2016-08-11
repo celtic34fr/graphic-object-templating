@@ -29,28 +29,28 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |removeLines()	                       | supprime toutes les lignes de données du tableau (par les entêtes de colonnes)       |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|clearTable()	                         | supprime tout le contenu du tableau, entête comprise                                 |
+|clearTable()                          | supprime tout le contenu du tableau, entête comprise                                 |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |addColTitle(title[, array()[, nCol]]) | ajoute une colone en fin de tableau (niveau entête) si nCol est indiqué, insersion en|
 |                                      | colone nCol                                                                          |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |setColValues(nCol, array())           | met à jour les valeurs contenues dans la colonne nCol avec le tableau array()        |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getCol(nCol)	                         | restitue le contenu de la colonne nCol sous forme d'un array()                       |
+|getCol(nCol)                          | restitue le contenu de la colonne nCol sous forme d'un array()                       |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|removeCol(nCol)	                     | supprime la colonne nCol en valeurs et entête                                        |
+|removeCol(nCol)                       | supprime la colonne nCol en valeurs et entête                                        |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |setCell(nCol,nLine, value)            | affecte à la colone nCol, ligne nLine, le contenu value                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |getCell(nCol,nLine)                   | restitue le cotenu de la cellule colone nCol, ligne nLine                            |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|addTableStyle(style)	                 | ajout le contenu de la chaîne style au style actuel du tableau                       |
+|addTableStyle(style)                  | ajout le contenu de la chaîne style au style actuel du tableau                       |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setTableStyle(style)	                 | affecte au style du tableau le contenu de la chaîne style                            |
+|setTableStyle(style)                  | affecte au style du tableau le contenu de la chaîne style                            |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |getTableStyle()                       | restitue le style actuel du tableau                                                  |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|clearTableStyle()	                   | supprime tout style au tableau (niveau tableau, pas lignes ou colonnes)              |
+|clearTableStyle()                     | supprime tout style au tableau (niveau tableau, pas lignes ou colonnes)              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |toggleTableStyle([style])             | permute le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne|
 |                                      | style avec l'actuel qu'il sauvegarde alors                                           |
@@ -59,7 +59,7 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |setColStyle(nCol, style)	             | affecte au style de la colonne nCol le contenu de la chaîne style                    |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getColStyle(nCol)	                   | restitue le style actuel de la colonne nCol                                          |
+|getColStyle(nCol)                     | restitue le style actuel de la colonne nCol                                          |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |clearColStyle(nCol)	                 | supprime tout style à la colonne nCol                                                |
 +--------------------------------------+--------------------------------------------------------------------------------------+
@@ -81,31 +81,31 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |setCellStyle(nCol, nLine, style)      | affecte au style de la ligne Nline le contenu de la cellule nCol, nLine              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getCellStyle(nCol, nLine)	           | restitue le style actuel de la cellule nCol, nLine                                   |
+|getCellStyle(nCol, nLine)             | restitue le style actuel de la cellule nCol, nLine                                   |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|clearCellStyle(nCol, nLine)	         | supprime tout style à la cellule nCol, nLine                                         |
+|clearCellStyle(nCol, nLine)           | supprime tout style à la cellule nCol, nLine                                         |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |toggleCellStyle(nCol, nLine[, style]) | permute le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne|
 |                                      | style avec l'actuel qu'il sauvegarde alors                                           |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|evtColClick(nCol, callback)	         | positionnement un événement onClick sur la colonne nCol, et demande l'exécution de   |
+|evtColClick(nCol, callback)           | positionnement un événement onClick sur la colonne nCol, et demande l'exécution de   |
 |                                      | callback                                                                             |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|disColClick(nCol)	                   | déactive l’événement onClick sur la colonne nCol                                     |
+|disColClick(nCol)                     | déactive l’événement onClick sur la colonne nCol                                     |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|evtLineClick(nLine, callback)	       | positionnement un évènement onClick sur la ligne nLine, et demande l'exécution de    |
+|evtLineClick(nLine, callback)         | positionnement un évènement onClick sur la ligne nLine, et demande l'exécution de    |
 |                                      | callback                                                                             |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|disLineClick(nLine)	                 | déactive l’événement onClick sur la ligne nLine                                      |
+|disLineClick(nLine)                   | déactive l’événement onClick sur la ligne nLine                                      |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |evtCellClick(nCol, nLine, callback)   | positionnement un évènement onClick sur la cellule nCol, nLine, et demande           |
 |                                      | l'exécution de callback                                                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |disCellClick(nCol, nLine)             | déactive l’événement onClick sur la cellule nCol, nLine                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getSelectedCols()           	         | restitue sous forme d'un array() l'ensemble des colonnes sélectionnées               |
+|getSelectedCols()                     | restitue sous forme d'un array() l'ensemble des colonnes sélectionnées               |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setSelectedCol(nCol)     	           | sélectionne la colonne nCol pour l'affichage marqué de cette dernière                |
+|setSelectedCol(nCol)                  | sélectionne la colonne nCol pour l'affichage marqué de cette dernière                |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |setSelectedCols(array())              | sélection un groupe de colonne déscrite dans array() par leurs numéros pour          |
 |                                      | l'affichage marqué de ces dernières                                                  |
