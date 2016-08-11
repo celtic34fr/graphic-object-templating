@@ -10,7 +10,7 @@ Méthode de l'objet parent OObject
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setProperties      | affecte et sauvegarde en session de tableau des propriétés de l’objet avec un tableau externe     |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|getProiperties	    | restitue le tableau en session des propriété de l’objet                                           |
+|getProiperties     | restitue le tableau en session des propriété de l’objet                                           |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setId              | affecte l’attribut identifiant de l’objet (balise HTML id)                                        |
 +-------------------+---------------------------------------------------------------------------------------------------+
@@ -65,21 +65,21 @@ Méthode de l'objet parent OObject
 |                   | On peut faire de même avec O                                                                      |
 |                   | REMARQUE : on sépare largeur et offset par 2 point (semi-colon)                                   |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|getWidthBT	        | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
+|getWidthBT         | restitue un tableau de 8 valeur donnant largeur et offset pour chaque média                       |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |static buildObject | méthode statique permettant de reconstruire un objet à partir                                     |
 |                   | de son identifiant et de ses propriétés sauvegardées en session                                   |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getResources       | restitue le tableau des ressources ou fichiers externe nécessaires au fonctionnement de l’objet   |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|addCssResource	    | ajoute au tableau des ressources,                                                                 |
+|addCssResource     | ajoute au tableau des ressources,                                                                 |
 |                   | la référence d’un fichier CSS (présent dans le répertoire public de GOT)                          |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|getCssResource	    | restitue le tableau des ressources CSS (fichiers de présentation) de l’objet                      |
+|getCssResource     | restitue le tableau des ressources CSS (fichiers de présentation) de l’objet                      |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|setCssResource	    | affecte une ressources ou un groupe de ressource (via tableau) CSS à l’objet                      |
+|setCssResource     | affecte une ressources ou un groupe de ressource (via tableau) CSS à l’objet                      |
 +-------------------+---------------------------------------------------------------------------------------------------+
-|addJsResource	    | ajoute au tableau des ressources, la référence d’un fichier JS                                    |
+|addJsResource      | ajoute au tableau des ressources, la référence d’un fichier JS                                    |
 |                   | (présent dans le répertoire public de GOT)                                                        |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getJsResource      | restitue le tableau des ressources JS (fichiers de présentation) de l’objet                       |
