@@ -42,8 +42,8 @@ Méthode de l'objet parent OObject
 +-------------------+---------------------------------------------------------------------------------------------------+
 |setInfoBulle       | permet d’affecter une infoBulle (texte d’explication) à l’objet                                   |
 |                   |  - title :   titre de l’infoBulle (utile dans le cas d’affichage type POPOVER), il est obligatoire|
-|                   |  -content :   le texte des explications proprement dit, facultatif                                |
-|                   |  -type :   type d’affichage : TOOLTIP ou POPOVER (par défaut : TOOLTIP si absent)                 |
+|                   |  - content :   le texte des explications proprement dit, facultatif                               |
+|                   |  - type :   type d’affichage : TOOLTIP ou POPOVER (par défaut : TOOLTIP si absent)                |
 +-------------------+---------------------------------------------------------------------------------------------------+
 |getInfoBulle       | restitution du tableau de paramétrage de l’infoBulle                                              |
 +-------------------+---------------------------------------------------------------------------------------------------+
