@@ -83,7 +83,7 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 | enaAutoCenter(w,h)| active l'auto centrage pour l'affichage de l'objet                                                      |
 |                   | remarque : w et h en string, ex : "500px" "40%" "1.5em"                                                 |
 +-------------------+---------------------------------------------------------------------------------------------------------+
-| disAutoCenter     | desactive l'auto centrage pour l'affichage de l'objet                                                   |                                                                                                         |
+| disAutoCenter     | desactive l'auto centrage pour l'affichage de l'objet                                                   |
 +-------------------+---------------------------------------------------------------------------------------------------------+
 
 .. _OObject: OObject.rst
