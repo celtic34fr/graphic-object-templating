@@ -7,7 +7,7 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 | Méthode        + Fonctionnalité                                                                                         +
 +================+========================================================================================================+
 |setType         | affecte le type de saisie                                                                              +
-|                |   - TEXT	 : mode texte                                                                                 +
+|                |   - TEXT     : mode texte                                                                              +
 |                |   - PASSWORD : saisie de mot de passe (caché, présence d'étoile à la place)                            +
 |                |   - HIDDEN   : variable cachée                                                                         +
 +----------------+--------------------------------------------------------------------------------------------------------+
