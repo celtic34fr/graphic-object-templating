@@ -55,13 +55,13 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 |toggleTableStyle([style])             | permute le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne|
 |                                      | style avec l'actuel qu'il sauvegarde alors                                           |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|addColStyle(nCol, style)	             | ajout le contenu de la chaîne style au style actuel de la colonne nCol               |
+|addColStyle(nCol, style)              | ajout le contenu de la chaîne style au style actuel de la colonne nCol               |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setColStyle(nCol, style)	             | affecte au style de la colonne nCol le contenu de la chaîne style                    |
+|setColStyle(nCol, style)              | affecte au style de la colonne nCol le contenu de la chaîne style                    |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |getColStyle(nCol)                     | restitue le style actuel de la colonne nCol                                          |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|clearColStyle(nCol)	                 | supprime tout style à la colonne nCol                                                |
+|clearColStyle(nCol)                   | supprime tout style à la colonne nCol                                                |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |toggleColStyle(nCol[, style])	       | permute le style actuel avec le style sauvegardé (si existe), ou celui dans la chaîne|
 |                                      | style avec l'actuel qu'il sauvegarde alors                                           |
@@ -113,29 +113,29 @@ Il contient les méthodes communes aux objets OObject_  et ODContained_ avant d'
 |unselectCol(nCol)                     | désélectionne la colonne nCol (si elle l'est) pour affichage non marqué de cette     |
 |                                      | dernières                                                                            |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|unselectAllCols()       	             | désélectionne l'ensemble des colonnes sélectionnées (retour total désélectionné)     |
+|unselectAllCols()                     | désélectionne l'ensemble des colonnes sélectionnées (retour total désélectionné)     |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |getSelectedLines()                    | restitue sur forme d'un array l'ensemble des lignes sélectionnées                    |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setSelectedLine(nLine)           	   | sélectionne la ligne nLine pour affichage marqué de cette dernière                   |
+|setSelectedLine(nLine)                | sélectionne la ligne nLine pour affichage marqué de cette dernière                   |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setSelectedLines(array())	           | sélectionne un groupe de ligne décrite dans array() par leurs numéros pour affichage |
+|setSelectedLines(array())             | sélectionne un groupe de ligne décrite dans array() par leurs numéros pour affichage |
 |                                      | marqué de ces dernières                                                              |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|unselectLine(nLine)	                 | désélectionne la ligne nLine pour affichage non marqsué de cette dernière            |
+|unselectLine(nLine)                   | désélectionne la ligne nLine pour affichage non marqsué de cette dernière            |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|unselectAllLines()	                   | désélectionne l'ensemble des lignes sélectionnées (retour total désélectionné)       |
+|unselectAllLines()                    | désélectionne l'ensemble des lignes sélectionnées (retour total désélectionné)       |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|getSelectedCells()    	               | restitue sur forme d'un array l'ensemble des cellules sélectionnées                  |
+|getSelectedCells()                    | restitue sur forme d'un array l'ensemble des cellules sélectionnées                  |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setSelectedCell(nCol, nLine) 	       | sélectionne la cellule nCol, nLine pour affichage marqué de cette dernière           |
+|setSelectedCell(nCol, nLine)          | sélectionne la cellule nCol, nLine pour affichage marqué de cette dernière           |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|setSelectedCells(array())	           | sélectionne un groupe de cellules descrites dans array() par leus coordonnées dans le|
+|setSelectedCells(array())             | sélectionne un groupe de cellules descrites dans array() par leus coordonnées dans le|
 |                                      | tableau pour affichage marqué de ces dernières                                       |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|unselectCell(nCol, nLine)    	       | désélectionne la cellule nCol, nLine pour affichage non marqué de cette dernière     |
+|unselectCell(nCol, nLine)             | désélectionne la cellule nCol, nLine pour affichage non marqué de cette dernière     |
 +--------------------------------------+--------------------------------------------------------------------------------------+
-|unselectAllCells()          	         | désélectionne l'ensemble des cellules sélectionnées (retour total désélectionné)     |
+|unselectAllCells()                    | désélectionne l'ensemble des cellules sélectionnées (retour total désélectionné)     |
 +--------------------------------------+--------------------------------------------------------------------------------------+
 |showLine(nLine)                       | précise que la ligne nLine sera affichée                                             |
 +--------------------------------------+--------------------------------------------------------------------------------------+
