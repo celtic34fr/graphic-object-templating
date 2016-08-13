@@ -16,6 +16,13 @@
     {% endif %}
     }
 
+    {% if objet.forme == 'horizontal' %}
+    #{{ objet.id }} .radio {
+        float: left;
+        margin: 5px;
+    }
+    {% endif %}
+
     {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
     {% set id = objet.id %}
     {% set type = objet.infoBulle.type %}
@@ -32,6 +39,22 @@
 
     #{{ id }} {
         border:  solid 2px #{{ erreur.color }};
+    }
+    {% endif %}
+
+    {% if objet.place == "right" %}
+    {# positionne le label à droite du coché #}
+    .radio label{
+        position: relative;
+        left: -1.7em;
+    }
+    .radio label::before {
+        right: -1.7em;
+        left: auto;
+    }
+    .radio label::after {
+        right: -2.1em;
+        left: auto;
     }
     {% endif %}
 </style>

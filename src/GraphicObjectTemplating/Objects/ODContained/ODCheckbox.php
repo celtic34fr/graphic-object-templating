@@ -52,6 +52,7 @@ class ODCheckbox extends ODContained
     protected $const_checkbox;
     protected $const_checkType;
     protected $const_checkForme;
+    protected $const_checkPlace;
 
     public function __construct($id)
     {
@@ -275,7 +276,7 @@ class ODCheckbox extends ODContained
 
     public function setPlacement($placement = self::CHECKPLACE_LEFT)
     {
-        $placements = $this->getCheckpLACEConst();
+        $placements = $this->getCheckPlaceConst();
         if (!in_array($placement, $placements)) $forme = self::CHECKPLACE_LEFT;
         $properties = $this->getProperties();
         $properties['place'] = $placement;
@@ -343,9 +344,9 @@ class ODCheckbox extends ODContained
                 $pos = strpos($key, 'CHECKPLACE');
                 if ($pos === false) unset($constants[$key]);
             }
-            $this->const_checkForme = $constants;
+            $this->const_checkPlace = $constants;
         } else {
-            $constants = $this->const_checkForme;
+            $constants = $this->const_checkPlace;
         }
         return $constants;
     }

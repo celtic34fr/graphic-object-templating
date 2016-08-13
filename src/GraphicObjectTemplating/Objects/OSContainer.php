@@ -143,5 +143,5 @@ class OSContainer extends OObject
     public function convertValue($value) { return $this->setProperties($value); }
 
     public function getConverted() { return $this->getProperties(); }
-    
+
 }

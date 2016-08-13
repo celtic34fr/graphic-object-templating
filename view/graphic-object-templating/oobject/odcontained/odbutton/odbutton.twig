@@ -80,9 +80,12 @@
         {% endfor %}
     {% endif %}
     {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-    {% if objet.type == 'link' %}
+    {% switch objet.type %}
+    {% case 'link' %}
         onclick="location.href='{{ routeUrl }}'"
-    {% endif %}
+    {% case 'reset' %}
+        onclick="javascript:resetFormDatas('{{ objet.form }}');"
+    {% endswitch %}
     {% if objet.state == false %}
         disabled
     {% endif %}

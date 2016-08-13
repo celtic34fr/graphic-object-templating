@@ -117,14 +117,17 @@ function resetFormDatas(form) {
     var selection = "[data-form='" + form + "']";
     $('*').find(selection).each(function () {
         var obj = $(this);
-        var object = obj.attrb('data-objet');
+        var object = obj.attr('data-objet');
 
         switch (object) {
-            case "odbutton":
-                odbutton_setData(obj, "");
+            case "odcheckbox":
+                odcheckbox_setData(obj.attr('id'), "");
+                break;
+            case "odradio":
+                odradio_setData(obj.attr('id'), "");
                 break;
             case "odinput":
-                odinput_setData(obj, "");
+                odinput_setData(obj.attr('id'), "");
                 break;
         }
     })
@@ -197,7 +200,7 @@ function odselect_getData(obj, evt) {
 function odcheckbox_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
-    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
+    $.each($("#"+obj.attr('id')+" input:checked"), function(){
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
@@ -214,7 +217,7 @@ function odcheckbox_getData(obj, evt) {
 function odradio_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
-    $.each($("#"+obj.attr('id')+" input[name="+obj.attr("name")+"]:checked"), function(){
+    $.each($("#"+obj.attr('id')+" input:checked"), function(){
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
@@ -243,25 +246,43 @@ function odbutton_setData(obj, data) {
 
 /**
  * méthode ocinput_setData
- * @param obj
+ * @param id
  * @param data
  *
  * méthode visant à affecter une valeur à un objet de type OCInput
  */
-function odinput_setData(obj, data) {
-    obj.val(data);
+function odinput_setData(id, data) {
+    $("#"+id+" input").val(data);
 }
 
 function odselect_setData(obj, data) {
 
 }
 
-function odcheckbox_setData(obj, data) {
-
+function odcheckbox_setData(id, tabData) {
+    for (var key in tabData) {
+        if (key != 'replaceAll') {
+            $('#'+id+' .checkbox input#'+id+key).checked = tabData.key;
+        } else {
+            $('#'+id+' .checkbox input').each(function () {
+                this.checked = false;
+            });
+            break;
+        }
+    }
 }
 
-function odradio_setData(obj, data) {
-    
+function odradio_setData(id, tabData) {
+    for (var key in tabData) {
+        if (key != 'replaceAll') {
+            $('#'+id+' .radio input#'+id+key).checked = tabData.key;
+        } else {
+            $('#'+id+' .radio input').each(function () {
+                this.checked = false;
+            });
+            break;
+        }
+    }
 }
 
 /**

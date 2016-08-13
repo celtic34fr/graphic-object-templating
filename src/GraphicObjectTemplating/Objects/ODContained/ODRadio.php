@@ -26,9 +26,16 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getLabel
  * evtChange
  * disChange
+ * setForme
+ * getForme
+ * setPlacement
+ * getPlacement
  */
 class ODRadio extends ODContained
 {
+    const RADIO_CHECK = "check";
+    const RADIO_UNCHECK = "uncheck";
+
     const RADIOTYPE_DEFAULT = "radio";
     const RADIOTYPE_PRIMARY = "radio radio-primary";
     const RADIOTYPE_SUCCESS = "radio radio-success";
@@ -36,7 +43,15 @@ class ODRadio extends ODContained
     const RADIOTYPE_WARNING = "radio radio-warning";
     const RADIOTYPE_DANGER  = "radio radio-danger";
 
+    const RADIOFORME_HORIZONTAL = 'horizontal';
+    const RADIOFORME_VERTICAL   = 'vertical';
+
+    const RADIOPLACE_LEFT  = "left";
+    const RADIOPLACE_RIGHT = "right";
+
     protected $const_radioType;
+    protected $const_radioForme;
+    protected $const_radioPlace;
 
     public function __construct($id)
     {
@@ -104,7 +119,7 @@ class ODRadio extends ODContained
             $this->uncheckAll();
             $options = $properties['options'];
             if (array_key_exists($value, $options)) {
-                $options[$value]['check'] = self::CHECKBOX_CHECK;
+                $options[$value]['check'] = self::RADIO_CHECK;
                 $properties['options'] = $options;
                 $this->setProperties($properties);
                 return $this;
@@ -119,7 +134,7 @@ class ODRadio extends ODContained
         if (array_key_exists('options', $properties)) {
             $options = $properties['options'];
             if (array_key_exists($value, $options)) {
-                $options[$value]['check'] = self::CHECKBOX_UNCHECK;
+                $options[$value]['check'] = self::RADIO_UNCHECK;
                 $properties['options'] = $options;
                 $this->setProperties($properties);
                 return $this;
@@ -189,6 +204,39 @@ class ODRadio extends ODContained
         return $this;
     }
 
+    public function setForme($forme = self::RADIOFORM_HORIZONTAL)
+    {
+        $formes = $this->getRadioFormeConst();
+        if (!in_array($forme, $formes)) $forme = self::RADIOFORME_HORIZONTAL;
+        $properties = $this->getProperties();
+        $properties['forme'] = $forme;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getForme()
+    {
+        $properties = $this->getProperties();
+        return ((array_key_exists('forme',$properties)) ? $properties['forme'] : false);
+    }
+
+    public function setPlacement($placement = self::RADIOPLACE_LEFT)
+    {
+        $placements = $this->getRadioPlaceConst();
+        if (!in_array($placement, $placements)) $forme = self::RADIOPLACE_LEFT;
+        $properties = $this->getProperties();
+        $properties['place'] = $placement;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getPlacement()
+    {
+        $properties = $this->getProperties();
+        return ((array_key_exists('place',$properties)) ? $properties['place'] : false);
+    }
+
+
     protected function getRadioTypeConst()
     {
         if (empty($this->const_nature)) {
@@ -197,9 +245,39 @@ class ODRadio extends ODContained
                 $pos = strpos($key, 'RADIOTYPE');
                 if ($pos === false) unset($constants[$key]);
             }
-            $this->const_checkType = $constants;
+            $this->const_radioType = $constants;
         } else {
             $constants = $this->const_radioType;
+        }
+        return $constants;
+    }
+
+    protected function getRadioFormeConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'RADIOFORME');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_radioForme = $constants;
+        } else {
+            $constants = $this->const_radioForme;
+        }
+        return $constants;
+    }
+
+    protected function getRadioPlaceConst()
+    {
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'RADIOPLACE');
+                if ($pos === false) unset($constants[$key]);
+            }
+            $this->const_radioPlace = $constants;
+        } else {
+            $constants = $this->const_radioPlace;
         }
         return $constants;
     }
