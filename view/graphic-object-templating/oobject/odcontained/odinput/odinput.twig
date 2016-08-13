@@ -22,6 +22,7 @@
 {% endfor %}
 {% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
 {% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
+{% if (objet.size is not empty) %} {% set inputClass = "" %} {% endif %}
 {% if objet.classes is not empty %}
     {% set inputClass = inputClass ~ " " ~ objet.classes %}
 {% endif %}
