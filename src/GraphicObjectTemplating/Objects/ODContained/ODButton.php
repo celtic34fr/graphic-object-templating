@@ -109,7 +109,7 @@ class ODButton extends ODContained
         parent::setForm($form);
 
         $properties = $this->getProperties();
-        $callback   = $properties['callback'];
+        $callback   = $properties['event']['click'];
         switch(true) {
             case (empty($callback)):
                 $properties['type'] = self::BTNTYPE_RESET;  break;
@@ -148,7 +148,6 @@ class ODButton extends ODContained
         $properties             = $this->getProperties();
         if(!isset($properties['event'])) $properties['event'] = [];
         if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = $callback;
 
         $form     = $properties['form'];
         switch(true) {
@@ -159,9 +158,10 @@ class ODButton extends ODContained
         }
         
         if (isset($properties['type']) && ($properties['type'] == self::BTNTYPE_LINK)) {
-            $properties['event']['click'] = mb_strtolower($callback);
+            $callback = strtolower($callback);
         }
 
+        $properties['event']['click'] = $callback;
         $this->setProperties($properties);
         return $this;
     }
