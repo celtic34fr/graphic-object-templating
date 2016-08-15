@@ -65,6 +65,9 @@ class ODRadio extends ODContained
     {
         $properties = $this->getProperties();
         $types = $this->getRadioTypeConst();
+
+        var_dump($types);
+
         if (!in_array($type, $types)) $type = self::RADIOTYPE_DEFAULT;
         $state = $state && true;
 
@@ -240,11 +243,11 @@ class ODRadio extends ODContained
     protected function getRadioTypeConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_radioType)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOTYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_radioType = $retour;
         } else {
@@ -256,11 +259,11 @@ class ODRadio extends ODContained
     protected function getRadioFormeConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_radioForme)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOFORME');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_radioForme = $retour;
         } else {
@@ -272,11 +275,11 @@ class ODRadio extends ODContained
     protected function getRadioPlaceConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_radioPlace)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOPLACE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_radioPlace = $retour;
         } else {

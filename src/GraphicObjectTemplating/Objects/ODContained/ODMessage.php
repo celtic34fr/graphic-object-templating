@@ -207,7 +207,7 @@ class ODMessage extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'ACTION');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_mesAction = $retour;
         } else {
@@ -223,7 +223,7 @@ class ODMessage extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'POSITION');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_mesPosition = $retour;
         } else {
@@ -239,7 +239,7 @@ class ODMessage extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_mesType = $retour;
         } else {
@@ -255,7 +255,7 @@ class ODMessage extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'SIZE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_mesSize = $retour;
         } else {

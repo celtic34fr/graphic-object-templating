@@ -201,7 +201,7 @@ class ODButton extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'BTNTYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_btntype = $retour;
         } else {
@@ -217,7 +217,7 @@ class ODButton extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'NATURE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_nature = $retour;
         } else {

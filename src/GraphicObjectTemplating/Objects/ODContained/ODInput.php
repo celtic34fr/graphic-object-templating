@@ -258,7 +258,7 @@ class ODInput extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_inpType = $retour;
         } else {

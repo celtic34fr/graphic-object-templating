@@ -666,7 +666,7 @@ class OObject
         return (array_key_exists('erreur', $properties) ? $properties['erreur'] : false);
     }
 
-    public function enaAutoCenter(string $width, string $height)
+    public function enaAutoCenter($width, $height)
     {
         $properties = $this->getProperties();
         $properties['autoCenter'] = true;
@@ -699,77 +699,82 @@ class OObject
 
     protected function getDisplayConstants()
     {
+        $retour = [];
         if (empty($this->const_display)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($constant, 'DISPLAY_');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_display = $constants;
+            $this->const_display = $retour;
         } else {
-            $constants = $this->const_display;
+            $retour = $this->const_display;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getInfoBullesConst()
     {
+        $retour = [];
         if (empty($this->const_infoBulle)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'INFOBULLE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_infoBulle = $constants;
+            $this->const_infoBulle = $retour;
         } else {
-            $constants = $this->const_infoBulle;
+            $retour = $this->const_infoBulle;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getTypesConst()
     {
+        $retour = [];
         if (empty($this->const_type)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TYPE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_type = $constants;
+            $this->const_type = $retour;
         } else {
-            $constants = $this->const_type;
+            $retour = $this->const_type;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getTriggersConst()
     {
+        $retour = [];
         if (empty($this->const_trigger)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TRIGGER');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_trigger = $constants;
+            $this->const_trigger = $retour;
         } else {
-            $constants = $this->const_trigger;
+            $retour = $this->const_trigger;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getStatesConst()
     {
+        $retour = [];
         if (empty($this->const_state)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TRIGGER');
-                if ($pos === false) unset($constants[$key]);
+                $pos = strpos($key, 'STATE');
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_state = $constants;
+            $this->const_state = $retour;
         } else {
-            $constants = $this->const_state;
+            $retour = $this->const_state;
         }
-        return $constants;
+        return $retour;
     }
 
 }

@@ -295,11 +295,11 @@ class ODCheckbox extends ODContained
     protected function getCheckboxConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_checkbox)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKBOX');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_checkbox = $retour;
         } else {
@@ -311,11 +311,11 @@ class ODCheckbox extends ODContained
     protected function getCheckTypeConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_checkType)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKTYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_checkType = $retour;
         } else {
@@ -327,11 +327,11 @@ class ODCheckbox extends ODContained
     protected function getCheckFormeConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_checkForme)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKFORME');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_checkForme = $retour;
         } else {
@@ -343,11 +343,11 @@ class ODCheckbox extends ODContained
     protected function getCheckPlaceConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_checkPlace)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKPLACE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_checkPlace = $retour;
         } else {
