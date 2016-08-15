@@ -65,9 +65,6 @@ class ODRadio extends ODContained
     {
         $properties = $this->getProperties();
         $types = $this->getRadioTypeConst();
-
-        var_dump($types);
-
         if (!in_array($type, $types)) $type = self::RADIOTYPE_DEFAULT;
         $state = $state && true;
 
