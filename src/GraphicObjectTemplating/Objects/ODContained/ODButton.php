@@ -196,32 +196,34 @@ class ODButton extends ODContained
 
     private function getBtnTypesConstants()
     {
+        $retour = [];
         if (empty($this->const_btntype)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TYPE');
-                if ($pos === false) unset($constants[$key]);
+                $pos = strpos($key, 'BTNTYPE');
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_btntype = $constants;
+            $this->const_btntype = $retour;
         } else {
-            $constants = $this->const_btntype;
+            $retour = $this->const_btntype;
         }
-        return $constants;
+        return $retour;
     }
 
     private function getNatureConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'NATURE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_nature = $constants;
+            $this->const_nature = $retour;
         } else {
-            $constants = $this->const_nature;
+            $retour = $this->const_nature;
         }
-        return $constants;
+        return $retour;
     }
 
 }

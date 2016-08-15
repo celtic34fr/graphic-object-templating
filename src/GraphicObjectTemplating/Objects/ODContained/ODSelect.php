@@ -14,26 +14,30 @@ use GraphicObjectTemplating\Objects\ODContained;
  * Class ODSelect
  * @package GraphicObjectTemplating\Objects\ODContained
  * 
- * addOption
- * removeOption
- * clearOptions
- * enaOption
- * disOption
- * selOption
- * unselOption
- * setOptions
- * getOptions
- * enaMultiple
- * disMultiple
- * enaSelect2
- * disSelect2
- * setPlaceholder
- * getPlaceholder
- * unselectAll
- * setLabel
- * getLabel
- * showSearchBox
- * hideSearchBox
+ * addOption($value, $libel, $selected = false, $enable = true)
+ * removeOption($value)
+ * clearOptions()
+ * enaOption($value)
+ * disOption($value)
+ * selOption($value)
+ * unselOption($value)
+ * setOptions(array $options)
+ * getOptions()
+ * enaMultiple($number)
+ * disMultiple()
+ * enaSelect2()
+ * disSelect2()
+ * setPlaceholder($placeholder)
+ * getPlaceholder()
+ * unselectAll()
+ * setLabel($label)
+ * getLabel()
+ * showSearchBox()
+ * hideSearchBox()
+ * setLanguage($language)
+ * getLanguage()
+ * evtChange(callback)
+ * disChange()
  */
 class ODSelect extends ODContained
 {
@@ -296,5 +300,25 @@ class ODSelect extends ODContained
             return (array_key_exists('language', $paramsSelect2) ? $paramsSelect2['language'] : false);
         }
         return false;
+    }
+
+    public function evtChange($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['change'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disChange()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['change'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
     }
 }

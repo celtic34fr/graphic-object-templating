@@ -40,6 +40,12 @@ class ODMessage extends ODContained
     const SIZE_NORMAL   = 'normal';
     const SIZE_LARGE    = 'large';
 
+    protected $const_mesAction;
+    protected $const_mesSound;
+    protected $const_mesPosition;
+    protected $const_mesType;
+    protected $const_mesSize;
+
     public function __construct($id) {
         parent::__construct($id, "oobject/odcontained/odmessage/odmessage.config.phtml");
         $this->setDisplay();
@@ -196,41 +202,65 @@ class ODMessage extends ODContained
 
     private function getActionsContants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'ACTION');
-            if ($pos === false) unset($constants[$key]);
+        $retour = [];
+        if (empty($this->const_mesAction)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'ACTION');
+                if ($pos === true) $retour[$key] = $constant;
+            }
+            $this->const_mesAction = $retour;
+        } else {
+            $retour = $this->const_mesAction;
         }
-        return $constants;
+        return $retour;
     }
 
     private function getPositionsContants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'POSITION');
-            if ($pos === false) unset($constants[$key]);
+        $retour = [];
+        if (empty($this->const_mesPosition)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'POSITION');
+                if ($pos === true) $retour[$key] = $constant;
+            }
+            $this->const_mesPosition = $retour;
+        } else {
+            $retour = $this->const_mesPosition;
         }
-        return $constants;
+        return $retour;
     }
 
     private function getTypesContants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'TYPE');
-            if ($pos === false) unset($constants[$key]);
+        $retour = [];
+        if (empty($this->const_mesType)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TYPE');
+                if ($pos === true) $retour[$key] = $constant;
+            }
+            $this->const_mesType = $retour;
+        } else {
+            $retour = $this->const_mesType;
         }
-        return $constants;
+        return $retour;
     }
 
     private function getSizesContants()
     {
-        $constants = $this->getConstants();
-        foreach ($constants as $key => $constant) {
-            $pos = strpos($key, 'SIZE');
-            if ($pos === false) unset($constants[$key]);
+        $retour = [];
+        if (empty($this->const_mesSize)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'SIZE');
+                if ($pos === true) $retour[$key] = $constant;
+            }
+            $this->const_mesSize = $retour;
+        } else {
+            $retour = $this->const_mesSize;
         }
-        return $constants;
+        return $retour;
     }
 }

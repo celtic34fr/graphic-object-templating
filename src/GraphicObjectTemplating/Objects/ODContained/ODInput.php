@@ -198,21 +198,6 @@ class ODInput extends ODContained
         return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
     }
 
-    public function setErrMessage($errMessage)
-    {
-        $errMessage = (string) $errMessage;
-        $properties               = $this->getProperties();
-        $properties['errMessage'] = $errMessage;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getErrMessage()
-    {
-        $properties                = $this->getProperties();
-        return ((!empty($properties['errMessage'])) ? $properties['errMessage'] : false) ;
-    }
-
     public function evtChange($callback)
     {
         $properties = $this->getProperties();
@@ -268,17 +253,18 @@ class ODInput extends ODContained
 
     private function getInpTypesConstants()
     {
+        $retour = [];
         if (empty($this->const_inpType)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TYPE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_inpType = $constants;
+            $this->const_inpType = $retour;
         } else {
-            $constants = $this->const_inpType;
+            $retour = $this->const_inpType;
         }
-        return $constants;
+        return $retour;
     }
 
 }

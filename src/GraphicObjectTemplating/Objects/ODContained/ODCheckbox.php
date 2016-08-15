@@ -14,22 +14,23 @@ use GraphicObjectTemplating\Objects\ODContained;
  * Class ODCheckbox
  * @package GraphicObjectTemplating\Objects\ODContained
  * 
- * addOption
- * removeOption
- * setOptions
- * getOptions
- * check
- * uncheck
- * uncheckAll
- * getCheck
- * setLabel
- * getLabel
- * evtChange
- * disChange
- * setForme
- * getForme
- * setPlacement
- * getPlacement
+ * addOption($value, $libel, $type = self::CHECKTYPE_DEFAULT, $state = self::STATE_ENABLE)
+ * removeOption($value)
+ * setOptions(array $options = null)
+ * getOptions()
+ * check($value = null)
+ * uncheck($value = null)
+ * uncheckAll()
+ * getCheck($value = null)
+ * getChecked()
+ * setLabel($label)
+ * getLabel()
+ * evtChange($callback)
+ * disChange()
+ * setForme($forme = self::CHECKFORM_HORIZONTAL)
+ * getForme()
+ * setPlacement($placement = self::CHECKPLACE_LEFT)
+ * getPlacement()
  */
 class ODCheckbox extends ODContained
 {
@@ -293,62 +294,66 @@ class ODCheckbox extends ODContained
 
     protected function getCheckboxConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKBOX');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_checkbox = $constants;
+            $this->const_checkbox = $retour;
         } else {
-            $constants = $this->const_checkbox;
+            $retour = $this->const_checkbox;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getCheckTypeConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKTYPE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_checkType = $constants;
+            $this->const_checkType = $retour;
         } else {
-            $constants = $this->const_checkType;
+            $retour = $this->const_checkType;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getCheckFormeConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKFORME');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_checkForme = $constants;
+            $this->const_checkForme = $retour;
         } else {
-            $constants = $this->const_checkForme;
+            $retour = $this->const_checkForme;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getCheckPlaceConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'CHECKPLACE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_checkPlace = $constants;
+            $this->const_checkPlace = $retour;
         } else {
-            $constants = $this->const_checkPlace;
+            $retour = $this->const_checkPlace;
         }
-        return $constants;
+        return $retour;
     }
 
 }

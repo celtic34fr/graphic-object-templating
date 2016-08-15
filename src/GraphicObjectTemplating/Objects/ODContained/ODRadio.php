@@ -239,47 +239,50 @@ class ODRadio extends ODContained
 
     protected function getRadioTypeConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOTYPE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_radioType = $constants;
+            $this->const_radioType = $retour;
         } else {
-            $constants = $this->const_radioType;
+            $retour = $this->const_radioType;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getRadioFormeConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOFORME');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_radioForme = $constants;
+            $this->const_radioForme = $retour;
         } else {
-            $constants = $this->const_radioForme;
+            $retour = $this->const_radioForme;
         }
-        return $constants;
+        return $retour;
     }
 
     protected function getRadioPlaceConst()
     {
+        $retour = [];
         if (empty($this->const_nature)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'RADIOPLACE');
-                if ($pos === false) unset($constants[$key]);
+                if ($pos === true) $retour[$key] = $constant;
             }
-            $this->const_radioPlace = $constants;
+            $this->const_radioPlace = $retour;
         } else {
-            $constants = $this->const_radioPlace;
+            $retour = $this->const_radioPlace;
         }
-        return $constants;
+        return $retour;
     }
 
 }
