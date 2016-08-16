@@ -109,7 +109,7 @@ class ODButton extends ODContained
         parent::setForm($form);
 
         $properties = $this->getProperties();
-        $callback   = $properties['event']['click'];
+        $callback   = (isset($properties['event']['click'])) ? $properties['event']['click'] : "";
         switch(true) {
             case (empty($callback)):
                 $properties['type'] = self::BTNTYPE_RESET;  break;

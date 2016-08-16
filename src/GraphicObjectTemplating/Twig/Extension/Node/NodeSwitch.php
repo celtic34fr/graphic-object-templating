@@ -43,7 +43,7 @@ class NodeSwitch extends Twig_Node
             ->write("switch (")
             ->subcompile($this->getNode('value'))
             ->raw(") {\n")
-            ->indent
+//            ->indent
         ;
         for ($i = 0; $i < count($this->getNode('cases')); $i += 2) {
             $compiler
