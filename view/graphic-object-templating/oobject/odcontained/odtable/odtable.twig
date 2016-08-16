@@ -1,1 +1,73 @@
 {# template de l'objet ODTable #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+
+<style>
+    #{{ objet.id }} table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    {% if objet.styles is not empty %}
+    {% for line, lStyle in objet.styles %}
+    {% for col, cStyle in lStyle %}
+    {% switch line %}
+    {% case 0 %}
+    {% if col == 0 %}
+    #{{ objet.id }} table {
+                    {{ cStyle | raw }}
+                    }
+    {% else %}
+    #{{ objet.id }} table .col{{ col }} {
+                    {{ cStyle | raw }}
+                    }
+    {% endif %}
+    {% default %}
+    {% switch col %}
+    {% case 0 %}
+    #{{ objet.id }} table #line{{ line }} {
+                    {{ cStyle | raw }}
+                    }
+    {% default %}
+    #{{ objet.id }} table #line{{ line }} .col{{ col }} {
+                    {{ cStyle | raw }}
+                    }
+    {% endswitch %}
+    {% endswitch %}
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+
+    #{{ objet.id }} table th,
+    #{{ objet.id }} table td {
+        border: 1px solid #000000;
+        text-align: center;
+    }
+</style>
+
+<div id="{{ objet.id }}"  data-objet="{{ objet.object }}"
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    <table id="{{ objet.id }}_table">
+        <thead>
+            <tr>
+                {% for col in objet.cols %}
+                <th class="col{{ loop.index }}">{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% if objet.datas is empty %}
+            <tr><td colspan="{{ objet.cols|length }}" style="text-align: center">No data to show</td></tr>
+            {% else %}
+            {% for data in objet.datas %}
+            <tr id="line{{ loop.index }}">
+                {% for col in data %}
+                <td class="col{{ loop.index }}">{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
