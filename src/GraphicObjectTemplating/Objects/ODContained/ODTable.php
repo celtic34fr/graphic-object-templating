@@ -15,8 +15,9 @@ use Zend\Session\Container;
  * Class ODTable
  * @package GraphicObjectTemplating\Objects\ODContained
  *
- * !setTitle($title, $position = "top_center") : affecte un titre ou légende au tableau
+ * !setTitle($title, $position = "bottom_center") : affecte un titre ou légende au tableau
  * !getTitle()                             : restitué le titre ou légende du tableau
+ * setTitlePos($position = "bottom_center") : affecte la position du titre du tableau
  * getTitlePos()                          : restitue le chaîne de caractère qualifiant la position du titre
  * addTitleStyle($style)                  : ajoute le contenu de la chaine $style au style actuel du titre
  * setTitleStyle($style)                  : affecte un style au titre du tableau
@@ -106,6 +107,9 @@ class ODTable extends ODContained
     public function setTitle($title, $position = self::TITLEPOS_BOTTOM_CENTER)
     {
         $title = (string)$title;
+        $positions  = $this->getTitlePosConstants();
+        if (!in_array($position, $positions)) $position = self::TITLEPOS_BOTTOM_CENTER;
+
         $properties = $this->getProperties();
         $properties['title'] = $title;
         $properties['titlePos'] = $position;
@@ -117,6 +121,17 @@ class ODTable extends ODContained
     {
         $properties = $this->getProperties();
         return (array_key_exists('title', $properties) ? $properties['title'] : false);
+    }
+
+    public function setTitlePosition($position = self::TITLEPOS_BOTTOM_CENTER)
+    {
+        $properties = $this->getProperties();
+        $positions  = $this->getTitlePosConstants();
+        if (!in_array($position, $positions)) $position = self::TITLEPOS_BOTTOM_CENTER;
+
+        $properties['titlePos'] = $position;
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function getTitlePosition()

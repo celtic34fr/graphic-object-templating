@@ -49,9 +49,7 @@
     {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
     {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
         caption-side: {{ captionSide }};
-    {% if textAlign != "center" %}
         text-align: {{ textAlign }};
-    {% endif %}
     {% if objet.titleStyle is not empty %}
     {{ objet.titleStyle | raw }}
     {% endif %}
