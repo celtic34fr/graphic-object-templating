@@ -94,7 +94,7 @@ class GotServices
 
         foreach ($objets as $objet) {
             $properties = $objet->getProperties();
-            $rscs = $properties['resources'];
+            $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
             if (!empty($rscs) && ($rscs !== false)) {
                 $cssList = $rscs['css'];
                 $jsList  = $rscs['js'];
