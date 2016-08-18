@@ -15,8 +15,12 @@ use Zend\Session\Container;
  * Class ODTable
  * @package GraphicObjectTemplating\Objects\ODContained
  *
- * !setTitle()                             : affecte un titre ou légende au tableau
+ * !setTitle($title, $position = "top_center") : affecte un titre ou légende au tableau
  * !getTitle()                             : restitué le titre ou légende du tableau
+ * getTitlePos()                          : restitue le chaîne de caractère qualifiant la position du titre
+ * addTitleStyle($style)                  : ajoute le contenu de la chaine $style au style actuel du titre
+ * setTitleStyle($style)                  : affecte un style au titre du tableau
+ * getTitleStyle()                        : restitue le style actuel du titre du tableau
  * !initColsHead(array())                  : affecte au colonnes leurs titre ou entêtes
  * !getColsHead()                          : restitue les titres des colonnes
  * !addLine(array())                       : ajoute une ligne de données au tableau
@@ -81,6 +85,15 @@ use Zend\Session\Container;
  */
 class ODTable extends ODContained
 {
+    const TITLEPOS_TOP_LEFT      = "top_left";
+    const TITLEPOS_TOP_CENTER    = "top_center";
+    const TITLEPOS_TOP_RIGHT     = "opt_right";
+    const TITLEPOS_BOTTOM_LEFT   = "bottom_left";
+    const TITLEPOS_BOTTOM_CENTER = "bottom_center";
+    const TITLEPOS_BOTTOM_RIGHT  = "bottom_right";
+
+    private $const_titlePos;
+
     public function __construct($id)
     {
         $parent = parent::__construct($id, "oobject/odcontained/odtable/odtable.config.phtml");
@@ -90,11 +103,12 @@ class ODTable extends ODContained
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function setTitle($title)
+    public function setTitle($title, $position = self::TITLEPOS_BOTTOM_CENTER)
     {
         $title = (string)$title;
         $properties = $this->getProperties();
         $properties['title'] = $title;
+        $properties['titlePos'] = $position;
         $this->setProperties($properties);
         return $this;
     }
@@ -103,6 +117,36 @@ class ODTable extends ODContained
     {
         $properties = $this->getProperties();
         return (array_key_exists('title', $properties) ? $properties['title'] : false);
+    }
+
+    public function getTitlePosition()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('titlePos', $properties) ? $properties['title'] : false);
+    }
+
+    public function addTitleStyle($style)
+    {
+        $style = (string) $style;
+        $properties = $this->getProperties();
+        $properties['titleStyle'] .= " " .$style;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setTitleStyle($style)
+    {
+        $style = (string) $style;
+        $properties = $this->getProperties();
+        $properties['titleStyle'] = $style;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getTitleStyle()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('titleStyle', $properties) ? $properties['title'] : false);
     }
 
     public function initColsHead(array $cols = null)
@@ -719,5 +763,25 @@ class ODTable extends ODContained
         if (isset($properties['event'][$nLine][$nCol])) unset($properties['event'][$nLine][$nCol]);
         $this->setProperties($properties);
         return $this;
+    }
+
+    /*
+     * méthode interne à la classe OObject
+     */
+
+    private function getTitlePosConstants()
+    {
+        $retour = [];
+        if (empty($this->const_titlePos)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TITLEPOS');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_titlePos= $retour;
+        } else {
+            $retour = $this->const_titlePos;
+        }
+        return $retour;
     }
 }
