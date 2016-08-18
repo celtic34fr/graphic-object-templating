@@ -3,11 +3,6 @@
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
 <style>
-    #{{ objet.id }} table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
     {% if objet.styles is not empty %}
     {% for line, lStyle in objet.styles %}
     {% for col, cStyle in lStyle %}
