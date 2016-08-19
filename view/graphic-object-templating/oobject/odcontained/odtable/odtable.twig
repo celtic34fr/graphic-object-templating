@@ -79,7 +79,7 @@
                 {% for col in data %}
                     {% set ind = loop.index %}
                     {% set visible = objet.cols[ind]['view'] %}
-                    {% if visible = true %}
+                    {% if visible == true %}
                 <td class="col{{ loop.index }}">{{ col }}</td>
                     {% endif %}
                 {% endfor %}
