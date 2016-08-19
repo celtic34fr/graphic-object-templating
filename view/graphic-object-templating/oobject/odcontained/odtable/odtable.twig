@@ -76,11 +76,12 @@
             {% for data in objet.datas %}
                 {% if data.view == true %}
             <tr id="line{{ loop.index }}">
-                {% for col in data %}
-                    {% set ind = loop.index %}
-                    {% set visible = objet.cols[ind]['view'] %}
+                {% for key, col in data %}
+                    {% if key != 'view' %}
+                    {% set visible = objet.cols[key]['view'] %}
                     {% if visible == true %}
-                <td class="col{{ loop.index }}">{{ col }}</td>
+                <td class="col{{ key }}">{{ col }}</td>
+                    {% endif %}
                     {% endif %}
                 {% endfor %}
             </tr>
