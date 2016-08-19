@@ -175,7 +175,7 @@ class ODTable extends ODContained
             $item['view']  = true;
             $colsTab[sizeof($colsTab) + 1] = $item;
         }
-        $properties['cols'] = $cols;
+        $properties['cols'] = $colsTab;
         $this->setProperties($properties);
         return $this;
     }
