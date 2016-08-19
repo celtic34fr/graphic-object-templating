@@ -201,7 +201,7 @@ class ODTable extends ODContained
         $tmp['view'] = true;
         $properties['datas'][sizeof($properties['datas']) + 1] = $tmp;
         $this->setProperties($properties);
-        return (key(end($properties['datas'])));
+        return (sizeof($properties['datas']));
     }
 
     public function setLine($nLine, array $line = null)
