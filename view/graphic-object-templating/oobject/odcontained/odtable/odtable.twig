@@ -63,7 +63,9 @@
         <thead>
             <tr>
                 {% for col in objet.cols %}
-                <th class="col{{ loop.index }}">{{ col }}</th>
+                    {% if col.view == true %}
+                <th class="col{{ loop.index }}">{{ col.libel }}</th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         </thead>
@@ -72,11 +74,17 @@
             <tr><td colspan="{{ objet.cols|length }}" style="text-align: center">No data to show</td></tr>
             {% else %}
             {% for data in objet.datas %}
+                {% if data.view == true %}
             <tr id="line{{ loop.index }}">
                 {% for col in data %}
+                    {% set ind = loop.index %}
+                    {% set visible = objet.cols[ind]['view'] %}
+                    {% if visible = true %}
                 <td class="col{{ loop.index }}">{{ col }}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
+                {% endif %}
             {% endfor %}
             {% endif %}
         </tbody>

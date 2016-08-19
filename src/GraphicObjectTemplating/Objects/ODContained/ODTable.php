@@ -79,10 +79,10 @@ use Zend\Session\Container;
  * setSelectedCells(array())              : sélectionne un groupe de cellules descrites dans array() par leus coordonnées dans le tableau pour affichage marqué de ces dernières
  * unselectCell(nCol, nLine)              : désélectionne la cellule nCol, nLine pour affichage non marqué de cette dernière
  * unselectAllCells()                     : désélectionne l'ensble des cellules sélectionnées (retour total désélectionné)
- * showLine(nLine)                        : précise que la ligne nLine sera affichée
- * hideLine(nLine)                        : précise que la ligne nLine ne sera pas affichée
- * showCol(nCol, boolean)                 : précise que la colonne nCol sera affichée
- * hideCol(nCol, boolean)                 : précise que la colonne nCol ne sera pas affichée
+ * !showLine(nLine)                        : précise que la ligne nLine sera affichée
+ * !hideLine(nLine)                        : précise que la ligne nLine ne sera pas affichée
+ * !showCol(nCol)                          : précise que la colonne nCol sera affichée
+ * !hideCol(nCol)                          : précise que la colonne nCol ne sera pas affichée
  */
 class ODTable extends ODContained
 {
@@ -168,6 +168,13 @@ class ODTable extends ODContained
     {
         if (empty($cols)) return false;
         $properties = $this->getProperties();
+        $colsTab = [];
+        foreach ($cols as $col) {
+            $item = [];
+            $item['libel'] = $col;
+            $item['view']  = true;
+            $colsTab[sizeof($colsTab) + 1] = $item;
+        }
         $properties['cols'] = $cols;
         $this->setProperties($properties);
         return $this;
@@ -176,7 +183,7 @@ class ODTable extends ODContained
     public function getColsHead()
     {
         $properties = $this->getProperties();
-        return (array_key_exists('cols', $properties) ? $properties['cols'] : false);
+        return (!empty($properties['cols']) ? $properties['cols'] : false);
     }
 
     public function addLine(array $line = null)
@@ -191,6 +198,7 @@ class ODTable extends ODContained
         foreach ($line as $col) {
             $tmp[sizeof($tmp) + 1] = $col;
         }
+        $tmp['view'] = true;
         $properties['datas'][sizeof($properties['datas']) + 1] = $tmp;
         $this->setProperties($properties);
         return (key(end($properties['datas'])));
@@ -210,6 +218,7 @@ class ODTable extends ODContained
         foreach ($line as $col) {
             $tmp[sizeof($tmp) + 1] = $col;
         }
+        $tmp['view'] = true;
         $properties['datas'][$nLine] = $tmp;
         $this->setProperties($properties);
         return $this;
@@ -232,6 +241,7 @@ class ODTable extends ODContained
             foreach ($line as $col) {
                 $tmp[sizeof($tmp) + 1] = $col;
             }
+            $tmp['view'] = true;
             $properties['datas'][sizeof($properties['datas']) + 1] = $tmp;
         }
         $this->setProperties($properties);
@@ -798,5 +808,53 @@ class ODTable extends ODContained
             $retour = $this->const_titlePos;
         }
         return $retour;
+    }
+
+    public function showLine($nLine)
+    {
+        $nLine = (int) $nLine;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine < 1 || $nLine >$nbLines) return false;
+
+        $properties['datas'][$nLine]['view'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function hideLine($nLine)
+    {
+        $nLine = (int) $nLine;
+        $properties = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine < 1 || $nLine >$nbLines) return false;
+
+        $properties['datas'][$nLine]['view'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function showCol($nCol)
+    {
+        $nCol = (int) $nCol;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if ($nCol < 1 || $nCol > $nbCols) return false;
+
+        $properties['cols'][$nCol]['view'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function hideCol($nCol)
+    {
+        $nCol = (int) $nCol;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if ($nCol < 1 || $nCol > $nbCols) return false;
+
+        $properties['cols'][$nCol]['view'] = false;
+        $this->setProperties($properties);
+        return $this;
     }
 }
