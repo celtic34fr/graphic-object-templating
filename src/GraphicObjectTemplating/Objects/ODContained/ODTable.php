@@ -24,6 +24,8 @@ use Zend\Session\Container;
  * getTitleStyle()                        : restitue le style actuel du titre du tableau
  * !initColsHead(array())                  : affecte au colonnes leurs titre ou entêtes
  * !getColsHead()                          : restitue les titres des colonnes
+ * setColsWidth(array $width)
+ * setColWith($nCol, $width)
  * !addLine(array())                       : ajoute une ligne de données au tableau
  * !setLine(nLine, array())                : ajout ou met à jour la ligne nLine dans le tableau
  * !setLines(array())                      : remplace l'ensermble des lignes du tableau avec le contenu de array()
@@ -184,6 +186,32 @@ class ODTable extends ODContained
     {
         $properties = $this->getProperties();
         return (!empty($properties['cols']) ? $properties['cols'] : false);
+    }
+
+    public function setColsWidth(array $widths = null)
+    {
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if (sizeof($widths) == 0 || sizeof($widths) != $nbCols) return false;
+
+        foreach ($widths as $key => $width) {
+            $properties['cols'][$key]['width'] = $width;
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setColWidth($nCol, $width)
+    {
+        $nCol = (int) $nCol;
+        $width = (string) $width;
+        $properties = $this->getProperties();
+        $nbCols = sizeof($properties['cols']);
+        if ($nCol < 1 || $nCol > $nbCols) return false;
+
+        $properties['cols'][$nCol]['width'] = $width;
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function addLine(array $line = null)

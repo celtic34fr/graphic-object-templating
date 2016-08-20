@@ -4,33 +4,33 @@
 
 <style>
     {% if objet.styles is not empty %}
-    {% for line, lStyle in objet.styles %}
-    {% for col, cStyle in lStyle %}
-    {% switch line %}
-    {% case 0 %}
-    {% if col == 0 %}
+        {% for line, lStyle in objet.styles %}
+            {% for col, cStyle in lStyle %}
+                {% switch line %}
+                    {% case 0 %}
+                        {% if col == 0 %}
     #{{ objet.id }} table {
                     {{ cStyle | raw }}
                     }
-    {% else %}
+                        {% else %}
     #{{ objet.id }} table .col{{ col }} {
                     {{ cStyle | raw }}
                     }
-    {% endif %}
-    {% default %}
-    {% switch col %}
-    {% case 0 %}
+                        {% endif %}
+                    {% default %}
+                        {% switch col %}
+                            {% case 0 %}
     #{{ objet.id }} table #line{{ line }} {
                     {{ cStyle | raw }}
                     }
-    {% default %}
+                            {% default %}
     #{{ objet.id }} table #line{{ line }} .col{{ col }} {
                     {{ cStyle | raw }}
                     }
-    {% endswitch %}
-    {% endswitch %}
-    {% endfor %}
-    {% endfor %}
+                        {% endswitch %}
+                {% endswitch %}
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 
     #{{ objet.id }} table th,
@@ -41,16 +41,23 @@
 
     {% if objet.title is not empty %}
     #{{ objet.id }} table caption {
-    {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
-    {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
+        {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
+        {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
         caption-side: {{ captionSide }};
         text-align: {{ textAlign }};
-    {% if objet.titleStyle is not empty %}
-    {{ objet.titleStyle | raw }}
-    {% endif %}
+        {% if objet.titleStyle is not empty %}
+        {{ objet.titleStyle | raw }}
+        {% endif %}
     }
     {% endif %}
 
+    {% for col in objet.cols %}
+        {% if col.view == true %}
+    #{{ objet.id }} table .col{{ loop.index }} {
+        width: {{ col.width }};
+                    }
+    {% endif %}
+    {% endfor %}
 </style>
 
 <div id="{{ objet.id }}"  data-objet="{{ objet.object }}"
