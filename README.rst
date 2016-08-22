@@ -56,6 +56,16 @@ puis on doit activer les modules dans le fichier config\application.config.php :
         'ZfcTwig',
         'GraphicObjectTemplating',
 
+Dans le répertoire /view/templates de remplacement se trouve les templates de substitutions à ceux existant dans le répertoire view du module Application.
+Après les avoir copiés dans les répertoires respectif, ilm vous faudra modifier le fichier de configuration dui module Application :
+
+::
+        'template_map' => array(
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.html.twig',
+            'application/index/index' => __DIR__ . '/../view/application/index/index.html.twig',
+            'error/404'               => __DIR__ . '/../view/error/404.html.twig',
+            'error/index'             => __DIR__ . '/../view/error/index.html.twig',
+        ),
 
 Utilisation
 -----------

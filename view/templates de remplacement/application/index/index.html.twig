@@ -1,0 +1,11 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block script %}
+    {{ gotHeader(leftPanel) }}
+    {{ gotHeader(centerPanel) }}
+{% endblock script %}
+
+{% block content %}
+    {{ gotrender(leftPanel) }}
+    {{ gotrender(centerPanel) }}
+{% endblock content %}
