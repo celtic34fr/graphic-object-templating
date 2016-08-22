@@ -90,7 +90,7 @@
         disabled
     {% endif %}
 >
-    {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ objet.label }}
+    {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ translate(objet.label) }}
 </button>
 
 {% if objet.event is defined and objet.event is not empty and objet.type != 'link' and objet.state == true %}

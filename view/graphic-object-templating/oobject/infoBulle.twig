@@ -3,17 +3,17 @@
 rel= "{{ infoBulle.type }}"
 {% if infoBulle.type == 'tooltip' %}
     {% if infoBulle.title is not empty %}
-        {% set dataOriginalTitle = infoBulle.title %}
+        {% set dataOriginalTitle = translate(infoBulle.title) %}
         {% if infoBulle.content is not empty %}
-            {% set dataOriginalTitle = dataOriginalTitle ~ ' : ' ~ infoBulle.content %}
+            {% set dataOriginalTitle = dataOriginalTitle ~ ' : ' ~ translate(infoBulle.content) %}
         {% endif %}
         data-original-title= "{{ dataOriginalTitle }}"
     {% elseif infoBulle.content is not empty %}
-        data-original-title= "{{ infoBulle.content }}"
+        data-original-title= "{{ translate(infoBulle.content) }}"
     {% endif %}
 {% else %}
-    data-original-title= "{{ infoBulle.title }}"
-    data-content= "{{ infoBulle.content }}"
+    data-original-title= "{{ translate(infoBulle.title) }}"
+    data-content= "{{ translate(infoBulle.content) }}"
 {% endif %}
 
 {% if infoBulle.delay-show is defined %}
