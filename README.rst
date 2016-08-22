@@ -67,6 +67,8 @@ Après les avoir copiés dans les répertoires respectif, ilm vous faudra modifi
             'error/index'             => __DIR__ . '/../view/error/index.html.twig',
         ),
 
+Vous y trouverai également le fichier zfctwig.local.php que vous devrez copier dans le dopssier config/autoload de votre projet.
+
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
