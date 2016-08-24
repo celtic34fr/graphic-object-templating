@@ -52,18 +52,6 @@ class ODBadge extends ODContained
         return $this;
     }
 
-    public function setStyle($style)
-    {
-        // surcharge de méthode pour qu'elle ne fasse rien
-        return $this;
-    }
-
-    public function getStyle()
-    {
-        // surcharge de méthode pour qu'elle ne fasse rien
-        return $this;
-    }
-
     public function setColor($color = null)
     {
         if (!empty($color)) {
