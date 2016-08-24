@@ -18,7 +18,7 @@ class ODBadge extends ODContained
     const BADGE_BLUEDARK   = "badge bg-color-blueLight";
     const BADGE_GREEN      = "badge bg-color-green";
     const BADGE_GREENLIGHT = "badge bg-color-greenLight";
-    const BADGE_GEENDARK   = "badge bg-color-greenDark";
+    const BADGE_GREENDARK  = "badge bg-color-greenDark";
     const BADGE_RED        = "badge bg-color-red";
     const BADGE_YELLOW     = "badge bg-color-yellow";
     const BADGE_ORANGE     = "badge bg-color-orange";
@@ -32,7 +32,12 @@ class ODBadge extends ODContained
     const BADGE_GRAYDARK   = "badge bg-color-grayDark";
     const BADGE_MAGENTA    = "badge bg-color-magenta";
     const BADGE_TEAL       = "badge bg-color-teal";
-    const BADGE_REDLIGHT   = "badge  bg-color-redLight";
+    const BADGE_REDLIGHT   = "badge bg-color-redLight";
+
+    const BADGE_COLOR_DEFAULT = "badge bg-color-white";
+    const BADGE_COLOR_DANGER  = "badge bg-color-red";
+    const BADGE_COLOR_WARNING = "badge bg-color-orange";
+    const BADGE_COLOR_INFO    = "badge bg-color-blue";
 
     public function __construct($id) {
         $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.phtml");
