@@ -61,14 +61,14 @@
 </style>
 
 <div id="{{ objet.id }}"  data-objet="{{ objet.object }}"
-        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
->
+                                                    {% if objClass is not empty %} class="{{ objClass }}" {% endif %}>
+    <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
     <table id="{{ objet.id }}_table">
         {% if objet.title is not empty %}
         <caption>{{ objet.title }}</caption>
         {% endif %}
         <thead>
-            <tr>
+            <tr class="line no0">
                 {% for col in objet.cols %}
                     {% if col.view == true %}
                 <th class="col{{ loop.index }}">{{ col.libel }}</th>
@@ -78,16 +78,16 @@
         </thead>
         <tbody>
             {% if objet.datas is empty %}
-            <tr><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
+            <tr class="line no1"><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
             {% else %}
             {% for data in objet.datas %}
                 {% if data.view == true %}
-            <tr id="line{{ loop.index }}">
+            <tr class="line lno{{ loop.index }}">
                 {% for key, col in data %}
                     {% if key != 'view' %}
                     {% set visible = objet.cols[key]['view'] %}
                     {% if visible == true %}
-                <td class="col{{ key }}">{{ col | raw }}</td>
+                <td class="col cno{{ key }}">{{ col | raw }}</td>
                     {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -98,3 +98,41 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(
+            $(".line .col").click(function () {
+                var selected = $(this).attr('class') + " " + $(this).parent().attr('class');
+                $("#{{ objet.id }}Select").val(selected);
+                alert("click sur "+selected);
+            })
+    )
+</script>
+
+{% if objet.event is defined and objet.event is not empty and objet.state == true %}
+<script id="{{ objet.id }}Script">
+    $('document').ready(
+        {% for lno, line in objet.event %}
+            {% for cno, callback in line %}
+            {% switch lno %}
+                {% case 0 %} {# cas click sur colonne#}
+                    $('#{{ objet.id }} .col.cno' + cno).on('{{ evt }}', function() {
+                        invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                    })
+                {% default %}
+                    {% swith cno %}
+                        {%  case 0 %}
+                            $('#{{ objet.id }} .line.lno' + lno).on('{{ evt }}', function() {
+                                invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                            })
+                        {% default %}
+                            $('#{{ objet.id }} ..line.lno' + lno + ' col.no' + cno).on('{{ evt }}', function() {
+                                invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                            })
+                    {% endswitch %}
+            {% endswitch %}
+            {% endfor %}
+        {% endfor %}
+    );
+</script>
+{% endif %}

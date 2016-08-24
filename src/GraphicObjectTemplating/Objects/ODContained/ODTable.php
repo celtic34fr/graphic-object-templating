@@ -17,15 +17,15 @@ use Zend\Session\Container;
  *
  * !setTitle($title, $position = "bottom_center") : affecte un titre ou légende au tableau
  * !getTitle()                             : restitué le titre ou légende du tableau
- * setTitlePos($position = "bottom_center") : affecte la position du titre du tableau
- * getTitlePos()                          : restitue le chaîne de caractère qualifiant la position du titre
- * addTitleStyle($style)                  : ajoute le contenu de la chaine $style au style actuel du titre
- * setTitleStyle($style)                  : affecte un style au titre du tableau
- * getTitleStyle()                        : restitue le style actuel du titre du tableau
+ * !setTitlePos($position = "bottom_center") : affecte la position du titre du tableau
+ * !getTitlePos()                          : restitue le chaîne de caractère qualifiant la position du titre
+ * !addTitleStyle($style)                  : ajoute le contenu de la chaine $style au style actuel du titre
+ * !setTitleStyle($style)                  : affecte un style au titre du tableau
+ * !getTitleStyle()                        : restitue le style actuel du titre du tableau
  * !initColsHead(array())                  : affecte au colonnes leurs titre ou entêtes
  * !getColsHead()                          : restitue les titres des colonnes
- * setColsWidth(array $width)
- * setColWith($nCol, $width)
+ * !setColsWidth(array $width)
+ * !setColWidth($nCol, $width)
  * !addLine(array())                       : ajoute une ligne de données au tableau
  * !setLine(nLine, array())                : ajout ou met à jour la ligne nLine dans le tableau
  * !setLines(array())                      : remplace l'ensermble des lignes du tableau avec le contenu de array()
