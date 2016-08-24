@@ -24,18 +24,24 @@
 <span id="{{ objet.id }}"  data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
       class="{{ objet.badgeColor }}"
 
-      {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
-          {%  set infoBulle = objet.infoBulle %}
-      {% elseif objet.erreur.libel is not empty %}
-          {% set infoBulle = objet.infoBulle %}
-          {% set erreur = objet.erreur %}
-          {% set infoBulle =
-          infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
-      {% endif %}
-      {% if infoBulle is defined and infoBulle is not empty %}
-          {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
-      {% endif %}
+        {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
+            {%  set infoBulle = objet.infoBulle %}
+        {% elseif objet.erreur.libel is not empty %}
+            {% set infoBulle = objet.infoBulle %}
+            {% set erreur = objet.erreur %}
+            {% set infoBulle =
+            infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+        {% endif %}
+        {% if infoBulle is defined and infoBulle is not empty %}
+            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+        {% endif %}
 
 >
     {{ objet.value }}
 </span>
+
+{% if infoBulle.title is not empty %}
+    {%  set type = infoBulle.type %}
+    {%  set id = objet.id %}
+    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+{% endif %}
