@@ -101,4 +101,24 @@ class ODBadge extends ODContained
         return $retour;
     }
 
+    public function evtClick($callback)
+    {
+        $callback               = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+
+        $properties['event']['click'] = $callback;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClick()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['click'])) unset($properties['event']['click']);
+        $this->setProperties($properties);
+        return $this;
+    }
+
 }
