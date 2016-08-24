@@ -78,7 +78,7 @@
         </thead>
         <tbody>
             {% if objet.datas is empty %}
-            <tr><td colspan="{{ objet.cols|length }}" style="text-align: center">No data to show</td></tr>
+            <tr><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
             {% else %}
             {% for data in objet.datas %}
                 {% if data.view == true %}
