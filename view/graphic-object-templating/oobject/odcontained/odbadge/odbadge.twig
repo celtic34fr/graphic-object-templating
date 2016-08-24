@@ -1,6 +1,12 @@
 {# tremplate pour l'objet ODBadge#}
 
 <style>
+    {% if objet.style is not empty %}
+    #{{ objet.id }} {
+    {{ objet.style | raw }}
+    }
+    {% endif %}
+
     {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
     {% set id = objet.id %}
     {% set type = objet.infoBulle.type %}
