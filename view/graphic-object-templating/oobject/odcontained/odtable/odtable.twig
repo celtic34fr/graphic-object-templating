@@ -87,7 +87,7 @@
                     {% if key != 'view' %}
                     {% set visible = objet.cols[key]['view'] %}
                     {% if visible == true %}
-                <td class="col{{ key }}">{{ col }}</td>
+                <td class="col{{ key }}">{{ col | raw }}</td>
                     {% endif %}
                     {% endif %}
                 {% endfor %}
