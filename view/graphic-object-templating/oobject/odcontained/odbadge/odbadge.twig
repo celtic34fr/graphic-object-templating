@@ -1,0 +1,41 @@
+{# tremplate pour l'objet ODBadge#}
+
+<style>
+    {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+    {% set id = objet.id %}
+    {% set type = objet.infoBulle.type %}
+    {% set css = objet.infoBulle.css %}
+    {% set placement = objet.infoBulle.placement %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+    {% elseif objet.erreur.libel is not empty %}
+    {% set erreur = objet.erreur %}
+    {% set id = objet.id %}
+    {% set type = 'tooltip' %}
+    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+    {% set placement = objet.infoBulle.placement %}
+    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+
+    #{{ id }} {
+        border:  solid 2px #{{ erreur.color }} !important;
+    }
+    {% endif %}
+</style>
+
+<span id="{{ objet.id }}"  data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
+      class="{{ objet.badgeColor }}"
+
+      {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
+          {%  set infoBulle = objet.infoBulle %}
+      {% elseif objet.erreur.libel is not empty %}
+          {% set infoBulle = objet.infoBulle %}
+          {% set erreur = objet.erreur %}
+          {% set infoBulle =
+          infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+      {% endif %}
+      {% if infoBulle is defined and infoBulle is not empty %}
+          {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+      {% endif %}
+
+>
+    {{ objet.value }}
+</span>

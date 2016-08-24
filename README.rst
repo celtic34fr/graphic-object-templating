@@ -91,6 +91,7 @@ En cours de développement :
 * ODRadio_ : radio bouton
 * ODMessage : affichage de message à l'écran (façon Windows 8)
 * ODTable_ : objet balise HTML <table></table>
+* ODBadge : badge de couleur contenant texte ou chiffre
 
 .. _ODButton: doc/objets/ODButton.rst
 .. _ODContent: doc/objets/ODContent.rst
