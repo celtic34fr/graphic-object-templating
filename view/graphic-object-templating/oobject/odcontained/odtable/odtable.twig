@@ -99,40 +99,36 @@
     </table>
 </div>
 
-<script>
-    $(document).ready(
-            $(".line .col").click(function () {
-                var selected = $(this).attr('class') + " " + $(this).parent().attr('class');
-                $("#{{ objet.id }}Select").val(selected);
-                alert("click sur "+selected);
-            })
-    )
-</script>
-
-{% if objet.event is defined and objet.event is not empty and objet.state == true %}
 <script id="{{ objet.id }}Script">
     $('document').ready(
-        {% for lno, line in objet.event %}
-            {% for cno, callback in line %}
-            {% switch lno %}
-                {% case 0 %} {# cas click sur colonne#}
-                    $('#{{ objet.id }} .col.cno' + cno).on('{{ evt }}', function() {
-                        invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                    })
-                {% default %}
-                    {% swith cno %}
-                        {%  case 0 %}
-                            $('#{{ objet.id }} .line.lno' + lno).on('{{ evt }}', function() {
-                                invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                            })
-                        {% default %}
-                            $('#{{ objet.id }} ..line.lno' + lno + ' col.no' + cno).on('{{ evt }}', function() {
-                                invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                            })
-                    {% endswitch %}
-            {% endswitch %}
-            {% endfor %}
+
+        $(".line .col").click(function () {
+            var selected = $(this).attr('class') + " " + $(this).parent().attr('class');
+            $("#{{ objet.id }}Select").val(selected);
+        })
+
+{% if objet.event is defined and objet.event is not empty and objet.state == true %}
+    {% for lno, line in objet.event %}
+        {% for cno, callback in line %}
+        {% switch lno %}
+            {% case 0 %} {# cas click sur colonne#}
+                $('#{{ objet.id }} .cno' + cno).on('{{ evt }}', function() {
+                    invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                })
+            {% default %}
+                {% swith cno %}
+                    {%  case 0 %}
+                        $('#{{ objet.id }} .lno' + lno).on('{{ evt }}', function() {
+                            invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                        })
+                    {% default %}
+                        $('#{{ objet.id }} .lno' + lno + ' .cno' + cno).on('{{ evt }}', function() {
+                            invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
+                        })
+                {% endswitch %}
+        {% endswitch %}
         {% endfor %}
+    {% endfor %}
+{% endif %}
     );
 </script>
-{% endif %}
