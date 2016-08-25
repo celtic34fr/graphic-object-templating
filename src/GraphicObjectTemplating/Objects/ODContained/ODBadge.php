@@ -38,6 +38,8 @@ class ODBadge extends ODContained
     const BADGE_COLOR_DANGER  = "badge bg-color-red";
     const BADGE_COLOR_WARNING = "badge bg-color-orange";
     const BADGE_COLOR_INFO    = "badge bg-color-blue";
+    const BADGE_COLOR_PRIMARY = "badge bg-color-blueMedium";
+    const BADGE_COLOR_SUCCES  = "badge bg-color-greenMedium";
 
     public function __construct($id) {
         $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.phtml");

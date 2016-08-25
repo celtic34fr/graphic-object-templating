@@ -28,6 +28,9 @@ footer {
     bottom: 30px;
 }
 
+.bg-color-blueMedium {
+    background-color: #275b89 !important;
+}
 .bg-color-blue {
     background-color: #57889c !important;
 }
@@ -39,6 +42,9 @@ footer {
 }
 .bg-color-green {
     background-color: #356e35 !important;
+}
+.bg-color-greenMedium {
+    background-color: #739e73 !important;
 }
 .bg-color-greenLight {
     background-color: #71843f !important;
