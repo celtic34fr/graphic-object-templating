@@ -17,6 +17,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  *      TEXT        : mode texte
  *      PASSWORD    : saisie de mot de passe (caché, présence d'étoile à la place)
  *      HIDDEN      : variable cachée
+ *      NUMBER      : chiffre entier
  * getType          : restitue le type de saisie
  * setSize          : fixe le nombre de caractères (maximum) à afficher
  * getSize          : restitue le nombre maximal de caractères à afficher
@@ -50,6 +51,7 @@ class ODInput extends ODContained
     const INPTYPE_TEXT     = "text";
     const INPTYPE_PASSWORD = "password";
     const INPTYPE_HIDDEN   = 'hidden';
+    const INPTYPE_NUMBER   = 'number';
 
     protected $const_inpType;
 

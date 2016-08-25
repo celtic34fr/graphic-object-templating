@@ -181,11 +181,11 @@ function odbutton_getData(obj, evt) {
  */
 function odinput_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
-    chps = chps + "&value='" + obj.children("input").val() + "'";
-    chps = chps + "&type='" + obj.children("input").attr('type') + "'";
+    chps = chps + "&value='" + obj.val() + "'";
+    chps = chps + "&type='" + obj.attr('type') + "'";
     if (evt.length > 0) {
         var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
+        var routine = obj.parent().attr(dataEvt);
         if (routine.length > 0) {
             chps = chps + "&callback='" + routine + "'";
         }
