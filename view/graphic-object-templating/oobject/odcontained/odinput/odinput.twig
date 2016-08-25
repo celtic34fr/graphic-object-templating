@@ -71,7 +71,7 @@
             {% if objet.icon is defined %}
                 <i class="{{ objet.icon }}"></i>
             {% endif %}
-            {{ objet.label }}
+            {{ translate(objet.label) }}
         </label>
     {% endif %}
     <input id="{{ objet.id }}_{{ objet.type }}" name="{{ objet.name }}" type="{{ objet.type }}"
