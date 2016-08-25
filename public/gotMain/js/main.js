@@ -231,6 +231,19 @@ function odradio_getData(obj, evt) {
     return chps;
 }
 
+function odtable_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    chps = chps + "&selected='" + obj.find("input[type=hidden]").val()+"'";
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.attr(dataEvt);
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
+    return chps;
+}
+
 /* méthode d'affection de valeur aux objets */
 
 /**

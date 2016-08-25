@@ -80,9 +80,9 @@
             {% if objet.datas is empty %}
             <tr class="line no1"><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
             {% else %}
-            {% for data in objet.datas %}
+            {% for lno, data in objet.datas %}
                 {% if data.view == true %}
-            <tr class="line lno{{ loop.index }}">
+            <tr class="line lno{{ lno }}">
                 {% for key, col in data %}
                     {% if key != 'view' %}
                     {% set visible = objet.cols[key]['view'] %}
@@ -100,35 +100,45 @@
 </div>
 
 <script id="{{ objet.id }}Script">
-    $('document').ready(
-
         $(".line .col").click(function () {
             var selected = $(this).attr('class') + " " + $(this).parent().attr('class');
             $("#{{ objet.id }}Select").val(selected);
-        })
+            alert(selected);
+        });
 
 {% if objet.event is defined and objet.event is not empty and objet.state == true %}
     {% for lno, line in objet.event %}
         {% for cno, callback in line %}
-        {% switch lno %}
-            {% case 0 %} {# cas click sur colonne#}
-                $('#{{ objet.id }} .cno' + cno).on('{{ evt }}', function() {
-                    invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                })
-            {% default %}
-                {% swith cno %}
-                    {%  case 0 %}
-                        $('#{{ objet.id }} .lno' + lno).on('{{ evt }}', function() {
-                            invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                        })
-                    {% default %}
-                        $('#{{ objet.id }} .lno' + lno + ' .cno' + cno).on('{{ evt }}', function() {
-                            invokeAjax(odtable_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                        })
-                {% endswitch %}
-        {% endswitch %}
+            {% switch true %}
+                {% case (lno == 0) %}
+        $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
+            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
+        });
+                {% case (lno !=0 and cno == 0) %}
+        $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
+            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
+        });
+                {% case (lno !=0 and cno != 0) %}
+        $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
+            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
+        });
+            {% endswitch %}
         {% endfor %}
     {% endfor %}
+
+    $(document).ready(function () {
+        {% for lno, line in objet.event %}
+            {% for cno, callback in line %}
+                {% switch true %}
+                    {% case (lno == 0) %}
+                $('#{{ objet.id }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+                    {% case (lno !=0 and cno == 0) %}
+                $('#{{ objet.id }} .lno{{ lno }}').attr('data-click', '{{ callback }}');
+                    {% case (lno !=0 and cno != 0) %}
+                $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}')attr('data-click', '{{ callback }}');
+                {% endswitch %}
+            {% endfor %}
+        {% endfor %}
+    });
 {% endif %}
-    );
 </script>
