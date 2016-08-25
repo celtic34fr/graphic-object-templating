@@ -94,3 +94,16 @@ footer {
 .bg-color-redLight {
     background-color: #a65858 !important;
 }
+
+
+.pull-right {
+    float: right !Important
+}
+
+.pull-left {
+    float: left !Important
+}
+
+.pull-center {
+    text-align: center;
+}

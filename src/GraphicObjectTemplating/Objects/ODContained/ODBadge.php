@@ -41,6 +41,10 @@ class ODBadge extends ODContained
     const BADGE_COLOR_PRIMARY = "badge bg-color-blueMedium";
     const BADGE_COLOR_SUCCES  = "badge bg-color-greenMedium";
 
+    const BADGEPOS_LEFT   = "pull-left";
+    const BADGEPOS_CENTER = "pull-center";
+    const BADGEPOS_RIGHT  = "pull-right";
+
     public function __construct($id) {
         $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.phtml");
         $this->properties = $parent->properties;
@@ -116,4 +120,18 @@ class ODBadge extends ODContained
         return $this;
     }
 
+
+    public function setPosition($position = self::RIGHT)
+    {
+        $properties = $this->getProperties();
+        $properties['position'] = $position;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getPosition()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['position'])) ? $properties['posirion'] : false) ;
+    }
 }

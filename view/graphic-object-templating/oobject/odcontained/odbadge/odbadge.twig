@@ -1,5 +1,10 @@
 {# tremplate pour l'objet ODBadge#}
 
+{% set objClasses = objet.badgeColor %}
+{% if objet.position is not empty %}
+    {% set objClasses = objClasses ~ " " ~ objet.position %}
+{% endif %}
+
 <style>
     {% if objet.style is not empty %}
     #{{ objet.id }} {
@@ -28,7 +33,7 @@
 </style>
 
 <span id="{{ objet.id }}"  data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
-      class="{{ objet.badgeColor }}"
+      class="{{ objClasses }}"
 
         {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
             {%  set infoBulle = objet.infoBulle %}
