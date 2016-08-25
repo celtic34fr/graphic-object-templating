@@ -180,7 +180,7 @@ function odbutton_getData(obj, evt) {
  * pour les objet de type ODInput
  */
 function odinput_getData(obj, evt) {
-    var chps = "id=" + obj.attr("id");
+    var chps = "id=" + obj.parent().attr("id");
     chps = chps + "&value='" + obj.val() + "'";
     chps = chps + "&type='" + obj.attr('type') + "'";
     if (evt.length > 0) {
