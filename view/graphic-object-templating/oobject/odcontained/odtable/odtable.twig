@@ -13,21 +13,20 @@
                     {{ cStyle | raw }}
                     }
                         {% else %}
-    #{{ objet.id }} table .col{{ col }} {
+    #{{ objet.id }} table .cno{{ col }} {
                     {{ cStyle | raw }}
                     }
                         {% endif %}
                     {% default %}
-                        {% switch col %}
-                            {% case 0 %}
-    #{{ objet.id }} table #line{{ line }} {
+                        {% if col == 0 %}
+    #{{ objet.id }} table .lno{{ line }} {
                     {{ cStyle | raw }}
                     }
-                            {% default %}
-    #{{ objet.id }} table #line{{ line }} .col{{ col }} {
+                        {% else %}
+    #{{ objet.id }} table .lno{{ line }} .cno{{ col }} {
                     {{ cStyle | raw }}
                     }
-                        {% endswitch %}
+                        {% endif %}
                 {% endswitch %}
             {% endfor %}
         {% endfor %}
@@ -68,10 +67,10 @@
         <caption>{{ objet.title }}</caption>
         {% endif %}
         <thead>
-            <tr class="line no0">
+            <tr class="line no0" data-line="0">
                 {% for col in objet.cols %}
                     {% if col.view == true %}
-                <th class="col{{ loop.index }}">{{ col.libel }}</th>
+                <th class="col cno{{ loop.index }}" data-col="{{ loop.index }}">{{ col.libel }}</th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -82,12 +81,12 @@
             {% else %}
             {% for lno, data in objet.datas %}
                 {% if data.view == true %}
-            <tr class="line lno{{ lno }}">
+            <tr class="line lno{{ lno }}" data_line="{{ lno }}">
                 {% for key, col in data %}
                     {% if key != 'view' %}
                     {% set visible = objet.cols[key]['view'] %}
                     {% if visible == true %}
-                <td class="col cno{{ key }}">{{ col | raw }}</td>
+                <td class="col cno{{ key }}" data-col="{{ key }}">{{ col | raw }}</td>
                     {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -101,7 +100,11 @@
 
 <script id="{{ objet.id }}Script">
         $(".line .col").click(function () {
-            var selected = $(this).attr('class') + " " + $(this).parent().attr('class');
+            var col = ""; var ligne = "";
+            if ($(this).hasAttr('data-col')) col = $(this).attr("data-col");
+            if ($(this).parent().hasAttr('data-line')) ligne = $(this).parent().attr("data-line");
+
+            var selected = col + "|" + ligne;
             $("#{{ objet.id }}Select").val(selected);
             alert(selected);
         });

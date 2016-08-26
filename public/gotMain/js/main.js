@@ -308,3 +308,12 @@ function odradio_setData(id, tabData) {
 String.prototype.replaceAll = function (str1, str2, ignore) {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
 }
+
+Object.prototype.hasAttr = function(attr) {
+    if(this.attr) {
+        var _attr = this.attr(attr);
+    } else {
+        var _attr = this.getAttribute(attr);
+    }
+    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
+};
