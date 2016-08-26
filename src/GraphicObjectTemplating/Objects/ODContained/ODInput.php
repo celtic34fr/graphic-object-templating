@@ -253,7 +253,7 @@ class ODInput extends ODContained
 
     public function setWide($wide)
     {
-        $wide               = (int) $wide;
+        $wide               = (string) $wide;
         $properties         = $this->getProperties();
         $properties['wide'] = $wide;
         $this->setProperties($properties);
