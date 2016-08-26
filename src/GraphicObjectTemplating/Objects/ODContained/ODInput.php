@@ -45,6 +45,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  * disKeyup         : désactivation de l'évènement touche frappée
  * setIcon          : affecte une icône après le label (font awesome / glyphicon)
  * getIcon          : récupère le nom de l'icône affecté après le label
+ * setWide
+ * getWide
  */
 class ODInput extends ODContained
 {
@@ -247,6 +249,21 @@ class ODInput extends ODContained
     {
         $properties         = $this->getProperties();
         return ((!empty($properties['icon'])) ? $properties['icon'] : false) ;
+    }
+
+    public function setWide($wide)
+    {
+        $wide               = (int) $wide;
+        $properties         = $this->getProperties();
+        $properties['wide'] = $wide;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getWide()
+    {
+        $properties         = $this->getProperties();
+        return ((!empty($properties['wide'])) ? $properties['wide'] : false) ;
     }
 
     /*

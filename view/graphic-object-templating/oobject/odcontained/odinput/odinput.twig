@@ -53,6 +53,13 @@
         border:  solid 2px #{{ erreur.color }};
     }
     {% endif %}
+
+    {% if objet.wide > 0 %}
+    #{{ objet.id }} input {
+        width: {{ objet.wide }};
+    }
+    {% endif %}
+
 </style>
 
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}"
