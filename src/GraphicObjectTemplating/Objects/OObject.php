@@ -90,7 +90,7 @@ class OObject
 
     const TYPE_TOOLTIP = 'tooltip';
     const TYPE_POPOVER = 'popover';
-    
+
     const TRIGGER_CLICK = 'click';
     const TRIGGER_HOVER = 'hover';
     const TRIGGER_FOCUS = 'focus';
@@ -245,8 +245,15 @@ class OObject
 
     public function setDisplay($display = OObject::DISPLAY_BLOCK)
     {
+        if ($this->id == "user") var_dump($this->id."-".$display);echo "<br/>";
+
         $displays = $this->getDisplayConstants();
+
+        var_dump("displays ->");var_dump($displays);echo "<br/>";
+
         if (!in_array($display, $displays)) $display = OObject::DISPLAY_BLOCK;
+
+        if ($this->id == "user") var_dump($this->id."-".$display);echo "<br/>";
 
         $properties            = $this->getProperties();
         $properties['display'] = $display;
@@ -275,7 +282,7 @@ class OObject
         $properties          = $this->getProperties();
         $style               = "";
         if (isset($properties['style']))
-			$style               = $properties['style'];
+            $style               = $properties['style'];
         if (substr($style, strlen($style) - 1, 1) !=";") $style .= ';';
         $style              .= $addStyle;
         $properties['style'] = $style;
@@ -323,7 +330,7 @@ class OObject
         $types                   = $this->getTypesConst();
         if (!in_array($type, $types)) $type = self::TYPE_TOOLTIP;
         $properties              = $this->getProperties();
-        
+
         if (!array_key_exists('infoBulle', $properties)) $properties['infoBulle'] = [];
         $properties['infoBulle']['title']   = $titre;
         $properties['infoBulle']['content'] = $contenu;
@@ -332,7 +339,7 @@ class OObject
         if (!empty($params)) {
             $this->setInfoBulleParams($params);
         }
-        
+
         return $this;
     }
 
@@ -703,13 +710,16 @@ class OObject
         if (empty($this->const_display)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($constant, 'DISPLAY_');
-                if ($pos === true) $retour[$key] = $constant;
+                $pos = strpos($key, 'DISPLAY');
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_display = $retour;
         } else {
             $retour = $this->const_display;
         }
+
+        var_dump($retour);
+
         return $retour;
     }
 
@@ -720,7 +730,7 @@ class OObject
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'INFOBULLE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_infoBulle = $retour;
         } else {
@@ -736,7 +746,7 @@ class OObject
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TYPE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_type = $retour;
         } else {
@@ -752,7 +762,7 @@ class OObject
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'TRIGGER');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_trigger = $retour;
         } else {
@@ -768,7 +778,7 @@ class OObject
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'STATE');
-                if ($pos === true) $retour[$key] = $constant;
+                if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_state = $retour;
         } else {

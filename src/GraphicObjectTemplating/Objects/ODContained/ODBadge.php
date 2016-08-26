@@ -84,22 +84,6 @@ class ODBadge extends ODContained
         return ((!empty($properties['badgeColor'])) ? $properties['badgeColor'] : false) ;
     }
 
-    private function getBadgeColorConst()
-    {
-        $retour = [];
-        if (empty($this->const_nature)) {
-            $constants = $this->getConstants();
-            foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'BADGE');
-                if ($pos !== false) $retour[$key] = $constant;
-            }
-            $this->const_nature = $retour;
-        } else {
-            $retour = $this->const_nature;
-        }
-        return $retour;
-    }
-
     public function evtClick($callback)
     {
         $callback               = (string) $callback;
@@ -134,4 +118,22 @@ class ODBadge extends ODContained
         $properties          = $this->getProperties();
         return ((!empty($properties['position'])) ? $properties['posirion'] : false) ;
     }
+
+
+    private function getBadgeColorConst()
+    {
+        $retour = [];
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'BADGE');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_nature = $retour;
+        } else {
+            $retour = $this->const_nature;
+        }
+        return $retour;
+    }
+
 }
