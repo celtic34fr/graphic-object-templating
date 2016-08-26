@@ -1,4 +1,24 @@
 /**
+ * fonction de traitement de chaîne : remplacer tout str1 par str2
+ * @param str1      : caractère ou chaîne  à rechercher
+ * @param str2      : caractère ou chaîne de remplacement
+ * @param ignore    : ignore (true) ou pas (false) la casse
+ * @returns {string}
+ */
+String.prototype.replaceAll = function (str1, str2, ignore) {
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
+}
+
+Object.prototype.hadAttr = function(attr) {
+    if(this.attr) {
+        var _attr = this.attr(attr);
+    } else {
+        var _attr = this.getAttribute(attr);
+    }
+    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
+};
+
+/**
  * méthode invokeAjax
  * @param datas : ensemble des données à communiquer à la callback appelé
  *
@@ -231,12 +251,28 @@ function odradio_getData(obj, evt) {
     return chps;
 }
 
-function odtable_getData(obj, evt) {
+function odtable_getData(obj, evt, nature) {
     var chps = "id=" + obj.attr("id");
-    chps = chps + "&selected='" + obj.find("input[type=hidden]").val()+"'";
+    chps = chps + "&selected='";
+    var child = $("#" + obj.attr("id") + " input").val();
+    chps = chps + child + "'";
     if (evt.length > 0) {
         var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
+        var pipe = child.indexOf("!");
+        var col  = child.substr(0, pipe);
+        var line = child.substr(pipe + 1);
+        var routine = "";
+        switch (nature) {
+            case "col":
+                routine = $("#" + obj.attr("id") + " td:nth-child(" + col + ")").attr(dataEvt);
+                break;
+            case "line":
+                routine = $("#" + obj.attr("id") + " tr:nth-child(" + line + ")").attr(dataEvt);
+                break;
+            case "cell":
+                routine = $("#" + obj.attr("id") + " tr:nth-child(" + line + ")" + " td:nth-child(" + col + ")").attr(dataEvt);
+                break;
+        }
         if (routine.length > 0) {
             chps = chps + "&callback='" + routine + "'";
         }
@@ -298,22 +334,3 @@ function odradio_setData(id, tabData) {
     }
 }
 
-/**
- * fonction de traitement de chaîne : remplacer tout str1 par str2
- * @param str1      : caractère ou chaîne  à rechercher
- * @param str2      : caractère ou chaîne de remplacement
- * @param ignore    : ignore (true) ou pas (false) la casse
- * @returns {string}
- */
-String.prototype.replaceAll = function (str1, str2, ignore) {
-    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
-}
-
-Object.prototype.hasAttr = function(attr) {
-    if(this.attr) {
-        var _attr = this.attr(attr);
-    } else {
-        var _attr = this.getAttribute(attr);
-    }
-    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
-};

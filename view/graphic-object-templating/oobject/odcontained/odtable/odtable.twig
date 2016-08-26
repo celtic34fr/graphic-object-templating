@@ -4,144 +4,154 @@
 
 <style>
     {% if objet.styles is not empty %}
-        {% for line, lStyle in objet.styles %}
-            {% for col, cStyle in lStyle %}
-                {% switch line %}
-                    {% case 0 %}
-                        {% if col == 0 %}
+    {% for line, lStyle in objet.styles %}
+    {% for col, cStyle in lStyle %}
+    {% switch line %}
+    {% case 0 %}
+    {% if col == 0 %}
     #{{ objet.id }} table {
-                    {{ cStyle | raw }}
-                    }
-                        {% else %}
+    {{ cStyle | raw }}
+    }
+    {% else %}
     #{{ objet.id }} table .cno{{ col }} {
                     {{ cStyle | raw }}
                     }
-                        {% endif %}
-                    {% default %}
-                        {% if col == 0 %}
+    {% endif %}
+    {% default %}
+    {% if col == 0 %}
     #{{ objet.id }} table .lno{{ line }} {
                     {{ cStyle | raw }}
                     }
-                        {% else %}
+    {% else %}
     #{{ objet.id }} table .lno{{ line }} .cno{{ col }} {
                     {{ cStyle | raw }}
                     }
-                        {% endif %}
-                {% endswitch %}
-            {% endfor %}
-        {% endfor %}
+    {% endif %}
+    {% endswitch %}
+    {% endfor %}
+    {% endfor %}
     {% endif %}
 
     #{{ objet.id }} table th,
     #{{ objet.id }} table td {
-        border: 1px solid #000000;
-        text-align: center;
-    }
+                        border: 1px solid #000000;
+                        text-align: center;
+                    }
 
     {% if objet.title is not empty %}
     #{{ objet.id }} table caption {
-        {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
-        {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
-        caption-side: {{ captionSide }};
-        text-align: {{ textAlign }};
-        {% if objet.titleStyle is not empty %}
-        {{ objet.titleStyle | raw }}
-        {% endif %}
-    }
+                    {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
+                    {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
+                        caption-side: {{ captionSide }};
+                        text-align: {{ textAlign }};
+                    {% if objet.titleStyle is not empty %}
+                    {{ objet.titleStyle | raw }}
+                    {% endif %}
+                    }
     {% endif %}
 
     {% for col in objet.cols %}
-        {% if col.view == true %}
+    {% if col.view == true %}
     #{{ objet.id }} table .col{{ loop.index }} {
-        width: {{ col.width }};
+                        width: {{ col.width }};
                     }
     {% endif %}
     {% endfor %}
 </style>
 
 <div id="{{ objet.id }}"  data-objet="{{ objet.object }}"
-                                                    {% if objClass is not empty %} class="{{ objClass }}" {% endif %}>
+        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}>
     <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
     <table id="{{ objet.id }}_table">
         {% if objet.title is not empty %}
-        <caption>{{ objet.title }}</caption>
+            <caption>{{ objet.title }}</caption>
         {% endif %}
         <thead>
-            <tr class="line no0" data-line="0">
-                {% for col in objet.cols %}
-                    {% if col.view == true %}
-                <th class="col cno{{ loop.index }}" data-col="{{ loop.index }}">{{ col.libel }}</th>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% if objet.datas is empty %}
-            <tr class="line no1"><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
-            {% else %}
-            {% for lno, data in objet.datas %}
-                {% if data.view == true %}
-            <tr class="line lno{{ lno }}" data_line="{{ lno }}">
-                {% for key, col in data %}
-                    {% if key != 'view' %}
-                    {% set visible = objet.cols[key]['view'] %}
-                    {% if visible == true %}
-                <td class="col cno{{ key }}" data-col="{{ key }}">{{ col | raw }}</td>
-                    {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </tr>
+        <tr class="line no0" data-line="0">
+            {% for col in objet.cols %}
+                {% if col.view == true %}
+                    <th class="col cno{{ loop.index }}" data-col="{{ loop.index }}">{{ col.libel }}</th>
                 {% endif %}
             {% endfor %}
-            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if objet.datas is empty %}
+            <tr class="line no1"data-line="1"><td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") }}</td></tr>
+        {% else %}
+            {% for lno, data in objet.datas %}
+                {% if data.view == true %}
+                    <tr class="line lno{{ lno }}" data-line="{{ lno }}">
+                        {% for key, col in data %}
+                            {% if key != 'view' %}
+                                {% set visible = objet.cols[key]['view'] %}
+                                {% if visible == true %}
+                                    <td class="col cno{{ key }}" data-col="{{ key }}">{{ col | raw }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 </div>
 
 <script id="{{ objet.id }}Script">
-        $(".line .col").click(function () {
-            var col = ""; var ligne = "";
-            if ($(this).hasAttr('data-col')) col = $(this).attr("data-col");
-            if ($(this).parent().hasAttr('data-line')) ligne = $(this).parent().attr("data-line");
+    Object.prototype.hadAttr = function(attr) {
+        if(this.attr) {
+            var _attr = this.attr(attr);
+        } else {
+            var _attr = this.getAttribute(attr);
+        }
+        return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
+    };
 
-            var selected = col + "|" + ligne;
-            $("#{{ objet.id }}Select").val(selected);
-            alert(selected);
-        });
+    $(".line .col").click(function () {
+        var col = ""; var ligne = "";
+        if ($(this).hadAttr('data-col')) col = $(this).attr("data-col");
+        if ($(this).parent().hadAttr('data-line')) ligne = $(this).parent().attr("data-line");
 
-{% if objet.event is defined and objet.event is not empty and objet.state == true %}
+        var selected = col + "!" + ligne;
+        $("#{{ objet.id }}Select").val(selected);
+        alert(selected);
+    });
+
+    {% if objet.event is defined and objet.event is not empty and objet.state == true %}
     {% for lno, line in objet.event %}
-        {% for cno, callback in line %}
-            {% switch true %}
-                {% case (lno == 0) %}
-        $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
-            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
-        });
-                {% case (lno !=0 and cno == 0) %}
-        $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
-            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
-        });
-                {% case (lno !=0 and cno != 0) %}
-        $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
-            invokeAjax(odtable_getData($('#{{ objet.id }}'),'click'));
-        });
-            {% endswitch %}
-        {% endfor %}
+    {% for cno, callback in line %}
+    {% switch true %}
+    {% case (lno == 0) %}
+    $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
+        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'col'));
+    });
+    {% case (lno !=0 and cno == 0) %}
+    $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
+        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'line'));
+    });
+    {% case (lno !=0 and cno != 0) %}
+    $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
+        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'cell'));
+    });
+    {% endswitch %}
+    {% endfor %}
     {% endfor %}
 
     $(document).ready(function () {
         {% for lno, line in objet.event %}
-            {% for cno, callback in line %}
-                {% switch true %}
-                    {% case (lno == 0) %}
-                $('#{{ objet.id }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
-                    {% case (lno !=0 and cno == 0) %}
-                $('#{{ objet.id }} .lno{{ lno }}').attr('data-click', '{{ callback }}');
-                    {% case (lno !=0 and cno != 0) %}
-                $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}')attr('data-click', '{{ callback }}');
-                {% endswitch %}
-            {% endfor %}
+        {% for cno, callback in line %}
+        {% switch true %}
+        {% case (lno == 0) %}
+        $('#{{ objet.id }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+        {% case (lno !=0 and cno == 0) %}
+        $('#{{ objet.id }} .lno{{ lno }}').attr('data-click', '{{ callback }}');
+        {% case (lno !=0 and cno != 0) %}
+        $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+        {% endswitch %}
+        {% endfor %}
         {% endfor %}
     });
-{% endif %}
+    {% endif %}
+
 </script>
