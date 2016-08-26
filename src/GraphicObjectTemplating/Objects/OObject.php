@@ -245,15 +245,8 @@ class OObject
 
     public function setDisplay($display = OObject::DISPLAY_BLOCK)
     {
-        if ($this->id == "user") var_dump($this->id."-".$display);echo "<br/>";
-
         $displays = $this->getDisplayConstants();
-
-        var_dump("displays ->");var_dump($displays);echo "<br/>";
-
         if (!in_array($display, $displays)) $display = OObject::DISPLAY_BLOCK;
-
-        if ($this->id == "user") var_dump($this->id."-".$display);echo "<br/>";
 
         $properties            = $this->getProperties();
         $properties['display'] = $display;
@@ -717,8 +710,6 @@ class OObject
         } else {
             $retour = $this->const_display;
         }
-
-        var_dump($retour);
 
         return $retour;
     }
