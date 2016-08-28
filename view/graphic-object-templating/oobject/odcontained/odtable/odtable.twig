@@ -52,7 +52,7 @@
 
     {% for col in objet.cols %}
     {% if col.view == true %}
-    #{{ objet.id }} table .col{{ loop.index }} {
+    #{{ objet.id }} table .cno{{ loop.index }} {
                         width: {{ col.width }};
                     }
     {% endif %}
@@ -99,15 +99,6 @@
 </div>
 
 <script id="{{ objet.id }}Script">
-    Object.prototype.hadAttr = function(attr) {
-        if(this.attr) {
-            var _attr = this.attr(attr);
-        } else {
-            var _attr = this.getAttribute(attr);
-        }
-        return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
-    };
-
     $(".line .col").click(function () {
         var col = ""; var ligne = "";
         if ($(this).hadAttr('data-col')) col = $(this).attr("data-col");
@@ -124,15 +115,18 @@
     {% switch true %}
     {% case (lno == 0) %}
     $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
-        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'col'));
+        var params = odtable_getData($('#{{ objet.id }}'),'click', 'col');
+        invokeAjax(params);
     });
     {% case (lno !=0 and cno == 0) %}
     $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
-        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'line'));
+        var params = odtable_getData($('#{{ objet.id }}'),'click', 'line');
+        invokeAjax(params);
     });
     {% case (lno !=0 and cno != 0) %}
     $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
-        invokeAjax(odtable_getData($('#{{ objet.id }}'),'click', 'cell'));
+        var params = odtable_getData($('#{{ objet.id }}'),'click', 'cell');
+        invokeAjax(params);
     });
     {% endswitch %}
     {% endfor %}

@@ -8,9 +8,21 @@
 
 namespace GraphicObjectTemplating\Objects\ODContained;
 
-
 use GraphicObjectTemplating\Objects\ODContained;
 
+/**
+ * Class ODBadge
+ * @package GraphicObjectTemplating\Objects\ODContained
+ *
+ * setWidthBT : surcharge de méthode pour la rendre inactive
+ * getWidthBT : surcharge de méthode pour la rendre inactive
+ * setColor
+ * getColor
+ * evtClick
+ * disClick
+ * setPosition
+ * getPosition
+ */
 class ODBadge extends ODContained
 {
     const BADGE_DEFAULT    = "badge";

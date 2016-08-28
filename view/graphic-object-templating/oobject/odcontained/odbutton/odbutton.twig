@@ -53,7 +53,7 @@
         {% set params = params|merge({'controller':controller}) %}
         {% set params = params|merge({'action':action}) %}
         {% set params = params|merge({'id':objet.value}) %}
-        {% set routeUrl = ( url(route ~ '/default', params) ) %}
+        {% set routeUrl = ( url(route|lower ~ '/default', params) ) %}
     {% endif %}
 {% endif %}
 
@@ -98,12 +98,18 @@
     $('document').ready(
         {% if objet.event is not empty %}
             {% for evt, callback in objet.event %}
+                {% if callback is not empty %}
     $('#{{ objet.id }}').on('{{ evt }}', function() {
         invokeAjax(odbutton_getData($('#{{ objet.id }}'),'{{ evt }}'));
     })
+                {% endif %}
             {% endfor %}
         {% endif %}
     );
+</script>
+{% elseif objet.state == false %}
+<script id="{{ objet.id }}Script">
+    $('#{{ objet.id }}').attr('disabled', 'disabled')
 </script>
 {% endif %}
 

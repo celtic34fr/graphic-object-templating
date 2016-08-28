@@ -9,7 +9,6 @@
 namespace GraphicObjectTemplating\Controller;
 
 use GraphicObjectTemplating\Objects\OObject;
-use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -26,7 +25,7 @@ class GOTController extends AbstractActionController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $paramsPost = $request->getPost();
+            $paramsPost = $request->getPost()->toArray();
             $params     = [];
             foreach ($paramsPost as $cle => $param) {
                 if (substr($param, 0, 1) == "'") $param = substr($param, 1);
@@ -37,7 +36,6 @@ class GOTController extends AbstractActionController
             }
 
             if (isset($callback) && !empty($callback)) {
-                // formatable namespace controleur + nom méthode(Action) appelé
                 $pos = strpos($callback, '/');
                 $module = ucfirst(substr($callback, 0, $pos));
                 $callback = substr($callback, $pos + 1);
@@ -93,16 +91,16 @@ class GOTController extends AbstractActionController
                     }
                     $params['form'] = $formDatas;
                 }
+
                 $result = call_user_func_array(array($object, $method),
                     array(
                         'sl' => $this->getServiceLocator(),
                         $params
                     ));
-                $data = new JsonModel($result);
 
                 $response = $this->getResponse();
                 $response->setStatusCode(200);
-                $response->setContent($data->serialize());
+                $response->setContent(\Zend\Json\Json::encode($result));
                 return $response;
             }
         }

@@ -14,31 +14,33 @@ use GraphicObjectTemplating\Objects\ODContained;
  * Class ODButton
  * @package GraphicObjectTemplating\Objects\ODContained
  *
+ * T : testé et validé
+ *
  * type des boutons : (affecté suivant d'autre attribut)
  *      CUSTOM  = bouton divers permettant de déclencher un action
  *      SUBMIT  = bouton de déclenchement du pseudo formulaire auquel il est lié
  *      RESET   = bouton de réinitialisation du pseudo formulaire auquel il est lié
  *
- * setLabel     : affectation du texte présenté dans le bouton
- * getLabel     : récupération du texte présenté dans le bouton
- * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
- * getIcon      : récupère le nom de l'icône affecté au bouton
- * setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
+ * T setLabel     : affectation du texte présenté dans le bouton
+ * T getLabel     : récupération du texte présenté dans le bouton
+ * T setIcon      : affecte une icône au bouton (font awesome / glyphicon)
+ * T getIcon      : récupère le nom de l'icône affecté au bouton
+ * T setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
  *                  peut induire une modification du type du bouton
  * setType      : affectation du type de bouton
  *      CUSTOM      : type divers
  *      SUBMIT      : type soumission (de formuulaire)
  *      RESET       : type remise à zéro des champs (de formulaire)
  *      LINK        : type lien HTML
- * getType      : récupération du type du bouton
- * evtClick     : activation et paramètrage de l'évènement 'click' sur le bouton
+ * T getType      : récupération du type du bouton
+ * T evtClick     : activation et paramètrage de l'évènement 'click' sur le bouton
  *      callback : "nomModule/nomObjet/nomMéthode"
  *          si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
  *          si nomModule == 'Object' :
  *              si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"
  *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/ODContainer/nomObjet/nomMéthode"
- * disClick     : désactivation de lm'évènement 'click' sur le bouton
- * setNature    : affectation de la nature du bouton
+ * T disClick     : désactivation de lm'évènement 'click' sur le bouton
+ * T setNature    : affectation de la nature du bouton
  *      DEFAULT     : nature par défaut (valeur par défaut)
  *      PRIMARY     : nature primaire (bleu roi)
  *      SUCCESS     : nature succès (vert)
@@ -46,7 +48,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  *      WARNING     : nature avertissement alerte (orange)
  *      DANGER      : nature danger, erreur (rouge)
  *      LINK        : nature lien (lien HTML, plus bouton alors)
- * getNature
+ * T getNature
  */
 class ODButton extends ODContained
 {
@@ -126,9 +128,17 @@ class ODButton extends ODContained
         $type  = (string) $type;
         if (!in_array($type, $types)) $type = self::BTNTYPE_CUSTOM;
 
-        if ($type == self::BTNTYPE_LINK) {
-            if (isset($properties['event']['click']))
-                $properties['event']['click'] = mb_strtolower($properties['event']['click']);
+        switch ($type) {
+            case self::BTNTYPE_LINK:
+                if (isset($properties['event']['click']))
+                    $properties['event']['click'] = mb_strtolower($properties['event']['click']);
+                break;
+            case self::BTNTYPE_RESET:
+                if (empty($properties['form'])) $type = self::BTNTYPE_CUSTOM;
+                break;
+            case self::BTNTYPE_SUBMIT:
+                if (empty($properties['form']) || !isset($properties['event']['click'])) $type = self::BTNTYPE_CUSTOM;
+                break;
         }
 
         $properties         = $this->getProperties();

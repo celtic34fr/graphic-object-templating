@@ -1,36 +1,20 @@
 /**
- * fonction de traitement de chaîne : remplacer tout str1 par str2
- * @param str1      : caractère ou chaîne  à rechercher
- * @param str2      : caractère ou chaîne de remplacement
- * @param ignore    : ignore (true) ou pas (false) la casse
- * @returns {string}
- */
-String.prototype.replaceAll = function (str1, str2, ignore) {
-    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
-}
-
-Object.prototype.hadAttr = function(attr) {
-    if(this.attr) {
-        var _attr = this.attr(attr);
-    } else {
-        var _attr = this.getAttribute(attr);
-    }
-    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
-};
-
-/**
  * méthode invokeAjax
  * @param datas : ensemble des données à communiquer à la callback appelé
  *
  * appel du module de gestion des appels aux callbacks
  */
+
 function invokeAjax(datas) {
     var urlGotCallback = $("#gotCallback").html();
     $.ajax({
-        url: urlGotCallback,
-        type: 'POST',
-        data: datas,
-        success: function (returnDatas) {
+        url:        urlGotCallback,
+        type:       'POST',
+        dataType:   'json',
+        async:      true,
+        data:       datas,
+
+        success: function (returnDatas, status) {
             $.each(returnDatas, function (i, ret) {
                 $.each(ret, function (j, k) {
                     switch (j) {
@@ -81,9 +65,27 @@ function invokeAjax(datas) {
                 }
             });
         },
-        dataType: "json"
+
+        error : function(xhr, textStatus, errorThrown) {
+            if (xhr.status === 0) {
+                alert('Not connected. Verify Network.');
+            } else if (xhr.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (xhr.status == 500) {
+                alert('Server Error [500].');
+            } else if (errorThrown === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (errorThrown === 'timeout') {
+                alert('Time out error.');
+            } else if (errorThrown === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Remote sever unavailable. Please try later, '+xhr.status+"//"+errorThrown+"//"+textStatus);
+            }
+        }
     });
 }
+
 
 /**
  * méthode getFormDatas
@@ -334,3 +336,24 @@ function odradio_setData(id, tabData) {
     }
 }
 
+/**
+ * fonction de traitement de chaîne : remplacer tout str1 par str2
+ * @param str1      : caractère ou chaîne  à rechercher
+ * @param str2      : caractère ou chaîne de remplacement
+ * @param ignore    : ignore (true) ou pas (false) la casse
+ * @returns {string}
+ */
+String.prototype.replaceAll = function (str1, str2, ignore) {
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
+}
+
+/*
+Object.prototype.hadAttr = function(attr) {
+    if(this.attr) {
+        var _attr = this.attr(attr);
+    } else {
+        var _attr = this.getAttribute(attr);
+    }
+    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
+};
+ */
