@@ -100,13 +100,13 @@ class ODContained extends OObject
 
     public function getForm() {
         if (!empty($this->form)) {
-            $value = $this->form;
+            $form = $this->form;
         } else {
             $properties = $this->getProperties();
-            $value      = (array_key_exists('value', $properties)) ? $properties['value'] : '';
-            $this->form = $value;
+            $form       = (array_key_exists('form', $properties)) ? $properties['form'] : '';
+            $this->form = $form;
         }
-        return $value;
+        return $form;
     }
 
     public function convertValue($value) { return $this->setValue($value); }
@@ -118,7 +118,7 @@ class ODContained extends OObject
         if (empty($this->const_icon)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TRIGGER');
+                $pos = strpos($key, 'ICON');
                 if ($pos === false) unset($constants[$key]);
             }
             $this->const_icon = $constants;

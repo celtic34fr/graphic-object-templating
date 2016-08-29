@@ -202,9 +202,9 @@ function odbutton_getData(obj, evt) {
  * pour les objet de type ODInput
  */
 function odinput_getData(obj, evt) {
-    var chps = "id=" + obj.parent().attr("id");
-    chps = chps + "&value='" + obj.val() + "'";
-    chps = chps + "&type='" + obj.attr('type') + "'";
+    var chps = "id=" + obj.attr("id");
+    chps = chps + "&value='" + obj.find("input").val() + "'";
+    chps = chps + "&type='" + obj.find("input").attr('type') + "'";
     if (evt.length > 0) {
         var dataEvt = 'data-' + evt;
         var routine = obj.parent().attr(dataEvt);

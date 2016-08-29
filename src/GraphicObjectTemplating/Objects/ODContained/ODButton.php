@@ -39,6 +39,12 @@ use GraphicObjectTemplating\Objects\ODContained;
  *          si nomModule == 'Object' :
  *              si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"
  *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/ODContainer/nomObjet/nomMéthode"
+ *          si nomObjet se termine par 'GOT' -> "nomModule/GotObjects/nomObjet"
+ * REMARQUE pour créer des objets composés GOT il est imposé :
+ *      -> de créer un répertoire GotObjects pour contenir les objets GOT du module
+ *      -> de terminer obligatoirement le nom de la classe définissant l'objet par 'GOT'
+ *          ceci permettra de coder les méthodes de traitement de l'objet dans la classe elle-même
+ *          la base prise sera une extension de l'objet OSDiv comme contenant global.
  * T disClick     : désactivation de lm'évènement 'click' sur le bouton
  * T setNature    : affectation de la nature du bouton
  *      DEFAULT     : nature par défaut (valeur par défaut)

@@ -53,13 +53,16 @@ class GOTController extends AbstractActionController
                     case (substr($controller, 0, 2) == 'OS') :
                         $nomController = "GraphicObjectTemplating/OSContainer/".$controller;
                         break;
+                    case (strpos($controller, "GOT") == (strlen($controller) - 3)) :
+                        $nomController = $module."/GotObjects/".$controller;
+                        break;
                     default:
                         $nomController = $module."/".$controller;
                         break;
                 }
                 $nomController = str_replace("/", chr(92), $nomController);
-                $object = new $nomController;
 
+                $object = new $nomController;
                 // traitement en cas de formulaire
                 if (isset($form) && !empty($form)) {
                     $formDatas = [];

@@ -16,6 +16,25 @@ use GraphicObjectTemplating\Objects\ODContained;
  *
  * fait avec le plugin jQuery Lobibox
  * (http://lobianijs.com/site/lobibox)
+ * 
+ * setAction
+ * getAction
+ * statusSound
+ * enaSound
+ * disSound
+ * toggleSound
+ * setPosition
+ * getPosition
+ * setTitle
+ * getTitle
+ * setBody
+ * getBody
+ * setType
+ * getType
+ * setDelay
+ * getDelay
+ * setSize
+ * getSize
  */
 class ODMessage extends ODContained
 {
