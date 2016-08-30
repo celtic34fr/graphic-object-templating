@@ -99,7 +99,7 @@ $('document').ready(
     {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
     if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
     {% case (objet.type =='reset' and objet.form is empty) %}
-    if (!$('#{{ objet.id }}').hasAtrr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
+    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
     {% case objet.type != 'link' and objet.state == true %}
         {% if objet.event is not empty %}
             {% for evt, callback in objet.event %}
