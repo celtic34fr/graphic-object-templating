@@ -93,25 +93,26 @@
     {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ translate(objet.label) }}
 </button>
 
-{% if objet.event is defined and objet.event is not empty and objet.type != 'link' and objet.state == true %}
 <script id="{{ objet.id }}Script">
-    $('document').ready(
+$('document').ready(
+{% switch true %}
+    {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
+    if (!$('#{{ objet.id }}').hasAtrr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
+    {% case (objet.type =='reset' and objet.form is empty) %}
+    if (!$('#{{ objet.id }}').hasAtrr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
+    {% case objet.type != 'link' and objet.state == true %}
         {% if objet.event is not empty %}
             {% for evt, callback in objet.event %}
-                {% if callback is not empty %}
-    $('#{{ objet.id }}').on('{{ evt }}', function() {
-        invokeAjax(odbutton_getData($('#{{ objet.id }}'),'{{ evt }}'));
-    })
-                {% endif %}
+            {% if callback is not empty %}
+            $('#{{ objet.id }}').on('{{ evt }}', function() {
+                invokeAjax(odbutton_getData($('#{{ objet.id }}'),'{{ evt }}'));
+            })
+            {% endif %}
             {% endfor %}
         {% endif %}
-    );
+{% endswitch %}
+);
 </script>
-{% elseif objet.state == false %}
-<script id="{{ objet.id }}Script">
-    $('#{{ objet.id }}').attr('disabled', 'disabled')
-</script>
-{% endif %}
 
 {% if infoBulle.title is not empty %}
     {%  set type = infoBulle.type %}
