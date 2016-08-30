@@ -1,0 +1,82 @@
+{# template pour l'objet OCWizard #}
+
+{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set wd       = (100 / objet.etapes|length) - 0.15; %}
+
+<style>
+    #{{ objet.id }} {
+        display: {{ objet.display }};
+    {% if objet.style is not empty %}
+    {{ objet.style }}
+    {% endif %}
+    }
+
+    div.tab-panel {
+        display: none;
+    }
+
+    #{{ objet.id }} li {
+        width: {{ wd }}%;
+        text-align: center;
+    }
+
+    .nav-pills > li.active > a,
+    .nav-pills > li.active > a:focus,
+    .nav-pills > li.active > a.hover {
+        color: #000;
+        background-color: #FFF !important;
+    }
+
+    .nav-pills > li + li {
+        margin-left: 0 !important;
+    }
+
+</style>
+
+<div id="{{ objet.id }}">
+    {% if (objet.etapes|length > 0) %}
+    <ul class="bootstrapWizard">
+        {% for ord, etape in objet.etapes %}
+        <li id="step{{ ord }}" data-target="#etape{{ ord }}" class="bubble">';
+            <a href="#etape{{ ord }}" data-toggle="tab" >
+                <span class="step">{{ ord }}</span>
+                <span class="title">{{ etape.title }}</span>
+            </a>
+        </li>
+        {{ endfor }}
+    </ul>
+    <div class="tab-content">
+        {% for ord, etape in objet.etapes %}
+        <div id='etape{{ ord }}' class='tab-panel' >
+            {{ gotRender(etape.content) }}
+        </div>
+        {{ endfor }}
+    </div>
+    <ul class="pager wizard">
+        <li class="previous first" style="display:none;"><a href="#">First</a></li>
+        <li class="previous"><a href="#">Previous</a></li>
+        <li class="next last" style="display:none;"><a href="#">Last</a></li>
+        <li class="next"><a href="#">Next</a></li>
+    </ul>
+    {% endif %}
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        $('#{{ objet.id }}').bootstrapWizard({'tabClass': 'nav nav-pills',
+            onInit: function (tab, navigation, index) {
+                $('#{{ objet.id }}').data('etapesEnCours', 1);
+            }
+            onNext: function (tab, navigation, index) {
+                if (index < {{ objet.etapes|length }})
+                    $('#{{ objet.id }}').data('etapesEnCours', index + 1);
+            },
+            onPrevious: function (tab, navigation, index) {
+                if (index > 1 )
+                    $('#{{ objet.id }}').data('etapesEnCours', index - 1);
+            }
+        });
+
+    });
+</script>
