@@ -116,6 +116,9 @@ function getFormDatas(form) {
             case "odcheckbox":
                 var  datas = odcheckbox_getData(obj, '');
                 break;
+            case "odonoff":
+                var datas = odonoff_getData(obj, '');
+                break
         }
 
         if (datas.length > 0) {
@@ -275,6 +278,23 @@ function odtable_getData(obj, evt, nature) {
                 routine = $("#" + obj.attr("id") + " tr:nth-child(" + line + ")" + " td:nth-child(" + col + ")").attr(dataEvt);
                 break;
         }
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
+    return chps;
+}
+
+function odonoff_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    if  ($("#"+obj.attr('id')).is(":checked")) {
+        chps = chps + "&value='checked'";
+    } else {
+        chps = chps + "&value='unchecked'";
+    }
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.attr(dataEvt);
         if (routine.length > 0) {
             chps = chps + "&callback='" + routine + "'";
         }
