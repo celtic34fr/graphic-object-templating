@@ -158,6 +158,45 @@ function resetFormDatas(form) {
     })
 }
 
+function setFormDatas(form, datas) {
+    var arrayData = datas.split("|");
+    arrayData.each(function () {
+        var id    = "";
+        var value = "";
+        var type  = "";
+
+        dataObj = $(this).split("§");
+        dataObj.each(function () {
+            var pos = $(this).indexOf("=");
+            var attr = $(this).substr(0, pos);
+
+            switch (attr) {
+                case "id":
+                    id = $(this).substr(pos +1);
+                    break;
+                case "value":
+                    value = $(this).substr(pos +1);
+                    break;
+                case "type":
+                    type = $(this).substr(pos +1);
+                    break;
+            }
+        });
+        switch (type) {
+            case "odinput":
+                $(id).val(value);
+                break;
+            case "odselect":
+                $.each(values.split("$"), function(i,e){
+                    $("#"+id+" option[value='" + e + "']").prop("selected", true);
+                });
+                break;
+        }
+    })
+}
+
+
+
 /* méthode de restitution des valeurs d'objets */
 
 /**
@@ -220,6 +259,8 @@ function odinput_getData(obj, evt) {
 
 function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
+    chps = chps + "&value='" + obj.find("select").val().join("$") + "'";
+    return chps;
 }
 
 function odcheckbox_getData(obj, evt) {
@@ -357,6 +398,23 @@ function odradio_setData(id, tabData) {
 }
 
 /**
+ * Sauvegarde et restauration de données de formulaire (HTML5 SessionStorage)
+ * (voir à étendre à des données pures (hors formulaire)
+ */
+
+function saveForm(id, form) {
+    // fonction visant à faire un stockage local du contenu d'un formulaire
+    var idSto = $(id).val();
+    var datas = getFormDatas(form);
+    sessionStorage.setItem(idSto, datas);
+}
+
+function reastoreForm(idSto, form) {
+    var datas = sessionStorage.getItem(idSto);
+    setFormData(form, datas)
+}
+
+/**
  * fonction de traitement de chaîne : remplacer tout str1 par str2
  * @param str1      : caractère ou chaîne  à rechercher
  * @param str2      : caractère ou chaîne de remplacement
@@ -367,13 +425,3 @@ String.prototype.replaceAll = function (str1, str2, ignore) {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
 }
 
-/*
-Object.prototype.hadAttr = function(attr) {
-    if(this.attr) {
-        var _attr = this.attr(attr);
-    } else {
-        var _attr = this.getAttribute(attr);
-    }
-    return (typeof _attr !== "undefined" && _attr !== false && _attr !== null);
-};
- */
