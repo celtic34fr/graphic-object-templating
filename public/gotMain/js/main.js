@@ -184,12 +184,10 @@ function setFormDatas(form, datas) {
         });
         switch (type) {
             case "odinput":
-                $(id).val(value);
+                odinput_setData(id, value);
                 break;
             case "odselect":
-                $.each(values.split("$"), function(i,e){
-                    $("#"+id+" option[value='" + e + "']").prop("selected", true);
-                });
+                odselect_setData(id, value)
                 break;
         }
     })
@@ -367,8 +365,16 @@ function odinput_setData(id, data) {
     $("#"+id+" input").val(data);
 }
 
-function odselect_setData(obj, data) {
-
+function odselect_setData(id, data) {
+    if (data == "") { // raz des options sélectionnées
+        $("#"+ id +" option").removeAttr("selected");
+    } else  {
+        if ($.isArray(data)) {
+            data.each(function(idx, val){
+                $("#"+ id +" option:nth_child("+val+")").attr("selected","selected");
+            })
+        }
+    }
 }
 
 function odcheckbox_setData(id, tabData) {
