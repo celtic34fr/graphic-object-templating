@@ -35,7 +35,7 @@
     <textarea id="{{ objet.id }}TxtArea" name="{{ objet.name }}" cols="{{ objet.cols }}" rows="{{ objet.rows }}"
         data-objet="{{ objet.object }}" data-type="{{ objet.typeObj }}"
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
-        {% if objet.readOnly %}readonly="readonly" {% endif %}
+        {% if objet.readOnly %} readonly {% endif %}
 
         {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
             {%  set infoBulle = objet.infoBulle %}
@@ -58,6 +58,8 @@
         {% if objet.state == false %}
             disabled
         {% endif %}
+        {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+        {% if objet.maxLength is not empty and objet.maxLength > 0 %} maxLength="{{ objet.maxlength }}" {% endif %}
     >
         {{ objet.value }}
     </textarea>
