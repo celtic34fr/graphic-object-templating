@@ -104,20 +104,23 @@ function getFormDatas(form) {
         var object = obj.attr('data-objet');
         var datas = '';
 
-        switch (object) { // traitement suivant l'objet (type ODContent)
+        switch (object) { // traitement suivant l'objet (type ODContained)
             case "odbutton":
                 break;
+            case "odcontent":
+                odcontent_getData(obj, "");
+                break;
             case "odinput":
-                var datas = odinput_getData(obj, '');
+                datas = odinput_getData(obj, '');
                 break;
             case "odselect":
-                var datas = odselect_getData(obj, '');
+                datas = odselect_getData(obj, '');
                 break;
             case "odcheckbox":
-                var  datas = odcheckbox_getData(obj, '');
+                datas = odcheckbox_getData(obj, '');
                 break;
-            case "odonoff":
-                var datas = odonoff_getData(obj, '');
+            case "odtoggle":
+                datas = odtoggle_getData(obj, '');
                 break
         }
 
@@ -133,29 +136,41 @@ function getFormDatas(form) {
 }
 
 /**
- * méthode resetFormDatas
+ * méthode razFormDatas
  * @param form
  *
  * méthode d'initialisation des données regroupées dans un 'formulaire'
  */
-function resetFormDatas(form) {
+function razFormDatas(form) {
     var selection = "[data-form='" + form + "']";
-    $('*').find(selection).each(function () {
+    var eltSelection = $('*').find(selection);
+
+    eltSelection.each(function () {
         var obj = $(this);
         var object = obj.attr('data-objet');
+        var id = obj.attr('id');
 
-        switch (object) {
-            case "odcheckbox":
-                odcheckbox_setData(obj.attr('id'), "");
+        switch (object) { // traitement suivant l'objet (type ODContained)
+            case "odbutton":
+                odbutton_setData(id, "");
                 break;
-            case "odradio":
-                odradio_setData(obj.attr('id'), "");
+            case "odcontent":
+                odcontent_setData(id, "");
                 break;
             case "odinput":
-                odinput_setData(obj.attr('id'), "");
+                odinput_setData(id, "");
+                break;
+            case "odcheckbox":
+                odcheckbox_setData(id, "");
+                break;
+            case "odselect":
+                odselect_setData(id, "");
+                break;
+            case "odradio":
+                odradio_setData(id, "");
                 break;
         }
-    })
+    });
 }
 
 function setFormDatas(form, datas) {
@@ -183,11 +198,23 @@ function setFormDatas(form, datas) {
             }
         });
         switch (type) {
+            case "odbutton":
+                odbutton_setData(id, value);
+                break;
+            case "odcontent":
+                odcontent_setData(id, value);
+                break;
             case "odinput":
                 odinput_setData(id, value);
                 break;
+            case "odcheckbox":
+                odcheckbox_setData(id, value);
+                break;
             case "odselect":
-                odselect_setData(id, value)
+                odselect_setData(id, value);
+                break;
+            case "odradio":
+                odradio_setData(id, value);
                 break;
         }
     })
@@ -233,6 +260,26 @@ function odbutton_getData(obj, evt) {
 }
 
 /**
+ * méthode odcontent_getData
+ * @param obj
+ * @param evt
+ * @returns {string}
+ */
+function odcontent_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    chps = chps + "&value='" + obj.html() + "'";
+    chps = chps + "&type='" + obj.attr('data-objet') + "'";
+    if (evt.length > 0) {
+        var dataEvt = 'data-' + evt;
+        var routine = obj.parent().attr(dataEvt);
+        if (routine.length > 0) {
+            chps = chps + "&callback='" + routine + "'";
+        }
+    }
+    return chps;
+}
+
+/**
  * méthode odinput_getData
  * @param obj
  * @param evt
@@ -255,12 +302,24 @@ function odinput_getData(obj, evt) {
     return chps;
 }
 
+/**
+ * méthode odselect_GetData
+ * @param obj
+ * @param evt
+ * @returns {string}
+ */
 function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     chps = chps + "&value='" + obj.find("select").val().join("$") + "'";
     return chps;
 }
 
+/**
+ * méthode odcheckbox_getData
+ * @param obj
+ * @param evt
+ * @returns {string}
+ */
 function odcheckbox_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
@@ -278,6 +337,12 @@ function odcheckbox_getData(obj, evt) {
     return chps;
 }
 
+/**
+ * méthode odradio_getData
+ * @param obj
+ * @param evt
+ * @returns {string}
+ */
 function odradio_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
@@ -295,6 +360,13 @@ function odradio_getData(obj, evt) {
     return chps;
 }
 
+/**
+ * méthode odtable_getData
+ * @param obj
+ * @param evt
+ * @param nature
+ * @returns {string}
+ */
 function odtable_getData(obj, evt, nature) {
     var chps = "id=" + obj.attr("id");
     chps = chps + "&selected='";
@@ -324,9 +396,15 @@ function odtable_getData(obj, evt, nature) {
     return chps;
 }
 
-function odonoff_getData(obj, evt) {
+/**
+ * méthode odtoggle_getData
+ * @param obj
+ * @param evt
+ * @returns {string}
+ */
+function odtoggle_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
-    if  ($("#"+obj.attr('id')).is(":checked")) {
+    if  ($("#"+obj.attr('id')+" input").is(":checked")) {
         chps = chps + "&value='checked'";
     } else {
         chps = chps + "&value='unchecked'";
@@ -350,8 +428,17 @@ function odonoff_getData(obj, evt) {
  *
  * méthode visant à affecter une valeur à un objet de type ODButton
  */
-function odbutton_setData(obj, data) {
-    obj.val(data);
+function odbutton_setData(id, data) {
+    $("#"+id).val(data);
+}
+
+/**
+ * méthode odcontent_setData
+ * @param id
+ * @param data
+ */
+function odcontent_setData(id, data) {
+    $("#"+id).html(data);
 }
 
 /**
@@ -362,9 +449,14 @@ function odbutton_setData(obj, data) {
  * méthode visant à affecter une valeur à un objet de type OCInput
  */
 function odinput_setData(id, data) {
-    $("#"+id+" input").val(data);
+    $("#"+ id +" input").val(data);
 }
 
+/**
+ * méthode odselect_setData
+ * @param id
+ * @param data
+ */
 function odselect_setData(id, data) {
     if (data == "") { // raz des options sélectionnées
         $("#"+ id +" option").removeAttr("selected");
@@ -377,47 +469,91 @@ function odselect_setData(id, data) {
     }
 }
 
+/**
+ * méthode odcheckbox_setData
+ * @param id
+ * @param tabData
+ */
 function odcheckbox_setData(id, tabData) {
-    for (var key in tabData) {
-        if (key != 'replaceAll') {
-            $('#'+id+' .checkbox input#'+id+key).checked = tabData.key;
-        } else {
-            $('#'+id+' .checkbox input').each(function () {
-                this.checked = false;
-            });
-            break;
-        }
-    }
-}
-
-function odradio_setData(id, tabData) {
-    for (var key in tabData) {
-        if (key != 'replaceAll') {
-            $('#'+id+' .radio input#'+id+key).checked = tabData.key;
-        } else {
-            $('#'+id+' .radio input').each(function () {
-                this.checked = false;
-            });
-            break;
+    if (data == "") { // raz des options sélectionnées
+        $("#"+ id +" option").removeAttr("selected");
+    } else  {
+        if ($.isArray(data)) {
+            data.each(function(idx, val){
+                $("#"+ id +" option:nth_child("+val+")").attr("selected","selected");
+            })
         }
     }
 }
 
 /**
- * Sauvegarde et restauration de données de formulaire (HTML5 SessionStorage)
- * (voir à étendre à des données pures (hors formulaire)
+ * méthode odradio_setData
+ * @param id
+ * @param tabData
  */
-
-function saveForm(id, form) {
-    // fonction visant à faire un stockage local du contenu d'un formulaire
-    var idSto = $(id).val();
-    var datas = getFormDatas(form);
-    sessionStorage.setItem(idSto, datas);
+function odradio_setData(id, tabData) {
+    if (data == "") { // raz des options sélectionnées
+        $("#"+ id +' .radio input').removeAttr("checked");
+    } else  {
+        if ($.isArray(tabData)) {
+            tabData.each(function(idx, val){
+                $("#"+ id +" .radio:nth_child("+val+" input)").attr("checked","checked");
+            })
+        }
+    }
 }
 
-function reastoreForm(idSto, form) {
-    var datas = sessionStorage.getItem(idSto);
-    setFormData(form, datas)
+/*
+gestion des sauvegartde en sessionStorage
+ */
+function saveSession(id, datas) {
+    // fonction visant à faire un stockage local du contenu d'un formulaire
+    sessionStorage.setItem(id, datas);
+}
+
+function restoreSession(idSto) {
+    return sessionStorage.getItem(idSto);
+}
+
+function razSession() {
+    sessionStorage.clear();
+}
+
+function extractSessionKeys(prefix, selector, suffix) {
+    var keys =$.map($(selector), function (e) {
+        return e.value;
+    });
+    $.each(keys, function (idx, key) {
+        keys[idx] = prefix + key + suffix;
+    });
+    return keys;
+}
+
+/**
+ * méthode persistSession
+ * permet d'affecter à un objet le contenu d'un ensemble d'item de sessionStorage (format JSON)
+ * les objets utilisables sont ODInput, ODContent, ODButton
+ * @param idCible
+ * @param keys
+ */
+function persistSessions(idCible, keys) {
+    var sessions = [];
+    $.each(keys, function(idx, key){
+        sessions.push((restoreSession(key) !== null) ? restoreSession(key) : "");
+    });
+    var type = $("#"+idCible).attr('data-objet');
+    var valCible = JSON.stringify(sessions);
+    switch (type) {
+        case "odinput":
+            odinput_setData(idCible, valCible);
+            break;
+        case "odcontent":
+            odcontent_setData(idCible, valCible);
+            break;
+        case "odbutton":
+            odbutton_setData(idCible, valCible);
+            break;
+    }
 }
 
 /**
