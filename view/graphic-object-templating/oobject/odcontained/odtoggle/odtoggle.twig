@@ -1,0 +1,12 @@
+{# template de l'objet ODToggle #}
+
+<div id="{{ objet.id }}">
+    <input id="{{ objet.id }}Input" type="checkbox" checked data-toggle="toggle" data-on="{{ objet.dataOn }}" data-off="{{ objet.dataOff }}"
+           data-onStyle="{{ objet.onStyle }}" data-offStyle="{{ objet.offStyle }}" data-size="{{ objet.size }}"
+            {% if objet.state == false %} disabled {% endif %}
+            {% if objet.custom is not empty %} data-style="{{ objet.custom }}" {% endif %}
+            {% if objet.width is not empty %} data-width="{{ objet.width }}" {% endif %}
+            {% if objet.height is not empty %} data-height="{{ objet.height}}" {% endif %}
+    >
+    <span id="{{ objet.id }}Label">{{ objet.label }}</span>
+</div>
