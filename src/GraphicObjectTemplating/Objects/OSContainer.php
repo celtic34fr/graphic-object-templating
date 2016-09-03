@@ -126,6 +126,12 @@ class OSContainer extends OObject
         return ((sizeof($properties['children']) > 0) ? true : false);
     }
 
+    public function howManyChildren()
+    {
+        $properties = $this->getProperties();
+        return ((isset($properties['children']) && is_array($properties['children']) ) ? sizeof($properties['children']) : false);
+    }
+
     public function getChildren() {
         $properties = $this->getProperties();
         $children   = $properties['children'];
