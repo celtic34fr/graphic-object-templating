@@ -27,6 +27,7 @@ use GraphicObjectTemplating\Objects\OObject;
  * getChild
  * isChild
  * hasChild
+ * howManyChildren
  * getChildren
  * convertValue
  * getConverted
