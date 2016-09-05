@@ -1,12 +1,28 @@
 {# template de l'objet ODToggle #}
+{% set objClass = gotBootstrap(objet.widthBT) %}
 
-<div id="{{ objet.id }}">
-    <input id="{{ objet.id }}Input" type="checkbox" checked data-toggle="toggle" data-on="{{ objet.dataOn }}" data-off="{{ objet.dataOff }}"
-           data-onStyle="{{ objet.onStyle }}" data-offStyle="{{ objet.offStyle }}" data-size="{{ objet.size }}"
-            {% if objet.state == false %} disabled {% endif %}
-            {% if objet.custom is not empty %} data-style="{{ objet.custom }}" {% endif %}
-            {% if objet.width is not empty %} data-width="{{ objet.width }}" {% endif %}
-            {% if objet.height is not empty %} data-height="{{ objet.height}}" {% endif %}
-    >
-    <span id="{{ objet.id }}Label">{{ objet.label }}</span>
+<style>
+    #{{ objet.id }}Label {
+        position: relative;
+        {{ objet.position }}: 1em;
+        float: {{ (objet.position == 'left') ? 'right' : 'left' }};
+    }
+    #{{ objet.id }}inner .toggle {
+        position: relative;
+    {{ (objet.position == 'left') ? 'right' : 'left' }}: 0.9em;
+    }
+</style>
+
+<div id="{{ objet.id }}" {% if objClass is not empty %} class="{{ objClass }}" {% endif %} >
+    <div id="{{ objet.id }}inner" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <input id="{{ objet.id }}Input" type="checkbox"  data-toggle="toggle" data-on="{{ objet.dataOn }}"
+               data-off="{{ objet.dataOff }}" data-onStyle="{{ objet.onStyle }}" data-offStyle="{{ objet.offStyle }}"
+               data-size="{{ objet.size }}" {% if objet.toggle == true %} checked {% endif %}
+                {% if objet.state == false %} disabled {% endif %}
+                {% if objet.custom is not empty %} data-style="{{ objet.custom }}" {% endif %}
+                {% if objet.width is not empty %} data-width="{{ objet.width }}" {% endif %}
+                {% if objet.height is not empty %} data-height="{{ objet.height}}" {% endif %}
+        >
+        <div id="{{ objet.id }}Label">{{ objet.label }}</div>
+    </div>
 </div>

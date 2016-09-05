@@ -35,6 +35,7 @@ class ODToggle extends ODContained
         $parent = parent::__construct($id, "oobject/odcontained/odtoggle/odtoggle.config.phtml");
         $this->properties = $parent->properties;
         $this->setDisplay();
+        if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
     public function setLabel($label)
@@ -186,6 +187,21 @@ class ODToggle extends ODContained
         return ((!empty($properties['custom'])) ? $properties['custom'] : false) ;
     }
 
+    public function enaToggle()
+    {
+        $properties = $this->getProperties();
+        $properties['toggle'] = true;
+        $this->setPosition($properties);
+        return $this;
+    }
+
+    public function disToggle()
+    {
+        $properties = $this->getProperties();
+        $properties['toggle'] = true;
+        $this->setPosition($properties);
+        return $this;
+    }
 
 
 
