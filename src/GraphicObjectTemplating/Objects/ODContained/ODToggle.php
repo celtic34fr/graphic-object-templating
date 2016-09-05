@@ -35,6 +35,7 @@ class ODToggle extends ODContained
         $parent = parent::__construct($id, "oobject/odcontained/odtoggle/odtoggle.config.phtml");
         $this->properties = $parent->properties;
         $this->setDisplay();
+        $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
