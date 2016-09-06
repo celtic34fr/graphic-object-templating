@@ -1,6 +1,6 @@
 {# tremplate pour l'objet ODBadge#}
 
-{% set objClasses = objet.badgeColor %}
+{% set objClass = "gotObject "~objet.badgeColor %}
 {% if objet.position is not empty %}
     {% set objClasses = objClasses ~ " " ~ objet.position %}
 {% endif %}

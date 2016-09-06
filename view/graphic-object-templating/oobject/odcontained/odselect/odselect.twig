@@ -1,10 +1,27 @@
 {# template pour l'objet ODSelect #}
 
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+{% set labelWidth = "" %}
+{% set inputWidth = "" %}
+{% for key, value in objet.labelWidthBT %}
+    {% if (substr(key, 0, 1) == 'l') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set labelWidth = labelWidth ~ cle ~ value ~ ":" %}
+    {% elseif (substr(key, 0, 1) == 'i') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set inputWidth = inputWidth ~ cle ~ value ~ ":" %}
+    {% endif %}
+{% endfor %}
+{% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
+{% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
 
 <style>
-    #{{ objet.id }} {
-        display: {{ objet.display }};
+    #
+    {{ objet.id }}
+    {
+        display:
+    {{ objet.display }}
+    ;
     {% if objet.style is not empty %}
     {{ objet.style | raw }}
     {% endif %}
@@ -24,8 +41,12 @@
     {% set placement = objet.infoBulle.placement %}
     {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
-    #{{ id }} {
-        border:  solid 2px #{{ erreur.color }};
+    #
+    {{ id }}
+    {
+        border: solid 2px #
+    {{ erreur.color }}
+    ;
     }
     {% endif %}
 
@@ -33,6 +54,7 @@
     select option[data-default] {
         color: #999;
     }
+
     {% endif %}
 </style>
 
@@ -40,59 +62,67 @@
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
 >
-    <label for="{{ objet.id }}Select">
+    <label for="{{ objet.id }}Select"
+            {% if labelClass is not empty %} class="{{ labelClass }}"{% endif %}
+    >
         {{ objet.label }}
-        <select id="{{ objet.id }}Select" name="{{ objet.name }}" {% if objet.multiple != false %} multiple {% endif %}
-                {% if objet.state != true %} disabled {% endif %}
-                {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-
-                {% if objet.infoBulle is not empty %}
-                    {%  set infoBulle = objet.infoBulle %}
-                    {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
-                {% endif %}
-
-                {% if objet.event is not empty %}
-                    {% for evt, callback in objet.event %}
-                        data-{{ evt }} = "{{ callback }}"
-                    {% endfor %}
-                {% endif %}
-        >
-            {% if objet.select2 == false and objet.placeholder is not empty %}
-                <option value="" selected data-default disabled >{{ objet.placeholder }}</option>
-            {% elseif objet.select2 == true and objet.placeholder is not empty %}
-                <option value=""  ></option>
-            {% endif %}
-            {% for value, options in objet.options %}
-                <option value="{{ value }}"
-                        {% if options.select %} selected {% endif %}
-                        {% if options.enable == false %} disabled {% endif %}>
-                    {{ options.libel }}
-                </option>
-            {% endfor %}
-        </select>
     </label>
+    <select id="{{ objet.id }}Select" name="{{ objet.name }}" {% if objet.multiple != false %} multiple {% endif %}
+            {% if objet.state != true %} disabled {% endif %}
+            {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+
+            {% if objet.infoBulle is not empty %}
+                {% set infoBulle = objet.infoBulle %}
+                {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+            {% endif %}
+
+            {% if objet.event is not empty %}
+                {% for evt, callback in objet.event %}
+                    data-{{ evt }} ="{{ callback }}"
+                {% endfor %}
+            {% endif %}
+            {% if inputClass is not empty %} class="{{ inputClass }}"{% endif %}
+    >
+        {% if objet.select2 == false and objet.placeholder is not empty %}
+            <option value="" selected data-default disabled>{{ objet.placeholder }}</option>
+        {% elseif objet.select2 == true and objet.placeholder is not empty %}
+            <option value=""></option>
+        {% endif %}
+        {% for value, options in objet.options %}
+            <option value="{{ value }}"
+                    {% if options.select %} selected {% endif %}
+                    {% if options.enable == false %} disabled {% endif %}>
+                {{ options.libel }}
+            </option>
+        {% endfor %}
+    </select>
 </div>
 
 <script type="application/javascript">
     $(document).ready(function () {
-{% if objet.select2 %}
+        {% if objet.select2 %}
         {% set params = objet.paramsSelect2 %}
         $("#{{ objet.id }}Select").select2({
             theme: "bootstrap",
-        {% if objet.placeholder is not empty %} placeholder: "{{ objet.placeholder }}", {% endif %}
-        {{ ( parms.allowClear is defined and parms.allowClear ) ? 'allowClear: true,' : 'allowClear: false,' }}
-        {% if objet.multiple is typeOf('int') %} maximumSelectionLength: {{ objet.multiple }}, {% endif %}
-        {% if params.searchBox == false %} minimumResultsForSearch: Infinity, {% endif %}
-        {% if params.language is defined and params.language is not empty %} language: "{{ params.language }}", {% endif %}
+            {% if objet.placeholder is not empty %}
+            placeholder: "{{ objet.placeholder }}", {% endif %}
+            {{ ( parms.allowClear is defined and parms.allowClear ) ? 'allowClear: true,' : 'allowClear: false,' }}
+            {% if objet.multiple is typeOf('int') %}
+            maximumSelectionLength: {{ objet.multiple }}, {% endif %}
+            {% if params.searchBox == false %}
+            minimumResultsForSearch: Infinity, {% endif %}
+            {% if params.language is defined and params.language is not empty %}
+            language: "{{ params.language }}", {% endif %}
             width: '100%'
         });
-{% endif %}
+        $("#{{ objet.id }} .select2-selection").addClass("{{ inputClass }}");
+        {% endif %}
 
         {% if objet.event is not empty %}
         {% for evt, callback in objet.event %}
         {% if callback is not empty %}
-        $('#{{ objet.id }}').on('{{ evt }}', function() {
-            invokeAjax(odselect_getData($('#{{ objet.id }}'),'{{ evt }}'));
+        $('#{{ objet.id }}').on('{{ evt }}', function () {
+            invokeAjax(odselect_getData($('#{{ objet.id }}'), '{{ evt }}'));
         })
         {% endif %}
         {% endfor %}

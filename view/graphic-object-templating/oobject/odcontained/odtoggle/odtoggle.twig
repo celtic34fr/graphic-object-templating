@@ -1,5 +1,18 @@
 {# template de l'objet ODToggle #}
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+{% set labelWidth = "" %}
+{% set inputWidth = "" %}
+{% for key, value in objet.labelWidthBT %}
+    {% if (substr(key, 0, 1) == 'l') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set labelWidth = labelWidth ~ cle ~ value ~ ":" %}
+    {% elseif (substr(key, 0, 1) == 'i') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set inputWidth = inputWidth ~ cle ~ value ~ ":" %}
+    {% endif %}
+{% endfor %}
+{% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
+{% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
 
 <style>
     #{{ objet.id }}Label {
@@ -47,7 +60,10 @@
                 {% if objet.custom is not empty %} data-style="{{ objet.custom }}" {% endif %}
                 {% if objet.width is not empty %} data-width="{{ objet.width }}" {% endif %}
                 {% if objet.height is not empty %} data-height="{{ objet.height}}" {% endif %}
+                {% if inputClass is not empty %} class="{{ inputClass }}"{% endif %}
         >
-        <div id="{{ objet.id }}Label">{{ objet.label }}</div>
+        <div id="{{ objet.id }}Label"
+             {% if labelClass is not empty %} class="{{ labelClass }}"{% endif %}
+        >{{ objet.label }}</div>
     </div>
 </div>

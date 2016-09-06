@@ -1,6 +1,6 @@
 {# template de l'objet ODCheckbox #}
 
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 {% if objet.state is defined %}
     {% if objet.state == false %}
         {%  set objClass = "checkbox " ~ objClass ~ " disabled"  %}

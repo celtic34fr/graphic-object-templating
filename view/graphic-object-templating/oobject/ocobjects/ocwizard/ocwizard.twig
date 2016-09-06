@@ -1,6 +1,6 @@
 {# template pour l'objet OCWizard #}
 
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 {% set wd       = (100 / objet.etapes|length) - 0.15; %}
 
 <style>

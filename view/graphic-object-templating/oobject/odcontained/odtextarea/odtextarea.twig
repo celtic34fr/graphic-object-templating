@@ -1,9 +1,26 @@
 {# template pour l'objet ODTextarea #}
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+{% set labelWidth = "" %}
+{% set inputWidth = "" %}
+{% for key, value in objet.labelWidthBT %}
+    {% if (substr(key, 0, 1) == 'l') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set labelWidth = labelWidth ~ cle ~ value ~ ":" %}
+    {% elseif (substr(key, 0, 1) == 'i') %}
+        {% set cle = 'w' ~ substr(key, 1, 1) %}
+        {% set inputWidth = inputWidth ~ cle ~ value ~ ":" %}
+    {% endif %}
+{% endfor %}
+{% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
+{% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
 
 <style>
-    #{{ objet.id }} {
-        display: {{ objet.display }};
+    #
+    {{ objet.id }}
+    {
+        display:
+    {{ objet.display }}
+    ;
     {% if objet.style is not empty %}
     {{ objet.style | raw }}
     {% endif %}
@@ -23,43 +40,50 @@
     {% set placement = objet.infoBulle.placement %}
     {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
-    #{{ id }} {
-        border:  solid 2px #{{ erreur.color }};
+    #
+    {{ id }}
+    {
+        border: solid 2px #
+    {{ erreur.color }}
+    ;
     }
     {% endif %}
 
 </style>
 
-<div id="{{ objet.id }}">
-    <textarea id="{{ objet.id }}TxtArea" name="{{ objet.name }}" cols="{{ objet.cols }}" rows="{{ objet.rows }}"
-        data-objet="{{ objet.object }}" data-type="{{ objet.typeObj }}"
+<div id="{{ objet.id }}"
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+>
+    <div id="{{ objet.id }}Label" {% if labelClass is not empty %} class="{{ labelClass }}"{% endif %}
+    >{{ objet.label }}</div>
+    <textarea id="{{ objet.id }}TxtArea" name="{{ objet.name }}" cols="{{ objet.cols }}" rows="{{ objet.rows }}"
+              data-objet="{{ objet.object }}" data-type="{{ objet.typeObj }}"
         {% if objet.readOnly %} readonly {% endif %}
+              {% if inputClass is not empty %}class="{{ inputClass }}"{% endif %}
+    {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
+        {% set infoBulle = objet.infoBulle %}
+    {% elseif objet.erreur.libel is not empty %}
+        {% set infoBulle = objet.infoBulle %}
+        {% set erreur = objet.erreur %}
+        {% set infoBulle =
+        infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+    {% endif %}
+    {% if infoBulle is defined and infoBulle is not empty %}
+        {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+    {% endif %}
 
-        {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}
-            {%  set infoBulle = objet.infoBulle %}
-        {% elseif objet.erreur.libel is not empty %}
-            {% set infoBulle = objet.infoBulle %}
-            {% set erreur = objet.erreur %}
-            {% set infoBulle =
-            infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
-        {% endif %}
-        {% if infoBulle is defined and infoBulle is not empty %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
-        {% endif %}
-
-        {% if objet.event is not empty %}
-            {% for evt, callback in objet.event %}
-                data-{{ evt }} = "{{ callback }}"
-            {% endfor %}
-        {% endif %}
-        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-        {% if objet.state == false %}
-            disabled
-        {% endif %}
-        {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
-        {% if objet.maxLength is not empty and objet.maxLength > 0 %} maxLength="{{ objet.maxlength }}" {% endif %}
+    {% if objet.event is not empty %}
+        {% for evt, callback in objet.event %}
+            data-{{ evt }} = "{{ callback }}"
+        {% endfor %}
+    {% endif %}
+    {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+    {% if objet.state == false %}
+        disabled
+    {% endif %}
+    {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+    {% if objet.maxLength is not empty and objet.maxLength > 0 %} maxLength="{{ objet.maxlength }}" {% endif %}
     >
-        {{ objet.value }}
+    {{ objet.value }}
     </textarea>
 </div>

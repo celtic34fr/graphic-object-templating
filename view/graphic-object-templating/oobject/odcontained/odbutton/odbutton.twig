@@ -1,6 +1,6 @@
 {# tremplate pour l'objet ODButton #}
 
-{% set objClass = gotBootstrap(objet.widthBT) %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 {% if objet.nature is not empty %}
     {%  set objClass = objet.nature ~ " " ~ objClass %}
 {% endif %}

@@ -107,3 +107,7 @@ footer {
 .pull-center {
     text-align: center;
 }
+
+.gotObject {
+    padding: 0.2em;
+}
