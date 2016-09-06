@@ -310,7 +310,8 @@ function odinput_getData(obj, evt) {
  */
 function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
-    chps = chps + "&value='" + obj.find("select").val().join("$") + "'";
+//    chps = chps + "&value='" + obj.find("select").val().join("$") + "'";
+    chps = chps + "&value='" + obj.find("select").val() + "'";
     return chps;
 }
 

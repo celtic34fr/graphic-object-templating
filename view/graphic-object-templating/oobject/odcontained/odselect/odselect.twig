@@ -50,6 +50,12 @@
                     {%  set infoBulle = objet.infoBulle %}
                     {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
                 {% endif %}
+
+                {% if objet.event is not empty %}
+                    {% for evt, callback in objet.event %}
+                        data-{{ evt }} = "{{ callback }}"
+                    {% endfor %}
+                {% endif %}
         >
             {% if objet.select2 == false and objet.placeholder is not empty %}
                 <option value="" selected data-default disabled >{{ objet.placeholder }}</option>
@@ -58,7 +64,7 @@
             {% endif %}
             {% for value, options in objet.options %}
                 <option value="{{ value }}"
-                        {% if options.selected %} selected {% endif %}
+                        {% if options.select %} selected {% endif %}
                         {% if options.enable == false %} disabled {% endif %}>
                     {{ options.libel }}
                 </option>
@@ -67,9 +73,9 @@
     </label>
 </div>
 
-{% if objet.select2 %}
 <script type="application/javascript">
     $(document).ready(function () {
+{% if objet.select2 %}
         {% set params = objet.paramsSelect2 %}
         $("#{{ objet.id }}Select").select2({
             theme: "bootstrap",
@@ -80,9 +86,19 @@
         {% if params.language is defined and params.language is not empty %} language: "{{ params.language }}", {% endif %}
             width: '100%'
         });
+{% endif %}
+
+        {% if objet.event is not empty %}
+        {% for evt, callback in objet.event %}
+        {% if callback is not empty %}
+        $('#{{ objet.id }}').on('{{ evt }}', function() {
+            invokeAjax(odselect_getData($('#{{ objet.id }}'),'{{ evt }}'));
+        })
+        {% endif %}
+        {% endfor %}
+        {% endif %}
     });
 </script>
-{% endif %}
 
 {% if objet.infoBulle.title is not empty %}
     {% if objet.select2 == false %}
