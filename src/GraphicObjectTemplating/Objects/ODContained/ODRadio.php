@@ -114,11 +114,11 @@ class ODRadio extends ODContained
 
     public function check($value)
     {
-        $properties = $this->getProperties();
-        if (array_key_exists('options', $properties)) {
-            $this->uncheckAll();
+        if ($value != null) {
+            $properties = $this->getProperties();
             $options = $properties['options'];
             if (array_key_exists($value, $options)) {
+                $this->uncheckAll();
                 $options[$value]['check'] = self::RADIO_CHECK;
                 $properties['options'] = $options;
                 $this->setProperties($properties);
@@ -130,14 +130,15 @@ class ODRadio extends ODContained
 
     public function uncheck($value)
     {
-        $properties = $this->getProperties();
-        if (array_key_exists('options', $properties)) {
+        if ($value != null) {
+            $properties = $this->getProperties();
             $options = $properties['options'];
             if (array_key_exists($value, $options)) {
-                $options[$value]['check'] = self::RADIO_UNCHECK;
-                $properties['options'] = $options;
-                $this->setProperties($properties);
-                return $this;
+                if ($options[$value]['check'] == 'check') {
+                    $options[$value]['check'] = self::RADIO_UNCHECK;
+                    $this->setProperties($properties);
+                    return $this;
+                }
             }
         }
         return false;
