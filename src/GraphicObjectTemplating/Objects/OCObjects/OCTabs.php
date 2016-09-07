@@ -26,6 +26,8 @@ use GraphicObjectTemplating\Objects\OSContainer;
  * hideTab
  * enaNavigate
  * disNavigate
+ * setActivTab
+ * getActivTab
  */
 class OCTabs extends OSContainer
 {
@@ -70,6 +72,7 @@ class OCTabs extends OSContainer
             $item['title']   = $titleTab;
             $item['content'] = $tab;
             $item['show']    = true;
+            $item['activ']   = false;
 
             $idx = sizeof($properties['tabs']) + 1;
             $properties['tabs'][$idx] = $item;
@@ -158,4 +161,30 @@ class OCTabs extends OSContainer
         $this->setProperties($properties);
         return $this;
     }
+
+    public function setActivTab($tab)
+    {
+        $tab = (int) $tab;
+        $properties = $this->getProperties();
+        $maxTab = sizeof($properties['tabs']);
+        if ($tab < 1 || $tab > $maxTab) return false;
+
+        $properties['tabs'][$tab]['activ'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getActivTab()
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('tabs', $properties)) {
+            if (!empty($properties['tabs'])) {
+                foreach ($properties['tabs'] as $idx => $tab) {
+                    if ($tab['activ'] === true) return $idx;
+                }
+            }
+        }
+        return false;
+    }
+
 }

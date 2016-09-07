@@ -111,3 +111,7 @@ footer {
 .gotObject {
     padding: 0.2em;
 }
+
+.labelBold {
+    font-weight: bold;
+}

@@ -44,6 +44,7 @@ class GotServices
                 $html->setVariable('objet', $properties);
                 break;
             case 'oscontainer':
+            case 'ocobjects':
                 $content  = "";
                 $children = $object->getChildren();
                 if (!empty($children)) {
