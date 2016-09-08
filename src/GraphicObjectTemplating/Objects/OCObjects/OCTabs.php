@@ -55,9 +55,30 @@ class OCTabs extends OSContainer
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
 
         $this->btnFirst    = new ODButton($id."BtnFirst");
+        $this->btnFirst->setLabel("First Tab");
+        $this->btnFirst->setType(ODButton::BTNTYPE_CUSTOM);
+        $this->btnFirst->setWidthBT(3);
+        $this->btnFirst->setValue("1-");
         $this->btnPrevious = new ODButton($id."BtnPrevious");
+        $this->btnPrevious->setLabel("Previous Tab");
+        $this->btnPrevious->setType(ODButton::BTNTYPE_CUSTOM);
+        $this->btnPrevious->setWidthBT(3);
+        $this->btnPrevious->setValue("-1");
         $this->btnNext     = new ODButton($id."BtnNext");
+        $this->btnNext->setLabel("Next Tab");
+        $this->btnNext->setType(ODButton::BTNTYPE_CUSTOM);
+        $this->btnNext->setWidthBT(3);
+        $this->btnNext->setValue("+1");
         $this->btnLast     = new ODButton($id."BtnLast");
+        $this->btnLast->setLabel("Last Tab");
+        $this->btnLast->setType(ODButton::BTNTYPE_CUSTOM);
+        $this->btnLast->setWidthBT(3);
+        $this->btnLast->setValue("+n");
+
+        $this->setTabsBtn(self::TABSBTNFIRST, $this->btnFirst);
+        $this->setTabsBtn(self::TABSBTNPREVIOUS, $this->btnPrevious);
+        $this->setTabsBtn(self::TABSBTNNEXT, $this->btnNext);
+        $this->setTabsBtn(self::TABSBTNLAST, $this->btnLast);
     }
 
     public function setTitle($title)

@@ -20,14 +20,36 @@
         <div id="{{ objet.id~'_CTAB_'~loop.index }}" class="tab-pane {% if tab.activ == true %}active{% else %}fade{% endif %} ">
             <h3>{{ tab.title }}</h3>
             {{ gotRender(tab.content) }}
-            {% if objet.naviagetion == true %}
-                {{ gotRender(objet.btns.first) }}
-                {{ gotRender(objet.btns.previous) }}
-                {{ gotRender(objet.btns.next) }}
-                {{ gotRender(objet.btns.last) }}
-            {% endif %}
+
         </div>
             {% endif %}
         {% endfor %}
+        {% if objet.navigation == true %}
+            {{ gotRender(objet.btns.first) }}
+            {{ gotRender(objet.btns.previous) }}
+            {{ gotRender(objet.btns.next) }}
+            {{ gotRender(objet.btns.last) }}
+        {% endif %}
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#{{ objet.id }}BtnFirst").on("click", function (e) {
+            setActivTab('{{ objet.id }}', '1');
+        });
+
+        $("#{{ objet.id }}BtnPrevious").on('click', function (e) {
+            setActivTab('{{ objet.id }}', $(this).val());
+        });
+
+        $("#{{ objet.id }}BtnNext").on('click', function (e) {
+            setActivTab('{{ objet.id }}', $(this).val());
+        });
+
+        $("#{{ objet.id }}BtnLast").on('click', function (e) {
+            setActivTab('{{ objet.id }}', '{{ objet.tabs|length }}');
+        });
+
+    })
+</script>
