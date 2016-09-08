@@ -40,12 +40,24 @@ class OCTabs extends OSContainer
     /** @var  ODButton $btnLast */
     protected $btnLast;
 
+    const TABSBTNFIRST    = "first";
+    const TABSBTNPREVIOUS = "previous";
+    const TABSBTNNEXT     = "next";
+    const TABSBTNLAST     = "last";
+
+    protected $const_tabsBtn;
+
     public function __construct($id)
     {
         parent::__construct($id, "oobject/ocobjects/octabs/octabs.config.phtml");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+
+        $this->btnFirst    = new ODButton($id."BtnFirst");
+        $this->btnPrevious = new ODButton($id."BtnPrevious");
+        $this->btnNext     = new ODButton($id."BtnNext");
+        $this->btnLast     = new ODButton($id."BtnLast");
     }
 
     public function setTitle($title)
@@ -186,5 +198,41 @@ class OCTabs extends OSContainer
         }
         return false;
     }
+
+    public function setTabsBtn($type, ODButton $btn)
+    {
+        $type = (string) $type;
+        $types = $this->getTabsBtnConst();
+        if (!in_array($type, $types)) return false;
+
+        $properties =$this->getProperties();
+        $properties['btns'][$type] = $btn;
+        $this->setProperties($properties);
+        return $properties;
+    }
+
+    public function getTabsBtns()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('btns', $properties)) ? $properties['btns'] : false;
+    }
+
+
+    private function getTabsBtnConst()
+    {
+        $retour = [];
+        if (empty($this->const_tabsBtn)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TABSBTN');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_tabsBtn = $retour;
+        } else {
+            $retour = $this->const_tabsBtn;
+        }
+        return $retour;
+    }
+
 
 }
