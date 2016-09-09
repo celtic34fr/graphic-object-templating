@@ -3,12 +3,9 @@
 <div id="{{ objet.id }}" class="container">
     <h2>{{ objet.title }}</h2>
     <ul class="nav nav-tabs">
-        {% set firstVue = -1 %}
         {% for idx, tab in  objet.tabs %}
             {% if tab.show == true %}
-                {% if firstVue == -1 %} {% set firstVue = loop.index %} {% endif %}
-                {% set lastVue = loop.index %}
-        <li class="{{ objet.id~"_TTAB_"~loop.index }} {% if tab.activ == true %}active{% endif %} ">
+        <li class="TTAB" {% if tab.activ == true %}active{% endif %} " data-tabs="{{ loop.index }}">
             <a data-toggle="tab" href="#{{ objet.id~'_CTAB_'~loop.index }}">{{ tab.title }}</a>
         </li>
             {% endif %}
@@ -17,7 +14,7 @@
     <div class="tab-content">
         {% for idx, tab in objet.tabs %}
             {% if tab.show == true %}
-        <div id="{{ objet.id~'_CTAB_'~loop.index }}" class="tab-pane {% if tab.activ == true %}active{% else %}fade{% endif %} ">
+        <div class="CTAB tab-pane {% if tab.activ == true %}active{% else %}fade{% endif %} ">
             <h3>{{ tab.title }}</h3>
             {{ gotRender(tab.content) }}
 
@@ -40,11 +37,11 @@
         });
 
         $("#{{ objet.id }}BtnPrevious").on('click', function (e) {
-            setActivTab('{{ objet.id }}', $(this).val());
+            setPreviousTab('{{ objet.id }}');
         });
 
         $("#{{ objet.id }}BtnNext").on('click', function (e) {
-            setActivTab('{{ objet.id }}', $(this).val());
+            setNextTab('{{ objet.id }}');
         });
 
         $("#{{ objet.id }}BtnLast").on('click', function (e) {

@@ -109,6 +109,7 @@ class OCTabs extends OSContainer
 
             $idx = sizeof($properties['tabs']) + 1;
             $properties['tabs'][$idx] = $item;
+            $properties['btn'][self::TABSBTNLAST]->setValue($idx);
             $this->setProperties($properties);
             return $this;
         }
