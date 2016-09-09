@@ -1,11 +1,19 @@
 {# template pour l'objet OCTabs #}
+{% set activTab = -1 %}
+{% for idx, tab in  objet.tabs if activTab == -1 %}
+    {% if tab.show == true %}
+        {% if tab.activ == true %}
+            {% set activTab = idx %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
 
 <div id="{{ objet.id }}" class="container">
     <h2>{{ objet.title }}</h2>
     <ul class="nav nav-tabs">
         {% for idx, tab in  objet.tabs %}
             {% if tab.show == true %}
-        <li class="TTAB" {% if tab.activ == true %}active{% endif %} " data-tabs="{{ loop.index }}">
+        <li class="TTAB {% if tab.activ == true %}active{% endif %}" data-tabs="{{ loop.index }}">
             <a data-toggle="tab" href="#{{ objet.id~'_CTAB_'~loop.index }}">{{ tab.title }}</a>
         </li>
             {% endif %}
@@ -33,7 +41,7 @@
 <script>
     $(document).ready(function () {
         $("#{{ objet.id }}BtnFirst").on("click", function (e) {
-            setActivTab('{{ objet.id }}', '1');
+            setActivTab('{{ objet.id }}', 1);
         });
 
         $("#{{ objet.id }}BtnPrevious").on('click', function (e) {
@@ -45,8 +53,9 @@
         });
 
         $("#{{ objet.id }}BtnLast").on('click', function (e) {
-            setActivTab('{{ objet.id }}', '{{ objet.tabs|length }}');
+            setActivTab('{{ objet.id }}', {{ objet.tabs|length }});
         });
 
+        setActivTab('{{ objet.id }}', {{ activTab }});
     })
 </script>

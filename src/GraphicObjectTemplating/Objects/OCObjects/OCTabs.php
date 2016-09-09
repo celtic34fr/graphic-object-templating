@@ -59,21 +59,25 @@ class OCTabs extends OSContainer
         $this->btnFirst->setType(ODButton::BTNTYPE_CUSTOM);
         $this->btnFirst->setWidthBT(3);
         $this->btnFirst->setValue("1-");
+        $this->btnFirst->evtClick("dummy");
         $this->btnPrevious = new ODButton($id."BtnPrevious");
         $this->btnPrevious->setLabel("Previous Tab");
         $this->btnPrevious->setType(ODButton::BTNTYPE_CUSTOM);
         $this->btnPrevious->setWidthBT(3);
         $this->btnPrevious->setValue("-1");
+        $this->btnPrevious->evtClick("dummy");
         $this->btnNext     = new ODButton($id."BtnNext");
         $this->btnNext->setLabel("Next Tab");
         $this->btnNext->setType(ODButton::BTNTYPE_CUSTOM);
         $this->btnNext->setWidthBT(3);
         $this->btnNext->setValue("+1");
+        $this->btnNext->evtClick("dummy");
         $this->btnLast     = new ODButton($id."BtnLast");
         $this->btnLast->setLabel("Last Tab");
         $this->btnLast->setType(ODButton::BTNTYPE_CUSTOM);
         $this->btnLast->setWidthBT(3);
         $this->btnLast->setValue("+n");
+        $this->btnLast->evtClick("dummy");
 
         $this->setTabsBtn(self::TABSBTNFIRST, $this->btnFirst);
         $this->setTabsBtn(self::TABSBTNPREVIOUS, $this->btnPrevious);
@@ -108,8 +112,10 @@ class OCTabs extends OSContainer
             $item['activ']   = false;
 
             $idx = sizeof($properties['tabs']) + 1;
+            $btn = $this->getTabsBtn(self::TABSBTNLAST);
+            $btn->setValue($idx);
             $properties['tabs'][$idx] = $item;
-            $properties['btn'][self::TABSBTNLAST]->setValue($idx);
+            $this->setTabsBtn(self::TABSBTNLAST, $btn);
             $this->setProperties($properties);
             return $this;
         }
@@ -231,6 +237,16 @@ class OCTabs extends OSContainer
         $properties['btns'][$type] = $btn;
         $this->setProperties($properties);
         return $properties;
+    }
+
+    public function getTabsBtn($type)
+    {
+        $type = (string) $type;
+        $types = $this->getTabsBtnConst();
+        if (!in_array($type, $types)) return false;
+
+        $properties = $this->getProperties();
+        return (array_key_exists('btns', $properties)) ? $properties['btns'][$type] : false;
     }
 
     public function getTabsBtns()

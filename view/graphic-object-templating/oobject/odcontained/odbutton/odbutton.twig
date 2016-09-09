@@ -94,24 +94,26 @@
 </button>
 
 <script id="{{ objet.id }}Script">
-$('document').ready(
-{% switch true %}
+$('document').ready(function () {
+    {% switch true %}
     {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
-    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
+    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
     {% case (objet.type =='reset' and objet.form is empty) %}
-    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled')
+    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
     {% case objet.type != 'link' and objet.state == true %}
-        {% if objet.event is not empty %}
-            {% for evt, callback in objet.event %}
-            {% if callback is not empty %}
-            $('#{{ objet.id }}').on('{{ evt }}', function() {
-                invokeAjax(odbutton_getData($('#{{ objet.id }}'),'{{ evt }}'));
-            })
-            {% endif %}
-            {% endfor %}
-        {% endif %}
-{% endswitch %}
-);
+    {% if objet.event is not empty %}
+    {% for evt, callback in objet.event %}
+    {% if callback is not empty %}
+    $('#{{ objet.id }}').on('{{ evt }}', function () {
+        if ($('#{{ objet.id }}').attr('data-{{ evt }}') != "dummy") {
+            invokeAjax(odbutton_getData($('#{{ objet.id }}'), '{{ evt }}'));
+        }
+    })
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endswitch %}
+});
 </script>
 
 {% if infoBulle.title is not empty %}
