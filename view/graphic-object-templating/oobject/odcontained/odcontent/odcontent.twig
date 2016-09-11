@@ -51,6 +51,17 @@
     {{ objet.content | raw}}
 </div>
 
+<script id="{{ objet.id }}Script">
+    {% if objet.event is defined and objet.event is not empty %}
+    $('document').ready(
+        {% if objet.event is not empty %}
+            {% set events = objet.event %}
+            {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+        {% endif %}
+    );
+    {% endif %}
+</script>
+
 {% if infoBulle.title is not empty %}
     {%  set type = infoBulle.type %}
     {%  set id = objet.id %}

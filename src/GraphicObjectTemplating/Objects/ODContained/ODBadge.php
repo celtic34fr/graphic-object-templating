@@ -14,14 +14,14 @@ use GraphicObjectTemplating\Objects\ODContained;
  * Class ODBadge
  * @package GraphicObjectTemplating\Objects\ODContained
  *
- * setWidthBT : surcharge de méthode pour la rendre inactive
- * getWidthBT : surcharge de méthode pour la rendre inactive
- * setColor
- * getColor
- * evtClick
- * disClick
- * setPosition
- * getPosition
+ * setWidthBT  : surcharge de méthode pour la rendre inactive
+ * getWidthBT  : surcharge de méthode pour la rendre inactive
+ * setColor    : permet d'affecter une couleur de fond au badge
+ * getColor    : récupère la couleur actuellement affecté au badge
+ * evtClick    : affecte et active l'évèvement Click sur le badge
+ * disClick    : déactive l'évènement click sur le badge
+ * setPosition : permet, via l'affectation d'une classe, de positionner le badge à droite ou à gauche
+ * getPosition : récupère la position actuelle du basge
  */
 class ODBadge extends ODContained
 {
@@ -56,6 +56,9 @@ class ODBadge extends ODContained
     const BADGEPOS_LEFT   = "pull-left";
     const BADGEPOS_CENTER = "pull-center";
     const BADGEPOS_RIGHT  = "pull-right";
+
+    protected $const_badgeColors;
+    protected $const_badgePos;
 
     public function __construct($id) {
         $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.phtml");
@@ -117,8 +120,12 @@ class ODBadge extends ODContained
     }
 
 
-    public function setPosition($position = self::RIGHT)
+    public function setPosition($position = self::BADGEPOS_RIGHT)
     {
+        $position = (string) $position;
+        $positions = $this->getBadgePosConst();
+        if (!in_array($position, $positions)) $position = self::BADGEPOS_RIGHT;
+
         $properties = $this->getProperties();
         $properties['position'] = $position;
         $this->setProperties($properties);
@@ -135,15 +142,31 @@ class ODBadge extends ODContained
     private function getBadgeColorConst()
     {
         $retour = [];
-        if (empty($this->const_nature)) {
+        if (empty($this->const_badgeColors)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'BADGE');
+                $pos = strpos($key, 'BADGE_');
                 if ($pos !== false) $retour[$key] = $constant;
             }
-            $this->const_nature = $retour;
+            $this->const_badgeColors = $retour;
         } else {
-            $retour = $this->const_nature;
+            $retour = $this->const_badgeColors;
+        }
+        return $retour;
+    }
+
+    private function getBadgePosConst()
+    {
+        $retour = [];
+        if (empty($this->const_badgePos)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'BADGEPOS');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_badgePos = $retour;
+        } else {
+            $retour = $this->const_badgePos;
         }
         return $retour;
     }

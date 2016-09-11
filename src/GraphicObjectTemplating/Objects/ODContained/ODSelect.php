@@ -36,8 +36,12 @@ use GraphicObjectTemplating\Objects\ODContained;
  * hideSearchBox()
  * setLanguage($language)
  * getLanguage()
+ * evtClick(callback)
+ * disClick()
  * evtChange(callback)
  * disChange()
+ * setLabelWidthBT($widthBT)
+ * getLabelWidthBT()
  */
 class ODSelect extends ODContained
 {
@@ -300,6 +304,26 @@ class ODSelect extends ODContained
             return (array_key_exists('language', $paramsSelect2) ? $paramsSelect2['language'] : false);
         }
         return false;
+    }
+
+    public function evtClick($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['click'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClick()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['click'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function evtChange($callback)

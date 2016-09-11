@@ -100,16 +100,12 @@
     </div>
 </div>
 
-
 <script id="{{ objet.id }}Script">
     {% if objet.event is defined and objet.event is not empty %}
     $('document').ready(
         {% if objet.event is not empty %}
-            {% for evt, callback in objet.event %}
-                $('#{{ objet.id }}').unbind().on('{{ evt }}', function() {
-                    invokeAjax(odcheckbox_getData($('#{{ objet.id }}'),'{{ evt }}'));
-                })
-            {% endfor %}
+            {% set events = objet.event %}
+            {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
         {% endif %}
     );
     {% endif %}

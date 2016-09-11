@@ -111,11 +111,8 @@
         <script id="{{ objet.id }}Script">
             $('document').ready(
                 {% if objet.event is not empty %}
-                    {% for evt, callback in objet.event %}
-                        $('#{{ objet.id }}_{{ objet.type }}').on('{{ evt }}', function() {
-                            invokeAjax(odinput_getData($('#{{ objet.id }}_{{ objet.type }}'),'{{ evt }}'));
-                        })
-                    {% endfor %}
+                    {% set events = objet.event %}
+                    {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
                 {% endif %}
             );
         </script>

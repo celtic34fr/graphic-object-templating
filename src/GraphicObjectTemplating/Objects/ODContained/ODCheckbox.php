@@ -25,6 +25,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getChecked()
  * setLabel($label)
  * getLabel()
+ * evtClick($callback)
+ * disClick()
  * evtChange($callback)
  * disChange()
  * setForme($forme = self::CHECKFORM_HORIZONTAL)
@@ -34,7 +36,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  */
 class ODCheckbox extends ODContained
 {
-    const CHECKBOX_CHECK = "check";
+    const CHECKBOX_CHECK   = "check";
     const CHECKBOX_UNCHECK = "uncheck";
 
     const CHECKTYPE_DEFAULT = "checkbox";
@@ -225,6 +227,26 @@ class ODCheckbox extends ODContained
     {
         $properties = $this->getProperties();
         return ((array_key_exists('label',$properties)) ? $properties['label'] : false);
+    }
+
+    public function evtClick($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['click'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClick()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['click'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function evtChange($callback)

@@ -18,6 +18,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getContent   : réstitue le contenu actuelle de l'objet
  * setValue     : alias pour setContenu
  * getValue     : alias pour getContenu
+ * evtClick     : affectation et activation d'un évènement click sur l'objet
+ * disClisk     : déactivation de l'évènement click
  */
 class ODContent extends  ODContained
 {
@@ -56,6 +58,26 @@ class ODContent extends  ODContained
     {
         $properties            = $this->getProperties();
         return ((array_key_exists('content', $properties)) ? $properties['content'] : false);
+    }
+
+    public function evtClick($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['click'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClick()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['click'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
     }
 
 }

@@ -18,6 +18,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getLabel
  * evtChange
  * disChange
+ * evtFocus
+ * disFocus
  * setPlaceholder
  * getPlaceholder
  * setCols
@@ -71,6 +73,26 @@ class ODTextarea extends ODContained
     {
         $properties             = $this->getProperties();
         if (isset($properties['event']['change'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function evtFocus($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['focus'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disFocus()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['focus'])) unset($properties['event']['focus']);
         $this->setProperties($properties);
         return $this;
     }

@@ -67,8 +67,7 @@
     {% elseif objet.erreur.libel is not empty %}
         {% set infoBulle = objet.infoBulle %}
         {% set erreur = objet.erreur %}
-        {% set infoBulle =
-        infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
+        {% set infoBulle = infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
     {% endif %}
     {% if infoBulle is defined and infoBulle is not empty %}
         {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
@@ -96,22 +95,15 @@
 <script id="{{ objet.id }}Script">
 $('document').ready(function () {
     {% switch true %}
-    {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
-    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
-    {% case (objet.type =='reset' and objet.form is empty) %}
-    if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
-    {% case objet.type != 'link' and objet.state == true %}
-    {% if objet.event is not empty %}
-    {% for evt, callback in objet.event %}
-    {% if callback is not empty %}
-    $('#{{ objet.id }}').on('{{ evt }}', function () {
-        if ($('#{{ objet.id }}').attr('data-{{ evt }}') != "dummy") {
-            invokeAjax(odbutton_getData($('#{{ objet.id }}'), '{{ evt }}'));
-        }
-    })
-    {% endif %}
-    {% endfor %}
-    {% endif %}
+        {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
+            if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
+        {% case (objet.type =='reset' and objet.form is empty) %}
+            if (!$('#{{ objet.id }}').hasAttr('disabled')) $('#{{ objet.id }}').attr('disabled', 'disabled');
+        {% case objet.type != 'link' and objet.state == true %}
+            {% if objet.event is not empty %}
+                {% set events = objet.event %}
+                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+            {% endif %}
     {% endswitch %}
 });
 </script>

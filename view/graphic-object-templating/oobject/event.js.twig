@@ -1,0 +1,10 @@
+{# template pour l'ajout de la gestion des évènements à tout objet #}
+{# l'event 'dummy' permet de programmer manuellement un évènement javascript sans déclenchement de callback #}
+
+{% for evt, callback in events %}
+    {% if callback is not empty and callback != "dummy"%}
+        $('#{{ objet.id }}').on('{{ evt }}', function () {
+            invokeAjax(odbutton_getData($('#{{ objet.id }}'), '{{ evt }}'));
+        });
+    {% endif %}
+{% endfor %}
