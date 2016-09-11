@@ -202,7 +202,7 @@ class ODRadio extends ODContained
     public function disClick()
     {
         $properties             = $this->getProperties();
-        if (isset($properties['event']['click'])) unset($properties['event']['change']);
+        if (isset($properties['event']['click'])) unset($properties['event']['click']);
         $this->setProperties($properties);
         return $this;
     }

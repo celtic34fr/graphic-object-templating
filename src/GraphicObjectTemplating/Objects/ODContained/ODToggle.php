@@ -4,6 +4,39 @@ namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
 
+/**
+ * Class ODToggle
+ * @package GraphicObjectTemplating\Objects\ODContained
+ *
+ * setLabel($label)
+ * getLabel()
+ * setPosition($position = self::TOGGLEPOS_RIGHT)
+ * getPosition()
+ * setDataOn($dataOn = self::TOGGLEDATA_ON)
+ * getDataOn()
+ * setDataOff($dataOff = self::TOGGLEDATA_OFF)
+ * getDataOff
+ * setSize($size = self::TOGGLESIZE_MINI)
+ * getSize()
+ * setOnStyle($style = self::TOGGLESTYLE_PRIMARY)
+ * getOnStyle()
+ * setOffStyle($style = self::TOGGLESTYLE_DEFAULT)
+ * getOffStyle()
+ * setWidth($width)
+ * getWidth()
+ * setHeight($height)
+ * getHeight()
+ * setCustomStyle($style = "")
+ * getCustomStyle()
+ * enaToggle()
+ * disToggle()
+ * setLabelWidthBT($widthBT)
+ * getLabelWidthBT()
+ * evtClick
+ * disClick
+ * evtChange
+ * disChange
+ */
 class ODToggle extends ODContained
 {
     const TOGGLEPOS_LEFT = "left";
@@ -260,6 +293,46 @@ class ODToggle extends ODContained
     {
         $properties                = $this->getProperties();
         return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
+    }
+
+    public function evtClick($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['click'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClick()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['click'])) unset($properties['event']['click']);
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function evtChange($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['change'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disChange()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['change'])) unset($properties['event']['change']);
+        $this->setProperties($properties);
+        return $this;
     }
 
 

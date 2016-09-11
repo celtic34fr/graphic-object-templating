@@ -97,6 +97,26 @@ class ODTextarea extends ODContained
         return $this;
     }
 
+    public function evtBlur($callback)
+    {
+        $callback = (string) $callback;
+        $properties             = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        $properties['event']['blur'] = $callback;
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disBlur()
+    {
+        $properties             = $this->getProperties();
+        if (isset($properties['event']['blur'])) unset($properties['event']['blur']);
+        $this->setProperties($properties);
+        return $this;
+    }
+
     public function setPlaceholder($placeholder)
     {
         $placeholder = (string) $placeholder;
