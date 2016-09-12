@@ -110,6 +110,7 @@ class OCTabs extends OSContainer
             $item['content'] = $tab;
             $item['show']    = true;
             $item['activ']   = false;
+            $item["select"]  = true;
 
             $idx = sizeof($properties['tabs']) + 1;
             $btn = $this->getTabsBtn(self::TABSBTNLAST);
@@ -253,6 +254,46 @@ class OCTabs extends OSContainer
     {
         $properties = $this->getProperties();
         return (array_key_exists('btns', $properties)) ? $properties['btns'] : false;
+    }
+
+    public function enaSelectTabs()
+    {
+        $properties = $this->getProperties();
+        $properties['selectable'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disSelectTabs()
+    {
+        $properties = $this->getProperties();
+        $properties['selectable'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function enaSelectTab($tab)
+    {
+        $tab = (int) $tab;
+        $properties = $this->getProperties();
+        $maxTabs = sizeof($properties['tabs']);
+        if ($tab < 1 || $tab > $maxTabs) return false;
+
+        $properties['tabs'][$tab]['select'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disSelectTab($tab)
+    {
+        $tab = (int) $tab;
+        $properties = $this->getProperties();
+        $maxTabs = sizeof($properties['tabs']);
+        if ($tab < 1 || $tab > $maxTabs) return false;
+
+        $properties['tabs'][$tab]['select'] = false;
+        $this->setProperties($properties);
+        return $this;
     }
 
 

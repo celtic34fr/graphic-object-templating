@@ -9,12 +9,19 @@
 namespace GraphicObjectTemplating\Controller;
 
 use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Service\ControllerServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class GOTController extends AbstractActionController
 {
+    protected $service;
+
+    public function __construct(ControllerServiceInterface $service) {
+        $this->service = $service->getService();
+    }
+
     public function indexAction()
     {
         $view = new ViewModel();
@@ -97,7 +104,7 @@ class GOTController extends AbstractActionController
 
                 $result = call_user_func_array(array($object, $method),
                     array(
-                        'sl' => $this->getServiceLocator(),
+                        'sl' => $this->service,
                         $params
                     ));
 

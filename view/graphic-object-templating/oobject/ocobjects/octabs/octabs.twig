@@ -12,9 +12,22 @@
     <h2>{{ objet.title }}</h2>
     <ul class="nav nav-tabs">
         {% for idx, tab in  objet.tabs %}
+
+            {#{ dump(objet.selectable) }}/{{ dump(tab.select) }#}
+
             {% if tab.show == true %}
         <li class="TTAB {% if tab.activ == true %}active{% endif %}" data-tabs="{{ loop.index }}">
-            <a data-toggle="tab" href="#{{ objet.id~'_CTAB_'~loop.index }}">{{ tab.title }}</a>
+            {% if objet.selectable == true and tab.select == true %}
+            <a data-toggle="tab" href="#{{ objet.id~'_CTAB_'~loop.index }}">
+            {% else %}
+            <span>
+            {% endif %}
+                {{ tab.title }}
+            {% if objet.selectable == true and tab.select == true %}
+            </a>
+            {% else %}
+            </span>
+            {% endif %}
         </li>
             {% endif %}
         {% endfor %}

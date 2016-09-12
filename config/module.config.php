@@ -14,6 +14,9 @@ return array(
     ),
 
     'controllers' => array(
+        'factories' => array(
+            'GraphicObjectTemplating\Controller\GOT' => 'GraphicObjectTemplating\Factory\GOTControllerFactory',
+        ),
         'invokables'    => array(
             'GraphicObjectTemplating\Controller\GOT' => 'GraphicObjectTemplating\Controller\GOTController'
         )
