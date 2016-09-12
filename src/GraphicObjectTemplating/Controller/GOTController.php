@@ -19,7 +19,7 @@ class GOTController extends AbstractActionController
     protected $service;
 
     public function __construct(ControllerServiceInterface $service) {
-        $this->service = $service->getService();
+        $this->service = $service;
     }
 
     public function indexAction()
