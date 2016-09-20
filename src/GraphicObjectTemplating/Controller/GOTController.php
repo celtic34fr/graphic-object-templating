@@ -115,12 +115,11 @@ class GOTController extends AbstractActionController
                         $params
                     ));
 
-                var_dump(get_class($this->serviceManager));
-
-                $response = $this->getResponse();
-                $response->setStatusCode(200);
-                $response->setContent(Json::encode($result));
-                return $response;
+                $viewModel = new ViewModel([
+                    'content' => $result,
+                ]);
+                $viewModel->setTerminal(true);
+                return $viewModel;
             }
         }
     }
