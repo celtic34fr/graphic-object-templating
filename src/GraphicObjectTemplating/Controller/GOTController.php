@@ -9,17 +9,24 @@
 namespace GraphicObjectTemplating\Controller;
 
 use GraphicObjectTemplating\Objects\OObject;
-use GraphicObjectTemplating\Service\ControllerServiceInterface;
+use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class GOTController extends AbstractActionController
 {
-    protected $service;
+    /**
+     * @var array
+     */
+    private $serviceManager;
 
-    public function __construct(ControllerServiceInterface $service) {
-        $this->service = $service;
+    /**
+     * @param $applicationDetails
+     */
+    public function __construct($serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
     }
 
     public function indexAction()
@@ -104,13 +111,15 @@ class GOTController extends AbstractActionController
 
                 $result = call_user_func_array(array($object, $method),
                     array(
-                        'sl' => $this->service,
+                        'sl' => $this->serviceManager,
                         $params
                     ));
 
+                var_dump(get_class($this->serviceManager));
+
                 $response = $this->getResponse();
                 $response->setStatusCode(200);
-                $response->setContent(\Zend\Json\Json::encode($result));
+                $response->setContent(Json::encode($result));
                 return $response;
             }
         }

@@ -2,23 +2,25 @@
 
 namespace GraphicObjectTemplating;
 
+use GraphicObjectTemplating\Controller\GOTController;
+use GraphicObjectTemplating\Controller\Factory\GOTControllerFactory;
 return array(
 
-    'view_manager' => array(
-        'template_map' => array(
-            'got/mainJs'             => __DIR__ . '/../view/graphic-object-templating/got/main.twig',
-        ),
-        'template_path_stack' => array(
-            __DIR__ . '/../view',
+    'router' => array(
+        'routes' => array(
+            'got-callback' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route'    => '/got-callback',
+                    'defaults' => [
+                        'controller' => GOTController::class,
+                        'action'     => 'callback',
+                    ],
+                ],
+            ],
         ),
     ),
-
-    'controllers' => array(
-        'factories' => array(
-            'GraphicObjectTemplating\Controller\GOT' => 'GraphicObjectTemplating\Factory\GOTControllerFactory',
-        ),
-    ),
-
+    
     'service_manager' => array(
 		'factories' => array(
             'GraphicObjectTemplating\Service\GotServices' => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory',
@@ -26,31 +28,15 @@ return array(
 		)
     ),
 
-    'router' => array(
-        'routes' => array(
-            'got' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route' => '/got',
-                    'defaults' => array(
-                        'controller' => 'GraphicObjectTemplating\Controller\GOT',
-                        'action'     => 'index',
-                    )
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'callback' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/callback',
-                            'defaults' => array(
-                                'controller' => 'GraphicObjectTemplating\Controller\GOT',
-                                'action'     => 'callback',
-                            )
-                        )
-                    )
-                )
-            )
+    'controllers' => array(
+        'factories' => array(
+           GOTController::class => GOTControllerFactory::class,
+        ),
+    ),
+
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view',
         ),
     ),
 
