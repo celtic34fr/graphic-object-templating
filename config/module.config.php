@@ -4,6 +4,9 @@ namespace GraphicObjectTemplating;
 
 use GraphicObjectTemplating\Controller\GOTController;
 use GraphicObjectTemplating\Controller\Factory\GOTControllerFactory;
+use GraphicObjectTemplating\Service\Factory\GotServicesFactory;
+use GraphicObjectTemplating\Service\GotServices;
+
 return array(
 
     'router' => array(
@@ -23,8 +26,8 @@ return array(
     
     'service_manager' => array(
 		'factories' => array(
-            'GraphicObjectTemplating\Service\GotServices' => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory',
-			'graphic.object.templating.services'          => 'GraphicObjectTemplating\Service\Factory\GotServicesFactory'
+            GotServices::class                      => GotServicesFactory::class,
+			'graphic.object.templating.services'    => GotServicesFactory::class,
 		)
     ),
 

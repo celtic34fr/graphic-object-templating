@@ -29,7 +29,6 @@ function invokeAjax(datas) {
                             break;
                     }
                 });
-                console.log(code);
                 switch (mode) {
                     case "append":
                     {
