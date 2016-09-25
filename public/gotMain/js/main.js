@@ -16,6 +16,9 @@ function invokeAjax(datas) {
 
         success: function (returnDatas, status) {
             $.each(returnDatas, function (i, ret) {
+                var id   = "";
+                var mode = "";
+                var code = "";
                 $.each(ret, function (j, k) {
                     switch (j) {
                         case 'id':

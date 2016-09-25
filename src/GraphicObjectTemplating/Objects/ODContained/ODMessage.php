@@ -6,7 +6,7 @@
  * Time: 11:48
  */
 
-namespace GraphicObjectTemplating\Objects\ODContent;
+namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
 
@@ -213,6 +213,39 @@ class ODMessage extends ODContained
     {
         $properties             = $this->getProperties();
         return ((!empty($properties['title'])) ? $properties['title'] : false) ;
+    }
+
+    public function enaDistinctMessage()
+    {
+        $properties = $this->getProperties();
+        $properties['showAfterPrevious'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disDistinctMessage()
+    {
+        $properties = $this->getProperties();
+        $properties['showAfterPrevious'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setDelayMessage($delayMessage = 2000)
+    {
+        $delayMessage = (int) $delayMessage;
+        if ($delayMessage == 0) $delayMessage = 2000;
+
+        $properties = $this->getProperties();
+        $properties['delayMessage'] = $delayMessage;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getDelayMessage()
+    {
+        $properties             = $this->getProperties();
+        return (array_key_exists('delayMessage', $properties)) ? $properties['delayMessage'] : false ;
     }
 
     /*

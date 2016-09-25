@@ -1,40 +1,67 @@
 {# template de l'objet ODMessage #}
 
-<div id="{{ objet.id }}">
+{% if objet.action == 'init' %}
+<div id="{{ objet.id }}_div">
     {# initialisation à mettre au niveau du header de la page #}
-    {% if objet.action == 'init' %}
-        <script>
-            var {{ objet.id }}Lobibox = Lobibox;
-            {{ objet.id }}Lobibox.notify.DEFAULTS = $.extend({}, {{ objet.id }}Lobibox.notify.DEFAULTS, {
-                soundPath: '{{ objet.soundPath }}',
-                title: true,                // Title of notification. Do not include it for default title or set custom string. Set this false to disable title
-                size: {{ objet.size }},     // normal, mini, large
-                soundExt: '.ogg',           // Default extension for all sounds
-                showClass: 'zoomIn',        // Show animation class.
-                hideClass: 'zoomOut',       // Hide animation class.
-                icon: true,                 // Icon of notification. Leave as is for default icon or set custom string
-                msg: '',                    // Message of notification
-                img: null,                  // Image source string
-                closable: true,             // Make notifications closable
-                delay: {{ objet.delay }},   // Hide notification after this time (in miliseconds)
-                delayIndicator: true,       // Show timer indicator
-                closeOnClick: true,         // Close notifications by clicking on them
-                width: 400,                 // Width of notification box
-                sound: true,                // Sound of notification. Set this false to disable sound. Leave as is for default sound or set custom soud path
-                position: "{{ objet.position }}",    // Place to show notification. Available options: "top left", "top right", "bottom left", "bottom right"
-                iconSource: "bootstrap"     // "bootstrap" or "fontAwesome" the library which will be used for icons
-            });
-        </script>
-    {% endif %}
+    <script>
+        var {{ objet.id }}Lobibox = Lobibox;
+        {{ objet.id }}Lobibox.notify.DEFAULTS = $.extend({}, {{ objet.id }}Lobibox.notify.DEFAULTS, {
+            soundPath: '{{ objet.soundPath }}',
+            title: true,                // Title of notification. Do not include it for default title or set custom string. Set this false to disable title
+            size: '{{ objet.size }}',     // normal, mini, large
+            soundExt: '.ogg',           // Default extension for all sounds
+            showClass: 'zoomIn',        // Show animation class.
+            hideClass: 'zoomOut',       // Hide animation class.
+            icon: true,                 // Icon of notification. Leave as is for default icon or set custom string
+            msg: '',                    // Message of notification
+            img: null,                  // Image source string
+            closable: true,             // Make notifications closable
+            delay: {{ objet.delay }},   // Hide notification after this time (in miliseconds)
+            delayIndicator: true,       // Show timer indicator
+            closeOnClick: true,         // Close notifications by clicking on them
+            width: 400,                 // Width of notification box
+            sound: true,                // Sound of notification. Set this false to disable sound. Leave as is for default sound or set custom soud path
+            position: "{{ objet.position }}",    // Place to show notification. Available options: "top left", "top right", "bottom left", "bottom right"
+            iconSource: "bootstrap"     // "bootstrap" or "fontAwesome" the library which will be used for icons
+        });
+    </script>
+    <input id="{{ objet.id }}ListLength" type="hidden" name="listLength" value="0"/>
+    <script id="{{ objet.id }}">
+    </script>
+</div>
+{% endif %}
 
-    {% if objet.action == 'send' %}
-        <script>
+{% if objet.action == 'send' %}
+    <script id="{{ objet.id }}">
+    $(document).ready(function () {
+
+        console.log({{ objet.id }}Lobibox.notify.list.length);
+
+        if ( {{ objet.id }}Lobibox.notify.list.length == 0) {
             {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
+                showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
                 {% if objet.title is not empty %} title: '{{ objet.title }}', {% endif %}
                 {% if objet.sound == false %} sound: false, {% endif %}
                 delay: {{ objet.delay }},
                 msg: '{{ objet.body }}'
             });
-        </script>
-    {% endif %}
-</div>
+            $("#{{ objet.id }}ListLength").val(1);
+            console.log($("#{{ objet.id }}ListLength").val());
+        } else {
+            var listLength = parseInt($("#{{ objet.id }}ListLength").val());
+            setTimeout(function () {
+                {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
+                    showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
+                    {% if objet.title is not empty %} title: '{{ objet.title }}', {% endif %}
+                    {% if objet.sound == false %} sound: false, {% endif %}
+                    delay: {{ objet.delay }},
+                    msg: '{{ objet.body }}'
+                });
+            }, {{ objet.delayMessage }} * listLength);
+            $("#{{ objet.id }}ListLength").val(listLength + 1);
+            console.log($("#{{ objet.id }}ListLength").val());
+        }
+
+    });
+    </script>
+{% endif %}
