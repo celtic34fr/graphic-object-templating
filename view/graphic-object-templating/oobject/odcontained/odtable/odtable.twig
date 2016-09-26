@@ -2,65 +2,66 @@
 
 {% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 
-<style>
-    {% if objet.styles is not empty %}
-    {% for line, lStyle in objet.styles %}
-    {% for col, cStyle in lStyle %}
-    {% switch line %}
-    {% case 0 %}
-    {% if col == 0 %}
-    #{{ objet.id }} table {
-    {{ cStyle | raw }}
-    }
-    {% else %}
-    #{{ objet.id }} table .cno{{ col }} {
-                    {{ cStyle | raw }}
-                    }
-    {% endif %}
-    {% default %}
-    {% if col == 0 %}
-    #{{ objet.id }} table .lno{{ line }} {
-                    {{ cStyle | raw }}
-                    }
-    {% else %}
-    #{{ objet.id }} table .lno{{ line }} .cno{{ col }} {
-                    {{ cStyle | raw }}
-                    }
-    {% endif %}
-    {% endswitch %}
-    {% endfor %}
-    {% endfor %}
-    {% endif %}
-
-    #{{ objet.id }} table th,
-    #{{ objet.id }} table td {
-                        border: 1px solid #000000;
-                        text-align: center;
-                    }
-
-    {% if objet.title is not empty %}
-    #{{ objet.id }} table caption {
-                    {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
-                    {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
-                        caption-side: {{ captionSide }};
-                        text-align: {{ textAlign }};
-                    {% if objet.titleStyle is not empty %}
-                    {{ objet.titleStyle | raw }}
-                    {% endif %}
-                    }
-    {% endif %}
-
-    {% for col in objet.cols %}
-    {% if col.view == true %}
-    #{{ objet.id }} table .cno{{ loop.index }} {
-                        width: {{ col.width }};
-                    }
-    {% endif %}
-    {% endfor %}
-</style>
-
 <div id="{{ objet.id }}"  data-objet="{{ objet.object }}"
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}>
+
+    <style>
+        {% if objet.styles is not empty %}
+        {% for line, lStyle in objet.styles %}
+        {% for col, cStyle in lStyle %}
+        {% switch line %}
+        {% case 0 %}
+        {% if col == 0 %}
+        #{{ objet.id }} table {
+        {{ cStyle | raw }}
+        }
+        {% else %}
+        #{{ objet.id }} table .cno{{ col }} {
+                        {{ cStyle | raw }}
+                        }
+        {% endif %}
+        {% default %}
+        {% if col == 0 %}
+        #{{ objet.id }} table .lno{{ line }} {
+                        {{ cStyle | raw }}
+                        }
+        {% else %}
+        #{{ objet.id }} table .lno{{ line }} .cno{{ col }} {
+                        {{ cStyle | raw }}
+                        }
+        {% endif %}
+        {% endswitch %}
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+
+        #{{ objet.id }} table th,
+        #{{ objet.id }} table td {
+                            border: 1px solid #000000;
+                            text-align: center;
+                        }
+
+        {% if objet.title is not empty %}
+        #{{ objet.id }} table caption {
+                        {% set captionSide = substr(objet.titlePos, 0, strpos(objet.titlePos, "_"))  %}
+                        {% set textAlign   = substr(objet.titlePos, strpos(objet.titlePos, "_") + 1) %}
+                            caption-side: {{ captionSide }};
+                            text-align: {{ textAlign }};
+                        {% if objet.titleStyle is not empty %}
+                        {{ objet.titleStyle | raw }}
+                        {% endif %}
+                        }
+        {% endif %}
+
+        {% for col in objet.cols %}
+        {% if col.view == true %}
+        #{{ objet.id }} table .cno{{ loop.index }} {
+                            width: {{ col.width }};
+                        }
+        {% endif %}
+        {% endfor %}
+    </style>
+
     <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
     <table id="{{ objet.id }}_table">
         {% if objet.title is not empty %}
@@ -96,56 +97,57 @@
         {% endif %}
         </tbody>
     </table>
-</div>
 
-<script id="{{ objet.id }}Script">
-    $(".line .col").click(function () {
-        var col = ""; var ligne = "";
-        if ($(this).hadAttr('data-col')) col = $(this).attr("data-col");
-        if ($(this).parent().hadAttr('data-line')) ligne = $(this).parent().attr("data-line");
+    <script id="{{ objet.id }}Script">
+        $(".line .col").click(function () {
+            var col = ""; var ligne = "";
+            if ($(this).hadAttr('data-col')) col = $(this).attr("data-col");
+            if ($(this).parent().hadAttr('data-line')) ligne = $(this).parent().attr("data-line");
 
-        var selected = col + "!" + ligne;
-        $("#{{ objet.id }}Select").val(selected);
-        alert(selected);
-    });
+            var selected = col + "!" + ligne;
+            $("#{{ objet.id }}Select").val(selected);
+            alert(selected);
+        });
 
-    {% if objet.event is defined and objet.event is not empty and objet.state == true %}
-    {% for lno, line in objet.event %}
-    {% for cno, callback in line %}
-    {% switch true %}
-    {% case (lno == 0) %}
-    $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
-        var params = odtable_getData($('#{{ objet.id }}'),'click', 'col');
-        invokeAjax(params);
-    });
-    {% case (lno !=0 and cno == 0) %}
-    $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
-        var params = odtable_getData($('#{{ objet.id }}'),'click', 'line');
-        invokeAjax(params);
-    });
-    {% case (lno !=0 and cno != 0) %}
-    $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
-        var params = odtable_getData($('#{{ objet.id }}'),'click', 'cell');
-        invokeAjax(params);
-    });
-    {% endswitch %}
-    {% endfor %}
-    {% endfor %}
-
-    $(document).ready(function () {
+        {% if objet.event is defined and objet.event is not empty and objet.state == true %}
         {% for lno, line in objet.event %}
         {% for cno, callback in line %}
         {% switch true %}
         {% case (lno == 0) %}
-        $('#{{ objet.id }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+        $('#{{ objet.id }} .cno{{ cno }}').on('click', function() {
+            var params = odtable_getData($('#{{ objet.id }}'),'click', 'col');
+            invokeAjax(params);
+        });
         {% case (lno !=0 and cno == 0) %}
-        $('#{{ objet.id }} .lno{{ lno }}').attr('data-click', '{{ callback }}');
+        $('#{{ objet.id }} .lno{{ lno }}').on('click', function() {
+            var params = odtable_getData($('#{{ objet.id }}'),'click', 'line');
+            invokeAjax(params);
+        });
         {% case (lno !=0 and cno != 0) %}
-        $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+        $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').on('click', function() {
+            var params = odtable_getData($('#{{ objet.id }}'),'click', 'cell');
+            invokeAjax(params);
+        });
         {% endswitch %}
         {% endfor %}
         {% endfor %}
-    });
-    {% endif %}
 
-</script>
+        $(document).ready(function () {
+            {% for lno, line in objet.event %}
+            {% for cno, callback in line %}
+            {% switch true %}
+            {% case (lno == 0) %}
+            $('#{{ objet.id }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+            {% case (lno !=0 and cno == 0) %}
+            $('#{{ objet.id }} .lno{{ lno }}').attr('data-click', '{{ callback }}');
+            {% case (lno !=0 and cno != 0) %}
+            $('#{{ objet.id }} .lno{{ lno }} .cno{{ cno }}').attr('data-click', '{{ callback }}');
+            {% endswitch %}
+            {% endfor %}
+            {% endfor %}
+        });
+        {% endif %}
+
+    </script>
+</div>
+

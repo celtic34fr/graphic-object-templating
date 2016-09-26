@@ -5,32 +5,6 @@
     {% set objClasses = objClasses ~ " " ~ objet.position %}
 {% endif %}
 
-<style>
-    {% if objet.style is not empty %}
-    #{{ objet.id }} {
-    {{ objet.style | raw }}
-    }
-    {% endif %}
-
-    {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-    {% set id = objet.id %}
-    {% set type = objet.infoBulle.type %}
-    {% set css = objet.infoBulle.css %}
-    {% set placement = objet.infoBulle.placement %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
-    {% elseif objet.erreur.libel is not empty %}
-    {% set erreur = objet.erreur %}
-    {% set id = objet.id %}
-    {% set type = 'tooltip' %}
-    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-    {% set placement = objet.infoBulle.placement %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
-
-    #{{ id }} {
-        border:  solid 2px #{{ erreur.color }} !important;
-    }
-    {% endif %}
-</style>
 
 <span id="{{ objet.id }}"  data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
       class="{{ objClasses }}"
@@ -48,22 +22,50 @@
         {% endif %}
 
 >
+    <style>
+        {% if objet.style is not empty %}
+        #{{ objet.id }} {
+        {{ objet.style | raw }}
+        }
+        {% endif %}
+
+        {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {% set id = objet.id %}
+        {% set type = objet.infoBulle.type %}
+        {% set css = objet.infoBulle.css %}
+        {% set placement = objet.infoBulle.placement %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+        {% elseif objet.erreur.libel is not empty %}
+        {% set erreur = objet.erreur %}
+        {% set id = objet.id %}
+        {% set type = 'tooltip' %}
+        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+        {% set placement = objet.infoBulle.placement %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+
+        #{{ id }} {
+            border:  solid 2px #{{ erreur.color }} !important;
+        }
+        {% endif %}
+    </style>
+
     {{ objet.value }}
+
+    <script id="{{ objet.id }}Script">
+        {% if objet.event is defined and objet.event is not empty %}
+        $('document').ready(
+                {% if objet.event is not empty %}
+                {% set events = objet.event %}
+                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+                {% endif %}
+        );
+        {% endif %}
+    </script>
+
+    {% if infoBulle.title is not empty %}
+        {%  set type = infoBulle.type %}
+        {%  set id = objet.id %}
+        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+    {% endif %}
 </span>
 
-<script id="{{ objet.id }}Script">
-    {% if objet.event is defined and objet.event is not empty %}
-    $('document').ready(
-        {% if objet.event is not empty %}
-            {% set events = objet.event %}
-            {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
-        {% endif %}
-    );
-    {% endif %}
-</script>
-
-{% if infoBulle.title is not empty %}
-    {%  set type = infoBulle.type %}
-    {%  set id = objet.id %}
-    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
-{% endif %}

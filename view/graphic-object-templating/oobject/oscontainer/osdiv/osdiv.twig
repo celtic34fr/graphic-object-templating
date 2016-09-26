@@ -1,44 +1,6 @@
 {# template de l'objet OSDiv #}
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
-<style>
-    #{{ objet.id }} {
-    {% if objet.autoCenter == true %}
-    {% set objClass = "" %}
-        width: {{ objet.autoCenterPx }};
-        height:  {{ objet.autoCenterPy }};
-        position: absolute;
-        top:0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-    {% endif %}
-        display: {{ objet.display }};
-    {% if objet.style is not empty %}
-    {{ objet.style | raw }}
-    {% endif %}
-    }
-
-    {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-    {% set id = objet.id %}
-    {% set type = objet.infoBulle.type %}
-    {% set css = objet.infoBulle.css %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
-    {% elseif objet.erreur.libel is not empty %}
-    {% set erreur = objet.erreur %}
-    {% set id = objet.id %}
-    {% set type = 'tooltip' %}
-    {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-    {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
-
-    #{{ id }} {
-        border:  solid 2px #{{ erreur.color }};
-    }
-    {% endif %}
-</style>
-
-
 <div id="{{ objet.id }}"
         {% if objet.infoBulle is not empty %}
             {%  set infoBulle = objet.infoBulle %}
@@ -47,11 +9,50 @@
         {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes  %} {% endif %}
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
 >
+
+    <style>
+        #{{ objet.id }} {
+        {% if objet.autoCenter == true %}
+        {% set objClass = "" %}
+            width: {{ objet.autoCenterPx }};
+            height:  {{ objet.autoCenterPy }};
+            position: absolute;
+            top:0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        {% endif %}
+            display: {{ objet.display }};
+        {% if objet.style is not empty %}
+        {{ objet.style | raw }}
+        {% endif %}
+        }
+
+        {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {% set id = objet.id %}
+        {% set type = objet.infoBulle.type %}
+        {% set css = objet.infoBulle.css %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+        {% elseif objet.erreur.libel is not empty %}
+        {% set erreur = objet.erreur %}
+        {% set id = objet.id %}
+        {% set type = 'tooltip' %}
+        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
+
+        #{{ id }} {
+            border:  solid 2px #{{ erreur.color }};
+        }
+        {% endif %}
+    </style>
+
     {{ content | raw }}
+
+    {% if objet.infoBulle is not empty %}
+        {%  set type = objet.infoBulle.type %}
+        {%  set id = objet.id %}
+        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+    {% endif %}
 </div>
 
-{% if objet.infoBulle is not empty %}
-    {%  set type = objet.infoBulle.type %}
-    {%  set id = objet.id %}
-    {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
-{% endif %}
