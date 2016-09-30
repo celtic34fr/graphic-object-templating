@@ -56,27 +56,37 @@ class GOTController extends AbstractActionController
                 $pos = strpos($callback, '/');
                 $controller = ucfirst(substr($callback, 0, $pos));
                 $method = substr($callback, $pos + 1);
+                $params = "";
 
                 switch (true) {
                     case ( strpos($controller, 'Controller') !== false ) :
                         $nomController = $module."/Controller/".$controller;
+                        $param = $this->serviceManager;
                         break;
                     case (substr($controller, 0, 2) == 'OC') :
                         $nomController = "GraphicObjectTemplating/ODContent/".$controller;
+                        unset($param);
                         break;
                     case (substr($controller, 0, 2) == 'OS') :
                         $nomController = "GraphicObjectTemplating/OSContainer/".$controller;
+                        unset($param);
                         break;
                     case (strpos($controller, "GOT") == (strlen($controller) - 3)) :
                         $nomController = $module."/GotObjects/".$controller;
+                        unset($param);
                         break;
                     default:
                         $nomController = $module."/".$controller;
                         break;
+                        unset($param);
                 }
                 $nomController = str_replace("/", chr(92), $nomController);
 
-                $object = new $nomController;
+                if (isset($param)) {
+                    $object = new $nomController($param);
+                } else {
+                    $object = new $nomController;
+                }
                 // traitement en cas de formulaire
                 if (isset($form) && !empty($form)) {
                     $formDatas = [];
@@ -93,9 +103,11 @@ class GOTController extends AbstractActionController
                                         break;
                                     case (strpos($item, 'value=') !== false):
                                         $value = substr($item, 6);
-                                        if (substr($value, 0, 1) == "'") $value = substr($value, 1);
-                                        if (substr($value, strlen($value) - 1, 1) == "'")
+                                        if (substr($value, 0, 1) == "*") $value = substr($value, 1);
+                                        if (substr($value, strlen($value) - 1, 1) == "*") {
                                             $value = substr($value, 0, strlen($value) - 1);                                        break;
+                                        }
+                                        var_dump(substr($value, 0, 1));
                                 }
                                 if (isset($id) && isset($value)) {
                                     $obj = OObject::buildObject($id);
