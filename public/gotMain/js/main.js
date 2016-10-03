@@ -64,6 +64,8 @@ function invokeAjax(datas) {
                         break;
                     case "redirect":
                         $(location).attr('href', code);
+                    case "goRoute":
+                        $(location).attr('href', code);
                 }
             });
         },
@@ -128,6 +130,7 @@ function getFormDatas(form) {
 
         if (datas.length > 0) {
             datas = datas.replaceAll("&", "§");
+            datas = datas.replaceAll("\'", "*");
             formData = formData + "|" + datas;
         }
     });
@@ -464,11 +467,15 @@ function odselect_setData(id, data) {
     if (data == "") { // raz des options sélectionnées
         $("#"+ id +" option").removeAttr("selected");
     } else  {
-        if ($.isArray(data)) {
-            data.each(function(idx, val){
-                $("#"+ id +" option:nth_child("+val+")").attr("selected","selected");
-            })
-        }
+        $.each(data.split("$"), function(ind,val){
+            if ($("#"+id+" select").hasClass("select2")) {
+                $("#"+id+" select").select2();
+                $("#"+id+" select").val(val).trigger("change");
+            } else {
+                var selecteur = "#"+id+" option[value=" + val + "]";
+                $(selecteur).attr('selected', 'selected');
+            }
+        });
     }
 }
 

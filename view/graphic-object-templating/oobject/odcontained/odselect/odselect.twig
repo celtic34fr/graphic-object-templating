@@ -14,6 +14,9 @@
 {% endfor %}
 {% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
 {% set inputClass = inputClass ~ gotBootstrap(inputWidth) %}
+{% if objet.select2 == true %}
+    {% set inputClass = inputClass ~ " select2" %}
+{% endif %}
 
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}"
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
