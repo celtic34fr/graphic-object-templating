@@ -54,5 +54,26 @@
         {%  set id = objet.id %}
         {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
     {% endif %}
+
+    <script>
+        $(document).ready(function () {
+            $("#{{ objet.id }}").colorbox({
+            {% if objet.title is not empty %} title: "{{ objet.title }}", {% endif %}
+                opacity: {{ objet.opacity }},
+                transition: "{{ objet.transition }}",
+                scrolling: {{ (objet.scrolling == true) ? "true" : "false" }},
+                scalePhoto: {{ (objet.scalePhoto == true) ? "true" : "false" }},
+                closeButton: {{ (objet.closeButton == true) ? "true" : "false" }},
+                {% if objet.width == false %} width: "{{ objet.width }}", {% endif %}
+                {% if objet.height == false %} height: "{{ objet.height}}", {% endif %}
+                {% if objet.initialWidth == false %} initialWidth: "{{ objet.initialWidth }}", {% endif %}
+                {% if objet.initialHeight == false %} initialHeight: "{{ objet.initialHeight}}", {% endif %}
+                {% if objet.maxWidth == false %} maxWidth: "{{ objet.maxWidth }}", {% endif %}
+                {% if objet.maxHeight == false %} maxHeight: "{{ objet.maxHeight}}", {% endif %}
+                reposition: {{ (objet.reposition == true) ? "true" : "false" }},
+                fixed: {{ (objet.fixed == true) ? "true" : "false" }},
+            })
+        })
+    </script>
 </div>
 
