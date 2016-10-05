@@ -8,6 +8,8 @@
 
 namespace GraphicObjectTemplating\Objects\OSContainer;
 
+use GraphicObjectTemplating\Objects\ODContained\ODContent;
+use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
 
 /**
@@ -24,6 +26,8 @@ use GraphicObjectTemplating\Objects\OSContainer;
  * disScrolling()
  * setOpacity($opacity = self::OPACITY_DEFAULT)
  * getOpacity()
+ * setContent($content)
+ * getContent()
  */
 class OSDialog extends OSContainer
 {
@@ -289,6 +293,25 @@ class OSDialog extends OSContainer
             $retour = $this->const_transition;
         }
         return $retour;
+    }
+
+    public function setContent($content)
+    {
+        $properties = $this->getProperties();
+        if (!($content instanceof OObject)) {
+            $contenu = new ODContent($properties['id']."Content");
+            $contenu->setContent($content);
+            $this->addChild($contenu);
+        } else {
+            $this->addChild($content);
+        }
+        return $this;
+    }
+
+    public function getContent()
+    {
+        if ($this->$this->hasChildren()) return $this->getChildren();
+        return false;
     }
 
 }
