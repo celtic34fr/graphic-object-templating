@@ -66,10 +66,10 @@
                 clickoff: {{ (objet.clickoff) ? "true" : "false" }},
             {% if objet.effect is not empty %} effect: "{{ objet.effect }}", {% endif %}
                 enabled: {{ (objet.enabled) ? "true" : "false" }},
-                inner: {% objet.inner %},
+                inner: "{{ objet.inner }}",
                 keyborad: {{ (objet.keyboard) ? "true" : "false" }},
                 open: {{ (objet.open) ? "true" : "false" }},
-                outer: {% objet.outer %},
+                outer: "{{ objet.outer }}",
             });
         });
     </script>

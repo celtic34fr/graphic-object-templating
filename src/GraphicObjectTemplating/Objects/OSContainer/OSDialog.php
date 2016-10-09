@@ -247,11 +247,9 @@ class OSDialog extends OSContainer
     {
         $item = [];
 
-        $item['id']    = $this->getId."Command";
-        $item['mode']  = "update";
-        $item['html']  = '$(document).ready(function () { ';
-        $item['html'] .= '$("#'.$this->getId().'Content").modality().open(); });';
-        $item['html'] .= '});';
+        $item['id']   = $this->getId()."Command";
+        $item['mode'] = "exec";
+        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.open();";
 
         return array($item);
     }
@@ -260,11 +258,9 @@ class OSDialog extends OSContainer
     {
         $item = [];
 
-        $item['id']    = $this->getId."Command";
-        $item['mode']  = "update";
-        $item['html']  = '$(document).ready(function () { ';
-        $item['html'] .= '$("#'.$this->getId().'Content").modality().close(); });';
-        $item['html'] .= '});';
+        $item['id']   = $this->getId."Command";
+        $item['mode'] = "exec";
+        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.close();";
 
         return array($item);
     }
@@ -273,11 +269,9 @@ class OSDialog extends OSContainer
     {
         $item = [];
 
-        $item['id']    = $this->getId."Command";
-        $item['mode']  = "update";
-        $item['html']  = '$(document).ready(function () { ';
-        $item['html'] .= '$("#'.$this->getId().'Content").modality().toggle(); });';
-        $item['html'] .= '});';
+        $item['id']   = $this->getId."Command";
+        $item['mode'] = "exec";
+        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.toggle();";
 
         return array($item);
     }
