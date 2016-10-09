@@ -18,26 +18,56 @@ use GraphicObjectTemplating\Objects\OSContainer;
  *
  * objet de dialogue sur base jQuery Colorbox
  *
- * setTransition($transition = self::TRANSITION_NONE)
- * getTransition()
- * setTitle($title = "")
- * getTitle()
- * enaScrolling()
- * disScrolling()
- * setOpacity($opacity = self::OPACITY_DEFAULT)
- * getOpacity()
+ * enaAccessible()
+ * disAccessible()
+ * enable()
+ * disable()
  * setContent($content)
  * getContent()
+ * setEffect($effect = self::EFFECT_NONE)
+ * getEffect()
+ * setClass($class = "")
+ * getClass()
+ * enaClickoff()
+ * disClickoff()
+ * setInner($inner = "modality-inner")
+ * getInner()
+ * setOuter($outer = "modality-outer")
+ * getOuter()
+ * enaKeyboard()
+ * disKeyboard()
+ * enaOpen()
+ * disOpen()
+ *
+ * CmdOpenDialog()
+ * CmdCloseDialog()
+ * CmdToggleDialog()
  */
 class OSDialog extends OSContainer
 {
-    const TRANSITION_NONE    = "none";
-    const TRANSITION_FADE    = "fade";
-    const TRANSITION_ELASTIC = "elastic";
+    const EFFECT_NONE            = "";
+    const EFFECT_SCALE_UP        = "scale_up";
+    const EFFECT_SCALE_DOWN      = "scale_down";
+    const EFFECT_SLIDE_LEFT      = "slide_left";
+    const EFFECT_SLIDE_RIGHT     = "slide_right";
+    const EFFECT_SLIDE_UP        = "slide_up";
+    const EFFECT_SLIDE_DOWN      = "slide_down";
+    const EFFECT_STICKY_TOP      = "sticky_top";
+    const EFFECT_STICKY_BOTTOM   = "sticky_bottom";
+    const EFFECT_HORIZONTAL_FLIP = "horizontal_flip";
+    const EFFECT_VERTICAL_FLIP   = "vertical_flip";
+    const EFFECT_SPIN_UP         = "spin_up";
+    const EFFECT_SPIN_DOWN       = "spin_down";
+    const EFFECT_FALL_LEFT       = "fall_left";
+    const EFFECT_FALL_RIGHT      = "fall_right";
+    const EFFECT_SWING_DOWN      = "swing_down";
+    const EFFECT_SWING_UP        = "swing_up";
+    const EFFECT_SWING_LEFT      = "swing_left";
+    const EFFECT_SWING_RIGHT     = "swing_right";
+    const EFFECT_FRONT_FLIP      = "front_flip";
+    const EFFECT_BACK_FLIP       = "back_flip";
 
-    const OPACITY_DEFAULT    = 85;
-
-    protected $const_transition;
+    protected $const_effect;
 
     public function __construct($id) {
         parent::__construct($id, "oobject/oscontainer/osdialog/osdialog.config.phtml");
@@ -46,253 +76,36 @@ class OSDialog extends OSContainer
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function setTransition($transition = self::TRANSITION_NONE)
+    public function enaAccessible()
     {
-        $transitions = $this->getTransitionConstants();
-        if (!in_array($transition, $transitions)) $transition = self::TRANSITION_NONE;
-
         $properties = $this->getProperties();
-        $properties['transition'] = $transition;
+        $properties['accessible'] = true;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function getTransition()
+    public function disAccessible()
     {
-        $properties         = $this->getProperties();
-        return ((!empty($properties['transition'])) ? $properties['transition'] : false) ;
-    }
-
-    public function setTitle($title = "")
-    {
-        $title = (string) $title;
         $properties = $this->getProperties();
-        $properties['title'] = $title;
+        $properties['enabled'] = false;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function getTitle()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('title', $properties)) ? $properties['title'] : false ;
-    }
-
-    public function enaScrolling()
+    public function enable()
     {
         $properties = $this->getProperties();
-        $properties['scrolling'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function disScrolling()
-    {
-        $properties = $this->getProperties();
-        $properties['scrolling'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function setOpacity($opacity = self::OPACITY_DEFAULT)
-    {
-        $opacity = (int) $opacity;
-        if ($opacity < 0) $opacity = 0;
-        if ($opacity > 100) $opacity = 100;
-
-        $properties = $this->getProperties();
-        $properties['opacity'] = $opacity / 100;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function getOpacity()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('opacity', $properties)) ? $properties['opacity']*100 : false ;
-    }
-
-    public function enaScalePhoto()
-    {
-        $properties = $this->getProperties();
-        $properties['scalePhoto'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function disScalePhoto()
-    {
-        $properties = $this->getProperties();
-        $properties['scalePhoto'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function enaCloseButton()
-    {
-        $properties = $this->getProperties();
-        $properties['closeButton'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function disCloseButton()
-    {
-        $properties = $this->getProperties();
-        $properties['closeButton'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function setWidth($width = false)
-    {
-        if (empty($width) || intval($width) == 0) { $width = false; }
-        else { $width = (int) $width; }
-
-        $properties = $this->getProperties();
-        $properties['width'] = $width;
+        $properties['enabled'] = true;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function getWidth()
+    public function disable()
     {
-        $properties             = $this->getProperties();
-        return (array_key_exists('width', $properties)) ? $properties['width'] : false ;
-    }
-
-    public function setHeight($height = false)
-    {
-        if (empty($height) || intval($height) == 0) { $height = false; }
-        else { $height = (int) $height; }
-
         $properties = $this->getProperties();
-        $properties['height'] = $height;
+        $properties['enabled'] = false;
         $this->setProperties($properties);
         return $this;
-    }
-
-    public function getHeight()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('height', $properties)) ? $properties['height'] : false ;
-    }
-
-    public function setInitialWidth($initialWidth = false)
-    {
-        if (empty($initialWidth) || intval($initialWidth) == 0) { $initialWidth = false; }
-        else { $initialWidth = (int) $initialWidth; }
-
-        $properties = $this->getProperties();
-        $properties['initialWidth'] = $initialWidth;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getInitialWidth()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('initialWidth', $properties)) ? $properties['initialWidth'] : false ;
-    }
-
-    public function setInitialHeight($initialHeight = false)
-    {
-        if (empty($initialHeight) || intval($initialHeight) == 0) { $initialHeight = false; }
-        else { $initialHeight = (int) $initialHeight; }
-
-        $properties = $this->getProperties();
-        $properties['initialHeight'] = $initialHeight;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getInitialHeight()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('initialHeight', $properties)) ? $properties['initialHeight'] : false ;
-    }
-
-    public function setMaxWidth($maxWidth = false)
-    {
-        if (empty($maxWidth) || intval($maxWidth) == 0) { $maxWidth = false; }
-        else { $maxWidth = (int) $maxWidth; }
-
-        $properties = $this->getProperties();
-        $properties['maxWidth'] = $maxWidth;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getMaxWidth()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('maxWidth', $properties)) ? $properties['maxWidth'] : false ;
-    }
-
-    public function setMaxHeight($maxHeight = false)
-    {
-        if (empty($maxHeight) || intval($maxHeight) == 0) { $maxHeight = false; }
-        else { $maxHeight = (int) $maxHeight; }
-
-        $properties = $this->getProperties();
-        $properties['maxHeight'] = $maxHeight;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getMaxHeight()
-    {
-        $properties             = $this->getProperties();
-        return (array_key_exists('maxHeight', $properties)) ? $properties['maxHeight'] : false ;
-    }
-
-    public function enaResize()
-    {
-        $properties = $this->getProperties();
-        $properties['reposition'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function disResize()
-    {
-        $properties = $this->getProperties();
-        $properties['reposition'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function enaFixed()
-    {
-        $properties = $this->getProperties();
-        $properties['fixed'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-    public function disFixed()
-    {
-        $properties = $this->getProperties();
-        $properties['fixed'] = true;
-        $this->setPosition($properties);
-        return $this;
-    }
-
-
-    private function getTransitionConstants()
-    {
-        $retour = [];
-        if (empty($this->const_transition)) {
-            $constants = $this->getConstants();
-            foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TRANSITION');
-                if ($pos !== false) $retour[$key] = $constant;
-            }
-            $this->const_transition = $retour;
-        } else {
-            $retour = $this->const_transition;
-        }
-        return $retour;
     }
 
     public function setContent($content)
@@ -312,6 +125,179 @@ class OSDialog extends OSContainer
     {
         if ($this->$this->hasChildren()) return $this->getChildren();
         return false;
+    }
+
+    public function setEffect($effect = self::EFFECT_NONE)
+    {
+        $effect = (string) $effect;
+        $effects = $this->getEffectsConstants();
+        if (!in_array($effect, $effects)) $effect = self::EFFECT_NONE;
+
+        $properties = $this->getProperties();
+        $properties['effect'] = $effect;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getEffect()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['effect'])) ? $properties['effect'] : false) ;
+    }
+
+    public function setClass($class = "")
+    {
+        $class = (string) $class;
+        if (!empty($class)) {
+            $properties = $this->getProperties();
+            $properties['class'] = $class;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function getClass()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['class'])) ? $properties['class'] : false) ;
+    }
+
+    public function enaClickoff()
+    {
+        $properties = $this->getProperties();
+        $properties['clickoff'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disClickoff()
+    {
+        $properties = $this->getProperties();
+        $properties['clickoff'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setInner($inner = "modality-inner")
+    {
+        $inner = (string) $inner;
+        $properties = $this->getProperties();
+        $properties['inner'] = $inner;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getInner()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['inner'])) ? $properties['inner'] : false) ;
+    }
+
+    public function setOuter($outer = "modality-outer")
+    {
+        $outer = (string) $outer;
+        $properties = $this->getProperties();
+        $properties['outer'] = $outer;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getOuter()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['outer'])) ? $properties['outer'] : false) ;
+    }
+
+    public function enaKeyboard()
+    {
+        $properties = $this->getProperties();
+        $properties['keyboard'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disKeyboard()
+    {
+        $properties = $this->getProperties();
+        $properties['keyboard'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function enaOpen()
+    {
+        $properties = $this->getProperties();
+        $properties['open'] = true;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disOpen()
+    {
+        $properties = $this->getProperties();
+        $properties['open'] = false;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+
+
+    public function CmdOpenDialog()
+    {
+        $item = [];
+
+        $item['id']    = $this->getId."Command";
+        $item['mode']  = "update";
+        $item['html']  = '$(document).ready(function () { ';
+        $item['html'] .= '$("#'.$this->getId().'Content").modality().open(); });';
+        $item['html'] .= '});';
+
+        return array($item);
+    }
+
+    public function CmdCloseDialog()
+    {
+        $item = [];
+
+        $item['id']    = $this->getId."Command";
+        $item['mode']  = "update";
+        $item['html']  = '$(document).ready(function () { ';
+        $item['html'] .= '$("#'.$this->getId().'Content").modality().close(); });';
+        $item['html'] .= '});';
+
+        return array($item);
+    }
+
+    public function CmdToggleDialog()
+    {
+        $item = [];
+
+        $item['id']    = $this->getId."Command";
+        $item['mode']  = "update";
+        $item['html']  = '$(document).ready(function () { ';
+        $item['html'] .= '$("#'.$this->getId().'Content").modality().toggle(); });';
+        $item['html'] .= '});';
+
+        return array($item);
+    }
+
+
+
+    private function getEffectsConstants()
+    {
+        $retour = [];
+        if (empty($this->const_effect)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'EFFECT');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_effect = $retour;
+        } else {
+            $retour = $this->const_effect;
+        }
+        return $retour;
     }
 
 }

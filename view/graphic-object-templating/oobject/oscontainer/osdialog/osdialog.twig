@@ -47,7 +47,9 @@
         {% endif %}
     </style>
 
-    {{ content | raw }}
+    <div id="{{ objet.id }}Content" role="dialog" aria-labelledby="{{ objet.id }}Heading">
+        {{ content | raw }}
+    </div>
 
     {% if objet.infoBulle is not empty %}
         {%  set type = objet.infoBulle.type %}
@@ -57,23 +59,21 @@
 
     <script>
         $(document).ready(function () {
-            $("#{{ objet.id }}").colorbox({
-            {% if objet.title is not empty %} title: "{{ objet.title }}", {% endif %}
-                opacity: {{ objet.opacity }},
-                transition: "{{ objet.transition }}",
-                scrolling: {{ (objet.scrolling == true) ? "true" : "false" }},
-                scalePhoto: {{ (objet.scalePhoto == true) ? "true" : "false" }},
-                closeButton: {{ (objet.closeButton == true) ? "true" : "false" }},
-                {% if objet.width == false %} width: "{{ objet.width }}", {% endif %}
-                {% if objet.height == false %} height: "{{ objet.height}}", {% endif %}
-                {% if objet.initialWidth == false %} initialWidth: "{{ objet.initialWidth }}", {% endif %}
-                {% if objet.initialHeight == false %} initialHeight: "{{ objet.initialHeight}}", {% endif %}
-                {% if objet.maxWidth == false %} maxWidth: "{{ objet.maxWidth }}", {% endif %}
-                {% if objet.maxHeight == false %} maxHeight: "{{ objet.maxHeight}}", {% endif %}
-                reposition: {{ (objet.reposition == true) ? "true" : "false" }},
-                fixed: {{ (objet.fixed == true) ? "true" : "false" }},
-            })
-        })
+            $("#{{ objet.id }}Content").modality({
+                accessible: {{ (objet.accessible) ? "true" : "false" }},
+                blind: {{ (objet.blind) ? "true" : "false" }},
+            {% if objet.class is not empty %} class: "{{ objet.class }}", {% endif %}
+                clickoff: {{ (objet.clickoff) ? "true" : "false" }},
+            {% if objet.effect is not empty %} effect: "{{ objet.effect }}", {% endif %}
+                enabled: {{ (objet.enabled) ? "true" : "false" }},
+                inner: {% objet.inner %},
+                keyborad: {{ (objet.keyboard) ? "true" : "false" }},
+                open: {{ (objet.open) ? "true" : "false" }},
+                outer: {% objet.outer %},
+            });
+        });
     </script>
+
+    <script id="{{ objet.id }}Command"></script>
 </div>
 
