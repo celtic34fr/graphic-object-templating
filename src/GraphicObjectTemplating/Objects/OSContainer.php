@@ -58,7 +58,7 @@ class OSContainer extends OObject
 
     public function setWidth($width)
     {
-        $width               = (int) $width;
+        $width               = (string) $width;
         $properties          = $this->getProperties();
         $properties['width'] = $width;
         $this->setProperties($properties);

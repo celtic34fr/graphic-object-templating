@@ -45,6 +45,12 @@
             border:  solid 2px #{{ erreur.color }};
         }
         {% endif %}
+
+        {% if objet.width is not empty %}
+        #{{ objet.id }}Content {
+            width: {{ objet.width }};
+        }
+        {% endif %}
     </style>
 
     <div id="{{ objet.id }}Content" role="dialog" aria-labelledby="{{ objet.id }}Heading">

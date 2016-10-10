@@ -251,7 +251,7 @@ class OSDialog extends OSContainer
         $item['mode'] = "exec";
         $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.open();";
 
-        return array($item);
+        return $item;
     }
 
     public function CmdCloseDialog()
@@ -262,7 +262,7 @@ class OSDialog extends OSContainer
         $item['mode'] = "exec";
         $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.close();";
 
-        return array($item);
+        return $item;
     }
 
     public function CmdToggleDialog()
@@ -273,7 +273,7 @@ class OSDialog extends OSContainer
         $item['mode'] = "exec";
         $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.toggle();";
 
-        return array($item);
+        return $item;
     }
 
 
