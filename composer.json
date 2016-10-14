@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.5",
         "zendframework/zendframework": "~2.4",
-        "zf-commons/zfc-twig" : "*"
+        "kokspflanze/zfc-twig" : "*"
     },
     "autoload": {
         "psr-0": {
