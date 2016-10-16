@@ -1,0 +1,317 @@
+/* -----------------------------------------------------------------
+// @author:  Mark McCann (www.markmccann.me)
+// @license: None, Public Domain
+// --------------------------------------------------------------- */
+
+.modality-outer {
+    background: rgba(0, 0, 0, 0);
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    overflow: auto;
+    position: fixed;
+    right: 0;
+    text-align: center;
+    top: 0;
+    visibility: hidden; 
+    *zoom: 1;
+    -moz-transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    -webkit-perspective: 1000px; 
+    -moz-perspective: 1000px; 
+    perspective: 1000px;
+}
+.modality-inner {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    *display: inline;
+    margin: 25px 0;
+    max-width: 94%;
+    text-align: left;
+    vertical-align: middle;
+    z-index: 10000;
+    *zoom: 1;
+    opacity: 0;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.modality-outer:before, .modality-ghost {
+    content: '';
+    display: inline-block;
+    *display: inline;
+    height: 100%;
+    margin-right: -0.25em;
+    vertical-align: middle;
+    *zoom: 1;
+}
+.modality-outer[aria-hidden="false"] {
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    visibility: visible;
+    z-index: 10000;
+}
+.modality-outer[aria-hidden="false"] .modality-inner {
+    opacity: 1;
+}
+
+/* --------------------------------------------------- */
+
+/* Effect 1 & 2: scale up and down */
+.scale-up .modality-inner {
+    -webkit-transform: scale(0.7);
+    -moz-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    transform: scale(0.7);
+}
+.scale-down .modality-inner {
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    -ms-transform: scale(2);
+    transform: scale(2);
+}
+[aria-hidden="false"].scale-up .modality-inner,
+[aria-hidden="false"].scale-down .modality-inner {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 3 & 4: slide left and right */
+.slide-left .modality-inner {
+    -webkit-transform: translateX(20%);
+    -moz-transform: translateX(20%);
+    -ms-transform: translateX(20%);
+    transform: translateX(20%);
+}
+.slide-right .modality-inner {
+    -webkit-transform: translateX(-20%);
+    -moz-transform: translateX(-20%);
+    -ms-transform: translateX(-20%);
+    transform: translateX(-20%);
+}
+.slide-left .modality-inner,
+.slide-right .modality-inner {
+    -webkit-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+    -moz-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+    transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+}
+[aria-hidden="false"].slide-left .modality-inner,
+[aria-hidden="false"].slide-right .modality-inner {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+}
+
+
+/* --------------------------------------------------- */
+
+/* Effects 5 & 6: slide up and down */
+.slide-up .modality-inner {
+    -webkit-transform: translateY(20%);
+    -moz-transform: translateY(20%);
+    -ms-transform: translateY(20%);
+    transform: translateY(20%);
+}
+.slide-down .modality-inner {
+    -webkit-transform: translateY(-20%);
+    -moz-transform: translateY(-20%);
+    -ms-transform: translateY(-20%);
+    transform: translateY(-20%);
+}
+[aria-hidden="false"].slide-up .modality-inner,
+[aria-hidden="false"].slide-down .modality-inner {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 7 & 8: slide and stick to top or bottom */
+.sticky-top .modality-inner {
+    margin-top: 0px;
+    -webkit-transform: translateY(-200%);
+    -moz-transform: translateY(-200%);
+    -ms-transform: translateY(-200%);
+    transform: translateY(-200%);
+    vertical-align: top;
+}
+.sticky-bottom .modality-inner {
+    margin-bottom: 0px;
+    -webkit-transform: translateY(200%);
+    -moz-transform: translateY(200%);
+    -ms-transform: translateY(200%);
+    transform: translateY(200%);
+    vertical-align: bottom;
+}
+[aria-hidden="false"].sticky-top .modality-inner,
+[aria-hidden="false"].sticky-bottom .modality-inner {
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 9 & 10: horizontal and vertical flip */
+.horizontal-flip .modality-inner,
+.vertical-flip .modality-inner {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.vertical-flip .modality-inner {
+    -webkit-transform: rotateY(-75deg);
+    -moz-transform: rotateY(-75deg);
+    -ms-transform: rotateY(-75deg);
+    transform: rotateY(-75deg);
+}
+.horizontal-flip .modality-inner {
+    -webkit-transform: rotateX(-75deg);
+    -moz-transform: rotateX(-75deg);
+    -ms-transform: rotateX(-75deg);
+    transform: rotateX(-75deg);
+}
+[aria-hidden="false"].vertical-flip .modality-inner,
+[aria-hidden="false"].horizontal-flip .modality-inner {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 11 & 12: spin up and down */
+.spin-up .modality-inner {
+    -webkit-transform: scale(0) rotate(540deg);
+    -moz-transform: scale(0) rotate(540deg);
+    -ms-transform: scale(0) rotate(540deg);
+    transform: scale(0) rotate(540deg);
+}
+.spin-down .modality-inner {
+    -webkit-transform: scale(2) rotate(-540deg);
+    -moz-transform: scale(2) rotate(-540deg);
+    -ms-transform: scale(2) rotate(-540deg);
+    transform: scale(2) rotate(-540deg);
+}
+[aria-hidden="false"].spin-up .modality-inner,
+[aria-hidden="false"].spin-down .modality-inner {
+    -webkit-transform: scale(1) rotate(0deg);
+    -moz-transform: scale(1) rotate(0deg);
+    -ms-transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 13 & 14: fall left and fall right */
+.fall-left .modality-inner {
+    -webkit-transform: translate(30%) translateZ(600px) rotate(10deg);
+    -moz-transform: translate(30%) translateZ(600px) rotate(10deg);
+    -ms-transform: translate(30%) translateZ(600px) rotate(10deg);
+    transform: translate(30%) translateZ(600px) rotate(10deg);
+}
+.fall-right .modality-inner {
+    -webkit-transform: translate(-30%) translateZ(600px) rotate(-10deg);
+    -moz-transform: translate(-30%) translateZ(600px) rotate(-10deg);
+    -ms-transform: translate(-30%) translateZ(600px) rotate(-10deg);
+    transform: translate(-30%) translateZ(600px) rotate(-10deg);
+}
+[aria-hidden="false"].fall-left .modality-inner,
+[aria-hidden="false"].fall-right .modality-inner {
+    -webkit-transform: translate(0%) translateZ(0) rotate(0deg);
+    -moz-transform: translate(0%) translateZ(0) rotate(0deg);
+    -ms-transform: translate(0%) translateZ(0) rotate(0deg);
+    transform: translate(0%) translateZ(0) rotate(0deg);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 15 & 16: spin up and down */
+.swing-down .modality-inner {
+    -webkit-transform: rotateX(-60deg);
+    -moz-transform: rotateX(-60deg);
+    -ms-transform: rotateX(-60deg);
+    transform: rotateX(-60deg);
+    -webkit-transform-origin: top;
+    -moz-transform-origin: top;
+    transform-origin: top;
+}
+.swing-up .modality-inner {
+    -webkit-transform: rotateX(60deg);
+    -moz-transform: rotateX(60deg);
+    -ms-transform: rotateX(60deg);
+    transform: rotateX(60deg);
+    -webkit-transform-origin: bottom;
+    -moz-transform-origin: bottom;
+    transform-origin: bottom;
+}
+[aria-hidden="false"].swing-down .modality-inner,
+[aria-hidden="false"].swing-up .modality-inner,
+[aria-hidden="false"].front-flip .modality-inner,
+[aria-hidden="false"].back-flip .modality-inner {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}
+
+/* --------------------------------------------------- */
+
+/* Effects 17 & 18: front flip and back */
+.front-flip .modality-inner {
+    -webkit-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    transform: rotateX(360deg);
+}
+.back-flip .modality-inner {
+    -webkit-transform: rotateX(-360deg);
+    -moz-transform: rotateX(-360deg);
+    -ms-transform: rotateX(-360deg);
+    transform: rotateX(-360deg);
+}
+/* active styles above with effect-15 & 16 */
+
+/* --------------------------------------------------- */
+
+/* Effects 19 & 20: swing left and right */
+.swing-left .modality-inner {
+    -webkit-transform: translateZ(100px) translateX(30%) rotateY(-90deg);
+    -moz-transform: translateZ(100px) translateX(30%) rotateY(-90deg);
+    -ms-transform: translateZ(100px) translateX(30%) rotateY(-90deg);
+    transform: translateZ(100px) translateX(30%) rotateY(-90deg);
+    -webkit-transform-origin: right;
+    -moz-transform-origin: right;
+    transform-origin: right;
+}
+.swing-right .modality-inner {
+   -webkit-transform: translateZ(100px) translateX(-30%) rotateY(90deg);
+    -moz-transform: translateZ(100px) translateX(-30%) rotateY(90deg);
+    -ms-transform: translateZ(100px) translateX(-30%) rotateY(90deg);
+    transform: translateZ(100px) translateX(-30%) rotateY(90deg);
+    -webkit-transform-origin: left;
+    -moz-transform-origin: left;
+    transform-origin: left;
+}
+[aria-hidden="false"].swing-left .modality-inner,
+[aria-hidden="false"].swing-right .modality-inner {
+    -webkit-transform: translateZ(0px) translateX(0%) rotateY(0deg);
+    -moz-transform: translateZ(0px) translateX(0%) rotateY(0deg);
+    -ms-transform: translateZ(0px) translateX(0%) rotateY(0deg);
+    transform: translateZ(0px) translateX(0%) rotateY(0deg);
+}
