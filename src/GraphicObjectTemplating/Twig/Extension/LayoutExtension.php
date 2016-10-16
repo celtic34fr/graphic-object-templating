@@ -9,11 +9,9 @@
 namespace GraphicObjectTemplating\Twig\Extension;
 
 use Exception;
-use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParser_Switch;
 use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParserSwitch;
 use Traversable;
 use Twig_Error_Runtime;
-use Twig_SimpleFilter;
 
 class LayoutExtension extends \Twig_Extension
 {
