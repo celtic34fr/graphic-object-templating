@@ -9,32 +9,33 @@
 namespace GraphicObjectTemplating\Twig\Extension;
 
 use Exception;
-use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParser_Switch;
 use GraphicObjectTemplating\Twig\Extension\TokenParser\TokenParserSwitch;
 use Traversable;
 use Twig_Error_Runtime;
 use Twig_SimpleFilter;
+use Twig_SimpleFunction;
+use Twig_SimpleTest;
 
 class LayoutExtension extends \Twig_Extension
 {
 
     public function getFunctions() {
         return array(
-            'getclass'       => new \Twig_Function_Method($this, 'getClass'),
-            'gettype'        => new \Twig_Function_Method($this, 'getType'),
-            'arrayexception' => new \Twig_Function_Method($this, 'arrayException'),
-            'checkBoolean'   => new \Twig_Function_Method($this, 'isBoolean'), // KALANTwigExtension @author LAURE
-            'substr'         => new \Twig_Function_Method($this, 'subString'),
-            'strpos'         => new \Twig_Function_Method($this, 'strPos'),
-            'instring'       => new \Twig_Function_Method($this, 'inString'),
+            new Twig_SimpleFunction('getclass', 'getClass'),
+            new Twig_SimpleFunction('gettype', 'getType'),
+            new Twig_SimpleFunction('arrayexception', 'arrayException'),
+            new Twig_SimpleFunction('checkBoolean', 'isBoolean'), // KALANTwigExtension @author LAURE
+            new Twig_SimpleFunction('substr', 'subString'),
+            new Twig_SimpleFunction('strpos', 'strPos'),
+            new Twig_SimpleFunction('instring', 'inString'),
         );
     }
 
     public function getTests()
     {
         return array(
-            'typeOf'        => new \Twig_Function_Method($this, 'typeOf'),
-            'objInstanceOf' => new \Twig_Function_Method($this, 'ObjectInstanceOf'),
+            new Twig_SimpleTest('typeOf', array($this, 'typeOf')),
+            new Twig_SimpleTest('objInstanceOf', array($this, 'ObjectInstanceOf') ),
         );
     }
 
@@ -48,7 +49,7 @@ class LayoutExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'update' => new \Twig_Filter_Method($this, 'twig_array_update'),
+            new Twig_SimpleFilter('update', 'twig_array_update'),
         );
     }
 
