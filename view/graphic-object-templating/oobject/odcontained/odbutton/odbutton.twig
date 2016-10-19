@@ -4,11 +4,6 @@
 {% if objet.nature is not empty %}
     {%  set objClass = objet.nature ~ " " ~ objClass %}
 {% endif %}
-{% if objet.allow is defined %} {# bouton inactif #}
-    {% if objet.allow == 'DENIED' %}
-        {%  set objClass = objClass ~ " disabled"  %}
-    {% endif %}
-{% endif %}
 {% if objet.display is defined %} {# bouton mode affichage #}
     {%  set objClass = objClass ~ " display-" ~ objet.display ~ " " %}
 {% endif %}
@@ -41,9 +36,7 @@
         {% case 'reset' %}
         onclick="javascript:resetFormDatas('{{ objet.form }}');"
         {% endswitch %}
-        {% if objet.state == false %}
-            disabled
-        {% endif %}
+        {% if objet.state != true %} disabled {% endif %}
 >
 
     <style>
