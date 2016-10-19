@@ -69,6 +69,10 @@
             setActivTab('{{ objet.id }}', {{ objet.tabs|length }});
         });
 
+        $(".TTAB").on('click', function (e) {
+            setActivTab('{{ objet.id }}', $(this).attr('data-tabs'));
+        });
+
         setActivTab('{{ objet.id }}', {{ activTab }});
     })
 </script>

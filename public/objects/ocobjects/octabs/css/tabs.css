@@ -1,0 +1,44 @@
+
+.nav-tabs>li.active.TTAB>span,
+.nav-tabs>li.active.TTAB>span:hover,
+.nav-tabs>li.active.TTAB>span:focus {
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: not-allowed;
+}
+
+.nav-tabs>li.TTAB>span:hover {
+    border-color: #eee #eee #ddd;
+    cursor: not-allowed;
+}
+
+.nav>li.TTAB>span:hover,
+.nav>li.TTAB>span:focus {
+    text-decoration: none;
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
+.nav-tabs>li.TTAB>span {
+    margin-right: 2px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    cursor: not-allowed;
+}
+
+.nav>li.TTAB>span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    cursor: not-allowed;
+}
+
+.TTAB span {
+    color: #428bca;
+    text-decoration: none;
+    background: transparent;
+    cursor: not-allowed;
+}
