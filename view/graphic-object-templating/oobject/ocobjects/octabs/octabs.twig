@@ -38,7 +38,6 @@
         <div class="CTAB tab-pane {% if tab.activ == true %}active{% else %}fade{% endif %} ">
             <h3>{{ tab.title }}</h3>
             {{ gotRender(tab.content) }}
-
         </div>
             {% endif %}
         {% endfor %}
@@ -55,24 +54,36 @@
     $(document).ready(function () {
         $("#{{ objet.id }}BtnFirst").on("click", function (e) {
             setActivTab('{{ objet.id }}', 1);
+            $(".active #o1").removeClass("fade");
+            $(".active #o1").children().removeClass("fade");
         });
 
         $("#{{ objet.id }}BtnPrevious").on('click', function (e) {
             setPreviousTab('{{ objet.id }}');
+            $(".active").children().removeClass("fade");
+            $(".active").children().children().removeClass("fade");
         });
 
         $("#{{ objet.id }}BtnNext").on('click', function (e) {
             setNextTab('{{ objet.id }}');
+            $(".active").children().removeClass("fade");
+            $(".active").children().children().removeClass("fade");
         });
 
         $("#{{ objet.id }}BtnLast").on('click', function (e) {
             setActivTab('{{ objet.id }}', {{ objet.tabs|length }});
+            $(".active #o{{ objet.tabs|length }}").removeClass("fade");
+            $(".active #o{{ objet.tabs|length }}").children().removeClass("fade");
         });
 
         $(".TTAB").on('click', function (e) {
             setActivTab('{{ objet.id }}', $(this).attr('data-tabs'));
+            $(".active #o"+$(this).attr('data-tabs')).removeClass("fade");
+            $(".active #o"+$(this).attr('data-tabs')).children().removeClass("fade");
         });
 
         setActivTab('{{ objet.id }}', {{ activTab }});
+        $(".active").children().removeClass("fade");
+        $(".active").children().children().removeClass("fade");
     })
 </script>
