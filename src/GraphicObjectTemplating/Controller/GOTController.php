@@ -56,7 +56,6 @@ class GOTController extends AbstractActionController
                 $pos = strpos($callback, '/');
                 $controller = ucfirst(substr($callback, 0, $pos));
                 $method = substr($callback, $pos + 1);
-                $params = "";
 
                 switch (true) {
                     case ( strpos($controller, 'Controller') !== false ) :

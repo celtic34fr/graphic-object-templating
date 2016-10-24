@@ -1,0 +1,20 @@
+<p>route : {{ dump(objet.route) }} </p>
+
+{% set parms = {} %}
+{% if objet.controller is defined and objet.controller is not empty %}
+    {% set parms = parms|merge({'controller': objet.controller}) %}
+{% endif %}
+{% if objet.action is defined and objet.action is not empty %}
+    {% set parms = parms|merge({'action': objet.action}) %}
+{% endif %}
+{% if objet.params is defined and objet.params|length > 0 %}
+    {% for id, valeur in objet.params %}
+        {% set parms = parmms|merge({id: valeur}) %}
+    {% endfor %}
+{% endif %}
+
+{% if parms|length > 0 %}
+    {{ url(objet.route, parms) }}
+{% else %}
+    {{ url(objet.route) }}
+{% endif %}
