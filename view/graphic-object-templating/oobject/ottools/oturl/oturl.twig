@@ -13,8 +13,10 @@
     {% endfor %}
 {% endif %}
 
+{{ dump(parms) }}
+
 {% if parms|length > 0 %}
-    {{ url(objet.route, parms) }}
+    {{ serverUrl(url(objet.route, parms)) }}
 {% else %}
-    {{ url(objet.route) }}
+    {{ serverUrl(url(objet.route)) }}
 {% endif %}
