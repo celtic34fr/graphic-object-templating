@@ -8,9 +8,9 @@
 
 namespace GraphicObjectTemplating\Objects\OTTools;
 
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Objects\OTTools;
 
-class OTUrl extends OObject
+class OTUrl extends OTTools
 {
     public function __construct($id)
     {
