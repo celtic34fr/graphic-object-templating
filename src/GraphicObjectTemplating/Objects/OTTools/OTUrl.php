@@ -40,6 +40,7 @@ class OTUrl extends OTTools
         $action = (string) $action;
         $properties = $this->getProperties();
         $properties['action'] = $action;
+        if (empty($properties['controller'])) $properties['controller'] = "Index";
         $this->setProperties($properties);
         return $this;
     }

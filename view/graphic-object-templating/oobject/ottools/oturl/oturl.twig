@@ -1,5 +1,3 @@
-<p>route : {{ dump(objet.route) }} </p>
-
 {% set parms = {} %}
 {% if objet.controller is defined and objet.controller is not empty %}
     {% set parms = parms|merge({'controller': objet.controller}) %}
@@ -12,8 +10,6 @@
         {% set parms = parmms|merge({id: valeur}) %}
     {% endfor %}
 {% endif %}
-
-{{ dump(parms) }}
 
 {% if parms|length > 0 %}
     {{ serverUrl(url(objet.route, parms)) }}
