@@ -67,7 +67,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
             ),
         );
     }
-    
+
     /*
      * impltentation de Session
      */
