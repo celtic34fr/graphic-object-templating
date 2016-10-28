@@ -24,14 +24,6 @@ class ODTreeview extends ODContained
      */
     public function addLeaf($label, $value, $parent = NULL, $enable = true, $select = false, $check = false)
     {
-        $logs = $this->getServiceLocator()->get('LogsServices');
-        $operateur = $this->getOperateur();
-        $idSession = $logs->startUserSession($operateur, __METHOD__);
-        $idAppl = $logs->startApplication($this->getrealip(), __METHOD__, $idSession);
-        $cleLog = $idAppl;
-        $ret = $logs->ecrDebugSession($operateur, __METHOD__,
-            "ajout d'une feuille objet treeview", $cleLog);
-
         // ajout d'une feuille à l'arbre
         $properties = $this->getProperties();
         $tree = [];
@@ -60,8 +52,7 @@ class ODTreeview extends ODContained
             $data[$value] = $leafData;
         } else {
             if ((!empty($data)) and (!array_key_exists($parent, $data))) {
-                $ret = $logs->ecrDebugSession($operateur, __METHOD__,
-                    "feuille objet treeview : $parent n'existe pas", $cleLog);
+                throw new \Exception("feuille objet treeview : $parent n'existe pas");
                 return false;
             }
 
