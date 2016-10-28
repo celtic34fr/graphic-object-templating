@@ -15,23 +15,47 @@
                         {% set json = json ~ '"selectable": false , "color": "#888888", "backColor": "#EEEEEE",' %}
                     {% endif %}
                 {% case 'check' %}
-                    {% if state is not empty %}
+                    {% if state is empty %}
+                        {% set state = '"state": { ' %}
                     {% endif %}
-            if (empty($state)) {
-            $state .= '"state": { ';
-            }
-            if ($item === true ) {
-            $state .= ' "'.$key.'ed": true,';
-            } else {
-            $state .= ' "'.$key.'ed": false,';
-            }
+                    {% if item == true %}
+                        {% set state = state ~ ' "' ~ key ~ 'ed": true,' %}
+                    {% else %}
+                        {% set state = state ~ ' "' ~ key ~ 'ed": false,' %}
+                    {% endif %}
                 {% case 'select' %}
                 {% default %}
-                    {% set json = json ~ '"'~key~'" : "'~item~'" ,' %}
+                    {% set json = json ~ '"' ~ key ~ '" : "' ~ item ~ '" ,' %}
             {% endswitch %}
         {% endfor %}
+        {% if state is not empty %}
+            {% if substr(state, state|length - 1) == ',' %}
+                {% set state = substr(state, 0, state|length - 1 ) ~ ' } ,' %}
+            {% else %}
+            {% if substr(json, json|length - 1) == ',' %}
+                {% set json = json ~ state %}
+            {% else %}
+                {% set json = json ~ ', ' ~ state %}
+            {% endif %}
+        {% endif %}
+        {% if substr(json, json|length - 1) == ',' %}
+            {% set json = substr(json, 0, json|length - 1 ) %}
+        {% endif %}
+        {% set json = json ~ ' } ,' %}
     {% endfor %}
+    {% if substr(json, json|length - 1) == ',' %}
+        {% set json = substr(json, 0, json|length - 1 ) %}
+    {% endif %}
+    {{ json }}
 {% endmacro makeJson %}
+
+{# traitement de l'objet tree pour création d'un objet json pour alimentation du plugin treeview #}
+{% set tree = objet.tree %}
+{% if tree is empty %}
+    {% set tree = {} %}
+{% endif %}
+
+{% set jsonTree = '[' ~ _self.makeJson(tree) ~ ']' %}
 
 <div id="{{ objet.id }}" objetGUI data-gui-object="1" class="smart-form" >
 
@@ -49,377 +73,300 @@
 
     <label class="label">{{ objet.label }}</label>
 
-    <?php
-if ($conf['search']){
-    if (!empty($conf['searchLabel'])){
-?>
-    <label for="{{ objet.id }}Search" class="sr-only">{{ objet.searchLabel}}</label>
-    <?php
-    }
-?>
-    <input type="input" class="form-control" id="{{ objet.id }}Search" placeholder="{{ objet.searchPlaceholder}}" value="">
-    <p>&nbsp;</p>
-    <?php
-}
-?>
+    {% if objet.search is not empty %}
+        {% if objet.searchLabel is not empty %}
+            <label for="{{ objet.id }}Search" class="sr-only">{{ objet.searchLabel}}</label>
+        {% endif %}
+        <input type="input" class="form-control" id="{{ objet.id }}Search" placeholder="{{ objet.searchPlaceholder}}" value="">
+        <p>&nbsp;</p>
+    {% endif %}
     <label class="input">
         <div id="{{ objet.id }}Tree" class="treeview"></div>
     </label>
 </div>
 
-<?php
-if (!function_exists('makeJson')) {
-    function makeJson($feuilles) {
-        $json = "";
-        foreach ($feuilles as $feuille) {
-            $json .= " { ";
-            $state =  "";
-            foreach ($feuille as $key => $item) {
-switch($key) {
-case "nodes":
-$json .= '"nodes": [';
-$json .= makeJson($item);
-$json .= ']';
-break;
-case "enable":
-if ($item === false ) {
-$json .= '"selectable": false , "color": "#888888", "backColor": "#EEEEEE",';
-}
-break;
-case "check":
-case "select":
-if (empty($state)) {
-$state .= '"state": { ';
-}
-if ($item === true ) {
-$state .= ' "'.$key.'ed": true,';
-} else {
-$state .= ' "'.$key.'ed": false,';
-}
-break;
-default:
-$json .= '"'.$key.'" : "'.$item.'" ,';
-break;
-}
+<script>
+    jQuery( document ).ready(function( $ ) {
 
-}
-if (!empty($state)) {
-if (substr($state, strlen($state) - 1) == ",") $state = substr($state, 0, strlen($state) - 1) .' } ,';
-if (substr($json, strlen($json) - 1) == ",") {
-$json .= $state;
-} else {
-$json .= ', '.$state;
-}
-}
-if (substr($json, strlen($json) - 1) == ",") $json = substr($json, 0, strlen($json) - 1);
-$json .= " } ,";
-}
-if (substr($json, strlen($json) - 1) == ",") $json = substr($json, 0, strlen($json) - 1);
-return $json;
-}
-}
+        $.objectLength = function (a) {
+            return $.map(a, function (n, i) {
+                return i;
+            }).length;
+        };
 
-// traitement de l'objet tree pour création d'un objet json pour alimentation du plugin treeview
-$tree = $conf['tree'];
-if (empty($tree)) $tree = [];
+        function cocheEnfants(children, checked)
+        {
+            for (var i=0; i < children.length; i++) {
+                $('#{{ objet.id }}Tree').treeview( 'checkNode', [children[i].nodeId, { silent: true } ]);
+                var elt = {'nodeId': children[i].nodeId, 'label': children[i].text, 'val': children[i].value, 'parentId':children[i].parentId};
+                var find = false;
+                if (checked.length > 0) {
+                    for (var j=0; j < checked.length; j++) {
+                        var checktab = checked[j];
+                        if (elt.nodeId == checktab.nodeId) {
+                            checked[j] = elt;
+                            var find = true;
+                        }
+                    }
+                }
+                if (find == false) checked[checked.length] = elt;
+                if (typeof children[i].nodes != "undefined") {
+                    var checked = cocheEnfants(children[i].nodes, checked);
+                }
+            }
+            return checked;
+        }
 
-$jsonTree = makeJson($tree);
-$jsonTree = "[".$jsonTree."]";
+        function cocheParents(node, checked)
+        {
+            $('#{{ objet.id }}Tree').treeview( 'checkNode', [node.nodeId, { silent: true } ]);
+            var elt = {'nodeId': node.nodeId, 'label': node.text, 'val': node.value, 'parentId':node.parentId};
+            var find = false;
+            if (checked.length > 0) {
+                for (var j=0; j < checked.length; j++) {
+                    var checktab = checked[j];
+                    if (node.nodeId == checktab.nodeId) {
+                        checked[j] = elt;
+                        var find = true;
+                        break;
+                    }
+                }
+            }
+            if (find == false) {
+                checked[checked.length] = elt;
+                if (typeof node.parentId != "undefined") {
+                    var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
+                    var checked = cocheParents(parentNode, checked);
+                }
+            }
+            return checked;
+        }
 
-$this->headScript()->captureStart();
-?>
+        function decocheEnfants(children, checked) {
+            if (checked.length > 0) {
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    var find = false;
+                    for (j=0; j < checked.length; j++) {
+                        var checkElt = checked[j];
+                        if (child.nodeId == checkElt.nodeId) {
+                            var find = true;
+                            var ind  = j;
+                            break;
+                        }
+                    }
+                    if (find != false) {
+                        checked.splice(ind, 1);
+                        $('#{{ objet.id }}Tree').treeview( 'uncheckNode', [child.nodeId, { silent: true } ]);
+                        // child as children ?
+                        if (typeof child.nodes != "undefined") {
+                            var checked = decocheEnfants(child.nodes, checked)
+                        }
+                    }
+                }
+            }
+            return checked;
+        }
 
-jQuery( document ).ready(function( $ ) {
+        function decocheParents(node, checked) {
+            if (checked.length > 0) {
+                var children = node.nodes;
+                var decocher = true;
+                for (var i=0; i < children.length; i++) {
+                    var child = children[i];
+                    for (var j=0; j < checked.length; j++) {
+                        var checktab = checked[j];
+                        if (child.nodeId == checktab.nodeId) {
+                            var decocher = false;
+                            break;
+                        }
+                    }
+                    if (decocher == false) break;
+                }
 
-$.objectLength = function(a) {
-return $.map(a, function(n, i) { return i; }).length;
-}
+                if (decocher == true) {
+                    $('#{{ objet.id }}Tree').treeview( 'uncheckNode', [node, { silent: true } ]);
+                    var find = false;
+                    for (var j=0; j < checked.length; j++) {
+                        var checktab = checked[j];
+                        if (node.nodeId == checktab.nodeId) {
+                            checked.splice(j, 1);
+                            var find = true;
+                            break;
+                        }
+                    }
+                    if (find == true) {
+                        // propagation aux parents
+                        if (typeof node.parentId != "undefined") {
+                            var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
+                            var checked = decocheParents(parentNode, checked);
+                        }
+                    }
+                }
+            }
+            return checked;
+        }
 
-function cocheEnfants(children, checked)
-{
-for (var i=0; i < children.length; i++) {
-$('#{{ objet.id }}Tree').treeview( 'checkNode', [children[i].nodeId, { silent: true } ]);
-var elt = {'nodeId': children[i].nodeId, 'label': children[i].text, 'val': children[i].value, 'parentId':children[i].parentId};
-var find = false;
-if (checked.length > 0) {
-for (var j=0; j < checked.length; j++) {
-var checktab = checked[j];
-if (elt.nodeId == checktab.nodeId) {
-checked[j] = elt;
-var find = true;
-}
-}
-}
-if (find == false) checked[checked.length] = elt;
-if (typeof children[i].nodes != "undefined") {
-var checked = cocheEnfants(children[i].nodes, checked);
-}
-}
-return checked;
-}
+        var json = '{{ jsonTree }}';
+        var tree = $('#{{ objet.id }}Tree').treeview({
+        {% if objet.multiple == false %}
+            multiSelect: false,
+        {% else %}
+            multiSelect: true,
+        {% endif %}
+        {% if objet.checkbox == true %}
+            showCheckbox: true,
+        {% else %}
+            showCheckbox: false,
+        {% endif %}
+            data: json,
+            levels: 4,
+            searchResultColor: '#0FBF47'
+        });
 
-function cocheParents(node, checked)
-{
-$('#{{ objet.id }}Tree').treeview( 'checkNode', [node.nodeId, { silent: true } ]);
-var elt = {'nodeId': node.nodeId, 'label': node.text, 'val': node.value, 'parentId':node.parentId};
-var find = false;
-if (checked.length > 0) {
-for (var j=0; j < checked.length; j++) {
-var checktab = checked[j];
-if (node.nodeId == checktab.nodeId) {
-checked[j] = elt;
-var find = true;
-break;
-}
-}
-}
-if (find == false) {
-checked[checked.length] = elt;
-if (typeof node.parentId != "undefined") {
-var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
-var checked = cocheParents(parentNode, checked);
-}
-}
-return checked;
-}
+        var findExpandibleNodess = function() {
+            return tree.treeview('search', [ $('#{{ objet.id }}Search').val(), { ignoreCase: true, exactMatch: false } ]);
+        };
+        var expandibleNodes = findExpandibleNodess();
 
-function decocheEnfants(children, checked) {
-if (checked.length > 0) {
-for (var i = 0; i < children.length; i++) {
-var child = children[i];
-var find = false;
-for (j=0; j < checked.length; j++) {
-var checkElt = checked[j];
-if (child.nodeId == checkElt.nodeId) {
-var find = true;
-var ind  = j;
-break;
-}
-}
-if (find != false) {
-checked.splice(ind, 1);
-$('#{{ objet.id }}Tree').treeview( 'uncheckNode', [child.nodeId, { silent: true } ]);
-// child as children ?
-if (typeof child.nodes != "undefined") {
-var checked = decocheEnfants(child.nodes, checked)
-}
-}
-}
-}
-return checked;
-}
+        $('#{{ objet.id }}Tree').on('nodeChecked', function(even, node) {
+            var check = {'nodeId' : node.nodeId, 'label': node.text, 'val': node.value, 'parentId': node.parentId};
+            var checked = $('#{{ objet.id }}').data('checked');
+            if (typeof checked === "undefined") checked = [];
+            var find = false;
+            if (checked.length > 0) {
+                for (var i=0; i < checked.length; i++) {
+                    var checktab = checked[i];
+                    if (check.nodeId == checktab.nodeId) {
+                        checked[i] = check;
+                        var find = true;
+                    }
+                }
+            }
+            if (find == false) {
+                checked[checked.length] = check;
 
-function decocheParents(node, checked) {
-if (checked.length > 0) {
-var children = node.nodes;
-var decocher = true;
-for (var i=0; i < children.length; i++) {
-var child = children[i];
-for (var j=0; j < checked.length; j++) {
-var checktab = checked[j];
-if (child.nodeId == checktab.nodeId) {
-var decocher = false;
-break;
-}
-}
-if (decocher == false) break;
-}
+                // propagation aux enfants
+                if (typeof node.nodes != "undefined") {
+                    var checked = cocheEnfants(node.nodes, checked)
+                }
 
-if (decocher == true) {
-$('#{{ objet.id }}Tree').treeview( 'uncheckNode', [node, { silent: true } ]);
-var find = false;
-for (var j=0; j < checked.length; j++) {
-var checktab = checked[j];
-if (node.nodeId == checktab.nodeId) {
-checked.splice(j, 1);
-var find = true;
-break;
-}
-}
-if (find == true) {
-// propagation aux parents
-if (typeof node.parentId != "undefined") {
-var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
-var checked = decocheParents(parentNode, checked);
-}
-}
-}
-}
-return checked;
-}
+                // propagation aux parents
+                if (typeof node.parentId != "undefined") {
+                    var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
+                    var checked = cocheParents(parentNode, checked);
+                }
+            }
 
-var json = '<?php echo $jsonTree; ?>';
-var tree = $('#{{ objet.id }}Tree').treeview({
-<?php if ($conf['multiple'] === false) { ?>
-multiSelect: false,
-<?php } else { ?>
-multiSelect: true,
-<?php } ?>
-<?php if ($conf['checkbox'] === true) { ?>
-showCheckbox: true,
-<?php } else { ?>
-showCheckbox: false,
-<?php } ?>
-data: json,
-levels: 4,
-searchResultColor: '#0FBF47'
-});
+            $('#{{ objet.id }}').data('checked', checked);
+        });
 
-var findExpandibleNodess = function() {
-return tree.treeview('search', [ $('#{{ objet.id }}Search').val(), { ignoreCase: true, exactMatch: false } ]);
-};
-var expandibleNodes = findExpandibleNodess();
+        $('#{{ objet.id }}Tree').on('nodeUnchecked', function(even, node) {
+            // décoche le noeud choisi
+            var checked = $('#{{ objet.id }}').data('checked');
 
-$('#{{ objet.id }}Tree').on('nodeChecked', function(even, node) {
-var check = {'nodeId' : node.nodeId, 'label': node.text, 'val': node.value, 'parentId': node.parentId};
-var checked = $('#{{ objet.id }}').data('checked');
-if (typeof checked === "undefined") checked = [];
-var find = false;
-if (checked.length > 0) {
-for (var i=0; i < checked.length; i++) {
-var checktab = checked[i];
-if (check.nodeId == checktab.nodeId) {
-checked[i] = check;
-var find = true;
-}
-}
-}
-if (find == false) {
-checked[checked.length] = check;
+            var find = false;
+            if (checked.length > 0) {
+                $('#{{ objet.id }}Tree').treeview( 'uncheckNode', [node, { silent: true } ]);
+                for (var i=0; i < checked.length; i++) {
+                    var checktab = checked[i];
+                    if (node.nodeId == checktab.nodeId) {
+                        checked.splice(i, 1);
+                        var find = true;
+                        break;
+                    }
+                }
+            }
+            if (find == true) {
+                // propagation aux enfants
+                if (typeof node.nodes != "undefined") {
+                    var checked = decocheEnfants(node.nodes, checked)
+                }
+                // propagation aux parents
+                if (node.parentId != "undefined") {
+                    var parent = $('#{{ objet.id }}Tree').treeview('getParent', node);
+                    var checked = decocheParents(parent, checked);
+                }
+                $('#{{ objet.id }}').data('checked', checked);
+            }
+        });
 
-// propagation aux enfants
-if (typeof node.nodes != "undefined") {
-var checked = cocheEnfants(node.nodes, checked)
-}
+        $('#{{ objet.id }}Tree').on('nodeSelected', function(even, node) {
+            var select = {'nodeId' : node.nodeId, 'label': node.text, 'val': node.value};
+            var selected = $('#{{ objet.id }}').data('selected');
+            if (typeof selected === "undefined") selected = [];
+            var find = false;
+            if (selected.length > 0) {
+                for (var i=0; i < selected.length; i++) {
+                    var selecttab = selected[i];
+                    if (select.nodeId == selecttab.nodeId) {
+                        selected[i] = select;
+                        var find = true;
+                    }
+                }
+            }
+            if (find == false) selected[selected.length] = select;
 
-// propagation aux parents
-if (typeof node.parentId != "undefined") {
-var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
-var checked = cocheParents(parentNode, checked);
-}
-}
+            $('#{{ objet.id }}').data('selected', selected);
+            {# appel evtClick#}
+        });
 
-console.log(checked);
+        $('#{{ objet.id }}Tree').on('nodeUnselected', function(even, node) {
+            var selected = $('#{{ objet.id }}').data('selected');
+            if (typeof selected === "undefined") selected = [];
+            var find = false;
+            if (selected.length > 0) {
+                for (var i=0; i < selected.length; i++) {
+                    var selecttab = selected[i];
+                    if (node.nodeId == selecttab.nodeId) {
+                        selected.splice(i, 1);
+                        var find = true;
+                    }
+                }
+            }
+            if (find == true) {
+                $('#{{ objet.id }}').data('selected', selected);
+            }
+            {# appel evtClick#}
+        });
 
-$('#{{ objet.id }}').data('checked', checked);
-});
-
-$('#{{ objet.id }}Tree').on('nodeUnchecked', function(even, node) {
-// décoche le noeud choisi
-var checked = $('#{{ objet.id }}').data('checked');
-
-console.log("nodeUnchecked");
-console.log(checked);
-
-var find = false;
-if (checked.length > 0) {
-$('#{{ objet.id }}Tree').treeview( 'uncheckNode', [node, { silent: true } ]);
-for (var i=0; i < checked.length; i++) {
-var checktab = checked[i];
-if (node.nodeId == checktab.nodeId) {
-checked.splice(i, 1);
-var find = true;
-break;
-}
-}
-}
-if (find == true) {
-// propagation aux enfants
-if (typeof node.nodes != "undefined") {
-var checked = decocheEnfants(node.nodes, checked)
-}
-// propagation aux parents
-if (node.parentId != "undefined") {
-var parent = $('#{{ objet.id }}Tree').treeview('getParent', node);
-var checked = decocheParents(parent, checked);
-}
-$('#{{ objet.id }}').data('checked', checked);
-}
-
-
-/*
-if (find == true) {
-// propagation aux enfants
-if (typeof node.nodes != "undefined") {
-var checked = decocheEnfants(node.nodes, checked)
-}
-
-// propagation aux parents
-if (typeof node.parentId != "undefined") {
-var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
-var checked = decocheParents(parentNode, checked);
-}
-
-$('#{{ objet.id }}').data('checked', checked);
-}
-*/
-});
-
-$('#{{ objet.id }}Tree').on('nodeSelected', function(even, node) {
-var select = {'nodeId' : node.nodeId, 'label': node.text, 'val': node.value};
-var selected = $('#{{ objet.id }}').data('selected');
-if (typeof selected === "undefined") selected = [];
-var find = false;
-if (selected.length > 0) {
-for (var i=0; i < selected.length; i++) {
-var selecttab = selected[i];
-if (select.nodeId == selecttab.nodeId) {
-selected[i] = select;
-var find = true;
-}
-}
-}
-if (find == false) selected[selected.length] = select;
-
-$('#{{ objet.id }}').data('selected', selected);
-<?php
-        echo $this->obj->getEventJs(Event::EVT_CLICK);
-?>
-});
-
-$('#{{ objet.id }}Tree').on('nodeUnselected', function(even, node) {
-var selected = $('#{{ objet.id }}').data('selected');
-if (typeof selected === "undefined") selected = [];
-var find = false;
-if (selected.length > 0) {
-for (var i=0; i < selected.length; i++) {
-var selecttab = selected[i];
-if (node.nodeId == selecttab.nodeId) {
-selected.splice(i, 1);
-var find = true;
-}
-}
-}
-if (find == true) {
-$('#{{ objet.id }}').data('selected', selected);
-}
-<?php
-//        echo $this->obj->getEventJs(Event::EVT_CLICK);
-?>
-});
-
-$('#{{ objet.id }}Search').on('keyup', function (e) {
-$('#{{ objet.id }}Tree').treeview('collapseAll');
-expandibleNodes = findExpandibleNodess();
+        $('#{{ objet.id }}Search').on('keyup', function (e) {
+            $('#{{ objet.id }}Tree').treeview('collapseAll');
+            expandibleNodes = findExpandibleNodess();
 //        var search = $('#{{ objet.id }}Search').val();
 //        if (search == "") {
 //            $('#{{ objet.id }}Tree ul li').css('display','block');
 //        } else {
 //            $('#{{ objet.id }}Tree ul li:not(.search-result)').css('display','none');
 //        }
-});
+        });
 
-var checkNode = [];
-var checkNodes = $('#{{ objet.id }}Tree').treeview('getChecked');
-if (checkNodes.length > 0) {
-$.each(checkNodes, function(index, obj){
-var elt = { 'nodeId' : obj.nodeId, 'label' : obj.text, 'val' : obj.value }
-checkNode[checkNode.length] = elt;
-});
-$('#{{ objet.id }}').data('checked', checkNode);
+        var checkNode = [];
+        var checkNodes = $('#{{ objet.id }}Tree').treeview('getChecked');
+        if (checkNodes.length > 0) {
+            $.each(checkNodes, function(index, obj){
+                var elt = { 'nodeId' : obj.nodeId, 'label' : obj.text, 'val' : obj.value }
+                checkNode[checkNode.length] = elt;
+            });
+            $('#{{ objet.id }}').data('checked', checkNode);
+        }
+    });
+</script>
+
+
+{#
+if (find == true) {
+// propagation aux enfants
+if (typeof node.nodes != "undefined") {
+var checked = decocheEnfants(node.nodes, checked)
 }
-});
 
-<?php
-$this->headScript()->captureEnd();
-?>
+// propagation aux parents
+if (typeof node.parentId != "undefined") {
+var parentNode = $('#{{ objet.id }}Tree').treeview('getParent', node);
+var checked = decocheParents(parentNode, checked);
+}
+
+$('#{{ objet.id }}').data('checked', checked);
+}
+#}
