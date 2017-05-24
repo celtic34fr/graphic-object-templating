@@ -6,7 +6,7 @@
  * Time: 15:53
  */
 
-namespace GraphicObjectTemplating\View\Helper;
+namespace GraphicObjectTemplating\View\Helper\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
