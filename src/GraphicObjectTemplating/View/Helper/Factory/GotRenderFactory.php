@@ -6,17 +6,17 @@
  * Time: 15:53
  */
 
-namespace GraphicObjectTemplating\View\Helper;
+namespace GraphicObjectTemplating\View\Helper\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class GotHeaderFactory implements FactoryInterface
+class GotRenderFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $sl)
     {
         // $sl is instanceof ViewHelperManager, we need the real SL though
         $rsl = $sl->getServiceLocator();
-        return new GotHeader($rsl);
+        return new GotRender($rsl);
     }
 }

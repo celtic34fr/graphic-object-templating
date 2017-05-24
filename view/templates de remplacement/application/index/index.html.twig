@@ -9,7 +9,7 @@
 
     <div class="jumbotron">
         <h1>{{ translate('Welcome to %sZend Framework 2%s')|format('<span class="zf-green">', '</span>')|raw }}</h1>
-        <p>{{ translate('Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.')|format('<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>', '223')|raw }}</p>
+        <p>{{ translate('Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.')|format('<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>', zfVersion())|raw }}</p>
         <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2" target="_blank">{{ translate('Fork Zend Framework 2 on GitHub') }} &raquo;</a></p>
     </div>
 
