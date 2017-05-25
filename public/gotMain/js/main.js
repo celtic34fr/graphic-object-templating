@@ -1,11 +1,18 @@
 /**
+ * fichier principal des méthode javascript
+ */
+
+/**
  * méthode invokeAjax
- * @param datas : ensemble des données à communiquer à la callback appelé
+ * @param datas     -> ensemble des données à communiquer à la callback appelé
+ * @param idSource  -> identifiant de l'objet appelalnt
+ * @param event     -> événement déclenchant
+ * @param e         -> objet Event (js)
  *
  * appel du module de gestion des appels aux callbacks
  */
 
-function invokeAjax(datas) {
+function invokeAjax(datas, idSource, event, e) {
     var urlGotCallback = $("#gotCallback").html();
     $.ajax({
         url:        urlGotCallback,
@@ -37,14 +44,13 @@ function invokeAjax(datas) {
                     {
                         $("#" + id).append(code);
                         if ($("#" + id).find("#" + id + "Script").length > 0)
-                            $.globalEval($("#" + id + "Script").innerHTML);
+                            $.globalEval($("#" + id + "Script").innerText);
                         break;
                     }
                     case "update":
                     {
-                        $("#" + id).replaceWith(code);
-                        if ($("#" + id).find("#" + id + "Script").length > 0)
-                            $.globalEval($("#" + id + "Script").innerHTML);
+                        var updId = "#" + id;
+                        $(updId).replaceWith(code);
                         break;
                     }
                     case "raz":
@@ -60,14 +66,26 @@ function invokeAjax(datas) {
                         $.globalEval(code);
                         break;
                     case "execID":
-                        $.globalEval(($("#" + code)[0]).innerText);
+                        var objet = $("#"+code);
+                        var script = objet.html();
+                        $.globalEval(script);
                         break;
                     case "redirect":
                         $(location).attr('href', code);
                     case "goRoute":
                         $(location).attr('href', code);
+                    case 'event': // format code : nomEvt|[OUI/NON]
+                        var evt = code.substr(0, strpos(code, '|'));
+                        var flg = code.substr(strpos(code, '|') + 1);
+                        $('#'+id).attr('data-'+evt+'-stopEvt', flg);
+                        break;
                 }
             });
+            // vérification propagation événement
+            var stopEvent = $('#'.idSource).data('data-'+event+'-stopEvt');
+            if (stopEvent === 'OUI' || stopEvent.length === 0 || stopEvent === undefined) {
+                e.stopPropagation();
+            }
         },
 
         error : function(xhr, textStatus, errorThrown) {
@@ -225,8 +243,6 @@ function setFormDatas(form, datas) {
     })
 }
 
-
-
 /* méthode de restitution des valeurs d'objets */
 
 /**
@@ -240,12 +256,12 @@ function setFormDatas(form, datas) {
  */
 function odbutton_getData(obj, evt) {
     var chps = "id=" + obj.attr("id") + "&value='" + obj.val() + "'";
-    if (evt.length > 0) {
-        var routine = obj.attr('data-' + evt);
-        if (routine != undefined) {
-            if (routine.length > 0) {
-                chps = chps + "&callback='" + routine + "'";
-            }
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
 
@@ -274,11 +290,12 @@ function odcontent_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     chps = chps + "&value='" + obj.html() + "'";
     chps = chps + "&type='" + obj.attr('data-objet') + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.parent().attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
     return chps;
@@ -297,11 +314,12 @@ function odinput_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     chps = chps + "&value='" + obj.find("input").val() + "'";
     chps = chps + "&type='" + obj.find("input").attr('type') + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.parent().attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
     return chps;
@@ -315,8 +333,15 @@ function odinput_getData(obj, evt) {
  */
 function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
-//    chps = chps + "&value='" + obj.find("select").val().join("$") + "'";
     chps = chps + "&value='" + obj.find("select").val() + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
+        }
+    }
     return chps;
 }
 
@@ -333,11 +358,12 @@ function odcheckbox_getData(obj, evt) {
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
     return chps;
@@ -356,11 +382,12 @@ function odradio_getData(obj, evt) {
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
     return chps;
@@ -370,35 +397,14 @@ function odradio_getData(obj, evt) {
  * méthode odtable_getData
  * @param obj
  * @param evt
- * @param nature
  * @returns {string}
  */
-function odtable_getData(obj, evt, nature) {
+function odtable_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
-    chps = chps + "&selected='";
-    var child = $("#" + obj.attr("id") + " input").val();
-    chps = chps + child + "'";
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var pipe = child.indexOf("!");
-        var col  = child.substr(0, pipe);
-        var line = child.substr(pipe + 1);
-        var routine = "";
-        switch (nature) {
-            case "col":
-                routine = $("#" + obj.attr("id") + " td:nth-child(" + col + ")").attr(dataEvt);
-                break;
-            case "line":
-                routine = $("#" + obj.attr("id") + " tr:nth-child(" + line + ")").attr(dataEvt);
-                break;
-            case "cell":
-                routine = $("#" + obj.attr("id") + " tr:nth-child(" + line + ")" + " td:nth-child(" + col + ")").attr(dataEvt);
-                break;
-        }
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
-        }
-    }
+    chps = chps + "&value='" + $("#" + obj.attr("id") + " input").val() + "'";
+    chps = chps + "&evt='" + evt + "'";
+    chps = chps + "&obj='OUI'";
+    chps = chps + "&callback='" + obj.data("class") + " " + obj.data("method") +"'";
     return chps;
 }
 
@@ -415,11 +421,12 @@ function odtoggle_getData(obj, evt) {
     } else {
         chps = chps + "&value='unchecked'";
     }
-    if (evt.length > 0) {
-        var dataEvt = 'data-' + evt;
-        var routine = obj.attr(dataEvt);
-        if (routine.length > 0) {
-            chps = chps + "&callback='" + routine + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent == evt) {
+        var classe      = obj.attr("data-class");
+        var methode     = obj.attr("data-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
     }
     return chps;
@@ -429,7 +436,7 @@ function odtoggle_getData(obj, evt) {
 
 /**
  * méthode odbutton_setData
- * @param obj
+ * @param id
  * @param data
  *
  * méthode visant à affecter une valeur à un objet de type ODButton
@@ -566,6 +573,7 @@ function persistSessions(idCible, keys) {
     }
 }
 
+
 /**
  * fonction de traitement de chaîne : remplacer tout str1 par str2
  * @param str1      : caractère ou chaîne  à rechercher
@@ -577,6 +585,11 @@ String.prototype.replaceAll = function (str1, str2, ignore) {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
 }
 
-$.fn.hasAttr = function(name) {
+String.prototype.hasAttr = function(name) {
     return this.attr(name) !== undefined;
 };
+
+function strpos(haystack, needle, offset) {
+    var i = (haystack+'').indexOf(needle, (offset || 0));
+    return i === -1 ? false : i;
+}
