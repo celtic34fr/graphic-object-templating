@@ -1,18 +1,32 @@
-{# tremplate pour l'objet ODButton #}
+{# template pour l'objet ODButton #}
 
 {% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 {% if objet.nature is not empty %}
     {%  set objClass = objet.nature ~ " " ~ objClass %}
 {% endif %}
-{% if objet.allow is defined %} {# bouton inactif #}
+{# gestion des droits utilisateur }
+{% if objet.allow is defined %}
     {% if objet.allow == 'DENIED' %}
         {%  set objClass = objClass ~ " disabled"  %}
     {% endif %}
 {% endif %}
+{ gestion des droits utilisateur #}
 {% if objet.display is defined %} {# bouton mode affichage #}
     {%  set objClass = objClass ~ " display-" ~ objet.display ~ " " %}
 {% endif %}
 {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
+
+{% if objet.type == 'link' %}
+    {% if objet.event.click is defined %}
+        {% set route  = objet.event.click.class %}
+        {% set params = objet.event.click.params %}
+        {% if params is empty %}
+            {% set routeUrl = ( url(route|lower) ) %}
+        {% else %}
+            {% set routeUrl = ( url(route|lower, params) ) %}
+        {% endif %}
+    {% endif %}
+{% endif %}
 
 <button id="{{ objet.id }}" data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
@@ -26,22 +40,27 @@
             {% set infoBulle = infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
         {% endif %}
         {% if infoBulle is defined and infoBulle is not empty %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+            {% include 'go-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
 
         {% if objet.event is not empty %}
+            {% set allEvt = '' %}
             {% for evt, callback in objet.event %}
-                data-{{ evt }} = "{{ callback }}"
+                {% set allEvt = allEvt ~ evt ~ ", " %}
+                data-{{ evt }}-class ="{{ callback.class }}"
+                data-{{ evt }}-method ="{{ callback.method }}"
+                data-{{ evt }}-stopEvt ="{{ callback.stopEvent }}"
             {% endfor %}
+            data-evt="{{ allEvt }}"
         {% endif %}
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% switch objet.type %}
         {% case 'link' %}
         onclick="location.href='{{ routeUrl }}'"
         {% case 'reset' %}
-        onclick="javascript:resetFormDatas('{{ objet.form }}');"
+        onclick="javascript:razFormDatas('{{ objet.form }}');"
         {% endswitch %}
-        {% if objet.state == false %}
+        {% if not objet.state %}
             disabled
         {% endif %}
 >
@@ -49,45 +68,29 @@
     <style>
         {% if objet.style is not empty %}
         #{{ objet.id }} {
-            {{ objet.style | raw }}
+        {{ objet.style | raw }}
         }
         {% endif %}
 
         {% if objet.infoBulle.type is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-            {% set id = objet.id %}
-            {% set type = objet.infoBulle.type %}
-            {% set css = objet.infoBulle.css %}
-            {% set placement = objet.infoBulle.placement %}
-            {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+        {% set id = objet.id %}
+        {% set type = objet.infoBulle.type %}
+        {% set css = objet.infoBulle.css %}
+        {% set placement = objet.infoBulle.placement %}
+        {% include 'go-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
         {% elseif objet.erreur.libel is not empty %}
-            {% set erreur = objet.erreur %}
-            {% set id = objet.id %}
-            {% set type = 'tooltip' %}
-            {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-            {% set placement = objet.infoBulle.placement %}
-            {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+        {% set erreur = objet.erreur %}
+        {% set id = objet.id %}
+        {% set type = 'tooltip' %}
+        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
+        {% set placement = objet.infoBulle.placement %}
+        {% include 'go-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
         #{{ id }} {
             border:  solid 2px #{{ erreur.color }} !important;
         }
         {% endif %}
     </style>
-
-    {% if objet.type == 'link' %}
-        {% if objet.event.click is defined %}
-            {% set callback = objet.event.click %}
-            {% set posR = strpos(callback, "/") %}
-            {% set route = substr(callback, 0, posR ) %}
-            {% set posC = strpos(callback, "/", posR + 1) %}
-            {% set controller = substr(callback, posR + 1, posC - posR - 1) %}
-            {% set action = substr(callback, posC + 1) %}
-            {% set params = [] %}
-            {% set params = params|merge({'controller':controller}) %}
-            {% set params = params|merge({'action':action}) %}
-            {% set params = params|merge({'id':objet.value}) %}
-            {% set routeUrl = ( url(route|lower ~ '/default', params) ) %}
-        {% endif %}
-    {% endif %}
 
     {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ translate(objet.label) }}
 
@@ -101,7 +104,7 @@
             {% case objet.type != 'link' and objet.state == true %}
             {% if objet.event is not empty %}
             {% set events = objet.event %}
-            {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+            {% include 'go-templating/oobject/event.js.twig' with {'events': events, "object": 'odbutton', 'id':objet.id } %}
             {% endif %}
             {% endswitch %}
         });
@@ -110,7 +113,7 @@
     {% if infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}
         {%  set id = objet.id %}
-        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+        {% include 'go-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
     {% endif %}
 </button>
 

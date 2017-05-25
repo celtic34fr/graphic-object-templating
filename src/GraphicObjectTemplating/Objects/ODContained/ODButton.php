@@ -21,32 +21,28 @@ use GraphicObjectTemplating\Objects\ODContained;
  *      SUBMIT  = bouton de déclenchement du pseudo formulaire auquel il est lié
  *      RESET   = bouton de réinitialisation du pseudo formulaire auquel il est lié
  *
- * T setLabel     : affectation du texte présenté dans le bouton
- * T getLabel     : récupération du texte présenté dans le bouton
- * T setIcon      : affecte une icône au bouton (font awesome / glyphicon)
- * T getIcon      : récupère le nom de l'icône affecté au bouton
- * T setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
+ * setLabel     : affectation du texte présenté dans le bouton
+ * getLabel     : récupération du texte présenté dans le bouton
+ * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
+ * getIcon      : récupère le nom de l'icône affecté au bouton
+ * setForm      : surchange de la méthode d'affectation de l'identifiant de regroupement (simulation de formulaire)
  *                  peut induire une modification du type du bouton
  * setType      : affectation du type de bouton
  *      CUSTOM      : type divers
  *      SUBMIT      : type soumission (de formuulaire)
  *      RESET       : type remise à zéro des champs (de formulaire)
  *      LINK        : type lien HTML
- * T getType      : récupération du type du bouton
- * T evtClick     : activation et paramètrage de l'évènement 'click' sur le bouton
- *      callback : "nomModule/nomObjet/nomMéthode"
- *          si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
- *          si nomModule == 'Object' :
- *              si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"
- *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/ODContainer/nomObjet/nomMéthode"
- *          si nomObjet se termine par 'GOT' -> "nomModule/GotObjects/nomObjet"
- * REMARQUE pour créer des objets composés GOT il est imposé :
+ * getType      : récupération du type du bouton
+ * evtClick     : activation et paramètrage de l'évènement 'click' sur le bouton
+ *      object : "nomObjet" (nom de la classe avec son namespace pour déclaration d'objet)
+ *      method ; "nomMéthode" (nom proprement de la méthode à exécuter)
+ * REMARQUE pour créer des objets composés GOT il est conseillé :
  *      -> de créer un répertoire GotObjects pour contenir les objets GOT du module
  *      -> de terminer obligatoirement le nom de la classe définissant l'objet par 'GOT'
  *          ceci permettra de coder les méthodes de traitement de l'objet dans la classe elle-même
  *          la base prise sera une extension de l'objet OSDiv comme contenant global.
- * T disClick     : désactivation de lm'évènement 'click' sur le bouton
- * T setNature    : affectation de la nature du bouton
+ * disClick     : désactivation de lm'évènement 'click' sur le bouton
+ * setNature    : affectation de la nature du bouton
  *      DEFAULT     : nature par défaut (valeur par défaut)
  *      PRIMARY     : nature primaire (bleu roi)
  *      SUCCESS     : nature succès (vert)
@@ -54,7 +50,9 @@ use GraphicObjectTemplating\Objects\ODContained;
  *      WARNING     : nature avertissement alerte (orange)
  *      DANGER      : nature danger, erreur (rouge)
  *      LINK        : nature lien (lien HTML, plus bouton alors)
- * T getNature
+ * getNature
+ * getEvent($evt)   : restitue les parametres de l'évènement $evt s'il existe pour le bouton
+ *                    traitement particulier des bouton de type lien => tableau des paramètres en chaînes de caractères
  */
 class ODButton extends ODContained
 {
@@ -74,12 +72,20 @@ class ODButton extends ODContained
     protected $const_btntype;
     protected $const_nature;
 
-    public function __construct($id) {
-        $parent = parent::__construct($id, "oobject/odcontained/odbutton/odbutton.config.phtml");
-        $this->properties = $parent->properties;
+    public function __construct($id)
+    {
+        $session = new Container($id);
+        if ($session->offsetExists('properties')) {
+            $properties = unserialize($session->offsetGet('properties'), ['allowed_classes' => true]);
+            $this->setProperties($properties);
+        } else {
+            parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.phtml');
+        }
         $this->setDisplay();
         $width = $this->getWidthBT();
-        if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        if (!is_array($width) || empty($width)) {
+            $this->setWidthBT(12);
+        }
     }
 
     public function setLabel($label)
@@ -117,12 +123,20 @@ class ODButton extends ODContained
         parent::setForm($form);
 
         $properties = $this->getProperties();
-        $callback   = (isset($properties['event']['click'])) ? $properties['event']['click'] : "";
-        switch(true) {
-            case (empty($callback)):
-                $properties['type'] = self::BTNTYPE_RESET;  break;
-            case (!empty($callback)):
-                $properties['type'] = self::BTNTYPE_SUBMIT; break;
+        $callback = isset($properties['event']['click']) ? $properties['event']['click'] : '';
+        if (empty($properties['type']) || $properties['type'] !== self::BTNTYPE_LINK) {
+            switch (true) {
+                case (empty($callback)):
+                    $properties['type'] = self::BTNTYPE_RESET;
+                    break;
+                case (!empty($callback)):
+                    $properties['type'] = self::BTNTYPE_SUBMIT;
+                    break;
+            }
+        } else {
+            if (!empty($properties['type']) && isset($properties['form'])) {
+                $properties['form'] = '';
+            }
         }
         $this->setProperties($properties);
         return $this;
@@ -131,23 +145,42 @@ class ODButton extends ODContained
     public function setType($type = self::BTNTYPE_CUSTOM)
     {
         $types = $this->getBtnTypesConstants();
-        $type  = (string) $type;
-        if (!in_array($type, $types)) $type = self::BTNTYPE_CUSTOM;
+        $type = (string)$type;
+        if (!in_array($type, $types, true)) {
+            $type = self::BTNTYPE_CUSTOM;
+        }
+        $properties = $this->getProperties();
 
         switch ($type) {
             case self::BTNTYPE_LINK:
-                if (isset($properties['event']['click']))
-                    $properties['event']['click'] = mb_strtolower($properties['event']['click']);
+                if (isset($properties['form'])) {
+                    $properties['form'] = '';
+                }
+                if (isset($properties['event']['click']) && !empty($properties['event']['click'])) {
+                    $method = $properties['event']['click']['method'];
+                    if (!is_array($method)) {
+                        $method = explode('|', $method);
+                        $params = [];
+                        foreach ($method as $item) {
+                            $item = explode(':', $item);
+                            $params[$item[0]] = $item[1];
+                        }
+                        $properties['event']['click']['method'] = $params;
+                    }
+                }
                 break;
             case self::BTNTYPE_RESET:
-                if (empty($properties['form'])) $type = self::BTNTYPE_CUSTOM;
+                if (empty($properties['form'])) {
+                    $type = self::BTNTYPE_CUSTOM;
+                }
                 break;
             case self::BTNTYPE_SUBMIT:
-                if (empty($properties['form']) || !isset($properties['event']['click'])) $type = self::BTNTYPE_CUSTOM;
+                if (empty($properties['form']) || !isset($properties['event']['click'])) {
+                    $type = self::BTNTYPE_CUSTOM;
+                }
                 break;
         }
 
-        $properties         = $this->getProperties();
         $properties['type'] = $type;
         $this->setProperties($properties);
         return $this;
@@ -158,34 +191,56 @@ class ODButton extends ODContained
         return ((!empty($properties['type'])) ? $properties['type'] : false) ;
     }
 
-    public function evtClick($callback)
+    public function evtClick($class, $method, $stopEvent = true)
     {
-        $callback               = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
+        $class = (string)$class;
+        $method = (string)$method;
+        $properties = $this->getProperties();
+        if (!isset($properties['event'])) {
+            $properties['event'] = [];
+        }
+        if (!is_array($properties['event'])) {
+            $properties['event'] = [];
+        }
 
-        $form     = $properties['form'];
-        switch(true) {
-            case (empty($form) && $properties['type'] != self::BTNTYPE_LINK ):
-                $properties['type'] = self::BTNTYPE_CUSTOM; break;
+        $properties['event']['click'] = [];
+        $properties['event']['click']['class'] = $class;
+        $properties['event']['click']['method'] = $method;
+        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+
+        $form = $properties['form'];
+        switch (true) {
+            case (empty($form) && $properties['type'] !== self::BTNTYPE_LINK):
+                $properties['type'] = self::BTNTYPE_CUSTOM;
+                break;
             case (!empty($form)):
-                $properties['type'] = self::BTNTYPE_SUBMIT; break;
-        }
-        
-        if (isset($properties['type']) && ($properties['type'] == self::BTNTYPE_LINK)) {
-            $callback = strtolower($callback);
+                $properties['type'] = self::BTNTYPE_SUBMIT;
+                break;
         }
 
-        $properties['event']['click'] = $callback;
+        if (isset($properties['type']) && ($properties['type'] === self::BTNTYPE_LINK)) {
+            $properties['event']['click']['class'] = $class;
+            $method = explode('|', $method);
+            $params = [];
+            foreach ($method as $item) {
+                $item = explode(':', $item);
+                if (count($item) > 1) {
+                    $params[$item[0]] = $item[1];
+                }
+            }
+            $properties['event']['click']['params'] = $params;
+        }
+
         $this->setProperties($properties);
         return $this;
     }
 
     public function disClick()
     {
-        $properties             = $this->getProperties();
-        if (isset($properties['event']['click'])) unset($properties['event']['click']);
+        $properties = $this->getProperties();
+        if (isset($properties['event']['click'])) {
+            unset($properties['event']['click']);
+        }
         $this->setProperties($properties);
         return $this;
     }
@@ -193,7 +248,9 @@ class ODButton extends ODContained
     public function setNature($nature = self::NATURE['DEFAULT'])
     {
         $natures = $this->getNatureConst();
-        if (!in_array($nature, $natures)) $nature = self::NATURE_DEFAULT;
+        if (!in_array($nature, $natures, true)) {
+            $nature = self::NATURE_DEFAULT;
+        }
 
         $properties = $this->getProperties();
         $properties['nature'] = $nature;
@@ -201,9 +258,10 @@ class ODButton extends ODContained
         return $this;
     }
 
-    public function getNature() {
-        $properties         = $this->getProperties();
-        return ((!empty($properties['nature'])) ? $properties['nature'] : false) ;
+    public function getNature()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['nature'])) ? $properties['nature'] : false);
     }
 
     /*
@@ -217,7 +275,9 @@ class ODButton extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'BTNTYPE');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_btntype = $retour;
         } else {
@@ -233,7 +293,9 @@ class ODButton extends ODContained
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
                 $pos = strpos($key, 'NATURE');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_nature = $retour;
         } else {
@@ -242,4 +304,25 @@ class ODButton extends ODContained
         return $retour;
     }
 
+    public function getEvent($evt)
+    {
+        $properties = $this->getProperties();
+        $ret = [];
+        if (array_key_exists('event', $properties)) {
+            $events = $properties['event'];
+            if (array_key_exists($evt, $events)) {
+                $ret['class'] = $events[$evt]['class'];
+                $method = $events[$evt]['params'];
+                if ($properties['type'] == self::BTNTYPE_LINK) {
+                    foreach ($method as $key => $item) {
+                        $method[$key] = $key.":".$item;
+                    }
+                    $method = implode('|', $method);
+                }
+                $ret['method'] = $method;
+                $ret['stopEvent'] = ($events[$evt]['stopEvent'] === 'OUI');
+            }
+        }
+        return $ret;
+    }
 }
