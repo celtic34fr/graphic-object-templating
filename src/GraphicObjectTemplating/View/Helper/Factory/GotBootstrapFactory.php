@@ -10,6 +10,7 @@ namespace GraphicObjectTemplating\View\Helper\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use GraphicObjectTemplating\View\Helper\GotBootstrap;
 
 class GotBootstrapFactory implements FactoryInterface
 {
