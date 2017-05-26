@@ -57,6 +57,8 @@
         {% switch objet.type %}
         {% case 'link' %}
         onclick="location.href='{{ routeUrl }}'"
+        {% if params.target is defined and params.target is not empty %}
+        {% endif %}
         {% case 'reset' %}
         onclick="javascript:razFormDatas('{{ objet.form }}');"
         {% endswitch %}

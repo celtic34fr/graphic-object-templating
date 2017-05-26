@@ -372,10 +372,10 @@ class OObject
 
     public function setWidthBT($widthBT)
     {
-        $wxs = 0; $oxs = 0;
-        $wsm = 0; $osm = 0;
-        $wmd = 0; $omd = 0;
-        $wlg = 0; $olg = 0;
+        $wxs = 0; $oxs = 0; $hxs = false;
+        $wsm = 0; $osm = 0; $hsm = false;
+        $wmd = 0; $omd = 0; $hmd = false;
+        $wlg = 0; $olg = 0; $hlg = false;
 
         switch (true) {
             case (is_numeric($widthBT)):
@@ -398,6 +398,10 @@ class OObject
                         case "OS" : $osm = intval(substr($item,2)); break;
                         case "OM" : $omd = intval(substr($item,2)); break;
                         case "OL" : $olg = intval(substr($item,2)); break;
+                        case "HX" : $hxs = true; break;
+                        case "HS" : $hsm = true; break;
+                        case "HM" : $hmd = true; break;
+                        case "HL" : $hlg = true; break;
                         default:
                             if (substr($key,0,1) == "W") {
                                 $wxs = intval(substr($item,1));
@@ -410,6 +414,12 @@ class OObject
                                 $osm = intval(substr($item,1));
                                 $omd = intval(substr($item,1));
                                 $olg = intval(substr($item,1));
+                            }
+                            if ($key === 'h') {
+                                $hxs = true;
+                                $hsm = true;
+                                $hmd = true;
+                                $hlg = true;
                             }
                     }
                 }
@@ -424,6 +434,16 @@ class OObject
         $properties['widthBT']['osm'] = $osm;
         $properties['widthBT']['omd'] = $omd;
         $properties['widthBT']['olg'] = $olg;
+
+        $properties['widthBT']['hxs'] = $hxs;
+        $properties['widthBT']['hsm'] = $hsm;
+        $properties['widthBT']['hmd'] = $hmd;
+        $properties['widthBT']['hlg'] = $hlg;
+        if ($hxs) { $properties['widthBT']['wxs'] = 'H'.$properties['widthBT']['wxs']; }
+        if ($hsm) { $properties['widthBT']['wsm'] = 'H'.$properties['widthBT']['wsm']; }
+        if ($hmd) { $properties['widthBT']['wmd'] = 'H'.$properties['widthBT']['wmd']; }
+        if ($hlg) { $properties['widthBT']['wlg'] = 'H'.$properties['widthBT']['wlg']; }
+
         $this->setProperties($properties);
         return $this;
     }
