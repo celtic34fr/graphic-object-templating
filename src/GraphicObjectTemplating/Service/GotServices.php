@@ -82,6 +82,10 @@ class GotServices
             if (substr($key, 0, 1) == "o" && $value > 0) {
                 $class  .= " col-".substr($key, 1)."-offset-" . $value. " ";
             }
+
+            if (substr($key, 0, 1) === 'h' && $value === true) {
+                $class  .= " hidden-".substr($key, 1)."-" . $value. " ";
+            }
         }
         return $class;
     }

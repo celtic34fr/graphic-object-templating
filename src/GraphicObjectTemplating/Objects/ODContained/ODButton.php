@@ -18,11 +18,11 @@ use Zend\Session\Container;
  * T : testé et validé
  *
  * type des boutons : (affecté suivant d'autre attribut)
- *      CUSTOM  = bouton divers permettant de déclencher un action
+ * T      CUSTOM  = bouton divers permettant de déclencher un action
  *      SUBMIT  = bouton de déclenchement du pseudo formulaire auquel il est lié
  *      RESET   = bouton de réinitialisation du pseudo formulaire auquel il est lié
  *
- * setLabel     : affectation du texte présenté dans le bouton
+ * T setLabel     : affectation du texte présenté dans le bouton
  * getLabel     : récupération du texte présenté dans le bouton
  * setIcon      : affecte une icône au bouton (font awesome / glyphicon)
  * getIcon      : récupère le nom de l'icône affecté au bouton
@@ -43,17 +43,17 @@ use Zend\Session\Container;
  *          ceci permettra de coder les méthodes de traitement de l'objet dans la classe elle-même
  *          la base prise sera une extension de l'objet OSDiv comme contenant global.
  * disClick     : désactivation de lm'évènement 'click' sur le bouton
- * setNature    : affectation de la nature du bouton
+ * T setNature    : affectation de la nature du bouton
  *      DEFAULT     : nature par défaut (valeur par défaut)
  *      PRIMARY     : nature primaire (bleu roi)
- *      SUCCESS     : nature succès (vert)
+ * §     SUCCESS     : nature succès (vert)
  *      INFO        : nature information (gris bleu)
- *      WARNING     : nature avertissement alerte (orange)
+ * §     WARNING     : nature avertissement alerte (orange)
  *      DANGER      : nature danger, erreur (rouge)
  *      LINK        : nature lien (lien HTML, plus bouton alors)
- * getNature
+ * T getNature    : restitue la valeur de l'attribut nature (Cf. les constatntes associées)
  * getEvent($evt)   : restitue les parametres de l'évènement $evt s'il existe pour le bouton
- *                    traitement particulier des bouton de type lien => tableau des paramètres en chaînes de caractères
+ *                    traitement particulier des boutons de type lien => tableau des paramètres en chaînes de caractères
  */
 class ODButton extends ODContained
 {
@@ -69,6 +69,11 @@ class ODButton extends ODContained
     const NATURE_WARNING = 'btn btn-warning';
     const NATURE_DANGER  = 'btn btn-danger';
     const NATURE_LINK    = 'btn btn-link';
+
+    const LINK_TARGET_BLANK  = '_black';
+    const LINK_TARGET_SELF   = '_self';
+    const LINK_TARGET_PARENT = '_parent';
+    const LINK_TARGET_TOP    = '_top';
 
     protected $const_btntype;
     protected $const_nature;
