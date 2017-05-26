@@ -372,10 +372,10 @@ class OObject
 
     public function setWidthBT($widthBT)
     {
-        $wxs = 0; $oxs = 0; $hxs = false;
-        $wsm = 0; $osm = 0; $hsm = false;
-        $wmd = 0; $omd = 0; $hmd = false;
-        $wlg = 0; $olg = 0; $hlg = false;
+        $wxs = 0; $oxs = 0; $hxs = false; $vxs = true;
+        $wsm = 0; $osm = 0; $hsm = false; $vsm = true;
+        $wmd = 0; $omd = 0; $hmd = false; $vmd = true;
+        $wlg = 0; $olg = 0; $hlg = false; $vlg = true;
 
         switch (true) {
             case (is_numeric($widthBT)):
@@ -398,10 +398,14 @@ class OObject
                         case "OS" : $osm = intval(substr($item,2)); break;
                         case "OM" : $omd = intval(substr($item,2)); break;
                         case "OL" : $olg = intval(substr($item,2)); break;
-                        case "HX" : $hxs = true; break;
-                        case "HS" : $hsm = true; break;
-                        case "HM" : $hmd = true; break;
-                        case "HL" : $hlg = true; break;
+                        case "HX" : $hxs = true; $vxs = false; break;
+                        case "HS" : $hsm = true; $vsm = false; break;
+                        case "HM" : $hmd = true; $vmd = false; break;
+                        case "HL" : $hlg = true; $vlg = false; break;
+                        case "VX" : $hxs = false; $vxs = true; break;
+                        case "VS" : $hsm = false; $vsm = true; break;
+                        case "VM" : $hmd = false; $vmd = true; break;
+                        case "VL" : $hlg = false; $vlg = true; break;
                         default:
                             if (substr($key,0,1) == "W") {
                                 $wxs = intval(substr($item,1));
@@ -416,11 +420,18 @@ class OObject
                                 $olg = intval(substr($item,1));
                             }
                             if ($key === 'h') {
-                                $hxs = true;
-                                $hsm = true;
-                                $hmd = true;
-                                $hlg = true;
+                                $hxs = true; $vxs = false;
+                                $hsm = true; $vsm = false;
+                                $hmd = true; $vmd = false;
+                                $hlg = true; $vlg = false;
                             }
+                            if ($key === 'v') {
+                                $hxs = false; $vxs = true;
+                                $hsm = false; $vsm = true;
+                                $hmd = false; $vmd = true;
+                                $hlg = false; $vlg = true;
+                            }
+                            break;
                     }
                 }
         }
@@ -439,10 +450,10 @@ class OObject
         $properties['widthBT']['hsm'] = $hsm;
         $properties['widthBT']['hmd'] = $hmd;
         $properties['widthBT']['hlg'] = $hlg;
-        if ($hxs) { $properties['widthBT']['wxs'] = 'H'.$properties['widthBT']['wxs']; }
-        if ($hsm) { $properties['widthBT']['wsm'] = 'H'.$properties['widthBT']['wsm']; }
-        if ($hmd) { $properties['widthBT']['wmd'] = 'H'.$properties['widthBT']['wmd']; }
-        if ($hlg) { $properties['widthBT']['wlg'] = 'H'.$properties['widthBT']['wlg']; }
+        $properties['widthBT']['vxs'] = $vxs;
+        $properties['widthBT']['vsm'] = $vsm;
+        $properties['widthBT']['vmd'] = $vmd;
+        $properties['widthBT']['vlg'] = $vlg;
 
         $this->setProperties($properties);
         return $this;
