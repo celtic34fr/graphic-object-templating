@@ -1,6 +1,6 @@
 <?php
 
-namespace GoTemplating\Objects;
+namespace graphicObjectTEmplating\Objects;
 
 use GraphicObjectTemplating\Objects\ODContained;
 use Zend\Session\Container;
@@ -131,7 +131,7 @@ class OObject
     {
         $properties = [];
         if (!empty($arrayData)) {
-            $properties = include __DIR__ . '/../../view/graphic-object-templating/' . trim($arrayData);
+            $properties = include __DIR__ . '/../../../view/graphic-object-templating/' . trim($arrayData);
         }
         $properties['id'] = $id;
         $this->id = $id;
@@ -153,7 +153,7 @@ class OObject
         }
 
         /** ajout des attribut de base de chaque objet */
-        $objProperties = include __DIR__ . '/../../view/graphic-object-templating/oobject/oobject.config.phtml';
+        $objProperties = include __DIR__ . '/../../../view/graphic-object-templating/oobject/oobject.config.php';
         $properties = array_merge($objProperties, $properties);
 
         $gotObjList = OObject::validateSession();
@@ -163,6 +163,7 @@ class OObject
         }
         $objects[$properties['id']] = serialize($properties);
         $gotObjList->offsetSet('objects', $objects);
+        $this->properties = $properties;
 
         return $this;
     }
@@ -198,8 +199,8 @@ class OObject
 
     public function getProperties()
     {
-        if (null !== $this->properties) {
-            $id = $this->properties['id'];
+        if (null !== $this->id) {
+            $id = $this->id;
             if (OObject::existObject($id)) {
                 $gotObjList = OObject::validateSession();
                 $objects = $gotObjList->offsetGet('objects');
@@ -539,7 +540,7 @@ class OObject
 
     static public function clearObjects()
     {
-        $container  = OObject::validateSession();
+$container  = OObject::validateSession();
         $container->offsetUnset('objects');
         return $container;
     }
@@ -930,7 +931,7 @@ class OObject
         return $item;
     }
 
-    private function validateSession()
+    static public function validateSession()
     {
         $now        = new \DateTime('now');
         $container  = new Container('gotObjList');

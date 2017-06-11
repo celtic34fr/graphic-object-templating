@@ -36,7 +36,7 @@ class OCWizard extends OSContainer
 
     public function __construct($id)
     {
-        parent::__construct($id, "oobject/ocobjects/ocwizard/ocwizard.config.phtml");
+        parent::__construct($id, "oobject/ocobjects/ocwizard/ocwizard.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
@@ -64,7 +64,7 @@ class OCWizard extends OSContainer
     {// ajout d'une étape en fin de tableau
         $title    = (string) $title;
         $callback = (string) $callback;
-        $actif    = (true && $actif);
+        $actif    = ($actif === true);
 
         $properties = $this->getProperties();
         if (!isset($properties['etapes'])) $properties['etapes'] = [];

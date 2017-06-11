@@ -85,7 +85,7 @@ class ODButton extends ODContained
             $properties = unserialize($session->offsetGet('properties'), ['allowed_classes' => true]);
             $this->setProperties($properties);
         } else {
-            parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.phtml');
+            parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.php');
         }
         $this->setDisplay();
         $width = $this->getWidthBT();
@@ -251,7 +251,7 @@ class ODButton extends ODContained
         return $this;
     }
 
-    public function setNature($nature = self::NATURE['DEFAULT'])
+    public function setNature($nature = self::NATURE_DEFAULT)
     {
         $natures = $this->getNatureConst();
         if (!in_array($nature, $natures, true)) {

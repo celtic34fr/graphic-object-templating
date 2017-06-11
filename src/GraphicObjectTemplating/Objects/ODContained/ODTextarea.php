@@ -35,7 +35,7 @@ class ODTextarea extends ODContained
 {
     public function __construct($id)
     {
-        $parent = parent::__construct($id, "oobject/odcontained/odtextarea/odtextarea.config.phtml");
+        $parent = parent::__construct($id, "oobject/odcontained/odtextarea/odtextarea.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
         $width = $this->getWidthBT();
@@ -213,16 +213,16 @@ class ODTextarea extends ODContained
                 foreach ($widthBT as $item) {
                     $key = strtoupper(substr($item, 0, 2));
                     switch ($key) {
-                        case "WX" : $lxs = intval(substr($item,2)); break;
-                        case "WS" : $lsm = intval(substr($item,2)); break;
-                        case "WM" : $lmd = intval(substr($item,2)); break;
-                        case "WL" : $llg = intval(substr($item,2)); break;
+                        case "WX" : $lxs = (int)substr($item,2); break;
+                        case "WS" : $lsm = (int)substr($item,2); break;
+                        case "WM" : $lmd = (int)substr($item,2); break;
+                        case "WL" : $llg = (int)substr($item,2); break;
                         default:
                             if (substr($key,0,1) == "W") {
-                                $wxs = intval(substr($item,1));
-                                $wsm = intval(substr($item,1));
-                                $wmd = intval(substr($item,1));
-                                $wlg = intval(substr($item,1));
+                                $wxs = (int)substr($item,1);
+                                $wsm = (int)substr($item,1);
+                                $wmd = (int)substr($item,1);
+                                $wlg = (int)substr($item,1);
                             }
                     }
                 }

@@ -24,7 +24,7 @@ use GraphicObjectTemplating\Objects\ODContained;
 class ODContent extends  ODContained
 {
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontained/odcontent/odcontent.config.phtml");
+        parent::__construct($id, "oobject/odcontained/odcontent/odcontent.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

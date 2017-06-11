@@ -66,7 +66,7 @@ class ODMessage extends ODContained
     protected $const_mesSize;
 
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontained/odmessage/odmessage.config.phtml");
+        parent::__construct($id, "oobject/odcontained/odmessage/odmessage.config.php");
         $this->setDisplay();
     }
 

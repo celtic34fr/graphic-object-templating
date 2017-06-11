@@ -61,7 +61,7 @@ class ODBadge extends ODContained
     protected $const_badgePos;
 
     public function __construct($id) {
-        $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.phtml");
+        $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
     }

@@ -8,6 +8,8 @@
 
 namespace GraphicObjectTemplating\Objects;
 
+use GraphicObjectTemplating\Objects\OObject;
+
 /**
  * Class ODConta    ined
  * @package GraphicObjectTemplating\Objects
@@ -36,14 +38,13 @@ class ODContained extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties  = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/odcontained/odcontained.config.phtml");
-        $parent      = parent::__construct($id, trim($adrProperties));
-        $properties  = array_merge($parent->properties, $properties);
+        $properties  = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php");
+        parent::__construct($id, trim($adrProperties));
+        $properties  = array_merge($this->properties, $properties);
         $this->setProperties($properties);
         $this->setForm($properties['form']);
         $this->setName((empty($properties['name'])) ? $properties['id'] : $properties['name']);
         $this->setValue($properties['value']);
-        return $this;
     }
 
     public function setName($name)

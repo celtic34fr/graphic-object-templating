@@ -37,7 +37,7 @@ class OSContainer extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.phtml");
+        $properties = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.php");
         parent::__construct($id, $adrProperties);
         $properties = array_merge($this->getProperties(), $properties);
         $this->setProperties($properties);
@@ -54,6 +54,24 @@ class OSContainer extends OObject
             }
         }
         return false;
+    }
+
+    public function __set($nameChild, $value)
+    {
+        if (OObject::existObject($nameChild)) {
+            $gotObjList = OObject::validateSession();
+            $objects = $gotObjList->offsetGet('objects');
+            $properties = unserialize($objects[$nameChild], ['allowed_classes' => true]);
+            if (array_key_exists('value', $properties)) { $properties['value'] = $value; }
+            $objects[$nameChild] = serialize($properties);
+            $gotObjList->offsetSet('objects', $objects);
+        }
+        return $this;
+    }
+
+    public function __isset($nameChild)
+    {
+        return OObject::existObject($nameChild);
     }
 
     public function setWidth($width)

@@ -99,7 +99,7 @@ class ODTable extends ODContained
 
     public function __construct($id)
     {
-        $parent = parent::__construct($id, "oobject/odcontained/odtable/odtable.config.phtml");
+        $parent = parent::__construct($id, "oobject/odcontained/odtable/odtable.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
         $width = $this->getWidthBT();
