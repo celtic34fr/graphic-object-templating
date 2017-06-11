@@ -18,7 +18,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
     public function onBootstrap(MvcEvent $e)
     {
         $config = $e->getApplication()->getServiceManager()->get('Config');
-        $paramsSession = $config['zfctwig']['sessionParms'];
+        $paramsSession = $config['gotParameters']['sessionParms'];
         if (!empty($paramsSession)) {
             $this->initSession($paramsSession);
         }

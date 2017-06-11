@@ -12,15 +12,16 @@ return array(
             'colorconverter'  => 'GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension',
             'debug'           => 'Twig_Extension_Debug',
         ),
+    ),
+    'gotParameters' => array(
         'sessionParms' => array(
-            'remember_me_seconds' => 1800, // 1/2 heure de temps de vie (rememberMe)
-            'gc_maxlifetime' => 7200,     // 2 heure de temps de vie max
+            'remember_me_seconds' => 3600, // 2 heures de temps de vie (rememberMe)
+            'gc_maxlifetime' => 14400,     // 4 heures de temps de vie max
             'gc_divisor' => 1,
             'use_cookies' => true,
             'cookie_httponly' => true,
         )
-    ),
-
+    )
 );
 
 //            'array'           => 'Twig_Extensions_Extension_Array',
