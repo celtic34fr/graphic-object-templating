@@ -70,7 +70,7 @@ class OSDialog extends OSContainer
     protected $const_effect;
 
     public function __construct($id) {
-        parent::__construct($id, "oobject/oscontainer/osdialog/osdialog.config.phtml");
+        parent::__construct($id, "oobject/oscontainer/osdialog/osdialog.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

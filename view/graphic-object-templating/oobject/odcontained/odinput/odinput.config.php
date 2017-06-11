@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    "object"       => "odinput",
+    'object'       => 'odinput',
     "typeObj"      => "odcontained",
     "template"     => "odinput.twig",
     "type"         => "text",

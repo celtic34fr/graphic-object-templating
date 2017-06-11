@@ -49,7 +49,7 @@ class OCTabs extends OSContainer
 
     public function __construct($id)
     {
-        parent::__construct($id, "oobject/ocobjects/octabs/octabs.config.phtml");
+        parent::__construct($id, "oobject/ocobjects/octabs/octabs.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

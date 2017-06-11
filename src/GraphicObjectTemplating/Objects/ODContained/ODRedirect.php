@@ -15,12 +15,11 @@ class ODRedirect extends ODContained
 {
     public function __construct($id)
     {
-        $parent = parent::__construct($id, "oobject/odcontained/odredirect/odredirect.config.phtml");
+        $parent = parent::__construct($id, "oobject/odcontained/odredirect/odredirect.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
-        return $this;
     }
 
     public function setRoute($route)

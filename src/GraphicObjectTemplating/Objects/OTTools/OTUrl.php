@@ -14,7 +14,7 @@ class OTUrl extends OTTools
 {
     public function __construct($id)
     {
-        parent::__construct($id, "oobject/ottools/oturl/oturl.config.phtml");
+        parent::__construct($id, "oobject/ottools/oturl/oturl.config.php");
     }
 
     public function setRoute($route)
