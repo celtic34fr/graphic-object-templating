@@ -243,6 +243,7 @@ function setFormDatas(form, datas) {
     })
 }
 
+
 /* méthode de restitution des valeurs d'objets */
 
 /**
