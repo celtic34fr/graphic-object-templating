@@ -8,7 +8,10 @@
 
 namespace GraphicObjectTemplating\Controller;
 
+use GraphicObjectTemplating\Objects\ODContained;
 use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Objects\OSContainer\OSForm;
+use Zend\Http\Request;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -37,94 +40,78 @@ class GOTController extends AbstractActionController
 
     public function callbackAction()
     {
+        /** @var Request $request */
         $request = $this->getRequest();
+        $id = null;
         if ($request->isPost()) {
             $paramsPost = $request->getPost()->toArray();
             $params     = [];
-            foreach ($paramsPost as $cle => $param) {
-                if (substr($param, 0, 1) == "'") $param = substr($param, 1);
-                if (substr($param, strlen($param) - 1, 1) == "'")
-                    $param = substr($param, 0, strlen($param) - 1);
-                $$cle = $param;
-                $params[$cle] = $param;
+            foreach ($paramsPost as $cle => $value) {
+                if ($value[0] === "'") { $value = substr($value, 1); }
+                if ($value[strlen($value) - 1] === "'") {
+                    $value = substr($value, 0, - 1);
+                }
+                $$cle = $value;
+                $params[$cle] = $value;
             }
 
-            if (isset($callback) && !empty($callback)) {
-                $pos = strpos($callback, '/');
-                $module = ucfirst(substr($callback, 0, $pos));
-                $callback = substr($callback, $pos + 1);
-                $pos = strpos($callback, '/');
-                $controller = ucfirst(substr($callback, 0, $pos));
-                $method = substr($callback, $pos + 1);
+            if (!empty($callback) && (null !== $callback)) {
+                $objClass  = substr($callback, 0, strpos($callback, ' '));
+                $objMethod = substr($callback, strpos($callback, ' ') + 1);
 
-                switch (true) {
-                    case ( strpos($controller, 'Controller') !== false ) :
-                        $nomController = $module."/Controller/".$controller;
-                        $param = $this->serviceManager;
-                        break;
-                    case (substr($controller, 0, 2) == 'OC') :
-                        $nomController = "GraphicObjectTemplating/ODContent/".$controller;
-                        unset($param);
-                        break;
-                    case (substr($controller, 0, 2) == 'OS') :
-                        $nomController = "GraphicObjectTemplating/OSContainer/".$controller;
-                        unset($param);
-                        break;
-                    case (strpos($controller, "GOT") == (strlen($controller) - 3)) :
-                        $nomController = $module."/GotObjects/".$controller;
-                        unset($param);
-                        break;
-                    default:
-                        $nomController = $module."/".$controller;
-                        break;
-                        unset($param);
-                }
-                $nomController = str_replace("/", chr(92), $nomController);
-
-                if (isset($param)) {
-                    $object = new $nomController($param);
+                if (null !== $params) {
+                    if (isset($params['obj']) && $params['obj'] == 'OUI') {
+                        $object = OObject::buildObject($params['id']);
+                    } else {
+                        $object = new $objClass($params);
+                    }
                 } else {
-                    $object = new $nomController;
+                    $object = new $objClass;
                 }
                 // traitement en cas de formulaire
-                if (isset($form) && !empty($form)) {
+                if (!empty($form) && null !== $form) {
                     $formDatas = [];
-                    $form      = substr($form, 1, strlen($form) - 2);
-                    $datas     = explode("|", $form);
+                    $form      = substr($form, 1,  -2);
+                    $datas     = explode('|', $form);
 
                     foreach ($datas as $data) {
                         if (!empty($data)) {
-                            $data                = explode("§", $data);
+                            $data                = explode('§', $data);
                             foreach ($data as $item) {
                                 switch (true) {
                                     case (strpos($item, 'id=') !== false):
-                                        $id = substr($item, 3);
+                                        $idF = substr($item, 3);
                                         break;
                                     case (strpos($item, 'value=') !== false):
                                         $value = substr($item, 6);
-                                        if (substr($value, 0, 1) == "*") $value = substr($value, 1);
-                                        if (substr($value, strlen($value) - 1, 1) == "*") {
-                                            $value = substr($value, 0, strlen($value) - 1);                                        break;
+                                        if ($value[0] === '*') { $value = substr($value, 1); }
+                                        if ((strlen($value) > 2 && $value[strlen($value) - 1] === '*') || ($value === '*')) {
+                                            $value = substr($value, 0,  -1);
+                                            break;
                                         }
-                                        var_dump(substr($value, 0, 1));
                                 }
-                                if (isset($id) && isset($value)) {
-                                    $obj = OObject::buildObject($id);
+                                if (isset($idF, $value)) {
+                                    /** @var ODContained $obj */
+                                    $obj = OObject::buildObject($idF);
                                     $obj->convertValue($value);
                                     $value = $obj->getConverted();
-                                    $formDatas[$id] = $value;
+                                    $formDatas[$idF] = $value;
                                 }
                             }
                         }
                     }
                     $params['form'] = $formDatas;
+                    if (null !== $id) { // alimentation objet OSForm si existe
+                        $objId = OObject::buildObject($id);
+                        if (!empty($objId->getForm()) && OObject::existObject($objId->getForm())) {
+                            /** @var OSForm $objForm */
+                            $objForm = OObject::buildObject($objId->getForm());
+                            $objForm->setFormDatas($formDatas);
+                        }
+                    }
                 }
 
-                $result = call_user_func_array(array($object, $method),
-                    array(
-                        'sl' => $this->serviceManager,
-                        $params
-                    ));
+                $result = call_user_func_array([$object, $objMethod], [$this->serviceManager, $params]);
 
                 $viewModel = new ViewModel([
                     'content' => $result,
@@ -133,5 +120,6 @@ class GOTController extends AbstractActionController
                 return $viewModel;
             }
         }
+        return false;
     }
 }

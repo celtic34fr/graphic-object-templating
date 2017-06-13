@@ -82,9 +82,11 @@ function invokeAjax(datas, idSource, event, e) {
                 }
             });
             // vérification propagation événement
-            var stopEvent = $('#'.idSource).data('data-'+event+'-stopEvt');
-            if (stopEvent === 'OUI' || stopEvent.length === 0 || stopEvent === undefined) {
-                e.stopPropagation();
+            if (event !== undefined) {
+                var stopEvent = $('#'.idSource).data('data-'+event+'-stopEvt');
+                if (stopEvent === 'OUI' || stopEvent.length === 0 || stopEvent === undefined) {
+                    e.stopPropagation();
+                }
             }
         },
 
