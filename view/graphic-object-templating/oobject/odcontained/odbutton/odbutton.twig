@@ -51,7 +51,7 @@
                 data-{{ evt }}-method ="{{ callback.method }}"
                 data-{{ evt }}-stopEvt ="{{ callback.stopEvent }}"
             {% endfor %}
-            data-evt="{{ allEvt }}"
+            data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% switch objet.type %}

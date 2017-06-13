@@ -258,8 +258,8 @@ function odbutton_getData(obj, evt) {
     var chps = "id=" + obj.attr("id") + "&value='" + obj.val() + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -271,6 +271,7 @@ function odbutton_getData(obj, evt) {
             break;
         case "submit":
             var formName = obj.attr('data-form');
+            console.log(getFormDatas(formName));
             var dataForm = '(' + getFormDatas(formName) + ')';
             chps = chps + "&form='" + dataForm + "'";
             return chps;
