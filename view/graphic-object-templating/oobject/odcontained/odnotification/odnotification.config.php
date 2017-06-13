@@ -1,16 +1,16 @@
 <?php
 
 return array(
-    "object"            => "odmessage",
+    "object"            => "odnotification",
     "typeObj"           => "odcontained",
-    "template"          => "odmessage.twig",
+    "template"          => "odnotification.twig",
     "type"              => "",
     "title"             => "",
     "body"              => "",
     "size"              => "normal",
     "action"            => "init",
     "sound"             => true,
-    "soundPath"         => __DIR__ . "/../../../../../public/objets/odcontained/odmessage/sounds/",
+    "soundPath"         => __DIR__ . "/../../../../../public/objets/odcontained/odnotification/sounds/",
     "delay"             => 3000, // en millisecondes
     "position"          => 'bottom right',
     "showAfterPrevious" => false,

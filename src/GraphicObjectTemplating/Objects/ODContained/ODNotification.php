@@ -11,7 +11,7 @@ namespace GraphicObjectTemplating\Objects\ODContained;
 use GraphicObjectTemplating\Objects\ODContained;
 
 /**
- * Class ODMessage
+ * Class ODNotification
  * @package GraphicObjectTemplating\Objects\ODContained
  *
  * fait avec le plugin jQuery Lobibox
@@ -36,7 +36,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  * setSize
  * getSize
  */
-class ODMessage extends ODContained
+class ODNotification extends ODContained
 {
 
     const ACTION_INIT   = 'init';
@@ -66,7 +66,7 @@ class ODMessage extends ODContained
     protected $const_mesSize;
 
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontained/odmessage/odmessage.config.php");
+        parent::__construct($id, "oobject/odcontained/odnotification/odnotification.config.php");
         $this->setDisplay();
     }
 
