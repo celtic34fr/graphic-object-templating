@@ -32,9 +32,7 @@
 {% endif %}
 
 {% if objet.action == 'send' %}
-    <script id="{{ objet.id }}">
-    $(document).ready(function () {
-//        console.log({#{ objet.id }#}Lobibox.notify.list.length);
+    <script id='{{ objet.id }}'>
         if ( {{ objet.id }}Lobibox.notify.list.length == 0) {
             {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                 showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
@@ -43,10 +41,10 @@
                 delay: {{ objet.delay }},
                 msg: '{{ objet.body }}'
             });
-            $("#{{ objet.id }}ListLength").val(1);
-//            console.log($("#{#{ objet.id }#}ListLength").val());
+            $('#{{ objet.id }}ListLength').val(1);
         } else {
-            var listLength = parseInt($("#{{ objet.id }}ListLength").val());
+            var listLength = parseInt($('#{{ objet.id }}ListLength').val());
+            var delay      =  {{ objet.delayMessage }} * listLength;
             setTimeout(function () {
                 {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                     showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
@@ -55,11 +53,8 @@
                     delay: {{ objet.delay }},
                     msg: '{{ objet.body }}'
                 });
-            }, {{ objet.delayMessage }} * listLength);
-            $("#{{ objet.id }}ListLength").val(listLength + 1);
-//            console.log($("#{#{ objet.id }#}ListLength").val());
+            }, delay );
+            $('#{{ objet.id }}ListLength').val(listLength + 1);
         }
-
-    });
     </script>
 {% endif %}
