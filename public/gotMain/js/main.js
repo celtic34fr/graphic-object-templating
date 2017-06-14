@@ -274,7 +274,6 @@ function odbutton_getData(obj, evt) {
             break;
         case "submit":
             var formName = obj.attr('data-form');
-            console.log(getFormDatas(formName));
             var dataForm = '(' + getFormDatas(formName) + ')';
             chps = chps + "&form='" + dataForm + "'";
             return chps;
@@ -296,8 +295,8 @@ function odcontent_getData(obj, evt) {
     chps = chps + "&type='" + obj.attr('data-objet') + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -320,8 +319,8 @@ function odinput_getData(obj, evt) {
     chps = chps + "&type='" + obj.find("input").attr('type') + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -340,8 +339,8 @@ function odselect_getData(obj, evt) {
     chps = chps + "&value='" + obj.find("select").val() + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -364,8 +363,8 @@ function odcheckbox_getData(obj, evt) {
     chps = chps + "&value='" + checked.join("$") + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -388,8 +387,8 @@ function odradio_getData(obj, evt) {
     chps = chps + "&value='" + checked.join("$") + "'";
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
@@ -427,8 +426,8 @@ function odtoggle_getData(obj, evt) {
     }
     var dataEvent   = obj.attr("data-evt");
     if (dataEvent == evt) {
-        var classe      = obj.attr("data-class");
-        var methode     = obj.attr("data-method");
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
             chps = chps + "&callback='" + classe + '+' + methode + "'";
         }
