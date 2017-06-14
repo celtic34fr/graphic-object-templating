@@ -494,7 +494,7 @@ function odselect_setData(id, data) {
  * @param id
  * @param tabData
  */
-function odcheckbox_setData(id, tabData) {
+function odcheckbox_setData(id, data) {
     if (data == "") { // raz des options sélectionnées
         $("#"+ id +" option").removeAttr("selected");
     } else  {
@@ -511,7 +511,7 @@ function odcheckbox_setData(id, tabData) {
  * @param id
  * @param tabData
  */
-function odradio_setData(id, tabData) {
+function odradio_setData(id, data) {
     if (data == "") { // raz des options sélectionnées
         $("#"+ id +' .radio input').removeAttr("checked");
     } else  {
