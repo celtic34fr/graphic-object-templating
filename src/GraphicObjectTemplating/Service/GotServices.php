@@ -62,7 +62,7 @@ class GotServices
                 break;
         }
 		$renduHtml = $this->_twigRender->render($html);
-		return $renduHtml;
+		return str_replace(array("\r\n", "\r", "\n"), "", $renduHtml);
 	}
 
     public function bootstrapClass($widthBT)
