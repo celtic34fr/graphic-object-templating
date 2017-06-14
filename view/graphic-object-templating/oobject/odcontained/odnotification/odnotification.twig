@@ -44,7 +44,7 @@
             $('#{{ objet.id }}ListLength').val(1);
         } else {
             var listLength = parseInt($('#{{ objet.id }}ListLength').val());
-            var delay      =  {{ objet.delayMessage }} * listLength;
+            var delayTime  =  {{ objet.delayMessage }} * listLength;
             setTimeout(function () {
                 {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                     showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
@@ -53,7 +53,7 @@
                     delay: {{ objet.delay }},
                     msg: '{{ objet.body }}'
                 });
-            }, delay );
+            }, delayTime );
             $('#{{ objet.id }}ListLength').val(listLength + 1);
         }
     </script>
