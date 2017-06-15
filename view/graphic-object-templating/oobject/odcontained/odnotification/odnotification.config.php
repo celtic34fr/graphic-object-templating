@@ -10,7 +10,7 @@ return array(
     "size"              => "normal",
     "action"            => "init",
     "sound"             => true,
-    "soundPath"         => __DIR__ . "/../../../../../public/objets/odcontained/odnotification/sounds/",
+    "soundPath"         => "graphicobjecttemplating/objects/odcontained/odnotification/sounds/",
     "delay"             => 3000, // en millisecondes
     "position"          => 'bottom right',
     "showAfterPrevious" => false,
