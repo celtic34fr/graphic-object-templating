@@ -357,7 +357,8 @@ function odselect_getData(obj, evt) {
 function odcheckbox_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var checked = [];
-    $.each($("#"+obj.attr('id')+" input:checked"), function(){
+    var unchecked = [];
+    $.each($("#"+obj.attr('id')+" input:checkbox:checked"), function(){
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
