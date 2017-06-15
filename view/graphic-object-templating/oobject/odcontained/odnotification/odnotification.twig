@@ -20,7 +20,12 @@
                 closeOnClick: true,
                 width: 400,
                 position: "{{ objet.position }}",
-                iconSource: "bootstrap"
+                iconSource: "bootstrap",
+                sound: {{ (objet.sound) ? 'true' : 'false' }},
+        {% if objet.sound %}
+                soundPath: '{{ objet.soundPath }}',
+                soundExt: '.ogg',
+        {% endif %}
             })
         );
     </script>
