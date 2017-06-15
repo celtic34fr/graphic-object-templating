@@ -4,7 +4,7 @@ return array(
     "object"            => "odnotification",
     "typeObj"           => "odcontained",
     "template"          => "odnotification.twig",
-    "type"              => "",
+    "type"              => "info",
     "title"             => "",
     "body"              => "",
     "size"              => "normal",
