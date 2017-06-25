@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 07/02/16
- * Time: 15:01
- */
 
 namespace GraphicObjectTemplating\Twig\Extension;
 

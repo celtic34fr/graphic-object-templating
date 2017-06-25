@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 24/10/16
- * Time: 00:53
- */
 
 namespace GraphicObjectTemplating\Objects\OTTools;
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gilbert
- * Date: 21/06/16
- * Time: 14:27
- */
 
 namespace GraphicObjectTemplating\View\Helper;
 

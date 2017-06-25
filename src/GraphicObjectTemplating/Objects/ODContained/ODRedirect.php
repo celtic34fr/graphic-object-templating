@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 24/10/16
- * Time: 00:02
- */
 
 namespace GraphicObjectTemplating\Objects\ODContained;
-
 
 use GraphicObjectTemplating\Objects\ODContained;
 
