@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 09/07/16
- * Time: 20:54
- */
 
 namespace GraphicObjectTemplating\Objects\ODContained;
 

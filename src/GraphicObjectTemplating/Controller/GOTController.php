@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 28/02/16
- * Time: 18:00
- */
 
 namespace GraphicObjectTemplating\Controller;
 
