@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gilbert
- * Date: 25/02/16
- * Time: 10:42
- */
 
 namespace GraphicObjectTemplating\Objects;
 
@@ -41,6 +35,7 @@ class OSContainer extends OObject
         parent::__construct($id, $adrProperties);
         $properties = array_merge($this->getProperties(), $properties);
         $this->setProperties($properties);
+        return $this;
     }
 
     public function __get($nameChild)

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gilbert
- * Date: 25/02/16
- * Time: 10:41
- */
 
 namespace GraphicObjectTemplating\Objects;
 
@@ -45,6 +39,7 @@ class ODContained extends OObject
         $this->setForm($properties['form']);
         $this->setName((empty($properties['name'])) ? $properties['id'] : $properties['name']);
         $this->setValue($properties['value']);
+        return $this;
     }
 
     public function setName($name)

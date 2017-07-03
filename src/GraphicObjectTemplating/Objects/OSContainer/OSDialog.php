@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 03/10/16
- * Time: 23:30
- */
 
 namespace GraphicObjectTemplating\Objects\OSContainer;
 

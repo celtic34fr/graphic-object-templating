@@ -6,13 +6,14 @@ use GraphicObjectTemplating\Controller\GOTController;
 use GraphicObjectTemplating\Controller\Factory\GOTControllerFactory;
 use GraphicObjectTemplating\Service\Factory\GotServicesFactory;
 use GraphicObjectTemplating\Service\GotServices;
+use Zend\Mvc\Router\Http\Literal;
 
 return array(
 
     'router' => array(
         'routes' => array(
             'got-callback' => [
-                'type' => 'Literal',
+                'type' => Literal::class,
                 'options' => [
                     'route'    => '/got-callback',
                     'defaults' => [
