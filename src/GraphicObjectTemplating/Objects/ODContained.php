@@ -39,6 +39,7 @@ class ODContained extends OObject
         $this->setForm($properties['form']);
         $this->setName((empty($properties['name'])) ? $properties['id'] : $properties['name']);
         $this->setValue($properties['value']);
+        return $this;
     }
 
     public function setName($name)
