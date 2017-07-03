@@ -35,6 +35,7 @@ class OSContainer extends OObject
         parent::__construct($id, $adrProperties);
         $properties = array_merge($this->getProperties(), $properties);
         $this->setProperties($properties);
+        return $this;
     }
 
     public function __get($nameChild)
