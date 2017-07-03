@@ -3,6 +3,7 @@
 namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
+use graphicObjectTEmplating\Objects\OObject;
 use Zend\Session\Container;
 
 /**
@@ -727,9 +728,10 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function evtColClick($nCol, $callback)
+    public function evtColClick($nCol, $class, $method, $stopEvent = true)
     {
-        $callback               = (string) $callback;
+        $class                  = (string)$class;
+        $method                 = (string)$method;
         $properties             = $this->getProperties();
         $nbCols                 = sizeof($properties['cols']);
         if ($nCol > $nbCols || $nCol < 1) return false;
@@ -737,7 +739,11 @@ class ODTable extends ODContained
         if(!isset($properties['event'])) $properties['event'] = [];
         if(!is_array($properties['event'])) $properties['event'] = [];
         if (!isset($properties['event'][0])) $properties['event'][0] = [];
-        $properties['event'][0][$nCol] = $callback;
+
+        $properties['event'][0][$nCol] = [];
+        $properties['event'][0][$nCol]['class'] = $class;
+        $properties['event'][0][$nCol]['method'] = $method;
+        $properties['event'][0][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -754,9 +760,10 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function evtLineClick($nLine, $callback)
+    public function evtLineClick($nLine, $class, $method, $stopEvent = true)
     {
-        $callback               = (string) $callback;
+        $class                  = (string)$class;
+        $method                 = (string)$method;
         $properties             = $this->getProperties();
         $nbLines                = sizeof($properties['datas']);
         if ($nLine > $nbLines || $nLine < 1) return false;
@@ -764,7 +771,11 @@ class ODTable extends ODContained
         if(!isset($properties['event'])) $properties['event'] = [];
         if(!is_array($properties['event'])) $properties['event'] = [];
         if (!isset($properties['event'][$nLine])) $properties['event'][$nLine] = [];
-        $properties['event'][$nLine][0] = $callback;
+
+        $properties['event'][$nLine][0] = [];
+        $properties['event'][$nLine][0]['class'] = $class;
+        $properties['event'][$nLine][0]['method'] = $method;
+        $properties['event'][$nLine][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -781,9 +792,10 @@ class ODTable extends ODContained
         return $this;
     }
 
-    public function evtCellClick($nCol, $nLine, $callback)
+    public function evtCellClick($nCol, $nLine, $class, $method, $stopEvent = true)
     {
-        $callback               = (string) $callback;
+        $class                  = (string)$class;
+        $method                 = (string)$method;
         $properties             = $this->getProperties();
         $nbCols                 = sizeof($properties['cols']);
         if ($nCol > $nbCols || $nCol < 1) return false;
@@ -793,7 +805,11 @@ class ODTable extends ODContained
         if(!isset($properties['event'])) $properties['event'] = [];
         if(!is_array($properties['event'])) $properties['event'] = [];
         if (!isset($properties['event'][$nLine])) $properties['event'][$nLine] = [];
-        $properties['event'][$nLine][$nCol] = $callback;
+
+        $properties['event'][$nLine][$nCol] = [];
+        $properties['event'][$nLine][$nCol]['class'] = $class;
+        $properties['event'][$nLine][$nCol]['method'] = $method;
+        $properties['event'][$nLine][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -878,5 +894,294 @@ class ODTable extends ODContained
         $properties['cols'][$nCol]['view'] = false;
         $this->setProperties($properties);
         return $this;
+    }
+    public function findCellOnValue($value, $noCol = '', $noLine = '')
+    {
+        $crc = false;
+        $crl = false;
+        $crr = [];
+        // cas noCol et noLine renseigné
+        switch (true) {
+            case (!empty($noCol) && !empty($noLine)) :
+                $line = $this->getLine($noLine);
+                $crr[] = ($value == $line[$noCol]) ? [$noCol, $noLine]: false;
+                break;
+            case (!empty($noCol) && empty($noLine)) :
+                $lines = $this->getLines();
+                $crl = false;
+                foreach ($lines as $ind => $line) {
+                    $crl = ($line[$noCol] == $value) ? $ind : false;
+                    if ($crl !== false) {
+                        $crr[] = [$noCol, $crl];
+                    }
+                }
+                break;
+            case (empty($noCol) && empty($noLine)) :
+                $lines = $this->getLines();
+                $crl   = false;
+                foreach ($lines as $ind => $cols) {
+                    $crc = false;
+                    foreach ($cols as $jnd => $col) {
+                        $crc = ($col == $value) ? $jnd : false;
+                        if ($crc !== false) {
+                            $crr[] = [$ind, $crl];
+                        }
+                    }
+                }
+                break;
+            case (empty($noCol) && !empty($noLine)) :
+                $line = $this->getLine($noLine);
+                foreach ($line as $ind => $col) {
+                    $crc = ($line[$noCol] == $value) ? $ind : false;
+                    if ($crc !== false) {
+                        $crr[] = [$crc, $noLine];
+                    }
+                }
+                break;
+        }
+        return (!empty($crr)) ? $crr : false;
+    }
+
+    public function setOrderCols(array $colsOrder)
+    {
+        $orders = ['ASC', 'DESC'];
+        $properties = $this->getProperties();
+        $nbCols = count($properties['cols']);
+        foreach ($colsOrder as $col => $order) {
+            if ((int)$col < 1 || (int)$col > $nbCols) { return false; }
+            $order = strtoupper($order);
+            if (!in_array($order, $orders)) { return false; }
+        }
+        $properties['colsOrder'] = $colsOrder;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderCols()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('colsOrder', $properties) ? $properties['colsOrder'] : false);
+    }
+
+    public function setLinesStyles(array $styles = null)
+    {
+        $isOneDim = $this->arrayOneDim($styles);
+        if ($isOneDim) {
+            foreach ($styles as $noLine => $style) {
+                $this->setLineStyle($noLine, $style);
+            }
+        }
+        return $this;
+    }
+
+    public function setColsStyles(array $styles = null)
+    {
+        $isOneDim = $this->arrayOneDim($styles);
+        $properties = $this->getProperties();
+        $nbCols = count($properties['cols']);
+        if ($isOneDim && count($styles) == $nbCols) {
+            foreach ($styles as $noCol => $style) {
+                $this->setcolStyle($noCol, $style);
+            }
+        }
+        return $this;
+    }
+
+    public function setCellsStyles(array $style = null)
+    {
+        $properties = $this->getProperties();
+        $nbCols     = count($properties['cols']);
+        $nbLines    = count($properties['datas']);
+        $dim        = $this->arrayMaxDim($style);
+        if ($dim == [$nbLines,$nbCols]) {
+            for ($ind=1; $ind<=$nbLines; $ind++) {
+                for ($jnd=1; $jnd<=$nbCols; $jnd++) {
+                    $this->setCell($ind, $jnd, $style[$ind][$jnd]);
+                }
+            }
+        }
+    }
+
+
+    public function clearAllStyles()
+    {
+        $properties = $this->getProperties();
+        $properties['styles'] = [];
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function clearColsStyles()
+    {
+        $properties = $this->getProperties();
+        $nbCols = count($properties['cols']);
+        for ($ind=1; $ind<=$nbCols; $ind++) {
+            $properties['style'][0][$ind] = '';
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function clearLinesStyles()
+    {
+        $properties = $this->getProperties();
+        $nbLines = count($properties['datas']);
+        for ($ind=1; $ind<=$nbLines; $ind++) {
+            $properties['style'][$ind][0] = '';
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function clearCellsStyles()
+    {
+        $properties = $this->getProperties();
+        $nbCols = count($properties['cols']);
+        $nbLines = count($properties['datas']);
+        for ($ind = 1; $ind<=$nbLines; $ind++) {
+            for ($jnd = 1; $jnd<=$nbCols; $jnd++) {
+                $properties['style'][$ind][$jnd] = '';
+            }
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+
+
+    private function sortDatas()
+    {
+        $properties = $this->getProperties();
+        $orderCols  = $this->getOrderCols();
+        if (!empty($orderCols)) {
+            $datas  = $properties['datas'];
+            unset($datas[0]);
+            $styles = $properties['styles'];
+            unset($styles[0]);
+            foreach ($datas as $noLine => $data) {
+                $datas[$noLine][$this->getId().'NoLine'] = $noLine;
+            }
+
+            $callOrder  = "array_multisort(";
+            foreach ($orderCols as $col => $order) {
+                $callOrder .= ' $data['.$col.'], SORT_'.strtoupper($order).', SORT_REGULAR, ';
+            }
+            $callOrder .= ' $datas);';
+            eval($callOrder);
+
+            $lines = [];
+            $sLines = [];
+            $sCells = [];
+            $this->clearCellsStyles();
+            $this->clearLinesStyles();
+            foreach ($datas as $data) {
+                $noLine = $data[$this->getId().'NoLine'];
+                unset($data[$this->getId().'NoLine']);
+                $lines[] = $data;
+                $sLines[] = $styles[$noLine][0];
+                unset($styles[$noLine][0]);
+                $sCells[] = $styles[$noLine];
+            }
+            $this->setLines($lines);
+            $this->setLinesStyles($sLines);
+            $this->setCellsStyles($sCells);
+        }
+    }
+
+    private function arrayOneDim(array $ar)
+    {
+        $ret = true;
+        foreach ($ar as $item) {
+            if (is_array($item)) { $ret = (false or $ret); }
+        }
+        return $ret;
+    }
+
+    private function arrayMaxDim(array $ar)
+    {
+        $cols  = 0;
+        $lines = count($ar);
+        foreach ($ar as $item) {
+            $tmpCols = count($item);
+            if ($tmpCols > $cols) { $cols = $tmpCols; }
+        }
+        return [$lines, $cols];
+    }
+
+    private function updateEvent($event, $action)
+    {
+        $properties = $this->getProperties();
+        $evts       = $properties['events'];
+        switch ($action) {
+            case 'add':
+                if (!array_key_exists($event, $evts)) { $evts[$event] = 0; }
+                $evts[$event]++;
+                break;
+            case 'sub':
+                if (!array_key_exists($event, $evts)) { $evts[$event]--; }
+                break;
+        }
+        foreach ($evts as $evt => $count) {
+            if ($count === 0) { unset($evts[$evt]); }
+        }
+        $properties['events'] = $evts;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function dispatchEvents($sm, $params)
+    {
+        $object = OObject::buildObject($params['id']);
+        $properties = $object->getProperties();
+        $events     = $properties['event'];
+        $lno        = (int) substr($params['value'], 1);
+        $pos        = strpos($params['value'], 'C');
+        $cno        = (int) substr($params['value'], $pos + 1);
+        $ret        = [];
+
+        $execEvt    = $events[$lno][$cno];
+        $stopEvent  = false;
+        if (!empty($execEvt)) {
+            if (!empty($execEvt)) {
+                foreach ($execEvt as $exec) {
+                    $callObj = new $exec['class']();
+                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $stopEvent = $execEvt['stopEvent'];
+                }
+            }
+        }
+
+        if ($lno !=0 && !$stopEvent) {
+            $execEvt    = $events[0][$cno];
+            if (!empty($execEvt)) {
+                foreach ($execEvt as $exec) {
+                    $callObj = new $exec['class']();
+                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $stopEvent = $execEvt['stopEvent'];
+                }
+            }
+        }
+        if ($cno !=0 && !$stopEvent) {
+            $execEvt    = $events[$lno][0];
+            if (!empty($execEvt)) {
+                foreach ($execEvt as $exec) {
+                    $callObj = new $exec['class']();
+                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $stopEvent = $execEvt['stopEvent'];
+                }
+            }
+        }
+        if ($lno !=0 && $cno != 0 && !$stopEvent) {
+            $execEvt    = $events[0][0];
+            if (!empty($execEvt)) {
+                foreach ($execEvt as $exec) {
+                    $callObj = new $exec['class']();
+                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                }
+            }
+        }
+        return $ret;
     }
 }

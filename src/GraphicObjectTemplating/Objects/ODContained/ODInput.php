@@ -197,11 +197,14 @@ class ODInput extends ODContained
         return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
     }
 
-    public function evtChange($callback)
+    public function evtChange($class, $method, $stopEvent = true)
     {
         $properties = $this->getProperties();
         if(!isset($properties['event'])) $properties['event']= [];
-        $properties['event']['change'] = $callback;
+        $properties['event']['change'] = [];
+        $properties['event']['change']['class'] = $class;
+        $properties['event']['change']['method'] = $method;
+        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -214,11 +217,14 @@ class ODInput extends ODContained
         return $this;
     }
 
-    public function evtKeyup($callback)
+    public function evtKeyup($class, $method, $stopEvent = true)
     {
         $properties = $this->getProperties();
         if(!isset($properties['event'])) $properties['event']= [];
-        $properties['event']["keyup"] = $callback;
+        $properties['event']['keyup'] = [];
+        $properties['event']['keyup']['class'] = $class;
+        $properties['event']['keyup']['method'] = $method;
+        $properties['event']['keyup']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
