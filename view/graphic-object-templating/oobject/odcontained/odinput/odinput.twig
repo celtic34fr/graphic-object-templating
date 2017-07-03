@@ -32,8 +32,12 @@
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
         {% if objet.event is not empty %}
             {% for evt, callback in objet.event %}
-                data-{{ evt }} = "{{ callback }}"
+                {% set allEvt = allEvt ~ evt ~ ", " %}
+                data-{{ evt }}-class ="{{ callback.class }}"
+                data-{{ evt }}-method ="{{ callback.method }}"
+                data-{{ evt }}-stopEvt ="{{ callback.stopEvent }}"
             {% endfor %}
+            data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
 >
 
