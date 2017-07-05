@@ -10,12 +10,11 @@
         }
 
         #{{ objet.id }} .labelB {
-            vertical-align: top;
             position: absolute;
             top: 0.7em;
         }
     </style>
-    <span class="labelB">{{ objet.label }}</span>
+    <div class="labelB">{{ objet.label }}</div>
     <div class="breadcrumbsB">
         <ul class="breadcrumb">
             {% for item in objet.tree %}
