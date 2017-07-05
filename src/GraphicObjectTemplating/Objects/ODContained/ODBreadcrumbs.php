@@ -3,6 +3,7 @@
 namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
+use graphicObjectTEmplating\Objects\OObject;
 use Zend\Session\Container;
 
 /**
@@ -19,13 +20,15 @@ class ODBreadcrumbs extends ODContained
 {
     public function __construct($id)
     {
-        $session = new Container($id);
-        if ($session->offsetExists('properties')) {
-            $properties = unserialize($session->offsetGet('properties'), ['allowed_classes' => true]);
+        if (OObject::existObject($id)) {
+            $gotObjList = OObject::validateSession();
+            $objects = $gotObjList->offsetGet('objects');
+            $properties = unserialize($objects[$id], ['allowed_classes' => true]);
             $this->setProperties($properties);
         } else {
             parent::__construct($id, "oobject/odcontained/odbreadcrumbs/odbreadcrumbs.config.phtml");
         }
+        $this->id = $id;
         $this->setDisplay();
     }
 
@@ -35,6 +38,12 @@ class ODBreadcrumbs extends ODContained
         $properties['tree'] = $tree;
         $this->setProperties($properties);
         return $this;
+    }
+
+    public function getTree()
+    {
+        $properties            = $this->getProperties();
+        return ((array_key_exists('tree', $properties)) ? $properties['tree'] : false);
     }
 
     public function addItem($label, $url)
