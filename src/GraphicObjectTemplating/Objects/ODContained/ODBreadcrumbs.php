@@ -73,4 +73,19 @@ class ODBreadcrumbs extends ODContained
         $this->setProperties($properties);
         return $this;
     }
+
+    public function setLabel($label)
+    {
+        $label = (string) $label;
+        $properties          = $this->getProperties();
+        $properties['label'] = $label;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getLabel()
+    {
+        $properties            = $this->getProperties();
+        return ((array_key_exists('label', $properties)) ? $properties['label'] : false);
+    }
 }

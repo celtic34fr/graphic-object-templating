@@ -1,13 +1,28 @@
 {# template de l'objet ODBreadcrumbs #}
 
 <div id="{{ objet.id }}">
-    <ul class="breadcrumb">
-        {% for item in objet.tree %}
-            {% if not(loop.last) %}
-                <li><a href="{{ item.url |escape }}">{{ item.label | escape }}</a></li>
-            {% else %}
-                <li>{{ item.label | escape }}</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <style>
+        #{{ objet.id }} .labelB {
+            vertical-align: top;
+            position: absolute;
+            top: 1.1em;
+        }
+
+        #{{ objet.id }} .breadcrumbsB {
+            float: left;
+            margin: 0 1.7em 0 0;
+        }
+    </style>
+    <span class="labelB">{{ objet.label }}</span>
+    <div class="breadcrumbsB">
+        <ul class="breadcrumb">
+            {% for item in objet.tree %}
+                {% if not(loop.last) %}
+                    <li><a href="{{ item.url |escape }}">{{ item.label | escape }}</a></li>
+                {% else %}
+                    <li>{{ item.label | escape }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 </div>
