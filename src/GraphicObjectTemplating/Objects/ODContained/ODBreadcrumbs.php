@@ -11,9 +11,12 @@ use Zend\Session\Container;
  * @package GoTemplating\Objects\ODContained
  *
  * setTree      : initialise le fil d'ariane avec le contenu du tableau $tree [['label', 'url'], ...]
+ * getTree      : restitue de tableau permettant de construire le fil d'Ariane
  * addItem      : ajoute à la suite un nouvel élément du fil d'ariane
  * removeItem   : supprime le dernier élément du fil d'ariane
  * clearTree    : supprime tout le contenu du fil d'arraine
+ * setLabel     : affectation du texte présenté devant le fil d'aAriane
+ * getLabel     : récupération du texte présenté devant le fil d'aAriane
  */
 
 class ODBreadcrumbs extends ODContained
