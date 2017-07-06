@@ -20,13 +20,11 @@ class ODBreadcrumbs extends ODContained
 {
     public function __construct($id)
     {
-        if (OObject::existObject($id)) {
-            $gotObjList = OObject::validateSession();
-            $objects = $gotObjList->offsetGet('objects');
-            $properties = unserialize($objects[$id], ['allowed_classes' => true]);
-            $this->setProperties($properties);
-        } else {
+        $obj = OObject::buildObject($id);
+        if ($obj === FALSE) {
             parent::__construct($id, "oobject/odcontained/odbreadcrumbs/odbreadcrumbs.config.phtml");
+        } else {
+            $this->setProperties($obj->getProperties());
         }
         $this->id = $id;
         $this->setDisplay();

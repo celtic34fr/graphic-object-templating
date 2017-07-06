@@ -492,60 +492,6 @@ class OObject
         return (array_key_exists('widthBT', $properties) ? $properties['widthBT'] : false);
     }
 
-    static public function existObject($id)
-    {
-        if (!empty($id)) {
-            $gotObjList = OObject::validateSession();
-            if ($gotObjList->offsetExists('objects')) {
-                $objects = $gotObjList->offsetGet('objects');
-                if (array_key_exists($id, $objects)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    static public function destroyObject($id)
-    {
-        if (OObject::existObject($id)) {
-            $gotObjList = OObject::validateSession();
-            $objects = $gotObjList->offsetGet('objects');
-            unset($objects[$id]);
-            $gotObjList->offsetSet('objects', $objects);
-            return true;
-        }
-        return false;
-    }
-
-    static public function buildObject($id, $value = null)
-    {
-        if (OObject::existObject($id)) {
-            $gotObjList = OObject::validateSession();
-            $objects = $gotObjList->offsetGet('objects');
-
-            $properties = unserialize($objects[$id], ['allowed_classes' => true]);
-            /** @var OObject $obj */
-            $obj = null;
-
-            if (!empty($properties)) {
-                $obj = new $properties['className']($properties['id']);
-                $obj->setProperties($properties);
-                if (!empty($value) && $obj instanceof ODContained) { $obj->setValue($value); }
-                return $obj;
-            }
-            throw new \Exception("objet $id existant en session sans attributs");
-        }
-        throw new \Exception("objet $id inexistant en session");
-    }
-
-    static public function clearObjects()
-    {
-$container  = OObject::validateSession();
-        $container->offsetUnset('objects');
-        return $container;
-    }
-
     public function getResources()
     {
         $properties = $this->getProperties();
@@ -777,6 +723,53 @@ $container  = OObject::validateSession();
         return $item;
     }
 
+    public function setForm($form)
+    {
+        $form = (string)$form;
+        $properties = $this->getProperties();
+        $properties['form'] = $form;
+        $this->form = $form;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getForm()
+    {
+        if (!empty($this->form)) {
+            $form = $this->form;
+        } else {
+            $properties = $this->getProperties();
+            $form = array_key_exists('form', $properties) ? $properties['form'] : '';
+            $this->setForm($form);
+        }
+        return $form;
+    }
+
+    public function getEvent($evt)
+    {
+        $properties = $this->getProperties();
+        $ret        = [];
+        if (array_key_exists('event', $properties)) {
+            $events = $properties['event'];
+            if (array_key_exists($evt, $events)) {
+                $ret['class']     = $events[$evt]['class'];
+                $ret['method']    = $events[$evt]['method'];
+                $ret['stopEvent'] = ($events[$evt]['stopEvent'] === 'OUI');
+            }
+        }
+        return $ret;
+    }
+
+    public function setStopEvent($event, $stopEvent = true)
+    {
+        $item = [];
+        $item['id'] = $this->getId();
+        $item['mode'] = 'event';
+        $item['html'] = $event .'|'. ($stopEvent) ? 'OUI' : 'NON';
+        return $item;
+    }
+
+
     /*
      * méthode interne à la classe OObject
      */
@@ -876,30 +869,9 @@ $container  = OObject::validateSession();
         }
         return $retour;
     }
-
-    public function setForm($form)
+    
+    public function object_to_array($object) 
     {
-        $form = (string)$form;
-        $properties = $this->getProperties();
-        $properties['form'] = $form;
-        $this->form = $form;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getForm()
-    {
-        if (!empty($this->form)) {
-            $form = $this->form;
-        } else {
-            $properties = $this->getProperties();
-            $form = array_key_exists('form', $properties) ? $properties['form'] : '';
-            $this->setForm($form);
-        }
-        return $form;
-    }
-
-    public function object_to_array($object) {
         if (is_object($object)) {
             return array_map(__FUNCTION__, get_object_vars($object));
         } elseif (is_array($object)) {
@@ -908,30 +880,9 @@ $container  = OObject::validateSession();
         return $object;
     }
 
-    public function getEvent($evt)
-    {
-        $properties = $this->getProperties();
-        $ret        = [];
-        if (array_key_exists('event', $properties)) {
-            $events = $properties['event'];
-            if (array_key_exists($evt, $events)) {
-                $ret['class']     = $events[$evt]['class'];
-                $ret['method']    = $events[$evt]['method'];
-                $ret['stopEvent'] = ($events[$evt]['stopEvent'] === 'OUI');
-            }
-        }
-        return $ret;
-    }
-
-    public function setStopEvent($event, $stopEvent = true)
-    {
-        $item = [];
-        $item['id'] = $this->getId();
-        $item['mode'] = 'event';
-        $item['html'] = $event .'|'. ($stopEvent) ? 'OUI' : 'NON';
-        return $item;
-    }
-
+    
+    /** méthodes statiques */
+    
     static public function validateSession()
     {
         $now        = new \DateTime('now');
@@ -946,6 +897,60 @@ $container  = OObject::validateSession();
             }
         }
         $container->offsetSet('lastAccess', $now->format("Y-m-d H:i:s"));
+        return $container;
+    }
+
+    static public function existObject($id)
+    {
+        if (!empty($id)) {
+            $gotObjList = OObject::validateSession();
+            if ($gotObjList->offsetExists('objects')) {
+                $objects = $gotObjList->offsetGet('objects');
+                if (array_key_exists($id, $objects)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    static public function destroyObject($id)
+    {
+        if (OObject::existObject($id)) {
+            $gotObjList = OObject::validateSession();
+            $objects = $gotObjList->offsetGet('objects');
+            unset($objects[$id]);
+            $gotObjList->offsetSet('objects', $objects);
+            return true;
+        }
+        return false;
+    }
+
+    static public function buildObject($id, $value = null)
+    {
+        if (OObject::existObject($id)) {
+            $gotObjList = OObject::validateSession();
+            $objects = $gotObjList->offsetGet('objects');
+
+            $properties = unserialize($objects[$id], ['allowed_classes' => true]);
+            /** @var OObject $obj */
+            $obj = null;
+
+            if (!empty($properties)) {
+                $obj = new $properties['className']($properties['id']);
+                $obj->setProperties($properties);
+                if (!empty($value) && $obj instanceof ODContained) { $obj->setValue($value); }
+                return $obj;
+            }
+            throw new \Exception("objet $id existant en session sans attributs");
+        }
+        return false;
+    }
+
+    static public function clearObjects()
+    {
+        $container  = OObject::validateSession();
+        $container->offsetUnset('objects');
         return $container;
     }
 }
