@@ -74,13 +74,13 @@ class ODButton extends ODContained
 
     public function __construct($id)
     {
-        $session = new Container($id);
-        if ($session->offsetExists('properties')) {
-            $properties = unserialize($session->offsetGet('properties'), ['allowed_classes' => true]);
-            $this->setProperties($properties);
-        } else {
+        $obj = OObject::buildObject($id);
+        if ($obj === FALSE) {
             parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.php');
+        } else {
+            $this->setProperties($obj->getProperties());
         }
+        $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) {

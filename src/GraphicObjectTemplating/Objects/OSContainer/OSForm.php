@@ -28,13 +28,15 @@ class OSForm extends OSContainer
     const ACTION_SETVAL = 'setVal';
 
     public function __construct($id) {
+        $obj = OObject::buildObject($id);
+        if ($obj === FALSE) {
         parent::__construct($id, 'oobject/oscontainer/osform/osform.config.phtml');
-        $session = new Container($id);
-        if ($session->offsetExists('properties')) {
-            $properties = unserialize($session->offsetGet('properties'), ['allowed_classes' => true]);
-            $this->setProperties($properties);
+        } else {
+            $this->setProperties($obj->getProperties());
         }
+        $this->id = $id;
         $this->setDisplay();
+        
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) { $this->setWidthBT(12); }
         $this->setForm($id);
