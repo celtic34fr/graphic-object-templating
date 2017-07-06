@@ -53,16 +53,13 @@ class ODCheckbox extends ODContained
 
     public function __construct($id)
     {
-        $obj = OObject::buildObject($id);
-        if ($obj === FALSE) {
-            parent::__construct($id, "oobject/odcontained/odcheckbox/odcheckbox.config.php");
-        } else {
-            $this->setProperties($obj->getProperties());
-        }
+        $parent = parent::__construct($id, "oobject/odcontained/odcheckbox/odcheckbox.config.php");
+        $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        return $this;
     }
 
     public function addOptions($value, $libel, $type = self::CHECKTYPE_DEFAULT, $state = self::STATE_ENABLE)
