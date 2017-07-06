@@ -28,12 +28,8 @@ class OSForm extends OSContainer
     const ACTION_SETVAL = 'setVal';
 
     public function __construct($id) {
-        $obj = OObject::buildObject($id);
-        if ($obj === FALSE) {
-        parent::__construct($id, 'oobject/oscontainer/osform/osform.config.phtml');
-        } else {
-            $this->setProperties($obj->getProperties());
-        }
+        $parent = parent::__construct($id, 'oobject/oscontainer/osform/osform.config.php');
+        $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
         

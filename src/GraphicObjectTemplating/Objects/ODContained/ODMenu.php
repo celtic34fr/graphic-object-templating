@@ -16,14 +16,11 @@ class ODMenu extends ODContained
 {
     public function __construct($id)
     {
-        $obj = OObject::buildObject($id);
-        if ($obj === FALSE) {
-            parent::__construct($id, "oobject/odcontained/odmenu/odmenu.config.phtml");
-        } else {
-            $this->setProperties($obj->getProperties());
-        }
+        $parent = parent::__construct($id, "oobject/odcontained/odmenu/odmenu.config.php");
+        $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
+        return $this;
     }
 
 }

@@ -53,16 +53,13 @@ class ODInput extends ODContained
     protected $const_inpType;
 
     public function __construct($id) {
-        $obj = OObject::buildObject($id);
-        if ($obj === FALSE) {
-            parent::__construct($id, "oobject/odcontained/odinput/odinput.config.php");
-        } else {
-            $this->setProperties($obj->getProperties());
-        }
+        $parent = parent::__construct($id, 'oobject/odcontained/odinput/odinput.config.php');
+        $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        return $this;
     }
 
     public function setType($type = self::INPTYPE_TEXT) {
