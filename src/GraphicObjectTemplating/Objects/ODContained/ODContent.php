@@ -22,6 +22,7 @@ class ODContent extends  ODContained
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        return $this;
     }
 
     public function setContent($content)

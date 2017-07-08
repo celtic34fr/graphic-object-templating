@@ -40,11 +40,11 @@ use GraphicObjectTemplating\Objects\ODContained;
 class ODSelect extends ODContained
 {
     public function __construct($id) {
-        $parent = parent::__construct($id, "oobject/odcontained/odselect/odselect.config.php");
-        $this->properties = $parent->properties;
+        parent::__construct($id, "oobject/odcontained/odselect/odselect.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        return $this;
     }
 
     public function addOption($value, $libel, $selected = false, $enable = true)

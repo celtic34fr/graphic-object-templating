@@ -74,8 +74,7 @@ class ODButton extends ODContained
 
     public function __construct($id)
     {
-        $parent = parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.php');
-        $this->properties = $parent->properties;
+        parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.php');
         $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();

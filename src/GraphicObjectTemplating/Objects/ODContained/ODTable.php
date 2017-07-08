@@ -94,11 +94,11 @@ class ODTable extends ODContained
 
     public function __construct($id)
     {
-        $parent = parent::__construct($id, "oobject/odcontained/odtable/odtable.config.php");
-        $this->properties = $parent->properties;
+        parent::__construct($id, "oobject/odcontained/odtable/odtable.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        return $this;
     }
 
     public function setTitle($title, $position = self::TITLEPOS_BOTTOM_CENTER)

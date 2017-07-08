@@ -23,8 +23,7 @@ class ODBreadcrumbs extends ODContained
 {
     public function __construct($id)
     {
-        $parent = parent::__construct($id, "oobject/odcontained/odbreadcrumbs/odbreadcrumbs.config.php");
-        $this->properties = $parent->properties;
+        parent::__construct($id, "oobject/odcontained/odbreadcrumbs/odbreadcrumbs.config.php");
         $this->id = $id;
         $this->setDisplay();
         return $this;
