@@ -58,6 +58,77 @@ class ODMenu extends ODContained
         return false;
     }
 
+    public function getActivMenu()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['activMenu'])) ? $properties['activMenu'] : false) ;
+    }
+
+    // génération d'un tableau d'alimentation de l'objet ODBreadcrumbs en fonction de l'option de menu active
+    public function genBreadcrumbsData()
+    {
+        $properties = $this->getProperties();
+        $arrayDatas = [];
+        $activMenu  = $this->getActivMenu();
+        if ($activMenu !== false) {
+            $menuPath = $this->getMenuPath($activMenu);
+            $menuPath = explode('.', $menuPath);
+            $menuTree = $properties['dataTree'];
+            foreach ($menuPath as $menuItem) {
+                $item = [];
+                $item['label'] = $menuTree[$menuItem]['label'];
+                $item['url']   = $menuItem[$menuItem]['link'];
+                $arrayDatas    = $item;
+                if (isset($menuTree[$menuItem]['dropdown'])) {
+                    $menuITree     = $menuTree[$menuItem]['dropdown'];
+                }
+            }
+            return $arrayDatas;
+        }
+        return false;
+    }
+
+    public function getMenuItem($idMenu)
+    {
+        $properties = $this->getProperties();
+        $menusItem  = $properties('dataTree');
+        $menuPath   = $this->getMenuPath($idMenu);
+        $menuPath   = explode('.', $menuPath);
+
+        $trouve = false;
+        foreach ($menuPath as $menuItem) {
+            if (array_key_exists($menuItem, $menusItem)) {
+                $menusItem = $menusItem[$menuItem];
+                $trouve = true;
+                if (isset($menusItem['dropdown'])) {
+                    $menusItem = $menusItem['dropdown'];
+                }
+            }
+            if ($trouve) {
+                $trouve = false;
+            } else {
+                // item partie du chemin d'accès à idMenu n'existe pas => anomalie
+                return false;
+            }
+        }
+        if ($trouve) {
+            return $menusItem;
+        } else {
+            // $idMenu n'existe pas => anomalie
+            return false;
+        }
+    }
+
+    public function getMenuPath($idMenu)
+    {
+        $properties = $this->getProperties();
+        $menusPath  = $properties('dataPath');
+        if (array_key_exists($idMenu, $menusPath)) {
+            return $menusPath[$idMenu];
+        }
+        return false;
+    }
+
 
     private function validArrayOption(array $item)
     {
