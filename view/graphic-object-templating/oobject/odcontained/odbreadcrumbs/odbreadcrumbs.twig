@@ -1,6 +1,8 @@
 {# template de l'objet ODBreadcrumbs #}
 
-<div id="{{ objet.id }}">
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+
+<div id="{{ objet.id }}" class="{{ objClass }}">
     <style>
         #{{ objet.id }} {
             position: relative;
@@ -19,8 +21,20 @@
         <ul class="breadcrumb">
             {% for item in objet.tree %}
                 {% if not(loop.last) %}
-                    <li><a href="{{ item.url |escape }}">{{ item.label | escape }}</a></li>
+                    <li>
+                        {% if item.icon is not empty %}
+                        <i class="{{ item.icon }}"></i>
+                        {% endif %}
+                        <a href="{{ item.url |escape }}">{{ item.label | escape }}</a>
+                        {% if objet.separator is not empty %}
+                            <span>{{ objet.separator }}</span>
+                        {% endif %}
+
+                    </li>
                 {% else %}
+                    {% if item.icon is not empty %}
+                        <i class="{{ item.icon }}"></i>
+                    {% endif %}
                     <li>{{ item.label | escape }}</li>
                 {% endif %}
             {% endfor %}

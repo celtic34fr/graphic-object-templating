@@ -1,17 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: candidat
- * Date: 06/07/17
- * Time: 16:55
- */
 
 namespace GraphicObjectTemplating\Objects\ODContained;
-
 
 use GraphicObjectTemplating\Objects\ODContained;
 use graphicObjectTEmplating\Objects\OObject;
 
+/**
+ * Class ODMenu
+ * @package GraphicObjectTemplating\Objects\ODContained
+ *
+ * addLeaf(array $item, $parent = null)
+ * getMenuItem($idMenu)
+ * getMenuPath($idMenu)
+ * clearMenu()
+ * getActivMenu()
+ * setActivMenu($idMenu)
+ * clearActivMenu()
+ * geBreadcrumbsDatas()
+ */
 class ODMenu extends ODContained
 {
     public function __construct($id)
@@ -58,36 +64,6 @@ class ODMenu extends ODContained
         return false;
     }
 
-    public function getActivMenu()
-    {
-        $properties          = $this->getProperties();
-        return ((!empty($properties['activMenu'])) ? $properties['activMenu'] : false) ;
-    }
-
-    // génération d'un tableau d'alimentation de l'objet ODBreadcrumbs en fonction de l'option de menu active
-    public function genBreadcrumbsData()
-    {
-        $properties = $this->getProperties();
-        $arrayDatas = [];
-        $activMenu  = $this->getActivMenu();
-        if ($activMenu !== false) {
-            $menuPath = $this->getMenuPath($activMenu);
-            $menuPath = explode('.', $menuPath);
-            $menuTree = $properties['dataTree'];
-            foreach ($menuPath as $menuItem) {
-                $item = [];
-                $item['label'] = $menuTree[$menuItem]['label'];
-                $item['url']   = $menuItem[$menuItem]['link'];
-                $arrayDatas    = $item;
-                if (isset($menuTree[$menuItem]['dropdown'])) {
-                    $menuITree     = $menuTree[$menuItem]['dropdown'];
-                }
-            }
-            return $arrayDatas;
-        }
-        return false;
-    }
-
     public function getMenuItem($idMenu)
     {
         $properties = $this->getProperties();
@@ -129,6 +105,97 @@ class ODMenu extends ODContained
         return false;
     }
 
+    public function clearMenu()
+    {
+        $properties = $this->getProperties();
+        $properties['dataTree'] = [];
+        $properties['dataPath'] = [];
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function removeLeafMenu($idMenu)
+    {
+        $idPath     = $this->getMenuPath($idMenu);
+        if ($idPath !== false) {
+            $properties = $this->getProperties();
+            $idPath     = explode('.', $idPath);
+            $tree       = $properties['dataTree'];
+            $localPath  = "";
+
+            if (is_array($idPath)) {
+                $localPath          = $idPath[0];
+                unset($idPath[0]);
+                $tree[$localPath]   = $this->removeMenuItem($tree[$localPath], $idPath);
+            } else {
+                $localPath = $idPath;
+                unset($tree[$localPath]);
+            }
+
+            $properties['dataPath'] = $this->removeMenuPath($idMenu);
+            $properties['dataTree'] = $tree;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function getActivMenu()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['activMenu'])) ? $properties['activMenu'] : false) ;
+    }
+
+    public function setActivMenu($idMenu)
+    {
+        $idPath  = $this->getMenuPath($idMenu);
+        $tabPath = explode('.', $idPath);
+        if ($idPath !== false) {
+            $properties              = $this->getProperties();
+            $this->clearActivMenu();
+            $properties['dataTree']  = $this->activeTree($properties['dataTree'], $tabPath);
+            $properties['activMenu'] = $idPath;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function clearActivMenu()
+    {
+        $properties              = $this->getProperties();
+        $oldPath                 = $this->getActivMenu();
+        $properties['activMenu'] = "";
+        $tabPath                 = explode('.', $oldPath);
+        $properties['dataTree']  = $this->deactiveTree($properties['dataTree'], $tabPath);
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    // génération d'un tableau d'alimentation de l'objet ODBreadcrumbs en fonction de l'option de menu active
+    public function genBreadcrumbsDatas()
+    {
+        $properties = $this->getProperties();
+        $arrayDatas = [];
+        $activMenu  = $this->getActivMenu();
+        if ($activMenu !== false) {
+            $menuPath = $this->getMenuPath($activMenu);
+            $menuPath = explode('.', $menuPath);
+            $menuTree = $properties['dataTree'];
+            foreach ($menuPath as $menuItem) {
+                $item = [];
+                $item['label'] = $menuTree[$menuItem]['label'];
+                $item['url']   = $menuItem[$menuItem]['link'];
+                $arrayDatas    = $item;
+                if (isset($menuTree[$menuItem]['dropdown'])) {
+                    $menuITree     = $menuTree[$menuItem]['dropdown'];
+                }
+            }
+            return $arrayDatas;
+        }
+        return false;
+    }
+
 
     private function validArrayOption(array $item)
     {
@@ -156,6 +223,59 @@ class ODMenu extends ODContained
                 $localPath = ($nParent > 1) ? $tmpPath[$nParent - 2] : null;
                 $tree[$parent]['dropdown'] = $this->insertLeaf($tree[$parent]['dropdown'], $path, $item, $localPath);
                 break;
+        }
+        return $tree;
+    }
+
+    private function activeTree($tree, $path)
+    {
+        if (!empty($path)) {
+            $localPath = $path[0];
+            unset($path[0]);
+
+            $tree[$localPath]['active'] = true;
+            if (isset($tree[$localPath]['dropdown']))
+                $tree[$localPath]['dropdown'] = $this->activeTree($tree[$localPath]['dropdown'], $path);
+        }
+        return $tree;
+    }
+
+    private function deactiveTree($tree, $path)
+    {
+        if (!empty($path) && !is_array($path)) {
+            $tree[$path]['active'] = false;
+        } elseif (!empty($path)) {
+            $localPath = $path[0];
+            unset($path[0]);
+
+            $tree[$localPath]['active'] = false;
+            $tree[$localPath]['dropdown'] = $this->deactiveTree($tree[$localPath]['dropdown'], $path);
+        }
+        return $tree;
+    }
+
+    private function removeMenuPath($idMenu)
+    {
+        $validPath = $this->getMenuPath($idMenu);
+        if ($validPath !== false) {
+            $proerties = $this->getProperties();
+            unset($proerties['dataPath'][$idMenu]);
+            $this->setProperties($proerties);
+            return $this;
+        }
+        return false;
+    }
+
+    private function removeMenuItem($menuTre, $idPath)
+    {
+        if (!empty($idPath)) {
+            $localPath                   = $idPath[0];
+            unset($idPath[0]);
+            if (!empty($idPath)) {
+                $tree[$localPath] = $this->removeSubTree($tree[$localPath], $tmpPath);
+            } else {
+                if (isset($tree[$localPath]['dropdown'])) unset($tree[$localPath]['dropdown']);
+            }
         }
         return $tree;
     }

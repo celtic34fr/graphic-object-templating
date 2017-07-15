@@ -1,14 +1,15 @@
 <?php
 return [
-    "object"     => "odbreadcrumbs",
-    "typeObj"    => "odcontained",
-    "template"   => "odbreadcrumbs.twig",
+    'object'     => 'odbreadcrumbs',
+    'typeObj'    => 'odcontained',
+    'template'   => 'odbreadcrumbs.twig',
 
-    "tree"       => [],
-    "label"      => '',
+    'tree'       => [],
+    'label'      => '',
+    'separator'  => '>',
 
-    "resources" => [
-        "css" => [],
-        "js"  => [],
+    'resources' => [
+        'css' => [],
+        'js'  => [],
     ]
 ];
