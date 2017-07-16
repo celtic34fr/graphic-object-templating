@@ -30,6 +30,7 @@ class ODContent extends  ODContained
         $content               = (string) $content;
         $properties            = $this->getProperties();
         $properties['content'] = $content;
+        $properties['value']   = $content;
         $this->setProperties($properties);
         return $this;
     }
@@ -45,6 +46,7 @@ class ODContent extends  ODContained
         $content               = (string) $content;
         $properties            = $this->getProperties();
         $properties['content'] = $content;
+        $properties['value']   = $content;
         $this->setProperties($properties);
         return $this;
     }
