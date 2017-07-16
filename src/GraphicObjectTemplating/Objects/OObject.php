@@ -1,6 +1,6 @@
 <?php
 
-namespace graphicObjectTEmplating\Objects;
+namespace GraphicObjectTemplating\Objects;
 
 use GraphicObjectTemplating\Objects\ODContained;
 use Zend\Session\Container;
@@ -161,6 +161,13 @@ class OObject
         $objects    = [];
         if ($gotObjList->offsetExists('objects')) {
             $objects = $gotObjList->offsetGet('objects');
+        }
+        // conservation des informations mise en session
+        if (array_key_exists($id, $objects)) {
+            $savProperties = unserialize($objects[$id]);
+            foreach ($savProperties as $key => $property) {
+                $properties[$key] = $property;
+            }
         }
         $objects[$properties['id']] = serialize($properties);
         $gotObjList->offsetSet('objects', $objects);
