@@ -728,6 +728,34 @@ class ODTable extends ODContained
         return $this;
     }
 
+    public function evtTableClick($class, $method, $stopEvent = true)
+    {
+        $class                  = (string)$class;
+        $method                 = (string)$method;
+        $properties             = $this->getProperties();
+
+        if(!isset($properties['event'])) $properties['event'] = [];
+        if(!is_array($properties['event'])) $properties['event'] = [];
+        if (!isset($properties['event'][0])) $properties['event'][0] = [];
+
+        $properties['event'][0][0] = [];
+        $properties['event'][0][0]['class'] = $class;
+        $properties['event'][0][0]['method'] = $method;
+        $properties['event'][0][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function disTableClick()
+    {
+        $properties             = $this->getProperties();
+
+        if (isset($properties['event'][0][0])) unset($properties['event'][0][0]);
+        $this->setProperties($properties);
+        return $this;
+    }
+
     public function evtColClick($nCol, $class, $method, $stopEvent = true)
     {
         $class                  = (string)$class;
