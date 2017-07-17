@@ -15,6 +15,16 @@
             position: absolute;
             top: 0.6em;
         }
+
+        #{{ objet.id }} .breadcrumb>li+li:before {
+            padding: 0 5px;
+            color: #ccc;
+            {% if objet.separator is not empty %}
+            content: "{{ objet.separator | raw }}";
+            {%  else %}
+            content: "/\00a0";
+            {% endif %}
+        }
     </style>
     <div class="labelB">{{ objet.label }}</div>
     <div class="breadcrumbsB">
@@ -26,10 +36,6 @@
                         <i class="{{ item.icon }}"></i>
                         {% endif %}
                         <a href="{{ item.url |escape }}">{{ item.label | escape }}</a>
-                        {% if objet.separator is not empty %}
-                            <span>{{ objet.separator }}</span>
-                        {% endif %}
-
                     </li>
                 {% else %}
                     {% if item.icon is not empty %}

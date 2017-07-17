@@ -254,7 +254,7 @@ class ODTable extends ODContained
         $nbCols = sizeof($properties['cols']);
         // vérification des lignes de lines qui doivent avoir le bon nombre de colonnes
         foreach ($lines as $line) {
-            if ($nbCols != sizeof($line)) return false;
+            if ($nbCols != (sizeof($line) - 1)) return false;
         }
 
         $properties['datas'] = [];

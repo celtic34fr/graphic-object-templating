@@ -225,6 +225,7 @@ class OObject
         $properties['id'] = $id;
         if (empty($properties['name'])) { $properties['name'] = $id; }
         $this->setProperties($properties);
+        $this->id = $id;
         return $this;
     }
 
