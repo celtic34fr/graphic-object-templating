@@ -34,7 +34,9 @@ class ODContained extends OObject
     {
         $properties  = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php");
         parent::__construct($id, trim($adrProperties));
-        $properties  = array_merge($this->properties, $properties);
+        foreach ($this->properties as $key => $property) {
+            $properties[$key] = $property;
+        }
         $this->setProperties($properties);
         $this->setForm($properties['form']);
         $this->setName((empty($properties['name'])) ? $properties['id'] : $properties['name']);

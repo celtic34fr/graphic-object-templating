@@ -125,8 +125,16 @@ class GotServices
                 if (!empty($children)) {
                     foreach ($children as $child) {
                         $tmpArray = $this->headerChild($child);
-                        $cssScripts = array_merge($cssScripts, $tmpArray['css']);
-                        $jsScripts  = array_merge($jsScripts,  $tmpArray['js']);
+                        foreach ($tmpArray['css'] as $css) {
+                            if (!in_array($css, $cssScripts)) {
+                                $cssScripts[] = $css;
+                            }
+                        }
+                        foreach ($tmpArray['js'] as $js) {
+                            if (!in_array($js, $jsScripts)) {
+                                $jsScripts[] = $js;
+                            }
+                        }
                     }
                 }
             }
@@ -222,8 +230,16 @@ class GotServices
             if (!empty($children)) {
                 foreach ($children as $child) {
                     $tmpArray = $this->headerChild($child);
-                    $cssScripts = array_merge($cssScripts, $tmpArray['css']);
-                    $jsScripts  = array_merge($jsScripts,  $tmpArray['js']);
+                    foreach ($tmpArray['css'] as $css) {
+                        if (!in_array($css, $cssScripts)) {
+                            $cssScripts[] = $css;
+                        }
+                    }
+                    foreach ($tmpArray['js'] as $js) {
+                        if (!in_array($js, $jsScripts)) {
+                            $jsScripts[] = $js;
+                        }
+                    }
                 }
             }
         }

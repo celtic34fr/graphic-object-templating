@@ -1175,7 +1175,10 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    foreach ($retCallObj as $item) {
+                        array_push($ret, $item);
+                    }
                     $stopEvent = $execEvt['stopEvent'];
                 }
             }
@@ -1186,7 +1189,10 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    foreach ($retCallObj as $item) {
+                        array_push($ret, $item);
+                    }
                     $stopEvent = $execEvt['stopEvent'];
                 }
             }
@@ -1196,7 +1202,10 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    foreach ($retCallObj as $item) {
+                        array_push($ret, $item);
+                    }
                     $stopEvent = $execEvt['stopEvent'];
                 }
             }
@@ -1206,7 +1215,10 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $ret[] = array_merge($ret, call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]));
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    foreach ($retCallObj as $item) {
+                        array_push($ret, $item);
+                    }
                 }
             }
         }

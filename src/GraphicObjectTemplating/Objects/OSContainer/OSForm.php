@@ -221,7 +221,12 @@ class OSForm extends OSContainer
 		foreach( $children as $childId => $childVal) {
 		    $obj = OObject::buildObject($childId);
 			if ( $obj->getTypeObj() === 'odcontained') { $fieldsIdentifers[] = $childId; }
-			else { $fieldsIdentifers = array_merge($fieldsIdentifers, $this->getFieldsIdentifers($obj)); }
+			else {
+			    $nFieldsIdentifers = $this->getFieldsIdentifers($obj);
+                foreach ($nFieldsIdentifers as $nFieldsIdentifer) {
+                    array_push($fieldsIdentifers, $nFieldsIdentifer);
+			    }
+			}
 		}
 		return $fieldsIdentifers;
     }
