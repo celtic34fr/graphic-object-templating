@@ -130,32 +130,34 @@ class OObject
 
     public function initProperties($id, $arrayData = null)
     {
-        $properties = [];
+        $objProperties = [];
         if (!empty($arrayData)) {
-            $properties = include __DIR__ . '/../../../view/graphic-object-templating/' . trim($arrayData);
+            $objProperties = include __DIR__ . '/../../../view/graphic-object-templating/' . trim($arrayData);
         }
-        $properties['id'] = $id;
+        $objProperties['id'] = $id;
         $this->id = $id;
-        $properties['name'] = $id;
+        $objProperties['name'] = $id;
         $this->name = $id;
 
-        if (array_key_exists('typeObj', $properties)) {
-            $templateName = 'graphic-object-templating/oobject/' . $properties['typeObj'];
-            $templateName .= '/' . $properties['object'] . '/' . $properties['template'];
-            $properties['template'] = $templateName;
+        if (array_key_exists('typeObj', $objProperties)) {
+            $templateName = 'graphic-object-templating/oobject/' . $objProperties['typeObj'];
+            $templateName .= '/' . $objProperties['object'] . '/' . $objProperties['template'];
+            $objProperties['template'] = $templateName;
 
             $objName = 'GraphicObjectTemplating/Objects/';
-            $objName .= strtoupper(substr($properties['typeObj'], 0, 3));
-            $objName .= strtolower(substr($properties['typeObj'], 3)) . '/';
-            $objName .= strtoupper(substr($properties['object'], 0, 3));
-            $objName .= strtolower(substr($properties['object'], 3));
+            $objName .= strtoupper(substr($objProperties['typeObj'], 0, 3));
+            $objName .= strtolower(substr($objProperties['typeObj'], 3)) . '/';
+            $objName .= strtoupper(substr($objProperties['object'], 0, 3));
+            $objName .= strtolower(substr($objProperties['object'], 3));
             $objName = str_replace('/', chr(92), $objName);
-            $properties['className'] = $objName;
+            $objProperties['className'] = $objName;
         }
 
         /** ajout des attribut de base de chaque objet */
-        $objProperties = include __DIR__ . '/../../../view/graphic-object-templating/oobject/oobject.config.php';
-        $properties = array_merge($objProperties, $properties);
+        $properties = include __DIR__ . '/../../../view/graphic-object-templating/oobject/oobject.config.php';
+        foreach ($objProperties as $key => $objProperty) {
+            $properties[$key] = $objProperty;
+        }
 
         $gotObjList = OObject::validateSession();
         $objects    = [];
@@ -178,10 +180,12 @@ class OObject
 
     public function mergeProperties($id, $arrayData)
     {
-        $properties = $this->getProperties();
-        if ($id === $properties['id']) {
-            $nProperties = include(__DIR__ . '/../../view/graphic-object-templating/' . $arrayData);
-            $properties = array_merge($properties, $nProperties);
+        $objProperties = $this->getProperties();
+        if ($id === $objProperties['id']) {
+            $properties = include(__DIR__ . '/../../view/graphic-object-templating/' . $arrayData);
+            foreach ($objProperties as $key => $objProperty) {
+                $properties[$key] = $objProperty;
+            }
             $this->setProperties($properties);
         }
         return $this;
@@ -517,7 +521,11 @@ class OObject
                 $properties['resources']['css'][] = $cssResource;
                 break;
             case (is_array($cssResource)):
-                $properties['resources']['css'] = array_merge($properties['resources']['css'], $cssResource);
+                foreach ($cssResource as $item) {
+                    if (!in_array($item, $properties['resources']['css'])) {
+                        $properties['resources']['css'][] = $item;
+                    }
+                }
                 break;
         }
         $this->setProperties($properties);
@@ -563,7 +571,11 @@ class OObject
                 $properties['resources']['js'][] = $jsResource;
                 break;
             case (is_array($jsResource)):
-                $properties['resources']['js'] = array_merge($properties['resources']['js'], $jsResource);
+                foreach ($jsResource as $item) {
+                    if (!in_array($item, $properties['resources']['js'])) {
+                        $properties['resources']['js'][] = $item;
+                    }
+                }
                 break;
         }
         $this->setProperties($properties);

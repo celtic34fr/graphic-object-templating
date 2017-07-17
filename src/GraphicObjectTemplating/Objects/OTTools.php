@@ -16,7 +16,9 @@ class OTTools extends OObject
     {
         $properties = include(__DIR__ ."/../../../view/graphic-object-templating/oobject/ottools/ottools.config.php");
         parent::__construct($id, $adrProperties);
-        $properties = array_merge($this->getProperties(), $properties);
+        foreach ($this->properties as $key => $property) {
+            $properties[$key] = $property;
+        }
         $this->setProperties($properties);
     }
 

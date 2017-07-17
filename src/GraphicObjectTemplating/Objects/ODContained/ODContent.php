@@ -47,6 +47,7 @@ class ODContent extends  ODContained
         $properties            = $this->getProperties();
         $properties['content'] = $content;
         $properties['value']   = $content;
+        $this->value           = $content;
         $this->setProperties($properties);
         return $this;
     }
