@@ -317,7 +317,7 @@ class ODTable extends ODContained
         $properties['cols']   = [];
         $properties['datas']  = [];
         $properties['styles'] = [];
-        $properties['event']  = [];
+        $properties['events']  = [];
         $this->setProperties($properties);
         return $this;
     }
@@ -734,14 +734,14 @@ class ODTable extends ODContained
         $method                 = (string)$method;
         $properties             = $this->getProperties();
 
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        if (!isset($properties['event'][0])) $properties['event'][0] = [];
+        if(!isset($properties['events'])) $properties['events'] = [];
+        if(!is_array($properties['events'])) $properties['events'] = [];
+        if (!isset($properties['events'][0])) $properties['events'][0] = [];
 
-        $properties['event'][0][0] = [];
-        $properties['event'][0][0]['class'] = $class;
-        $properties['event'][0][0]['method'] = $method;
-        $properties['event'][0][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+        $properties['events'][0][0] = [];
+        $properties['events'][0][0]['class'] = $class;
+        $properties['events'][0][0]['method'] = $method;
+        $properties['events'][0][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -751,7 +751,7 @@ class ODTable extends ODContained
     {
         $properties             = $this->getProperties();
 
-        if (isset($properties['event'][0][0])) unset($properties['event'][0][0]);
+        if (isset($properties['events'][0][0])) unset($properties['events'][0][0]);
         $this->setProperties($properties);
         return $this;
     }
@@ -764,14 +764,14 @@ class ODTable extends ODContained
         $nbCols                 = sizeof($properties['cols']);
         if ($nCol > $nbCols || $nCol < 1) return false;
 
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        if (!isset($properties['event'][0])) $properties['event'][0] = [];
+        if(!isset($properties['events'])) $properties['events'] = [];
+        if(!is_array($properties['events'])) $properties['events'] = [];
+        if (!isset($properties['events'][0])) $properties['events'][0] = [];
 
-        $properties['event'][0][$nCol] = [];
-        $properties['event'][0][$nCol]['class'] = $class;
-        $properties['event'][0][$nCol]['method'] = $method;
-        $properties['event'][0][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+        $properties['events'][0][$nCol] = [];
+        $properties['events'][0][$nCol]['class'] = $class;
+        $properties['events'][0][$nCol]['method'] = $method;
+        $properties['events'][0][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -783,7 +783,7 @@ class ODTable extends ODContained
         $nbCols                 = sizeof($properties['cols']);
         if ($nCol > $nbCols || $nCol < 1) return false;
 
-        if (isset($properties['event'][0][$nCol])) unset($properties['event'][0][$nCol]);
+        if (isset($properties['events'][0][$nCol])) unset($properties['events'][0][$nCol]);
         $this->setProperties($properties);
         return $this;
     }
@@ -796,14 +796,14 @@ class ODTable extends ODContained
         $nbLines                = sizeof($properties['datas']);
         if ($nLine > $nbLines || $nLine < 1) return false;
 
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        if (!isset($properties['event'][$nLine])) $properties['event'][$nLine] = [];
+        if(!isset($properties['events'])) $properties['events'] = [];
+        if(!is_array($properties['events'])) $properties['events'] = [];
+        if (!isset($properties['events'][$nLine])) $properties['events'][$nLine] = [];
 
-        $properties['event'][$nLine][0] = [];
-        $properties['event'][$nLine][0]['class'] = $class;
-        $properties['event'][$nLine][0]['method'] = $method;
-        $properties['event'][$nLine][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+        $properties['events'][$nLine][0] = [];
+        $properties['events'][$nLine][0]['class'] = $class;
+        $properties['events'][$nLine][0]['method'] = $method;
+        $properties['events'][$nLine][0]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -815,7 +815,7 @@ class ODTable extends ODContained
         $nbLines                = sizeof($properties['datas']);
         if ($nLine > $nbLines || $nLine < 1) return false;
 
-        if (isset($properties['event'][$nLine][0])) unset($properties['event'][$nLine][0]);
+        if (isset($properties['events'][$nLine][0])) unset($properties['events'][$nLine][0]);
         $this->setProperties($properties);
         return $this;
     }
@@ -830,14 +830,14 @@ class ODTable extends ODContained
         $nbLines                = sizeof($properties['datas']);
         if ($nLine > $nbLines || $nLine < 1) return false;
 
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        if (!isset($properties['event'][$nLine])) $properties['event'][$nLine] = [];
+        if(!isset($properties['events'])) $properties['events'] = [];
+        if(!is_array($properties['events'])) $properties['events'] = [];
+        if (!isset($properties['events'][$nLine])) $properties['events'][$nLine] = [];
 
-        $properties['event'][$nLine][$nCol] = [];
-        $properties['event'][$nLine][$nCol]['class'] = $class;
-        $properties['event'][$nLine][$nCol]['method'] = $method;
-        $properties['event'][$nLine][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+        $properties['events'][$nLine][$nCol] = [];
+        $properties['events'][$nLine][$nCol]['class'] = $class;
+        $properties['events'][$nLine][$nCol]['method'] = $method;
+        $properties['events'][$nLine][$nCol]['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
 
         $this->setProperties($properties);
         return $this;
@@ -851,7 +851,7 @@ class ODTable extends ODContained
         $nbLines                = sizeof($properties['datas']);
         if ($nLine > $nbLines || $nLine < 1) return false;
 
-        if (isset($properties['event'][$nLine][$nCol])) unset($properties['event'][$nLine][$nCol]);
+        if (isset($properties['events'][$nLine][$nCol])) unset($properties['events'][$nLine][$nCol]);
         $this->setProperties($properties);
         return $this;
     }
@@ -1163,7 +1163,7 @@ class ODTable extends ODContained
     {
         $object = OObject::buildObject($params['id']);
         $properties = $object->getProperties();
-        $events     = $properties['event'];
+        $events     = $properties['events'];
         $lno        = (int) substr($params['value'], 1);
         $pos        = strpos($params['value'], 'C');
         $cno        = (int) substr($params['value'], $pos + 1);
@@ -1175,7 +1175,8 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    $params  = ['id' => $this->getId(), 'value' => [$lno, $cno]];
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, $params]);
                     foreach ($retCallObj as $item) {
                         array_push($ret, $item);
                     }
@@ -1213,12 +1214,10 @@ class ODTable extends ODContained
         if ($lno !=0 && $cno != 0 && !$stopEvent) {
             $execEvt    = $events[0][0];
             if (!empty($execEvt)) {
-                foreach ($execEvt as $exec) {
-                    $callObj = new $exec['class']();
-                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
-                    foreach ($retCallObj as $item) {
-                        array_push($ret, $item);
-                    }
+                $callObj = new $execEvt['class']();
+                $retCallObj = call_user_func_array([$callObj, $execEvt['method']], [$sm, [$lno, $cno]]);
+                foreach ($retCallObj as $item) {
+                    array_push($ret, $item);
                 }
             }
         }

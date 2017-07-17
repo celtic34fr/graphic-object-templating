@@ -102,11 +102,11 @@
         </tbody>
     </table>
 
-    {% if objet.event is defined and objet.event is not empty %}
+    {% if objet.events is defined and objet.events is not empty %}
         <script id="{{ objet.id }}Script">
             $(document).ready(function () {
                 {% for evt, count in objet.events %}
-                $('#{{ objet.id }}').on('{{ evt }}', 'table, tr, th, td', function (event) {
+                $('#{{ objet.id }}').on('click', 'table, tr, th, td', function (event) {
                     var classes = "";
                     var cno     = "";
                     var lno     = "";
@@ -117,7 +117,7 @@
                     if (lno && !cno) { cno = 0 }
                     if (lno && cno) {
                         $("#{{ objet.id }} input").val("L"+lno+"C"+cno);
-                        invokeAjax(odtable_getData($('#{{ objet.id }}'), '{{ evt }}'));
+                        invokeAjax(odtable_getData($('#{{ objet.id }}'), 'click'));
                         event.stopPropagation();
                     }
                 });
