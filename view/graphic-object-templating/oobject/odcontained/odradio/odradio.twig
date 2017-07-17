@@ -102,7 +102,7 @@
     </div>
 
     {% if objet.event is defined and objet.event is not empty %}
-        <script id="{{ objet.id }}Script">
+        <script id="{{ objet.id }}Script" type="text/javascript">
             $('document').ready(
                     {% if objet.event is not empty %}
                     {% set events = objet.event %}

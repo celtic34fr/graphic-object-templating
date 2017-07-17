@@ -50,7 +50,7 @@
                 {% set allEvt = allEvt ~ evt ~ ", " %}
                 data-{{ evt }}-class ="{{ callback.class }}"
                 data-{{ evt }}-method ="{{ callback.method }}"
-                data-{{ evt }}-stopEvt ="{{ callback.stopEvent }}"
+                data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
             {% endfor %}
             data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
@@ -97,7 +97,7 @@
 
     {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ translate(objet.label) }}
 
-    <script id="{{ objet.id }}Script">
+    <script id="{{ objet.id }}Script" type="text/javascript">
         $('document').ready(function () {
             {% switch true %}
             {% case (objet.type in  ['custom', 'submit', 'link'] and objet.event is empty) %}
