@@ -100,7 +100,7 @@
         {% endfor %}
     </div>
 
-    <script id="{{ objet.id }}Script">
+    <script id="{{ objet.id }}Script" type="text/javascript">
         {% if objet.event is defined and objet.event is not empty %}
         $('document').ready(
                 {% if objet.event is not empty %}

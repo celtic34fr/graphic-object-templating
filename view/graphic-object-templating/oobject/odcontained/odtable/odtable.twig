@@ -103,7 +103,7 @@
     </table>
 
     {% if objet.events is defined and objet.events is not empty %}
-        <script id="{{ objet.id }}Script">
+        <script id="{{ objet.id }}Script" type="text/javascript">
             $(document).ready(function () {
                 {% for evt, count in objet.events %}
                 $('#{{ objet.id }}').on('click', 'table, tr, th, td', function (event) {

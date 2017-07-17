@@ -13,6 +13,15 @@
  */
 
 function invokeAjax(datas, idSource, event, e) {
+    // vérification propagation événement
+    if (event !== undefined) {
+        var dataKey   = 'data-'+event+'-stopevt';
+        var stopEvent = $('#'+idSource).attr(dataKey);
+        console.log($('#'+idSource));
+        if (stopEvent === 'OUI' || stopEvent === undefined) {
+            e.stopImmediatePropagation();
+        }
+    }
     var urlGotCallback = $("#gotCallback").html();
     $.ajax({
         url:        urlGotCallback,
@@ -77,17 +86,10 @@ function invokeAjax(datas, idSource, event, e) {
                     case 'event': // format code : nomEvt|[OUI/NON]
                         var evt = code.substr(0, strpos(code, '|'));
                         var flg = code.substr(strpos(code, '|') + 1);
-                        $('#'+id).attr('data-'+evt+'-stopEvt', flg);
+                        $('#'+id).attr('data-'+evt+'-stopevt', flg);
                         break;
                 }
             });
-            // vérification propagation événement
-            if (event !== undefined) {
-                var stopEvent = $('#'.idSource).data('data-'+event+'-stopEvt');
-                if (stopEvent === 'OUI' || stopEvent.length === 0 || stopEvent === undefined) {
-                    e.stopPropagation();
-                }
-            }
         },
 
         error : function(xhr, textStatus, errorThrown) {

@@ -35,7 +35,7 @@
                 {% set allEvt = allEvt ~ evt ~ ", " %}
                 data-{{ evt }}-class ="{{ callback.class }}"
                 data-{{ evt }}-method ="{{ callback.method }}"
-                data-{{ evt }}-stopEvt ="{{ callback.stopEvent }}"
+                data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
             {% endfor %}
             data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
@@ -112,7 +112,7 @@
 
     {% if objet.type != "hidden" %}
         {% if objet.event is defined and objet.event is not empty %}
-            <script id="{{ objet.id }}Script">
+            <script id="{{ objet.id }}Script" type="text/javascript">
                 $('document').ready(
                     {% if objet.event is not empty %}
                         {% set events = objet.event %}
