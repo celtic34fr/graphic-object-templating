@@ -234,14 +234,24 @@ class ODTable extends ODContained
         $nbLines = sizeof($properties['datas']);
         if ($nbLines == 0) return false;
         if ($nLine > $nbLines) return false;
-        if ($nbCols != sizeof($line)) return false;
+        if (array_key_exists('view', $line)) {
+            if ($nbCols != sizeof($line) - 1) return false;
+        } else {
+            if ($nbCols != sizeof($line)) return false;
+        }
 
         $tmp = [];
         /* remise en séquence des champs de la ligne */
-        foreach ($line as $col) {
-            $tmp[sizeof($tmp) + 1] = $col;
+        foreach ($line as $key => $col) {
+            if ($key != 'view') {
+                $tmp[sizeof($tmp) + 1] = $col;
+            } else {
+                $tmp['view'] = $col;
+            }
         }
-        $tmp['view'] = true;
+        if (!array_key_exists('view', $tmp)) {
+            $tmp['view'] = true;
+        }
         $properties['datas'][$nLine] = $tmp;
         $this->setProperties($properties);
         return $this;
@@ -1175,7 +1185,7 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $params  = ['id' => $this->getId(), 'value' => [$lno, $cno]];
+                    $params  = ['id' => $this->getId(), 'value' => ['L'=>$lno, 'C'=>$cno]];
                     $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, $params]);
                     foreach ($retCallObj as $item) {
                         array_push($ret, $item);
@@ -1190,7 +1200,8 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    $params  = ['id' => $this->getId(), 'value' => ['L'=>$lno, 'C'=>$cno]];
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, $params]);
                     foreach ($retCallObj as $item) {
                         array_push($ret, $item);
                     }
@@ -1203,7 +1214,8 @@ class ODTable extends ODContained
             if (!empty($execEvt)) {
                 foreach ($execEvt as $exec) {
                     $callObj = new $exec['class']();
-                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, [$lno, $cno]]);
+                    $params  = ['id' => $this->getId(), 'value' => ['L'=>$lno, 'C'=>$cno]];
+                    $retCallObj = call_user_func_array([$callObj, $exec['method']], [$sm, $params]);
                     foreach ($retCallObj as $item) {
                         array_push($ret, $item);
                     }
@@ -1215,7 +1227,8 @@ class ODTable extends ODContained
             $execEvt    = $events[0][0];
             if (!empty($execEvt)) {
                 $callObj = new $execEvt['class']();
-                $retCallObj = call_user_func_array([$callObj, $execEvt['method']], [$sm, [$lno, $cno]]);
+                $params  = ['id' => $this->getId(), 'value' => ['L'=>$lno, 'C'=>$cno]];
+                $retCallObj = call_user_func_array([$callObj, $execEvt['method']], [$sm, $params]);
                 foreach ($retCallObj as $item) {
                     array_push($ret, $item);
                 }
