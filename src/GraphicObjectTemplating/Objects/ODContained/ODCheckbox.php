@@ -12,9 +12,12 @@ use GraphicObjectTemplating\Objects\ODContained;
  * removeOption($value)
  * setOptions(array $options = null)
  * getOptions()
+ * clearOptions()
  * check($value = null)
  * uncheck($value = null)
  * uncheckAll()
+ * enaCheck($value = null)
+ * disCheck($value = null)
  * getCheck($value = null)
  * getChecked()
  * setLabel($label)
@@ -110,6 +113,14 @@ class ODCheckbox extends ODContained
         return false;
     }
 
+    public function clearOptions()
+    {
+        $properties = $this->getProperties();
+        $properties['options'] = [];
+        $this->setProperties($properties);
+        return $this;
+    }
+
     public function getOptions()
     {
         $properties = $this->getProperties();
@@ -165,7 +176,41 @@ class ODCheckbox extends ODContained
         }
         return false;
     }
-    
+
+    public function enaCheck($value = null)
+    {
+        if ($value != null) {
+            $properties = $this->getProperties();
+            if (array_key_exists('options', $properties)) {
+                $options = $properties['options'];
+                if (array_key_exists($value, $options)) {
+                    $options[$value]['state'] = self::STATE_ENABLE;
+                    $properties['options'] = $options;
+                    $this->setProperties($properties);
+                    return $this;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function disCheck($value = null)
+    {
+        if ($value != null) {
+            $properties = $this->getProperties();
+            if (array_key_exists('options', $properties)) {
+                $options = $properties['options'];
+                if (array_key_exists($value, $options)) {
+                    $options[$value]['state'] = self::STATE_DISABLE;
+                    $properties['options'] = $options;
+                    $this->setProperties($properties);
+                    return $this;
+                }
+            }
+        }
+        return false;
+    }
+
     public function getCheck($value = null)
     {
         $properties = $this->getProperties();

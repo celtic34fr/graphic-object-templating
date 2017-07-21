@@ -92,7 +92,7 @@
         {% for options in objet.options %}
             <div class="{{ options.type }}">
                 <input id="{{ objet.id ~ loop.index0 }}" type="checkbox" value="{{ options.value }}"
-                       {% if not options.state %}disabled{% endif %} {% if options.check == 'check' %}checked{% endif %}>
+                       {% if options.state == false %} disabled {% endif %} {% if options.check == 'check' %}checked {% endif %}>
                 <label for="{{ objet.id ~ loop.index0 }}">
                     {{ options.libel }}
                 </label>
