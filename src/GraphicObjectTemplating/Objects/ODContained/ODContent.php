@@ -58,14 +58,14 @@ class ODContent extends  ODContained
         return ((array_key_exists('content', $properties)) ? $properties['content'] : false);
     }
 
-    public function evtClick($callback)
+    public function evtClick($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
+        $properties = $this->getProperties();
         if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = $callback;
-
+        $properties['event']['click'] = [];
+        $properties['event']['click']['class'] = $class;
+        $properties['event']['click']['method'] = $method;
+        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }

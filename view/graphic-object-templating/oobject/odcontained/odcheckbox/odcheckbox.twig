@@ -23,15 +23,19 @@
             {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
 
-        {% if objet.event is not empty %}
-            {% for evt, callback in objet.event %}
-                data-{{ evt }} = "{{ callback }}"
-            {% endfor %}
-        {% endif %}
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objet.state == false %}
             disabled
         {% endif %}
+        {# callback appelée en ajax #}
+     data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents"
+     {% if objet.event is not empty %}
+        {% for evt, callback in objet.event %}
+            {% if 'stopEvent' in callback|keys %}
+                data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+            {% endif %}
+        {% endfor %}
+     {% endif %}
 >
 
     <style>
@@ -100,16 +104,18 @@
         {% endfor %}
     </div>
 
-    <script id="{{ objet.id }}Script" type="text/javascript">
-        {% if objet.event is defined and objet.event is not empty %}
-        $('document').ready(
-                {% if objet.event is not empty %}
-                {% set events = objet.event %}
-                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
-                {% endif %}
-        );
-        {% endif %}
-    </script>
+    {% if objet.events is defined and objet.events is not empty %}
+        <script id="{{ objet.id }}Script" type="text/javascript">
+            $(document).ready(function () {
+                {% for evt, callback in objet.events %}
+                $('#{{ objet.id }}').on('{{ evt }}', 'input', function (event) {
+                    var datas = odcheckbox_getData($('#{{ objet.id }}'), '{{ evt }}');
+                    invokeAjax(datas, '#{{ objet.id }}', '{{ evt }}', event);
+                });
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
 
     {% if objet.infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}
