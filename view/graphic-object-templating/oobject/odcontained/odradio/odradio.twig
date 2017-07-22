@@ -24,9 +24,14 @@
         {% endif %}
 
         {% if objet.event is not empty %}
+            {% set allEvt = '' %}
             {% for evt, callback in objet.event %}
-                data-{{ evt }} = "{{ callback }}"
+                {% set allEvt = allEvt ~ evt ~ ", " %}
+                data-{{ evt }}-class ="{{ callback.class }}"
+                data-{{ evt }}-method ="{{ callback.method }}"
+                data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
             {% endfor %}
+            data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objet.state == false %}

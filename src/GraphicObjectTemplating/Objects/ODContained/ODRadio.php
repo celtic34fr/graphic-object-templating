@@ -181,14 +181,14 @@ class ODRadio extends ODContained
         return ((array_key_exists('label',$properties)) ? $properties['label'] : false);
     }
 
-    public function evtClick($callback)
+    public function evtClick($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
+        $properties = $this->getProperties();
         if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = $callback;
-
+        $properties['event']['click'] = [];
+        $properties['event']['click']['class'] = $class;
+        $properties['event']['click']['method'] = $method;
+        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -201,14 +201,14 @@ class ODRadio extends ODContained
         return $this;
     }
 
-    public function evtChange($callback)
+    public function evtChange($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['change'] = $callback;
-
+        $properties = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event']= [];
+        $properties['event']['change'] = [];
+        $properties['event']['change']['class'] = $class;
+        $properties['event']['change']['method'] = $method;
+        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }

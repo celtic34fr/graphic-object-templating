@@ -66,7 +66,7 @@
 
     <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
     <table id="{{ objet.id }}_table"  style="width: 100% !important;" class="lno0 cno0" data-lno="0" data-cno="0"
-           data-class="GoTemplating\Objects\OdContained\ODTable" data-method="dispatchEvents">
+           data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents">
         {% if objet.title is not empty %}
             <caption>{{ objet.title }}</caption>
         {% endif %}
@@ -117,8 +117,7 @@
                     if (lno && !cno) { cno = 0 }
                     if (lno && cno) {
                         $("#{{ objet.id }} input").val("L"+lno+"C"+cno);
-                        invokeAjax(odtable_getData($('#{{ objet.id }}'), 'click'));
-                        event.stopPropagation();
+                        invokeAjax(odtable_getData($('#{{ objet.id }}'), 'click'),$('#{{ objet.id }}'), 'click', event);
                     }
                 });
                 {% endfor %}

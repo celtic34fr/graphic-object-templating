@@ -18,6 +18,17 @@
         {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+
+        {% if objet.event is not empty %}
+            {% set allEvt = '' %}
+            {% for evt, callback in objet.event %}
+                {% set allEvt = allEvt ~ evt ~ ", " %}
+                data-{{ evt }}-class ="{{ callback.class }}"
+                data-{{ evt }}-method ="{{ callback.method }}"
+                data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+            {% endfor %}
+            data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
+        {% endif %}
 >
 
     <style>
@@ -51,16 +62,16 @@
 
     {{ objet.content | raw}}
 
-    <script id="{{ objet.id }}Script" type="text/javascript">
-        {% if objet.event is defined and objet.event is not empty %}
-        $('document').ready(
-                {% if objet.event is not empty %}
-                {% set events = objet.event %}
-                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
-                {% endif %}
-        );
-        {% endif %}
-    </script>
+    {% if objet.event is defined and objet.event is not empty %}
+        <script id="{{ objet.id }}Script" type="text/javascript">
+            $('document').ready(
+                    {% if objet.event is not empty %}
+                    {% set events = objet.event %}
+                    {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+                    {% endif %}
+            );
+        </script>
+    {% endif %}
 
     {% if infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}

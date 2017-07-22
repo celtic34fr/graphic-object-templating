@@ -30,6 +30,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getForme()
  * setPlacement($placement = self::CHECKPLACE_LEFT)
  * getPlacement()
+ * saveState($sm, $params)
  */
 class ODCheckbox extends ODContained
 {
@@ -270,14 +271,14 @@ class ODCheckbox extends ODContained
         return ((array_key_exists('label',$properties)) ? $properties['label'] : false);
     }
 
-    public function evtClick($callback)
+    public function evtClick($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
+        $properties = $this->getProperties();
         if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = $callback;
-
+        $properties['event']['click'] = [];
+        $properties['event']['click']['class'] = $class;
+        $properties['event']['click']['method'] = $method;
+        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -290,14 +291,14 @@ class ODCheckbox extends ODContained
         return $this;
     }
 
-    public function evtChange($callback)
+    public function evtChange($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['change'] = $callback;
-
+        $properties = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event']= [];
+        $properties['event']['change'] = [];
+        $properties['event']['change']['class'] = $class;
+        $properties['event']['change']['method'] = $method;
+        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -342,8 +343,13 @@ class ODCheckbox extends ODContained
         return ((array_key_exists('place',$properties)) ? $properties['place'] : false);
     }
 
+    public function dispatchEvents($sm, $params)
+    {
+        $value = $params['value'];
+    }
 
-    protected function getCheckboxConst()
+
+    private function getCheckboxConst()
     {
         $retour = [];
         if (empty($this->const_checkbox)) {
@@ -359,7 +365,7 @@ class ODCheckbox extends ODContained
         return $retour;
     }
 
-    protected function getCheckTypeConst()
+    private function getCheckTypeConst()
     {
         $retour = [];
         if (empty($this->const_checkType)) {
@@ -375,7 +381,7 @@ class ODCheckbox extends ODContained
         return $retour;
     }
 
-    protected function getCheckFormeConst()
+    private function getCheckFormeConst()
     {
         $retour = [];
         if (empty($this->const_checkForme)) {
@@ -391,7 +397,7 @@ class ODCheckbox extends ODContained
         return $retour;
     }
 
-    protected function getCheckPlaceConst()
+    private function getCheckPlaceConst()
     {
         $retour = [];
         if (empty($this->const_checkPlace)) {

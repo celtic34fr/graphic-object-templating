@@ -51,14 +51,14 @@ class ODTextarea extends ODContained
         return ((!empty($properties['label'])) ? $properties['label'] : false) ;
     }
 
-    public function evtChange($callback)
+    public function evtChange($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['change'] = $callback;
-
+        $properties = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event']= [];
+        $properties['event']['change'] = [];
+        $properties['event']['change']['class'] = $class;
+        $properties['event']['change']['method'] = $method;
+        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -71,14 +71,14 @@ class ODTextarea extends ODContained
         return $this;
     }
 
-    public function evtFocus($callback)
+    public function evtFocus($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['focus'] = $callback;
-
+        $properties = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event']= [];
+        $properties['event']['focus'] = [];
+        $properties['event']['focus']['class'] = $class;
+        $properties['event']['focus']['method'] = $method;
+        $properties['event']['focus']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
@@ -91,14 +91,14 @@ class ODTextarea extends ODContained
         return $this;
     }
 
-    public function evtBlur($callback)
+    public function evtBlur($class, $method, $stopEvent = true)
     {
-        $callback = (string) $callback;
-        $properties             = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        if(!is_array($properties['event'])) $properties['event'] = [];
-        $properties['event']['blur'] = $callback;
-
+        $properties = $this->getProperties();
+        if(!isset($properties['event'])) $properties['event']= [];
+        $properties['event']['blur'] = [];
+        $properties['event']['blur']['class'] = $class;
+        $properties['event']['blur']['method'] = $method;
+        $properties['event']['blur']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
         $this->setProperties($properties);
         return $this;
     }
