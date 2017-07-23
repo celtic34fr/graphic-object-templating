@@ -22,9 +22,7 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getChecked()
  * setLabel($label)
  * getLabel()
- * evtClick($callback)
- * disClick()
- * evtChange($callback)
+ * evtChange($class, $method, $stopEvent = true)
  * disChange()
  * setForme($forme = self::CHECKFORM_HORIZONTAL)
  * getForme()
@@ -269,26 +267,6 @@ class ODCheckbox extends ODContained
     {
         $properties = $this->getProperties();
         return ((array_key_exists('label',$properties)) ? $properties['label'] : false);
-    }
-
-    public function evtClick($class, $method, $stopEvent = true)
-    {
-        $properties = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = [];
-        $properties['event']['click']['class'] = $class;
-        $properties['event']['click']['method'] = $method;
-        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disClick()
-    {
-        $properties             = $this->getProperties();
-        if (isset($properties['event']['click'])) unset($properties['event']['click']);
-        $this->setProperties($properties);
-        return $this;
     }
 
     public function evtChange($class, $method, $stopEvent = true)

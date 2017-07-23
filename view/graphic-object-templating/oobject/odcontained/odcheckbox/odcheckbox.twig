@@ -28,14 +28,16 @@
             disabled
         {% endif %}
         {# callback appelée en ajax #}
-     data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents"
-     {% if objet.event is not empty %}
+    data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents"
+    {% if objet.event is not empty %}
         {% for evt, callback in objet.event %}
             {% if 'stopEvent' in callback|keys %}
                 data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
             {% endif %}
         {% endfor %}
-     {% endif %}
+    {% else %}
+        data-change-stopevt="NON"
+    {% endif %}
 >
 
     <style>
@@ -104,18 +106,14 @@
         {% endfor %}
     </div>
 
-    {% if objet.events is defined and objet.events is not empty %}
-        <script id="{{ objet.id }}Script" type="text/javascript">
-            $(document).ready(function () {
-                {% for evt, callback in objet.events %}
-                $('#{{ objet.id }}').on('{{ evt }}', 'input', function (event) {
-                    var datas = odcheckbox_getData($('#{{ objet.id }}'), '{{ evt }}');
-                    invokeAjax(datas, '#{{ objet.id }}', '{{ evt }}', event);
-                });
-                {% endfor %}
+    <script id="{{ objet.id }}Script" type="text/javascript">
+        $(document).ready(function () {
+            $('#{{ objet.id }}').on('change', 'input', function (event) {
+                var datas = odcheckbox_getData($('#{{ objet.id }}'), 'change');
+                invokeAjax(datas, '{{ objet.id }}', 'change', event);
             });
-        </script>
-    {% endif %}
+        });
+    </script>
 
     {% if objet.infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}

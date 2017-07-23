@@ -117,7 +117,7 @@
                     if (lno && !cno) { cno = 0 }
                     if (lno && cno) {
                         $("#{{ objet.id }} input").val("L"+lno+"C"+cno);
-                        invokeAjax(odtable_getData($('#{{ objet.id }}'), 'click'),$('#{{ objet.id }}'), 'click', event);
+                        invokeAjax(odtable_getData($('#{{ objet.id }}'), 'click'),'{{ objet.id }}', 'click', event);
                     }
                 });
                 {% endfor %}
