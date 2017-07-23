@@ -364,15 +364,11 @@ function odcheckbox_getData(obj, evt) {
         checked.push($(this).val());
     });
     chps = chps + "&value='" + checked.join("$") + "'";
-    var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
-        var classe      = obj.attr("data-"+evt+"-class");
-        var methode     = obj.attr("data-"+evt+"-method");
-        if ((classe.length > 0) && (methode.length >0)) {
-            chps = chps + "&callback='" + classe + '+' + methode + "'";
-        }
-    }
+    chps = chps + "&evt='" + evt + "'";
+    chps = chps + "&obj='OUI'";
+    chps = chps + "&callback='" + obj.data("class") + " " + obj.data("method") +"'";
     return chps;
+
 }
 
 /**

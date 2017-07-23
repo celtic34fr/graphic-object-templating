@@ -3,6 +3,9 @@
 namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Service\GotServices;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * Class ODCheckbox
@@ -77,11 +80,11 @@ class ODCheckbox extends ODContained
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;
-        $item['check'] = false;
+        $item['check'] = self::CHECKBOX_UNCHECK;
         $item['type']  = $type;
         $item['state'] = $state;
         $item['value'] = $value;
-        $properties['options'][] = $item;
+        $properties['options'][$value] = $item;
         $this->setProperties($properties);
         return $this;
     }
@@ -215,11 +218,11 @@ class ODCheckbox extends ODContained
         $properties = $this->getProperties();
         if (!empty($value) && array_key_exists('options', $properties)) {
             $options = $properties['options'];
-            return ((array_key_exists($value, $options)) ? $options[$value]['check'] : false);
+            return ((array_key_exists($value, $options)) ? $options[$value]['check'] : self::CHECKBOX_UNCHECK);
         }  elseif (empty($value) && !empty($properties['options'])) {
             $options = $properties['options'];
             $label   = $properties['label'];
-            return ((array_key_exists($label, $options)) ? $options[$label]['check'] : false);
+            return ((array_key_exists($label, $options)) ? $options[$label]['check'] : self::CHECKBOX_UNCHECK);
         }
         return false;
     }
@@ -321,9 +324,40 @@ class ODCheckbox extends ODContained
         return ((array_key_exists('place',$properties)) ? $properties['place'] : false);
     }
 
-    public function dispatchEvents($sm, $params)
+    public function dispatchEvents(ServiceManager $sm, $params)
     {
-        $value = $params['value'];
+        /** @var GotServices $gs */
+        $gs = $sm->get('graphic.object.templating.services');
+        $ret    = [];
+        /** @var ODCheckbox $objet */
+        $objet  = OObject::buildObject($params['id']);
+        $values = $params['value'];
+        $values = explode('$', $values);
+        // sauvegarde de l'état des cases à cocher
+        if (!is_array($values)) { $values = [$values]; }
+        $objet->uncheckAll();
+        foreach ($values as $value) {
+            $objet->check($value);
+        }
+        $item           = [];
+        $item['id']     = $objet->getId();
+        $item['mode']   = 'update';
+        $item['html']   = $gs->render($objet);
+        $ret[]          = $item;
+
+        // validation et appel de la callback si existe
+        $event      = $this->getEvent('change');
+        $class      = (array_key_exists('class', $event)) ? $event['class'] : "";
+        $method     = (array_key_exists('method', $event)) ? $event['method'] : "";
+        $stopEvt    = (array_key_exists('stopEvent', $event)) ? $event['stopEvent'] : "NON";
+        if (!empty($class) && !empty($method)) {
+            $callObj = new $class();
+            $retCallObj = call_user_func_array([$callObj, $method], [$sm, $params]);
+            foreach ($retCallObj as $item) {
+                array_push($ret, $item);
+            }
+        }
+        return [$ret];
     }
 
 
