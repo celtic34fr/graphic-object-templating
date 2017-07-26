@@ -14,7 +14,7 @@ return array(
     "multiple"          => false,
     "checkbox"          => true,
     "resources"         => array(
-        "css"               => array( "css/bootstrap-treeview.min.css"),
-        "js"                => array( "js/bootstrap-treeview.min.js" ),
+        "css"               => array( 'bootstrap-treeview.min.css' => "css/bootstrap-treeview.min.css"),
+        "js"                => array( 'bootstrap-treeview.min.js' => "js/bootstrap-treeview.min.js" ),
     )
 );

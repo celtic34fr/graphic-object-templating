@@ -10,7 +10,7 @@ return array(
     "place"      => "left",
     "event"      => array(),
     "resources" => array(
-        "css" => array( "css/radio.css", ),
+        "css" => array( 'radio.css' => "css/radio.css", ),
         "js"  => array(  )
     )
 );

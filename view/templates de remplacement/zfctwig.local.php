@@ -8,8 +8,6 @@ return array(
             'debug' => true
         ],
         'extensions' => array(
-            'layoutextension' => 'GraphicObjectTemplating\Twig\Extension\LayoutExtension',
-            'colorconverter'  => 'GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension',
             'debug'           => 'Twig_Extension_Debug',
         ),
     ),

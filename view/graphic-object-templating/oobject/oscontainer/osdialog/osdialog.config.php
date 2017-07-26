@@ -16,7 +16,8 @@ return array(
     "onOpen"        => "",
     "outer"         => "modality-outer",
     "resources"     => array(
-        "css" => array( "css/modality.css" ),
-        "js"  => array( "js/modality.jquery.js", "js/modality.js" )
+        "css" => array( 'modality.css' => "css/modality.css" ),
+        "js"  => array( 'modality.jquery.js' => "js/modality.jquery.js",
+                        'modality.js' => "js/modality.js" )
     )
 );

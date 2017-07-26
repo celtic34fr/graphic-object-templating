@@ -15,8 +15,8 @@ return array(
     "height"        => "",
     "custom"        => '',
     "resources"     => array(
-        "css"           => array( "css/bootstrap-toggle.min.css",
-                                  "css/bootstrap-toggle-style.css"),
-        "js"            => array( "js/bootstrap-toggle.min.js" ),
+        "css"           => array( 'bootstrap-toggle.min.css' => "css/bootstrap-toggle.min.css",
+                                  'bootstrap-toggle-style.css' => "css/bootstrap-toggle-style.css"),
+        "js"            => array( 'bootstrap-toggle.min.js' => "js/bootstrap-toggle.min.js" ),
     )
 );
