@@ -16,9 +16,9 @@ return array(
     ),
     "resources" => array(
         "css"           => array(
-            "css/select2.css",
-            "css/select2-bootstrap.css",
+            'select2.css' => "css/select2.css",
+            'select2-bootstrap.css' => "css/select2-bootstrap.css",
         ),
-        "js"            => array( "js/select2.js" ),
+        "js"            => array( 'select2.js' => "js/select2.js" ),
     )
 );

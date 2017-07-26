@@ -6,6 +6,9 @@ use GraphicObjectTemplating\Controller\GOTController;
 use GraphicObjectTemplating\Controller\Factory\GOTControllerFactory;
 use GraphicObjectTemplating\Service\Factory\GotServicesFactory;
 use GraphicObjectTemplating\Service\GotServices;
+use GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension;
+use GraphicObjectTemplating\Twig\Extension\GotTwigExtension;
+use GraphicObjectTemplating\Twig\Extension\LayoutExtension;
 use Zend\Mvc\Router\Http\Literal;
 
 return array(
@@ -46,8 +49,9 @@ return array(
 
     'zfctwig' => array(
         'extensions' => array(
-            \GraphicObjectTemplating\Twig\Extension\LayoutExtension::class,
-            \GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension::class,
+            LayoutExtension::class,
+            ColorConverterTwigExtension::class,
+            GotTwigExtension::class,
         ),
     ),
 
