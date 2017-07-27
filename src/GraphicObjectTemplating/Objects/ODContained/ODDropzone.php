@@ -115,4 +115,28 @@ class ODDropzone extends ODContained
         $this->setProperties($properties);
         return $this;
     }
+    
+    public function getMultiple() 
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['multiple']) && !empty($properties['multiple'])) ? $properties['multiple'] : array();
+    }
+    
+    public function setMaxFiles($number)
+    {
+        $number = (int) $number;
+        if ($this->getMultiple()) {
+            $properties = $this->getProperties();
+            $properties['maxFiles'] = $number;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return FALSE;
+    }
+    
+    public function getMaxFiles() 
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['maxFiles']) && !empty($properties['maxFiles'])) ? $properties['maxFiles'] : array();
+    }
 }
