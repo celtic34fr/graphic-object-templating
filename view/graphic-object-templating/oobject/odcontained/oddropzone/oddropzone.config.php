@@ -5,9 +5,10 @@ return array(
     'template'   => 'oddropzone.twig',
     'filters'    => array(),
     'multiple'   => false,
-    'maxFiles'   => "1",
+    'maxFiles'   => 1,
     'loadFiles'  => array(),
     'servFiles'  => array(),
+    'pathSave'   => '',
 
     'resources' => array(
         'css' => array( 'dropzone.css' => 'css/dropzone.css' ),

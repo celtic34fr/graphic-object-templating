@@ -15,6 +15,18 @@ use GraphicObjectTemplating\Objects\ODContained;
  * getFilters()
  * enaMultiple()
  * disMultiple()
+ * getMultiple
+ * setMaxFiles($number)
+ * getMaxFiles()
+ * setPathSave($path)
+ * getPathSave()
+ * addFile($name, $pathFile)
+ * removeFile($name)
+ * setFiles(array $files)
+ * getFiles()
+ * clearFiles()
+ * getUploadFiles()
+ * clearUplaodFiles()
  */
 class ODDropzone extends ODContained
 {
@@ -125,7 +137,7 @@ class ODDropzone extends ODContained
     public function setMaxFiles($number)
     {
         $number = (int) $number;
-        if ($this->getMultiple()) {
+        if ($this->getMultiple() and $number > 1) {
             $properties = $this->getProperties();
             $properties['maxFiles'] = $number;
             $this->setProperties($properties);
@@ -138,5 +150,124 @@ class ODDropzone extends ODContained
     {
         $properties = $this->getProperties();
         return (isset($properties['maxFiles']) && !empty($properties['maxFiles'])) ? $properties['maxFiles'] : array();
+    }
+    
+    public function addFile($name, $pathFile)
+    {
+        $name = (string) $name;
+        $pathFile = (string) $pathFile;
+        
+        $properties = $this->getProperties();
+        if (!array_key_exists('servFiles', $properties)) {
+            $properties['servFiles'] = [];
+        }
+        $item = [];
+        $item['name'] = $name;
+        $item['type'] = "";
+        $item['size'] = filesize($pathFile);
+        $item['path'] = $pathFile;
+        $properties['servFiles'][$name] = $item;
+        
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function setPathSave($path)
+    {
+        $path = (string) $path;
+        $properties = $this->getProperties();
+        $properties['pathSave'] = $path;
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function getPathSave()
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['pathSave']) && !empty($properties['pathSave'])) ? $properties['pathSave'] : array();
+    }
+
+        public function removeFile($name)
+    {
+        $name = (string) $name;
+        $servFiles = [];
+        
+        $properties = $this->getProperties();
+        if (!array_key_exists('servFiles', $properties)) {
+            $servFiles = $properties['servFiles'];
+        }
+        
+        if (array_key_exists($name, $servFiles)) {
+            unset($servFiles[$name]);
+            $properties['servFiles'] = $servFiles;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false; 
+    }
+    
+    public function setFiles(array $files)
+    {
+        $properties = $this->getProperties();
+        foreach ($files as $name => $file) {
+            $properties['servFiles'][$name] = $file;
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function getFiles()
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['servFiles']) && !empty($properties['servFiles'])) ? $properties['servFiles'] : array();
+    }
+    
+    public function clearFiles()
+    {
+        $properties = $this->getProperties();
+        $properties['servFiles'] = [];
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function getUploadFiles()
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['loadFiles']) && !empty($properties['loadFiles'])) ? $properties['loadFiles'] : array();
+    }
+    
+    public function clearUploadFiles()
+    {
+        $properties = $this->getProperties();
+        $properties['loadFiles'] = [];
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function addUploadFiles()
+    {
+        $properties = $this->getProperties();
+        $uploadedFiles = $this->getUploadFiles();
+        foreach ($uploadedFiles as $key => $uploadedFile) {
+            $name = $uploadedFile['name'];
+            $path = $uploadedFile['tmp_name'];
+            $size = $uploadedFile['size'];
+            $type = $uploadedFile['type'];
+            $err  = $uploadedFile['error'];
+            
+            if ($err == '0') {
+                if ($key != 'fileName') {
+                    $fileContent  = file_get_contents($path);
+                    
+                    $item['name'] = $name;
+                    $item['type'] = $type;
+                    $item['size'] = $size;
+                    $item['path'] = $path;
+                    $properties['servFiles'][$name] = $item;
+                    
+                    unset($properties['loadFiles'][$key]);
+                }
+            }
+        }
     }
 }
