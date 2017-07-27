@@ -5,6 +5,7 @@ return array(
     'template'   => 'oddropzone.twig',
     'filters'    => array(),
     'multiple'   => false,
+    'loadFiles'  => array(),
 
     'resources' => array(
         'css' => array( 'dropzone.css' => 'css/dropzone.css' ),
