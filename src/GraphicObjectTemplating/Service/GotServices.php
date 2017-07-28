@@ -34,6 +34,9 @@ class GotServices
 	public function render($object)
 	{
 		$html       = new ViewModel();
+		if (!($object instanceof OObject)) {
+		    $object = OObject::buildObject($object);
+        }
         $properties = $object->getProperties();
         $template   = $properties['template'];
         $allow      = 'ALLOW';

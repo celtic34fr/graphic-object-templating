@@ -74,16 +74,24 @@ class OSForm extends OSContainer
         return $this;
     }
 
-    public function enaRequeredChild(OObject $child)
+    public function enaRequeredChild(ODContained $objet)
     {
-        if ($this->isChild($child->getId())) {
+        if ($this->isChild($objet->getId())) {
             $properties = $this->getProperties();
             if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
-            if (!in_array($child->getId(), $properties['requireChildren'])) {
-                $properties['requireChildren'][] = $child->getId();
+            if (!in_array($objet->getId(), $properties['requireChildren'])) {
+                $properties['requireChildren'][] = $objet->getId();
             }
             $this->setProperties($properties);
             return $this;
+        } else {
+            // l'objet fait parti d'une sous partie du formulaire
+            $children = $this->getChildren();
+            foreach ($children as $child) {
+                if ($child instanceof OSContainer) {
+                    $this->propageForm($objet, $child, $this);
+                }
+            }
         }
         return false;
     }
@@ -161,20 +169,20 @@ class OSForm extends OSContainer
 
     public function addSubmit($label, $nature, $class, $method, $stopevent = true)
     {
-        $submit = new ODButton('submit');
-        $submit->setLabel($label);
-        $submit->evtClick($class, $method, $stopevent);
-        $submit->setNature($nature);
-
         $properties = $this->getProperties();
         if (!array_key_exists('submits', $properties) || !is_array($properties['submits'])) {
             $properties['submits'] = [];
         }
         $numBtn = count($properties['submits']);
-        $submit->setId($this->getId().$numBtn);
+        $submit = new ODButton($this->getId().$numBtn);
+        $submit->setLabel($label);
+        $submit->evtClick($class, $method, $stopevent);
+        $submit->setNature($nature);
+
         $submit->setForm($this->getId());
         $widthBT = 10 / (2 + $numBtn) - 1;
         $submit->setWidthBT('O1:W'.(int)$widthBT);
+
         $reset   = OObject::buildObject($this->getId().'Reset');
         $reset->setWidthBT('O2:W'.(int)$widthBT);
 
@@ -212,6 +220,14 @@ class OSForm extends OSContainer
     {
         $properties = $this->getProperties();
         return ((!empty($properties['submits'])) ? $properties['submits'] : false) ;
+    }
+
+    public function setResetLabel($label)
+    {
+        $label = (string) $label;
+        /** @var ODButton $reset */
+        $reset = OObject::buildObject($this->getId().'Reset');
+        $reset->setLabel($label);
     }
 
     public function isValid()
@@ -291,5 +307,24 @@ class OSForm extends OSContainer
     {
         $properties          = $this->getProperties();
         return ((!empty($properties['requireChildren'])) ? $properties['requireChildren'] : false) ;
+    }
+
+    private function propageForm(ODContained $objet, OSContainer $Ochild, OSForm $form)
+    {
+        if ($Ochild->isChild($objet->getId())) {
+            $properties = $form->getProperties();
+            if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
+            if (!in_array($objet->getId(), $properties['requireChildren'])) {
+                $properties['requireChildren'][] = $objet->getId();
+            }
+            $form->setProperties($properties);
+        } else {
+            $children = $Ochild->getChildren();
+            foreach ($children as $child) {
+                if ($child instanceof OSContainer) {
+                    $this->propageForm($objet, $child, $form);
+                }
+            }
+        }
     }
 }
