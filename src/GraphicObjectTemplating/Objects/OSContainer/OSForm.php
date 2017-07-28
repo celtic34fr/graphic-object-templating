@@ -13,13 +13,23 @@ use Zend\Session\Container;
  * Class OSForm
  * @package Application\Objects\OSContainer
  *
- * addChild             : methode surchargée ajout l'objet en enfant + obj->setForm(id form)
- * getFormDatas         :
- * setFormDatas($datas) :
- * setValidMethod($obj, $method)
+ * addChild(OObject $child, $required = false) : methode surchargée ajout l'objet en enfant + obj->setForm(id form)
+ * enaRequiredChild(OObject $child)
+ * disRequiredChild(OObject $child)
+ * setAction($action = self::ACTION_INIT)
+ * getAction()
+ * setFormDatas(array $datas) :
+ * getFormDatas()         :
+ * setValidMethod(OObject $obj, $method)
  * getValidMethod()
+ * addSubmit($label, $nature, $class, $method, $stopevent = true)
  * isValid()
  * addSubmit($label, $nature, $class, $method)
+ * getFieldsIdentifers(string $object = null)
+ *
+ * méthodes privées
+ * getActionsContants()
+ * getRequiredChildren()
  */
 class OSForm extends OSContainer
 {
@@ -48,16 +58,48 @@ class OSForm extends OSContainer
         $this->setProperties($properties);
     }
     
-    public function addChild(OObject $child) {
+    public function addChild(OObject $child, $required = false) {
         if ($child instanceof ODContained) {
             $child->setForm($this->getId());
             $properties = $this->getProperties();
-            if (empty($properties['childrenIdent'])) { $properties['childrenIdent'] = []; }
+            if (empty($properties['childrenIdent']))   { $properties['childrenIdent'] = []; }
+            if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
             $properties['childrenIdent'][] = $child->getId();
+            if ($required) {
+                $properties['requireChildren'][] = $child->getId();
+            }
             $this->setProperties($properties);
         }
         parent::addChild($child);
         return $this;
+    }
+
+    public function enaRequeredChild(OObject $child)
+    {
+        if ($this->isChild($child->getId())) {
+            $properties = $this->getProperties();
+            if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
+            if (!in_array($child->getId(), $properties['requireChildren'])) {
+                $properties['requireChildren'][] = $child->getId();
+            }
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function disRequeredChild(OObject $child)
+    {
+        if ($this->isChild($child->getId())) {
+            $properties = $this->getProperties();
+            $key = array_search($child->getId(), $properties['requireChildren']);
+            if ($key !== false) {
+                unset($properties['requireChildren'][$key]);
+            }
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
     }
 
     public function setAction($action = self::ACTION_INIT)
@@ -96,6 +138,7 @@ class OSForm extends OSContainer
 		return false;
     }
 
+    /** @return mixed bool|array */
     public function getFormDatas()
     {
         $properties          = $this->getProperties();
@@ -114,20 +157,6 @@ class OSForm extends OSContainer
     {
         $properties          = $this->getProperties();
         return ((!empty($properties['validMethod'])) ? $properties['validMethod'] : false) ;
-    }
-
-    public function setInputFilter(InputFilter $inputFilter)
-    {
-        $properties = $this->getProperties();
-        $properties['inputFilter'] = $inputFilter;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getInputFilter()
-    {
-        $properties = $this->getProperties();
-        return ((!empty($properties['inputFilter'])) ? $properties['inputFilter'] : false) ;
     }
 
     public function addSubmit($label, $nature, $class, $method, $stopevent = true)
@@ -189,26 +218,33 @@ class OSForm extends OSContainer
     {
         $valid = true;
 
-        $validMethod = $this->getValidMethod();
-        if ($validMethod !== false) {
-            $validMethod = explode('§', $validMethod);
-            $object = new $validMethod[0];
-            $result = call_user_func_array(array($object, $validMethod[1]),
-                array(
-                    $this->getFormDatas()
-                ));
-            $valid = $valid && $result;
+        /* validation présence des champs requis */
+        $requiredChildren = $this->getRequiredChildren();
+        $datas            = $this->getFormDatas();
+        if ($requiredChildren !== false) {
+            $allRequired = true;
+            foreach ($requiredChildren as $requiredChild) {
+                if (!array_key_exists($requiredChild, $datas) || empty($datas[$requiredChild])) {
+                    $allRequired = false;
+                }
+            }
+            $valid = $valid && $allRequired;
         }
-
-        $inputFilter = $this->getInputFilter();
-        if ($inputFilter !== false && $valid !== false) {
-            $result = true;
-            $valid = $valid && $result;
+        /* validation par la méthode callback de validation des données */
+        if ($valid) {
+            $validMethod = $this->getValidMethod();
+            if ($validMethod !== false) {
+                $validMethod = explode('§', $validMethod);
+                $object = new $validMethod[0];
+                $result = call_user_func_array(array($object, $validMethod[1]),
+                    array( $datas));
+                $valid = $valid && $result;
+            }
         }
         return $valid;
     }
 
-    public function getFieldsIdentifers($object = null)
+    public function getFieldsIdentifers(string $object = null)
     {
 		$fieldsIdentifers = [];
 		if ($object === null) {
@@ -249,5 +285,11 @@ class OSForm extends OSContainer
             $retour = $this->const_mesAction;
         }
         return $retour;
+    }
+
+    private function getRequiredChildren()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['requireChildren'])) ? $properties['requireChildren'] : false) ;
     }
 }
