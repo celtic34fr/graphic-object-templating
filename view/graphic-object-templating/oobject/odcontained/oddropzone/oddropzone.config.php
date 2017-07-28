@@ -3,6 +3,7 @@ return array(
     'object'     => 'oddropzone',
     'typeObj'    => 'odcontained',
     'template'   => 'oddropzone.twig',
+    'rootDir'    => '',
     'filters'    => array(),
     'multiple'   => false,
     'maxFiles'   => 1,

@@ -8,6 +8,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  * Class ODDropzone
  * @package GraphicObjectTemplating\Objects\ODContained
  *
+ * setUploadRootDir($rootDir)
+ * getUploadRootDir() 
  * addFilter($name, $filter)
  * rmFilter($name)
  * setFilter($name, $filter)
@@ -38,7 +40,22 @@ class ODDropzone extends ODContained
         return $this;
     }
 
-    public function addFilter($name, $filter)
+    public function setUploadRooDir($rootDir)
+    {
+        $rootDir =  (string) $rootDir;
+        $properties = $this->getProperties();
+        $properties['rootDir'] = $rootDir;
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function getUploadRootDir()
+    {
+        $properties = $this->getProperties();
+        return (isset($properties['rootDir']) && !empty($properties['rootDir'])) ? $properties['rootDir'] : array();
+    }
+
+        public function addFilter($name, $filter)
     {
         $name   = (string) $name;
         $filter = (string) $filter;
