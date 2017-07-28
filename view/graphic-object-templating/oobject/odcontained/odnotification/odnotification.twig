@@ -36,7 +36,7 @@
 {% endif %}
 
 {% if objet.action == 'send' %}
-    <script id='{{ objet.id }}'>
+    <script id='{{ objet.id }}' type="text/javascript">
         if ( {{ objet.id }}Lobibox.notify.list.length == 0) {
             {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                 showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
