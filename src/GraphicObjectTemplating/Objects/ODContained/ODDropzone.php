@@ -287,4 +287,9 @@ class ODDropzone extends ODContained
             }
         }
     }
+    
+    public function uploadFile()
+    {
+        
+    }
 }

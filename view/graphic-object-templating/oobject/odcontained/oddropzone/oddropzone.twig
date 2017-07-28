@@ -33,7 +33,7 @@ $(document).ready(function() {
 
     Dropzone.autoDiscover = false;
     var {% objet.id %}Dropzone = new Dropzone("#aaa{% objet.id %}", {
-        url             : "/objets/affiche/html",
+        url             : "{{ url('upload_oddropzone') }}",
         {% if acceptedFiles is not empty %}
         acceptedFiles   : "{{ acceptedFiles}}",
         {% endif %}
