@@ -83,13 +83,14 @@ class OSForm extends OSContainer
                 $properties['requireChildren'][] = $objet->getId();
             }
             $this->setProperties($properties);
+            $objet->setForm($this->getId());
             return $this;
         } else {
             // l'objet fait parti d'une sous partie du formulaire
             $children = $this->getChildren();
             foreach ($children as $child) {
                 if ($child instanceof OSContainer) {
-                    $this->propageForm($objet, $child, $this);
+                    $this->propageRequire($objet, $child, $this);
                 }
             }
         }
@@ -105,6 +106,7 @@ class OSForm extends OSContainer
                 unset($properties['requireChildren'][$key]);
             }
             $this->setProperties($properties);
+            $child->setForm($this->getId());
             return $this;
         }
         return false;
@@ -309,7 +311,7 @@ class OSForm extends OSContainer
         return ((!empty($properties['requireChildren'])) ? $properties['requireChildren'] : false) ;
     }
 
-    private function propageForm(ODContained $objet, OSContainer $Ochild, OSForm $form)
+    private function propageRequire(ODContained $objet, OSContainer $Ochild, OSForm $form)
     {
         if ($Ochild->isChild($objet->getId())) {
             $properties = $form->getProperties();
@@ -318,13 +320,17 @@ class OSForm extends OSContainer
                 $properties['requireChildren'][] = $objet->getId();
             }
             $form->setProperties($properties);
+            $ret = true;
         } else {
             $children = $Ochild->getChildren();
             foreach ($children as $child) {
                 if ($child instanceof OSContainer) {
-                    $this->propageForm($objet, $child, $form);
+                    $ret = $this->propageForm($objet, $child, $form);
+                    if ($ret) { break; }
                 }
             }
         }
+        if (!isset($ret)) { $ret = false; }
+        return $ret;
     }
 }
