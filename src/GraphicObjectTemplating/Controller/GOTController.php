@@ -77,19 +77,21 @@ class GOTController extends AbstractActionController
                                         $idF = substr($item, 3);
                                         break;
                                     case (strpos($item, 'value=') !== false):
-                                        $value = substr($item, 6);
-                                        if ($value[0] === '*') { $value = substr($value, 1); }
-                                        if ((strlen($value) > 2 && $value[strlen($value) - 1] === '*') || ($value === '*')) {
-                                            $value = substr($value, 0,  -1);
+                                        $val = substr($item, 6);
+                                        if ($val[0] === '*') { $val = substr($val, 1); }
+                                        if ((strlen($val) > 1 && $val[strlen($val) - 1] === '*') || ($val === '*')) {
+                                            $val = substr($val, 0,  -1);
                                             break;
                                         }
                                 }
-                                if (isset($idF, $value)) {
+                                if (isset($idF, $val)) {
                                     /** @var ODContained $obj */
                                     $obj = OObject::buildObject($idF);
-                                    $obj->convertValue($value);
-                                    $value = $obj->getConverted();
-                                    $formDatas[$idF] = $value;
+                                    $obj->convertValue($val);
+                                    $val = $obj->getConverted();
+                                    $formDatas[$idF] = $val;
+                                    unset($idF);
+                                    unset($val);
                                 }
                             }
                         }

@@ -7,7 +7,8 @@ use GraphicObjectTemplating\Objects\ODContained;
 /**
  * Class ODSelect
  * @package GraphicObjectTemplating\Objects\ODContained
- * 
+ *
+ * setInvite($libel, $selected = false, $enable = true)
  * addOption($value, $libel, $selected = false, $enable = true)
  * removeOption($value)
  * clearOptions()
@@ -47,19 +48,36 @@ class ODSelect extends ODContained
         return $this;
     }
 
+    public function setInvite($libel, $selected = false, $enable = true)
+    {
+        $libel    = (string) $libel;
+        $selected = (bool) $selected;
+        $enable   = (bool) $enable;
+
+        $item = [];
+        $item['libel'] = $libel;
+        $item['select'] = $selected;
+        $item['enable'] = $enable;
+        $properties = $this->getProperties();
+        $properties['invit'] = $item;
+        $this->setProperties($properties);
+        return $this;
+    }
+
     public function addOption($value, $libel, $selected = false, $enable = true)
     {
         $libel    = (string) $libel;
         $selected = (bool) $selected;
         $enable   = (bool) $enable;
-        
+
         $properties = $this->getProperties();
         if (!array_key_exists('options', $properties)) $properties['options'] = [];
         $item = [];
         $item['libel'] = $libel;
         $item['select'] = $selected;
         $item['enable'] = $enable;
-        $properties['options'][$value] = $item;
+        if (!empty($value)) { $properties['options'][$value] = $item; }
+        else { $properties['options']['invit'] = $item; }
         $this->setProperties($properties);
         return $this;
     }

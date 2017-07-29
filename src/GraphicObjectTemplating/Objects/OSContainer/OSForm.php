@@ -59,22 +59,25 @@ class OSForm extends OSContainer
     }
     
     public function addChild(OObject $child, $required = false) {
+        $properties = $this->getProperties();
         if ($child instanceof ODContained) {
-            $child->setForm($this->getId());
-            $properties = $this->getProperties();
-            if (empty($properties['childrenIdent']))   { $properties['childrenIdent'] = []; }
             if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
-            $properties['childrenIdent'][] = $child->getId();
-            if ($required) {
+            if ($required && !in_array($child->getId(), $properties['requireChildren'])) {
                 $properties['requireChildren'][] = $child->getId();
             }
-            $this->setProperties($properties);
+            $properties = $this->propageForm($child);
+        } elseif ( $child instanceof OSContainer) {
+            $children = $child->getChildren();
+            foreach ($children as $Ichild) {
+                $properties = $this->propageForm($Ichild);
+            }
         }
+        $this->setProperties($properties);
         parent::addChild($child);
         return $this;
     }
 
-    public function enaRequeredChild(ODContained $objet)
+    public function setRequeredChild(ODContained $objet)
     {
         if ($this->isChild($objet->getId())) {
             $properties = $this->getProperties();
@@ -97,7 +100,7 @@ class OSForm extends OSContainer
         return false;
     }
 
-    public function disRequeredChild(OObject $child)
+    public function rmRequeredChild(OObject $child)
     {
         if ($this->isChild($child->getId())) {
             $properties = $this->getProperties();
@@ -276,7 +279,7 @@ class OSForm extends OSContainer
 		    $obj = OObject::buildObject($childId);
 			if ( $obj->getTypeObj() === 'odcontained') { $fieldsIdentifers[] = $childId; }
 			else {
-			    $nFieldsIdentifers = $this->getFieldsIdentifers($obj);
+			    $nFieldsIdentifers = $this->getFieldsIdentifers($obj->getId());
                 foreach ($nFieldsIdentifers as $nFieldsIdentifer) {
                     array_push($fieldsIdentifers, $nFieldsIdentifer);
 			    }
@@ -325,12 +328,30 @@ class OSForm extends OSContainer
             $children = $Ochild->getChildren();
             foreach ($children as $child) {
                 if ($child instanceof OSContainer) {
-                    $ret = $this->propageForm($objet, $child, $form);
+                    $ret = $this->propageRequire($objet, $child, $form);
                     if ($ret) { break; }
                 }
             }
         }
         if (!isset($ret)) { $ret = false; }
         return $ret;
+    }
+
+    private function propageForm(OObject $objet)
+    {
+        $properties = $this->getProperties();
+        if ($objet instanceof ODContained) {
+            $objet->setForm($this->getId());
+            if (empty($properties['childrenIdent']))   { $properties['childrenIdent'] = []; }
+            if (!in_array($objet->getId(), $properties['childrenIdent'])) {
+                $properties['childrenIdent'][] = $objet->getId();
+            }
+        } elseif ( $objet instanceof OSContainer) {
+            $children = $objet->getChildren();
+            foreach ($children as $child) {
+                $properties = $this->propageForm($child);
+            }
+        }
+        return $properties;
     }
 }

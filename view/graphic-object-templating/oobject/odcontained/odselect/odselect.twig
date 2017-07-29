@@ -96,6 +96,14 @@
         {% elseif objet.select2 == true and objet.placeholder is not empty %}
             <option value=""></option>
         {% endif %}
+        {% if objet.invit is not empty %}
+            {% set options = objet.invit %}
+            <option value=""
+                    {% if options.select %} selected {% endif %}
+                    {% if options.enable == false %} disabled {% endif %}>
+                {{ options.libel }}
+            </option>
+        {% endif %}
         {% for value, options in objet.options %}
             <option value="{{ value }}"
                     {% if options.select %} selected {% endif %}
