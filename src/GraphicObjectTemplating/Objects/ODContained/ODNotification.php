@@ -44,10 +44,10 @@ class ODNotification extends ODContained
     const POSITION_TR   = 'top right';
     const POSITION_TL   = 'top left';
 
-    const TYPE_INFO     = 'info';
-    const TYPE_SUCCESS  = 'success';
-    const TYPE_WARNING  = 'warning';
-    const TYPE_ERROR    = 'error';
+    const TYPEN_INFO     = 'info';
+    const TYPEN_SUCCESS  = 'success';
+    const TYPEN_WARNING  = 'warning';
+    const TYPEN_ERROR    = 'error';
     
     const SIZE_MINI     = 'mini';
     const SIZE_NORMAL   = 'normal';
