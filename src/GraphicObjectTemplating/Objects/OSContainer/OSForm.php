@@ -237,7 +237,7 @@ class OSForm extends OSContainer
 
     public function isValid()
     {
-        $valid = true;
+        $valid = "";
 
         /* validation présence des champs requis */
         $requiredChildren = $this->getRequiredChildren();
@@ -249,17 +249,16 @@ class OSForm extends OSContainer
                     $allRequired = false;
                 }
             }
-            $valid = $valid && $allRequired;
+            $valid = ($allRequired) ? '' : 'empty';
         }
-        /* validation par la méthode callback de validation des données */
-        if ($valid) {
+        /* validation par la méthode callback (métier) de validation des données */
+        if (empty($valid)) {
             $validMethod = $this->getValidMethod();
             if ($validMethod !== false) {
                 $validMethod = explode('§', $validMethod);
                 $object = new $validMethod[0];
-                $result = call_user_func_array(array($object, $validMethod[1]),
+                $valid = call_user_func_array(array($object, $validMethod[1]),
                     array( $datas));
-                $valid = $valid && $result;
             }
         }
         return $valid;
