@@ -80,15 +80,15 @@
                 {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
             {% endif %}
 
+            data-class="GraphicObjectTemplating\Objects\ODContained\ODSelect" data-method="dispatchEvents"
             {% if objet.event is not empty %}
-                {% set allEvt = '' %}
                 {% for evt, callback in objet.event %}
-                    {% set allEvt = allEvt ~ evt ~ ", " %}
-                    data-{{ evt }}-class ="{{ callback.class }}"
-                    data-{{ evt }}-method ="{{ callback.method }}"
-                    data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+                    {% if 'stopEvent' in callback|keys %}
+                        data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+                    {% endif %}
                 {% endfor %}
-                data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
+            {% else %}
+                data-change-stopevt="NON"
             {% endif %}
     >
         {% if objet.select2 == false and objet.placeholder is not empty %}
@@ -133,15 +133,16 @@
             $("#{{ objet.id }} .select2-selection").addClass("{{ inputClass }}");
             {% endif %}
 
-
-            {% if objet.event is defined and objet.event is not empty %}
-                {% if objet.event is not empty %}
-                {% set events = objet.event %}
-                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
-                {% endif %}
+            {% if objet.events is defined and objet.events is not empty %}
+            {% for evt, callback in objet.event %}
+            $('#{{ objet.id }}').on('change', 'select', function (event) {
+                var datas = odselect_getData($('#{{ objet.id }}'), 'change');
+                invokeAjax(datas, '{{ objet.id }}', 'change', event);
+            });
             {% endif %}
         });
     </script>
+
 
     {% if objet.infoBulle.title is not empty %}
         {% if objet.select2 == false %}

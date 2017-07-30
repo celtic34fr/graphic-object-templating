@@ -3,6 +3,9 @@
 namespace GraphicObjectTemplating\Objects\ODContained;
 
 use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\Service\GotServices;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * Class ODSelect
@@ -31,8 +34,6 @@ use GraphicObjectTemplating\Objects\ODContained;
  * hideSearchBox()
  * setLanguage($language)
  * getLanguage()
- * evtClick(callback)
- * disClick()
  * evtChange(callback)
  * disChange()
  * setLabelWidthBT($widthBT)
@@ -318,26 +319,6 @@ class ODSelect extends ODContained
         return false;
     }
 
-    public function evtClick($class, $method, $stopEvent = true)
-    {
-        $properties = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event'] = [];
-        $properties['event']['click'] = [];
-        $properties['event']['click']['class'] = $class;
-        $properties['event']['click']['method'] = $method;
-        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disClick()
-    {
-        $properties             = $this->getProperties();
-        if (isset($properties['event']['click'])) unset($properties['event']['click']);
-        $this->setProperties($properties);
-        return $this;
-    }
-
     public function evtChange($class, $method, $stopEvent = true)
     {
         $properties = $this->getProperties();
@@ -414,6 +395,41 @@ class ODSelect extends ODContained
     {
         $properties                = $this->getProperties();
         return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
+    }
+
+    public function dispatchEvents(ServiceManager $sm, $params)
+    {
+        /** @var GotServices $gs */
+        $gs = $sm->get('graphic.object.templating.services');
+        $ret    = [];
+        /** @var ODSelect $objet */
+        $objet  = OObject::buildObject($params['id']);
+        $values = $params['value'];
+        $values = explode('$', $values);
+        // sauvegarde de l'état des cases à cocher
+        if (!is_array($values)) { $values = [$values]; }
+        $objet->unselectAll();
+        foreach ($values as $value) {
+            $objet->selOption($value);
+        }
+        $item           = [];
+        $item['id']     = $objet->getId();
+        $item['mode']   = 'update';
+        $item['html']   = $gs->render($objet);
+        $ret[]          = $item;
+
+        // validation et appel de la callback si existe
+        $event      = $this->getEvent('change');
+        $class      = (array_key_exists('class', $event)) ? $event['class'] : "";
+        $method     = (array_key_exists('method', $event)) ? $event['method'] : "";
+        if (!empty($class) && !empty($method)) {
+            $callObj = new $class();
+            $retCallObj = call_user_func_array([$callObj, $method], [$sm, $params]);
+            foreach ($retCallObj as $item) {
+                array_push($ret, $item);
+            }
+        }
+        return [$ret];
     }
 
 }
