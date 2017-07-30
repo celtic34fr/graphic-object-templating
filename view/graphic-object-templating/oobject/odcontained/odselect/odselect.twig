@@ -133,13 +133,10 @@
             $("#{{ objet.id }} .select2-selection").addClass("{{ inputClass }}");
             {% endif %}
 
-            {% if objet.events is defined and objet.events is not empty %}
-            {% for evt, callback in objet.event %}
             $('#{{ objet.id }}').on('change', 'select', function (event) {
                 var datas = odselect_getData($('#{{ objet.id }}'), 'change');
                 invokeAjax(datas, '{{ objet.id }}', 'change', event);
             });
-            {% endif %}
         });
     </script>
 
