@@ -66,7 +66,17 @@
 
     <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
     <table id="{{ objet.id }}_table"  style="width: 100% !important;" class="lno0 cno0" data-lno="0" data-cno="0"
-           data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents">
+           data-class="GraphicObjectTemplating\Objects\ODContained\ODTable" data-method="dispatchEvents"
+            {% if objet.event is not empty %}
+                {% for evt, callback in objet.event %}
+                    {% if 'stopEvent' in callback|keys %}
+                        data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                data-change-stopevt="NON"
+            {% endif %}
+    >
         {% if objet.title is not empty %}
             <caption>{{ objet.title }}</caption>
         {% endif %}
