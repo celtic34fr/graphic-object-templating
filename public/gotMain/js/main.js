@@ -50,24 +50,17 @@ function invokeAjax(datas, idSource, event, e) {
                 });
                 switch (mode) {
                     case "append":
-                    {
                         $("#" + id).append(code);
                         if ($("#" + id).find("#" + id + "Script").length > 0)
                             $.globalEval($("#" + id + "Script").innerText);
                         break;
-                    }
                     case "update":
-                    {
                         var updId = "#" + id;
                         $(updId).replaceWith(code);
                         break;
-                    }
                     case "raz":
-                    {
                         $("#" + id).html("");
                         break;
-                    }
-                        ;
                     case "delete":
                         $("#" + id).remove();
                         break;
@@ -81,8 +74,10 @@ function invokeAjax(datas, idSource, event, e) {
                         break;
                     case "redirect":
                         $(location).attr('href', code);
+                        break;
                     case "goRoute":
                         $(location).attr('href', code);
+                        break;
                     case 'event': // format code : nomEvt|[OUI/NON]
                         var evt = code.substr(0, strpos(code, '|'));
                         var flg = code.substr(strpos(code, '|') + 1);
@@ -95,9 +90,9 @@ function invokeAjax(datas, idSource, event, e) {
         error : function(xhr, textStatus, errorThrown) {
             if (xhr.status === 0) {
                 alert('Not connected. Verify Network.');
-            } else if (xhr.status == 404) {
+            } else if (xhr.status === 404) {
                 alert('Requested page not found. [404]');
-            } else if (xhr.status == 500) {
+            } else if (xhr.status === 500) {
                 alert('Server Error [500].');
             } else if (errorThrown === 'parsererror') {
                 alert('Requested JSON parse failed.');
@@ -262,7 +257,7 @@ function setFormDatas(form, datas) {
 function odbutton_getData(obj, evt) {
     var chps = "id=" + obj.attr("id") + "&value='" + obj.val() + "'";
     var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
+    if (dataEvent === evt) {
         var classe      = obj.attr("data-"+evt+"-class");
         var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
@@ -296,7 +291,7 @@ function odcontent_getData(obj, evt) {
     chps = chps + "&value='" + obj.html() + "'";
     chps = chps + "&type='" + obj.attr('data-objet') + "'";
     var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
+    if (dataEvent === evt) {
         var classe      = obj.attr("data-"+evt+"-class");
         var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
@@ -320,7 +315,7 @@ function odinput_getData(obj, evt) {
     chps = chps + "&value='" + obj.find("input").val() + "'";
     chps = chps + "&type='" + obj.find("input").attr('type') + "'";
     var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
+    if (dataEvent === evt) {
         var classe      = obj.attr("data-"+evt+"-class");
         var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
@@ -339,12 +334,12 @@ function odinput_getData(obj, evt) {
 function odselect_getData(obj, evt) {
     var chps = "id=" + obj.attr("id");
     var selected = [];
-    $.each($("#"+obj.attr('id')+" select options:selected"), function(){
+    $.each($("#"+obj.attr('id')+" select option:selected"), function(){
         selected.push($(this).val());
     });
     chps = chps + "&value='" + selected.join("$") + "'";
     var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
+    if (dataEvent === evt) {
         var classe      = obj.attr("data-"+evt+"-class");
         var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
@@ -422,7 +417,7 @@ function odtoggle_getData(obj, evt) {
         chps = chps + "&value='unchecked'";
     }
     var dataEvent   = obj.attr("data-evt");
-    if (dataEvent == evt) {
+    if (dataEvent === evt) {
         var classe      = obj.attr("data-"+evt+"-class");
         var methode     = obj.attr("data-"+evt+"-method");
         if ((classe.length > 0) && (methode.length >0)) {
@@ -471,7 +466,7 @@ function odinput_setData(id, data) {
  * @param data
  */
 function odselect_setData(id, data) {
-    if (data == "") { // raz des options sélectionnées
+    if (data === "") { // raz des options sélectionnées
         $("#"+ id +" option").removeAttr("selected");
     } else  {
         $.each(data.split("$"), function(ind,val){
@@ -489,10 +484,10 @@ function odselect_setData(id, data) {
 /**
  * méthode odcheckbox_setData
  * @param id
- * @param tabData
+ * @param data
  */
 function odcheckbox_setData(id, data) {
-    if (data == "") { // raz des options sélectionnées
+    if (data === "") { // raz des options sélectionnées
         $("#"+ id +" option").removeAttr("selected");
     } else  {
         if ($.isArray(data)) {
@@ -506,10 +501,10 @@ function odcheckbox_setData(id, data) {
 /**
  * méthode odradio_setData
  * @param id
- * @param tabData
+ * @param data
  */
 function odradio_setData(id, data) {
-    if (data == "") { // raz des options sélectionnées
+    if (data === "") { // raz des options sélectionnées
         $("#"+ id +' .radio input').removeAttr("checked");
     } else  {
         if ($.isArray(tabData)) {
