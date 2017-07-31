@@ -20,16 +20,20 @@ use Zend\Session\Container;
  * getAction()
  * setFormDatas(array $datas) :
  * getFormDatas()         :
- * setValidMethod(OObject $obj, $method)
+ * setValidMethod($obj, $method)
  * getValidMethod()
  * addSubmit($label, $nature, $class, $method, $stopevent = true)
+ * clearSubmits()
+ * setSubmits(array $submits)
+ * getSubmits()
  * isValid()
- * addSubmit($label, $nature, $class, $method)
  * getFieldsIdentifers(string $object = null)
  *
  * méthodes privées
  * getActionsContants()
  * getRequiredChildren()
+ * propageRequire(ODContained $objet, OSContainer $Ochild, OSForm $form)
+ * propageForm(OObject $objet)
  */
 class OSForm extends OSContainer
 {
@@ -65,6 +69,7 @@ class OSForm extends OSContainer
             if ($required && !in_array($child->getId(), $properties['requireChildren'])) {
                 $properties['requireChildren'][] = $child->getId();
             }
+            $this->setProperties($properties);
             $properties = $this->propageForm($child);
         } elseif ( $child instanceof OSContainer) {
             $children = $child->getChildren();
@@ -158,12 +163,16 @@ class OSForm extends OSContainer
         return ((!empty($properties['datas'])) ? $properties['datas'] : false) ;
     }
 
-    public function setValidMethod(OObject $obj, $method)
+    public function setValidMethod($obj, $method)
     {
+	if (is_object($obj)) { 
         $method     = (string) $method;
         $properties = $this->getProperties();
         $properties['validMethod'] = get_class($obj) .'§' . $method;
         $this->setProperties($properties);
+	return $this;
+	}
+	return false;
     }
 
     public function getValidMethod()

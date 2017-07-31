@@ -11,7 +11,6 @@ use Zend\ServiceManager\ServiceManager;
  * Class ODSelect
  * @package GraphicObjectTemplating\Objects\ODContained
  *
- * setInvite($libel, $selected = false, $enable = true)
  * addOption($value, $libel, $selected = false, $enable = true)
  * removeOption($value)
  * clearOptions()
@@ -49,22 +48,6 @@ class ODSelect extends ODContained
         return $this;
     }
 
-    public function setInvite($libel, $selected = false, $enable = true)
-    {
-        $libel    = (string) $libel;
-        $selected = (bool) $selected;
-        $enable   = (bool) $enable;
-
-        $item = [];
-        $item['libel'] = $libel;
-        $item['select'] = $selected;
-        $item['enable'] = $enable;
-        $properties = $this->getProperties();
-        $properties['invit'] = $item;
-        $this->setProperties($properties);
-        return $this;
-    }
-
     public function addOption($value, $libel, $selected = false, $enable = true)
     {
         $libel    = (string) $libel;
@@ -77,9 +60,11 @@ class ODSelect extends ODContained
         $item['libel'] = $libel;
         $item['select'] = $selected;
         $item['enable'] = $enable;
-        if (!empty($value)) { $properties['options'][$value] = $item; }
-        else { $properties['options']['invit'] = $item; }
-        $this->setProperties($properties);
+        if (!empty($value)) {
+            $properties['options'][$value] = $item;
+            $this->setProperties($properties);
+        }
+        else { $this->setPlaceholder($libel); }
         return $this;
     }
 
@@ -412,11 +397,6 @@ class ODSelect extends ODContained
         foreach ($values as $value) {
             $objet->selOption($value);
         }
-        $item           = [];
-        $item['id']     = $objet->getId();
-        $item['mode']   = 'update';
-        $item['html']   = $gs->render($objet);
-        $ret[]          = $item;
 
         // validation et appel de la callback si existe
         $event      = $this->getEvent('change');

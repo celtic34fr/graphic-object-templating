@@ -21,15 +21,22 @@
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}"
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
+
+     data-class="GraphicObjectTemplating\Objects\ODContained\ODSelect" data-method="dispatchEvents"
+        {% if objet.event is not empty %}
+            {% for evt, callback in objet.event %}
+                {% if 'stopEvent' in callback|keys %}
+                    data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            data-change-stopevt="NON"
+        {% endif %}
 >
 
     <style>
-        #
-        {{ objet.id }}
-        {
-            display:
-        {{ objet.display }}
-        ;
+        #{{ objet.id }} {
+            display:{{ objet.display }};
         {% if objet.style is not empty %}
         {{ objet.style | raw }}
         {% endif %}
@@ -49,12 +56,8 @@
         {% set placement = objet.infoBulle.placement %}
         {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
-        #
-        {{ id }}
-        {
-            border: solid 2px #
-        {{ erreur.color }}
-        ;
+        #{{ id }} {
+            border: solid 2px #{{ erreur.color }};
         }
         {% endif %}
 
@@ -80,34 +83,17 @@
                 {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
             {% endif %}
 
-            data-class="GraphicObjectTemplating\Objects\ODContained\ODSelect" data-method="dispatchEvents"
-            {% if objet.event is not empty %}
-                {% for evt, callback in objet.event %}
-                    {% if 'stopEvent' in callback|keys %}
-                        data-{{ evt }}-stopevt ="{{ callback.stopEvent }}"
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                data-change-stopevt="NON"
-            {% endif %}
     >
         {% if objet.select2 == false and objet.placeholder is not empty %}
-            <option value="" selected data-default disabled>{{ objet.placeholder }}</option>
+            <option class="disabled" value="">{{ objet.placeholder }}</option>
         {% elseif objet.select2 == true and objet.placeholder is not empty %}
             <option value=""></option>
         {% endif %}
-        {% if objet.invit is not empty %}
-            {% set options = objet.invit %}
-            <option value=""
-                    {% if options.select %} selected {% endif %}
-                    {% if options.enable == false %} disabled {% endif %}>
-                {{ options.libel }}
-            </option>
-        {% endif %}
         {% for value, options in objet.options %}
+            {{ dump(options) }}
             <option value="{{ value }}"
-                    {% if options.select %} selected {% endif %}
-                    {% if options.enable == false %} disabled {% endif %}>
+                    {% if options.select == true %} selected="selected" {% endif %}
+                    {% if options.enable == false %} disabled="disabled" {% endif %}>
                 {{ options.libel }}
             </option>
         {% endfor %}
