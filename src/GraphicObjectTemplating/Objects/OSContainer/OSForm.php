@@ -244,7 +244,7 @@ class OSForm extends OSContainer
         $reset->setLabel($label);
     }
 
-    public function isValid()
+    public function isValid($sm)
     {
         $valid = "";
 
@@ -267,7 +267,7 @@ class OSForm extends OSContainer
                 $validMethod = explode('§', $validMethod);
                 $object = new $validMethod[0];
                 $valid = call_user_func_array(array($object, $validMethod[1]),
-                    array( $datas));
+                    array($sm, $datas));
             }
         }
         return $valid;
