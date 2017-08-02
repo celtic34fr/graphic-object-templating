@@ -6,8 +6,6 @@ use GraphicObjectTemplating\Objects\ODContained;
 use GraphicObjectTemplating\Objects\ODContained\ODButton;
 use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
-use Zend\InputFilter\InputFilter;
-use Zend\Session\Container;
 
 /**
  * Class OSForm
@@ -297,21 +295,13 @@ class OSForm extends OSContainer
 		return $fieldsIdentifers;
     }
 
-    public function clearForm($obj = null)
+    public function clearForm()
     {
-        if (empty($obj)) {
-            $fields = $this->getFieldsIdentifers();
-        } else {
-            $fields = $obj->getFieldsIdentifers();
-        }
+        $fields = $this->getFieldsIdentifers();
         foreach ($fields as $field) {
-            /** @var OObject $objet */
+            /** @var ODContained $objet */
             $objet = OObject::buildObject($field);
-            if ($objet instanceof ODContained) {
-                $objet->setValue(null);
-            } else {
-                $this->clearForm($objet);
-            }
+            $objet->setValue(null);
         }
     }
 
