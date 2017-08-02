@@ -28,6 +28,7 @@ use Zend\Session\Container;
  * getSubmits()
  * isValid()
  * getFieldsIdentifers(string $object = null)
+ * clearForm()
  *
  * méthodes privées
  * getActionsContants()
@@ -294,6 +295,24 @@ class OSForm extends OSContainer
 			}
 		}
 		return $fieldsIdentifers;
+    }
+
+    public function clearForm($obj = null)
+    {
+        if (empty($obj)) {
+            $fields = $this->getFieldsIdentifers();
+        } else {
+            $fields = $obj->getFieldsIdentifers();
+        }
+        foreach ($fields as $field) {
+            /** @var OObject $objet */
+            $objet = OObject::buildObject($field);
+            if ($objet instanceof ODContained) {
+                $objet->setValue(null);
+            } else {
+                $this->clearForm($objet);
+            }
+        }
     }
 
     /*
