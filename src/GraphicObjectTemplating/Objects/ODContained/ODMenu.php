@@ -266,12 +266,26 @@ class ODMenu extends ODContained
         return false;
     }
 
-    private function removeMenuItem($menuTre, $idPath)
+    private function removeMenuItem($menuTree, $idPath)
     {
         if (!empty($idPath)) {
             $localPath                   = $idPath[0];
             unset($idPath[0]);
             if (!empty($idPath)) {
+                $menuTree[$localPath] = $this->removeSubTree($menuTree[$localPath], $idPath);
+            } else {
+                if (isset($menuTree[$localPath]['dropdown'])) unset($menuTree[$localPath]['dropdown']);
+            }
+        }
+        return $menuTree;
+    }
+
+    private function removeSubTree($tree, $tmpPath)
+    {
+        if (!empty($tmpPath)) {
+            $localPath                   = $tmpPath[0];
+            unset($tmpPath[0]);
+            if (!empty($tmpPath)) {
                 $tree[$localPath] = $this->removeSubTree($tree[$localPath], $tmpPath);
             } else {
                 if (isset($tree[$localPath]['dropdown'])) unset($tree[$localPath]['dropdown']);
