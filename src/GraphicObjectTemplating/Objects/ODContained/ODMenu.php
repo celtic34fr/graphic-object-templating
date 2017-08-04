@@ -203,7 +203,7 @@ class ODMenu extends ODContained
         $refArray = ['id', 'label', 'icon', 'badge', 'link', 'target', 'state'];
         foreach ($refArray as $ref) { if (!array_key_exists($ref, $item)) { $item[$ref] = ""; } }
         foreach ($item as $key => $value) {
-            if (!array_key_exists(strtolower($key), $refArray)) { return false; }
+            if (!in_array(strtolower($key), $refArray)) { return false; }
             $aRetour[strtolower($key)] = $value;
         }
         return $aRetour;

@@ -33,6 +33,7 @@
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
+            {{ dump(objet.dataTree) }}
             {% for menus in objet.dataTree %}
                 {{ menuMacro.afficheLeaf(menus) }}
             {% endfor %}
