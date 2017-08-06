@@ -1,15 +1,16 @@
 <?php
 return [
-    "object"     => "odmenu",
-    "typeObj"    => "odcontained",
-    "template"   => "odmenu.twig",
+    'object'     => 'odmenu',
+    'typeObj'    => 'odcontained',
+    'template'   => 'odmenu.twig',
 
-    "dataTree"       => [],
-    "dataPath"       => [],
-    "activMenu"      => '',
+    'dataTree'       => [],
+    'dataPath'       => [],
+    'activMenu'      => '',
+    'title'          => '',
 
-    "resources" => [
-        "css" => [],
-        "js"  => [],
+    'resources' => [
+        'css' => [],
+        'js'  => [],
     ]
 ];
