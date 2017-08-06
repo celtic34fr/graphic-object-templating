@@ -2,11 +2,15 @@
 
 {% macro afficheLeaf(menu, active) %}
     {% if menu.dropdown is empty %}
+        {% if substr(menu.id, 0, 7) == 'divider' %}
+    <li class="divider"></li>
+        {% else %}
     <li class="{% if active == menu.id %}active{% endif %}">
         <a href="{{ menu.link | escape }}">
             {{ menu.label }}
         </a>
     </li>
+        {% endif %}
     {% else %}
         <li class="dropdown {% if active == menu.id %}active{% endif %}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
@@ -19,16 +23,6 @@
             </ul>
         </li>
     {% endif %}
-
-    {#% if menu.dropdown is not defined or menu.dropdown is empty %}
-        <li {% if active is not empty %}class="active" {% endif %}>
-            <a href="{{ menu.link | escape }}"><b class="caret"></b>
-                <ul class="dropdown-menu">
-                    {{ menuMacro.afficheLeaf(menu.dropdown) }}
-                </ul>
-            </a>
-        </li>
-    {% endif %#}
 {% endmacro %}
 
 
