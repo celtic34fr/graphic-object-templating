@@ -17,6 +17,8 @@ use graphicObjectTEmplating\Objects\OObject;
  * setActivMenu($idMenu)
  * clearActivMenu()
  * geBreadcrumbsDatas()
+ * setTitle($title)
+ * getTitle()
  */
 class ODMenu extends ODContained
 {
@@ -98,7 +100,7 @@ class ODMenu extends ODContained
     public function getMenuPath($idMenu)
     {
         $properties = $this->getProperties();
-        $menusPath  = $properties('dataPath');
+        $menusPath  = $properties['dataPath'];
         if (array_key_exists($idMenu, $menusPath)) {
             return $menusPath[$idMenu];
         }
@@ -194,6 +196,21 @@ class ODMenu extends ODContained
             return $arrayDatas;
         }
         return false;
+    }
+
+    public function setTitle($title)
+    {
+        $title = (string) $title;
+        $properties = $this->getProperties();
+        $properties['title'] = $title;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['title'])) ? $properties['title'] : false) ;
     }
 
 

@@ -1,9 +1,26 @@
 {# template de l'objet ODMenu #}
-{% import _self as menuMacro %}
 
-{% macro afficheLeaf(menu) %}
-    {% set active = (menu.active) ? 'active' : '' %}
-    {% if menu.dropdown is not defined or menu.dropdown is empty %}
+{% macro afficheLeaf(menu, active) %}
+    {% if menu.dropdown is empty %}
+    <li class="{% if active == menu.id %}active{% endif %}">
+        <a href="{{ menu.link | escape }}">
+            {{ menu.label }}
+        </a>
+    </li>
+    {% else %}
+        <li class="dropdown {% if active == menu.id %}active{% endif %}">
+            <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
+                {{ menu.label }}<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                {% for tMenu in menu.dropdown %}
+                {{ _self.afficheLeaf(tMenu, active) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+
+    {#% if menu.dropdown is not defined or menu.dropdown is empty %}
         <li {% if active is not empty %}class="active" {% endif %}>
             <a href="{{ menu.link | escape }}"><b class="caret"></b>
                 <ul class="dropdown-menu">
@@ -11,10 +28,12 @@
                 </ul>
             </a>
         </li>
-    {% endif %}
+    {% endif %#}
 {% endmacro %}
 
+
 <nav id="{{ objet.id }}" class="navbar navbar-default" role="navigation">
+    {% set active = objet.activMenu %}
     <style>
         {% if objet.style is not empty %}
         #{{ objet.id }} {
@@ -30,12 +49,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
+        {% if objet.title is not empty %}
+        <a class="navbar-brand" href="#" target="_blank">{{ objet.title }}</a>
+        {% endif %}
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
-            {{ dump(objet.dataTree) }}
             {% for menus in objet.dataTree %}
-                {{ menuMacro.afficheLeaf(menus) }}
+                {{ _self.afficheLeaf(menus, active) }}
             {% endfor %}
         </ul>
     </div>
