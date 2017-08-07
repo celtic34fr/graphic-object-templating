@@ -1,6 +1,9 @@
 {# template de l'objet ODMenu #}
 
-{% macro afficheLeaf(menu, active) %}
+{% macro afficheLeaf(menu, active, level) %}
+    {% if level is null %}
+        {% set level = 0 %}
+    {% endif %}
     {% if menu.dropdown is empty %}
         {% if substr(menu.id, 0, 7) == 'divider' %}
     <li class="divider"></li>
@@ -12,13 +15,14 @@
     </li>
         {% endif %}
     {% else %}
-        <li class="dropdown {% if active == menu.id %}active{% endif %}">
+        <li class="dropdown {% if active == menu.id %}active{% endif %}
+                   {% if level > 1 %}dropdown-submenu{% endif %}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
                 {{ menu.label }}<b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
                 {% for tMenu in menu.dropdown %}
-                {{ _self.afficheLeaf(tMenu, active) }}
+                {{ _self.afficheLeaf(tMenu, active, level + 1) }}
                 {% endfor %}
             </ul>
         </li>
