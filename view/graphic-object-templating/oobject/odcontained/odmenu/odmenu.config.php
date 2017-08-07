@@ -10,7 +10,7 @@ return [
     'title'          => '',
 
     'resources' => [
-        'css' => [],
-        'js'  => [],
+        "css" => array( 'odmenu.css' => "css/odmenu.css", ),
+        "js"  => array( 'odmenu.js' => "js/odmenu.js", )
     ]
 ];
