@@ -52,11 +52,14 @@ class ODMenu extends ODContained
         $dataTree       = $properties['dataTree'];
         if (!array_key_exists($item['id'], $dataPath)) {
             if (!empty($parent)) {
+                $tmpPath = $dataPath[$parent];
                 $dataPath[$item['id']] = $dataPath[$parent] .".". $item['id'];
             } else {
+                $tmpPath = "";
                 $dataPath[$item['id']] = $item['id'];
             }
-            $dataTree = $this->insertLeaf($dataTree, $dataPath, $item, $parent);
+            $tmpPath = explode('.', $tmpPath);
+            $dataTree = $this->insertLeaf($dataTree, $tmpPath, $item);
 
             $properties['dataPath'] = $dataPath;
             $properties['dataTree'] = $dataTree;
@@ -226,20 +229,15 @@ class ODMenu extends ODContained
         return $aRetour;
     }
 
-    private function insertLeaf($tree, $path, $item, $parent = null)
+    private function insertLeaf($tree, $path, $item)
     {
-        switch (true) {
-            case ($parent == null) :
-                $tree[$item['id']] = $item;
-                break;
-            case ($parent != null) :
-                $tmpPath = $path[$parent];
-                $tmpPath = explode(".", $tmpPath);
-                $nParent = sizeOf($tmpPath);
-                if (!isset($tree[$parent]['dropdown'])) { $tree[$parent]['dropdown'] = []; }
-                $localPath = ($nParent > 1) ? $tmpPath[$nParent - 2] : null;
-                $tree[$parent]['dropdown'] = $this->insertLeaf($tree[$parent]['dropdown'], $path, $item, $localPath);
-                break;
+        if (!empty($path)) {
+            $localPath = $path[0];
+            unset($path[0]);
+            if (!array_key_exists('dropdown', $tree[$localPath])) { $tree[$loaderPath]['dropdown'] = []; }
+            $tree[$localPath]['dropdown'] = $this->insertLeaf($tree[$localPath]['dropdown'], $path, $item);
+        } else {
+            $tree[$item['id']] = $item;
         }
         return $tree;
     }
