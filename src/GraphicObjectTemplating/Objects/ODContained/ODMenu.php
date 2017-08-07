@@ -54,12 +54,13 @@ class ODMenu extends ODContained
             if (!empty($parent)) {
                 $tmpPath = $dataPath[$parent];
                 $dataPath[$item['id']] = $dataPath[$parent] .".". $item['id'];
+                $tmpPath = explode('.', $tmpPath);
+                $dataTree = $this->insertLeaf($dataTree, $tmpPath, $item);
             } else {
                 $tmpPath = "";
                 $dataPath[$item['id']] = $item['id'];
+                $dataTree[$item['id']] = $item;
             }
-            $tmpPath = explode('.', $tmpPath);
-            $dataTree = $this->insertLeaf($dataTree, $tmpPath, $item);
 
             $properties['dataPath'] = $dataPath;
             $properties['dataTree'] = $dataTree;
@@ -234,7 +235,8 @@ class ODMenu extends ODContained
         if (!empty($path)) {
             $localPath = $path[0];
             unset($path[0]);
-            if (!array_key_exists('dropdown', $tree[$localPath])) { $tree[$loaderPath]['dropdown'] = []; }
+            $path = array_values($path);
+            if (!array_key_exists('dropdown', $tree[$localPath])) { $tree[$localPath]['dropdown'] = []; }
             $tree[$localPath]['dropdown'] = $this->insertLeaf($tree[$localPath]['dropdown'], $path, $item);
         } else {
             $tree[$item['id']] = $item;

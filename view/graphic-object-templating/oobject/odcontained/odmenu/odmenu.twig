@@ -16,9 +16,9 @@
         {% endif %}
     {% else %}
         <li class="dropdown {% if active == menu.id %}active{% endif %}
-                   {% if level > 1 %}dropdown-submenu{% endif %}">
+                   {% if level > 0 %}dropdown-submenu{% endif %}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
-                {{ menu.label }}<b class="caret"></b>
+                {{ menu.label }} {% if level < 1 %}<b class="caret"></b>{% endif %}
             </a>
             <ul class="dropdown-menu">
                 {% for tMenu in menu.dropdown %}
