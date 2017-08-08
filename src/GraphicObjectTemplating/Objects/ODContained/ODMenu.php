@@ -19,6 +19,8 @@ use graphicObjectTEmplating\Objects\OObject;
  * geBreadcrumbsDatas()
  * setTitle($title)
  * getTitle()
+ * setOptionIcon($idOption, $icon)
+ * getOptionIcon($idOption)
  */
 class ODMenu extends ODContained
 {
@@ -309,5 +311,56 @@ class ODMenu extends ODContained
             }
         }
         return $tree;
+    }
+    
+    public function setOptionIcon($idOption, $icon) {
+        $idOption = (string) $idOption;
+        $icon     = (string) $icon;
+        $properties = $this->getProperties();
+        $dataPath   = $properties['dataPath'];
+        $dataTree   = $properties['dataTree'];
+        if (array_key_exists($idOption, $dataPath)) {
+            $paths = $dataPath[$idOption];
+            $paths = explode('.', $paths);
+            $dataTree = $this->affectIcon($paths, $icon, $dataTree);
+        }
+        return false;
+    }
+
+    public function getOptionIcon($idOption)
+    {
+        $properties          = $this->getProperties();
+        $dataPath            = $properties['dataTree'];
+        $idOption = (string) $idOption;
+        if (array_key_exists($idOption, $dataPath)) {
+            $paths = $dataPath[$idOption];
+            $paths = explode('.', $paths);
+            $dataTree = $this->returnOption($paths, $icon, $dataTree);
+        }
+        return false;
+    }
+    
+    private function affectIcon($paths, $icon, $tree) {
+        if (!empty($paths)) {
+            $localPath = $paths[0];
+            unset($paths[0]);
+            $path = array_values($path);
+            $tree[$localPath] = $this->affectIcon($paths, $icon, $tree[$localPath]);
+       } else {
+           $tree['icon'] = $icon;
+       }
+        return $tree;
+    }
+    
+    private function returnOption($paths, $tree) {
+        if (!empty($paths)) {
+            $localPath = $paths[0];
+            unset($paths[0]);
+            $path = array_values($path);
+            $retour = $tree[$localPath] = $this->returnOption($paths, $tree[$localPath]);
+       } else {
+            $retour = $tree;
+       }
+       return $retour;
     }
 }

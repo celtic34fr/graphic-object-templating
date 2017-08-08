@@ -10,7 +10,8 @@
         {% else %}
     <li class="{% if active == menu.id %}active{% endif %}">
         <a href="{{ menu.link | escape }}">
-            {{ menu.label }}
+        {% if menu.icon is not empty %}<i class="{{ menu.icon }}"></i>{% endif %}
+        {{ menu.label }}
         </a>
     </li>
         {% endif %}
