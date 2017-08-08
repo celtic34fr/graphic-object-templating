@@ -10,7 +10,9 @@ use graphicObjectTEmplating\Objects\OObject;
  * @package GraphicObjectTemplating\Objects\ODContained
  *
  * addLeaf(array $item, $parent = null)
+ * setMenuItem($idMenu, array $option)
  * getMenuItem($idMenu)
+ * setMenuPath($idMenu, $optionPath)
  * getMenuPath($idMenu)
  * clearMenu()
  * getActivMenu()
@@ -24,6 +26,13 @@ use graphicObjectTEmplating\Objects\OObject;
  */
 class ODMenu extends ODContained
 {
+    const FILE_ICO = 'ico';
+    const FILE_PNG = 'png';
+    const FILE_GIF = 'gif';
+    const FILE_JPG = 'jpg';
+
+    protected $const_file;
+
     public function __construct($id)
     {
         parent::__construct($id, "oobject/odcontained/odmenu/odmenu.config.php");
@@ -72,6 +81,24 @@ class ODMenu extends ODContained
         return false;
     }
 
+    public function setMenuItem($idMenu, array $option)
+    {
+         $option = $this->validArrayOption($option);
+         if ($option) {
+             $properties = $this->getProperties();
+             $dataTree   = $properties['dataTree'];
+             $dataPath   = $properties['dataPath'];
+             $paths = $dataPath[$idMenu];
+             $paths = explode('.', $paths);
+
+             $dataTree = $this->affectOption($paths, $option, $dataTree);
+             $properties['dataTree'] = $dataTree;
+             $this->setProperties($properties);
+             return $this;
+         }
+         return false;
+    }
+
     public function getMenuItem($idMenu)
     {
         $properties = $this->getProperties();
@@ -101,6 +128,20 @@ class ODMenu extends ODContained
             // $idMenu n'existe pas => anomalie
             return false;
         }
+    }
+
+    public function setMenuPath($idMenu, $optionPath)
+    {
+        $idMenu = (string) $idMenu;
+        $optionPath = (string) $optionPath;
+        $properties = $this->getProperties();
+        $dataPath   = $properties['dataPath'];
+        if (!array_key_exists($idMenu, $dataPath)) { return false; }
+
+        $dataPath[$idMenu] = $optionPath;
+        $properties['dataPath'] = $dataPath;
+        $this->setProperties($properties);
+        return $this;
     }
 
     public function getMenuPath($idMenu)
@@ -219,6 +260,62 @@ class ODMenu extends ODContained
         return ((!empty($properties['title'])) ? $properties['title'] : false) ;
     }
 
+    public function setOptionIcon($idOption, $icon) {
+        $idOption = (string) $idOption;
+        $icon     = (string) $icon;
+        $properties = $this->getProperties();
+        $dataPath   = $properties['dataPath'];
+        $dataTree   = $properties['dataTree'];
+        if (array_key_exists($idOption, $dataPath)) {
+            $paths = $dataPath[$idOption];
+            $paths = explode('.', $paths);
+            $dataTree = $this->affectIcon($paths, $icon, $dataTree);
+            $properties['dataTree'] = $dataTree;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function setOptionImgIco($idOption, $path, $file)
+    {
+        if (substr_count($file, '.') === 1 ) {
+            $ext = mb_strtolower(substr($file, strpos($file, '.') + 1));
+            $exts = $this->getFilesConst();
+            if (in_array($ext, $exts)) {
+                $filePath = $path.'/'.$file;
+                if (file_exists($filePath)) {
+                    $option = $this->getMenuItem($idOption);
+                    if ((is_array($option))) {
+                        $item   = [];
+                        $item['path'] = $path;
+                        $item['file'] = $file;
+                        $option['icon'] = $item;
+                        $this->setMenuItem($idOption, $option);
+
+                        return $this;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getOptionIcon($idOption)
+    {
+        $properties          = $this->getProperties();
+        $dataPath            = $properties['dataPath'];
+        $dataTree            = $properties['dataTree'];
+        $option              = "";
+        $idOption = (string) $idOption;
+        if (array_key_exists($idOption, $dataPath)) {
+            $paths = $dataPath[$idOption];
+            $paths = explode('.', $paths);
+            $option = $this->returnOption($paths, $dataTree);
+        }
+        return (empty($option)) ? false : $option;
+    }
+
 
     private function validArrayOption(array $item)
     {
@@ -312,55 +409,58 @@ class ODMenu extends ODContained
         }
         return $tree;
     }
-    
-    public function setOptionIcon($idOption, $icon) {
-        $idOption = (string) $idOption;
-        $icon     = (string) $icon;
-        $properties = $this->getProperties();
-        $dataPath   = $properties['dataPath'];
-        $dataTree   = $properties['dataTree'];
-        if (array_key_exists($idOption, $dataPath)) {
-            $paths = $dataPath[$idOption];
-            $paths = explode('.', $paths);
-            $dataTree = $this->affectIcon($paths, $icon, $dataTree);
-        }
-        return false;
-    }
 
-    public function getOptionIcon($idOption)
-    {
-        $properties          = $this->getProperties();
-        $dataPath            = $properties['dataTree'];
-        $idOption = (string) $idOption;
-        if (array_key_exists($idOption, $dataPath)) {
-            $paths = $dataPath[$idOption];
-            $paths = explode('.', $paths);
-            $dataTree = $this->returnOption($paths, $icon, $dataTree);
-        }
-        return false;
-    }
-    
     private function affectIcon($paths, $icon, $tree) {
         if (!empty($paths)) {
             $localPath = $paths[0];
             unset($paths[0]);
-            $path = array_values($path);
+            $paths = array_values($paths);
             $tree[$localPath] = $this->affectIcon($paths, $icon, $tree[$localPath]);
-       } else {
-           $tree['icon'] = $icon;
-       }
+        } else {
+            $tree['icon'] = $icon;
+        }
         return $tree;
     }
-    
+
+    private function affectOption($paths, $option, $tree) {
+        if (!empty($paths)) {
+            $localPath = $paths[0];
+            unset($paths[0]);
+            $paths = array_values($paths);
+            $tree[$localPath] = $this->affectOption($paths, $option, $tree[$localPath]);
+        } else {
+            $tree = $option;
+        }
+        return $tree;
+    }
+
     private function returnOption($paths, $tree) {
         if (!empty($paths)) {
             $localPath = $paths[0];
             unset($paths[0]);
-            $path = array_values($path);
+            $paths = array_values($paths);
             $retour = $tree[$localPath] = $this->returnOption($paths, $tree[$localPath]);
        } else {
             $retour = $tree;
        }
        return $retour;
+    }
+
+    private function getFilesConst()
+    {
+        $retour = [];
+        if (empty($this->const_nature)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'FILE');
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
+            }
+            $this->const_file = $retour;
+        } else {
+            $retour = $this->const_file;
+        }
+        return $retour;
     }
 }
