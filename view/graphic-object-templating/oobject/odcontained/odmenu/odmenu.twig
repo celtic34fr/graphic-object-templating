@@ -24,8 +24,7 @@
             {% if menu.icon is not empty %}
                 {% if menu.icon is not iterable %}
                 <i class="{{ menu.icon }}"></i>
-                {% endif %}
-            {% else %}
+                {% else %}
                 <style>
                     .{{ menu.id}}Ico:before{
                         content: '';
@@ -38,6 +37,7 @@
                     }
                 </style>
                 <i class="icoImg {{ menu.id}}Ico"></i>
+                {% endif %}
             {% endif %}
             {{ menu.label }}
             </a>
@@ -47,6 +47,24 @@
         <li class="dropdown {% if active == menu.id %}active{% endif %}
         {% if level > 0 %}dropdown-submenu{% endif %}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
+                {% if menu.icon is not empty %}
+                    {% if menu.icon is not iterable %}
+                        <i class="{{ menu.icon }}"></i>
+                    {% else %}
+                    <style>
+                        .{{ menu.id}}Ico:before{
+                            content: '';
+                            background:url('http://{{ menu.icon.path }}/{{ menu.icon.file }}');
+                            background-size:cover;
+                            position:absolute;
+                            width:20px;
+                            height:20px;
+                            margin-left:-20px;
+                        }
+                    </style>
+                    <i class="icoImg {{ menu.id}}Ico"></i>
+                    {% endif %}
+                {% endif %}
                 {{ menu.label }} {% if level < 1 %}<b class="caret"></b>{% endif %}
             </a>
             <ul class="dropdown-menu">
