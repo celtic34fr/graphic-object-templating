@@ -17,9 +17,9 @@
 
     {% if menu.dropdown is empty %}
         {% if substr(menu.id, 0, 7) == 'divider' %}
-            <li id="{{menu.id}}" class="divider" data-level="{{level}}"></li>
+            <li id="{{menu.id}}" class="divider level{{level}}"></li>
         {% else %}
-            <li id="{{menu.id}}" class="{% if active == menu.id %}active{% endif %}" data-level="{{level}}">
+            <li id="{{menu.id}}" class="{% if active == menu.id %}active{% endif %} level{{level}}">
                 <a href="{{ menu.link | escape }}">
             {% if menu.icon is not empty %}
                 {% if menu.icon is not iterable %}
@@ -45,7 +45,7 @@
         {% endif %}
     {% else %}
         <li id="{{menu.id}}" class="dropdown {% if active == menu.id %}active{% endif %}
-        {% if level > 0 %}dropdown-submenu{% endif %}" data-level="{{level}}">
+        {% if level > 0 %}dropdown-submenu{% endif %} level{{level}}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
                 {% if menu.icon is not empty %}
                     {% if menu.icon is not iterable %}
@@ -115,13 +115,7 @@
 {% if objet.inconTitle == true  %}{% set classIcon  = 'block iconX2'%}{% endif %}
 <script>
     $(document).ready(function(){
-        $("li[data-level='0'] a span.labelM :first-child").each(function(){
-            console.log($(this));
-            $(this).addClass('{{classLabel}}');
-        });
-        $("li[data-level='0'] a  i.iconM :first-child").each(function(){
-            console.log($(this));
-            $(this).addClass('{{classIcon}}');
-        });
+        $("li.level0 > a > span.labelM").addClass('{{classLabel}}');
+        $("li.level0 > a > i.iconM").addClass('{{classIcon}}');
     });
 </script>        
