@@ -8,6 +8,8 @@ return [
     'dataPath'       => [],
     'activMenu'      => '',
     'title'          => '',
+    'labelTitle'     => true,
+    'iconTitle'      => false,
 
     'resources' => [
         "css" => array( 'odmenu.css' => "css/odmenu.css", ),
