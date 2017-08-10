@@ -115,11 +115,11 @@
 {% if objet.inconTitle == true  %}{% set classIcon  = 'block iconX2'%}{% endif %}
 <script>
     $(document).ready(function(){
-        $("li[data-level='0'] a span.labelM").each(function(){
+        $("li[data-level='0'] a span.labelM :first-child").each(function(){
             console.log($(this));
             $(this).addClass('{{classLabel}}');
         });
-        $("li[data-level='0'] a  i.iconM").each(function(){
+        $("li[data-level='0'] a  i.iconM :first-child").each(function(){
             console.log($(this));
             $(this).addClass('{{classIcon}}');
         });
