@@ -76,8 +76,10 @@
     {% endif %}
 {% endmacro %}
 
+{% set objClass = '' %}
+{% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
-<nav id="{{ objet.id }}" class="navbar navbar-default" role="navigation">
+<nav id="{{ objet.id }}" class="navbar navbar-default {{ objClass }}" role="navigation">
     {% set active = objet.activMenu %}
     <style>
         {% if objet.style is not empty %}
