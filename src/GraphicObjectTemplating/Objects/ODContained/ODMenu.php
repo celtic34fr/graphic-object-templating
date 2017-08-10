@@ -22,7 +22,10 @@ use graphicObjectTEmplating\Objects\OObject;
  * setTitle($title)
  * getTitle()
  * setOptionIcon($idOption, $icon)
+ * setOptionImgIco($idOption, $path, $file)
  * getOptionIcon($idOption)
+ * setTitleType(boolean $label, boolean $icon)
+ * getTitleType()
  */
 class ODMenu extends ODContained
 {
@@ -314,6 +317,27 @@ class ODMenu extends ODContained
             $option = $this->returnOption($paths, $dataTree);
         }
         return (empty($option)) ? false : $option;
+    }
+
+    public function setTitleType($label = true, $icon = false)
+    {
+        $label = (boolean)$label;
+        $icon  = (boolean)$icon;
+
+        $properties                 = $this->getProperties();
+        $properties['labelTitle']   = $label;
+        $properties['iconTitle']    = $icon;
+        $this->setProperties($properties);
+        return;
+    }
+
+    public function getTitleType()
+    {
+        $properties                 = $this->getProperties();
+        $item = [];
+        $item['label']  = $properties['labelTitle'];
+        $item['icon']   = $properties['iconTitle'];
+        return $item;
     }
 
 
