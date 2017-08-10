@@ -109,10 +109,10 @@
     </div>
 </nav>
 
-{% set classLabel = 'inline' %}
-{% set classIcon  = 'inline' %}
-{% if objet.labelTitle == false %}{% set classLabel = 'nomeDisplay' %}{% endif %}
-{% if objet.inconTitle == true  %}{% set classIcon  = 'block iconX2'%}{% endif %}
+{% set classLabel = 'inlineM' %}
+{% set classIcon  = 'inlineM' %}
+{% if objet.labelTitle == false %}{% set classLabel = 'noneDisplay' %}{% endif %}
+{% if objet.iconTitle == true  %}{% set classIcon  = 'blockM fa-2x'%}{% endif %}
 <script>
     $(document).ready(function(){
         $("li.level0 > a > span.labelM").addClass('{{classLabel}}');
