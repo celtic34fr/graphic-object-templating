@@ -17,13 +17,13 @@
 
     {% if menu.dropdown is empty %}
         {% if substr(menu.id, 0, 7) == 'divider' %}
-            <li class="divider"></li>
+            <li id="{{menu.id}}" class="divider" data-level="{{level}}"></li>
         {% else %}
-            <li class="{% if active == menu.id %}active{% endif %}">
+            <li id="{{menu.id}}" class="{% if active == menu.id %}active{% endif %}" data-level="{{level}}">
                 <a href="{{ menu.link | escape }}">
             {% if menu.icon is not empty %}
                 {% if menu.icon is not iterable %}
-                <i class="{{ menu.icon }}"></i>
+                <i class="iconM {{ menu.icon }}"></i>
                 {% else %}
                 <style>
                     .{{ menu.id}}Ico:before{
@@ -36,20 +36,20 @@
                         margin-left:-20px;
                     }
                 </style>
-                <i class="icoImg {{ menu.id}}Ico"></i>
+                <i class="iconM icoImg {{ menu.id}}Ico"></i>
                 {% endif %}
             {% endif %}
-            {{ menu.label }}
+            <span class="labelM">{{ menu.label }}</span>
             </a>
             </li>
         {% endif %}
     {% else %}
-        <li class="dropdown {% if active == menu.id %}active{% endif %}
-        {% if level > 0 %}dropdown-submenu{% endif %}">
+        <li id="{{menu.id}}" class="dropdown {% if active == menu.id %}active{% endif %}
+        {% if level > 0 %}dropdown-submenu{% endif %}" data-level="{{level}}">
             <a href="{{ menu.link | escape }}" class="dropdown-toggle" data-toggle="dropdown">
                 {% if menu.icon is not empty %}
                     {% if menu.icon is not iterable %}
-                        <i class="{{ menu.icon }}"></i>
+                        <i class="iconM {{ menu.icon }}"></i>
                     {% else %}
                     <style>
                         .{{ menu.id}}Ico:before{
@@ -62,10 +62,10 @@
                             margin-left:-20px;
                         }
                     </style>
-                    <i class="icoImg {{ menu.id}}Ico"></i>
+                    <i class="iconM icoImg {{ menu.id}}Ico"></i>
                     {% endif %}
                 {% endif %}
-                {{ menu.label }} {% if level < 1 %}<b class="caret"></b>{% endif %}
+                <span class="labelM">{{ menu.label }} {% if level < 1 %}<b class="caret"></b>{% endif %}</span>
             </a>
             <ul class="dropdown-menu">
                 {% for tMenu in menu.dropdown %}
@@ -108,3 +108,20 @@
         </ul>
     </div>
 </nav>
+
+{% set classLabel = 'inline' %}
+{% set classIcon  = 'inline' %}
+{% if objet.labelTitle == false %}{% set classLabel = 'nomeDisplay' %}{% endif %}
+{% if objet.inconTitle == true  %}{% set classIcon  = 'block iconX2'%}{% endif %}
+<script>
+    $(document).ready(function(){
+        $("li[data-level='0'] a span.labelM").each(function(){
+            console.log($(this));
+            $(this).addClass('{{classLabel}}');
+        });
+        $("li[data-level='0'] a  i.iconM").each(function(){
+            console.log($(this));
+            $(this).addClass('{{classIcon}}');
+        });
+    });
+</script>        
