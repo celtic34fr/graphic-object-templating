@@ -62,6 +62,15 @@
                            }
         {% endif %}
         {% endfor %}
+
+        .DEBUG{ background-color: #eeeeee; }
+        .INFO { background-color: #baf3fd; }
+        .NOTICE { background-color: #ecfdc8; }
+        .WARNING { background-color: #fdf6b6; }
+        .ERROR { background-color: #fdd3c7; }
+        .CRITICAL { background-color: #fdc4b3; }
+        .ALERT { background-color: #fdc69c; }
+        .EMERGENCY { background-color: #fdb46f; }
     </style>
 
     <input type="hidden" name="selected" id="{{ objet.id }}Select" value="{{ objet.selected }}"/>
@@ -97,10 +106,14 @@
         {% else %}
             {% for lno, data in objet.datas %}
                 {% if data['view'] == true %}
-                    <tr class="line lno{{ lno }}" data-lno="{{ lno }}">
+                    {% set key = 'line' ~ lno %}
+                    {% set lineClasses = objet.classesTab[key] %}
+                    <tr class="line lno{{ lno }} {{ lineClasses }}" data-lno="{{ lno }}">
                         {% for cno, col in data %}
                             {% if objet.cols[cno].view == true %}
-                                <td class="col cno{{ cno }}" data-cno="{{ cno }}">{{ col | trim | raw }}</td>
+                                {% set key = 'col' ~ cno %}
+                                {% set colClasses = objet.classesTab[key] %}
+                                <td class="col cno{{ cno }} {{ colClasses }}" data-cno="{{ cno }}">{{ col | trim | raw }}</td>
                             {% endif %}
                         {% endfor %}
                     </tr>

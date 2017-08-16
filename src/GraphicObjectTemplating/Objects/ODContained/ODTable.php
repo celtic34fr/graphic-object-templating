@@ -80,6 +80,14 @@ use Zend\Session\Container;
  * !hideLine(nLine)                        : précise que la ligne nLine ne sera pas affichée
  * !showCol(nCol)                          : précise que la colonne nCol sera affichée
  * !hideCol(nCol)                          : précise que la colonne nCol ne sera pas affichée
+ * addColClass(nCol, class)               : ajout une classe à la liste des classes liées à la colonne nCol
+ * setColClasses(nCol, classes)           : fixe les classes de la colone nCol avec le contenu du tableau classes
+ * getColClasses(nCol)                    : restitue le tableau classes des classes liées à la colonne nCol
+ * clearColClasses(nCol)                  : supprimer toutes les classes liées à la colonne nCol (chaîne vide)
+ * addLineClass(nLine, class)             : ajout une classe à la liste des classes liées à la ligne nLine
+ * setLineClasses(nLine, classes)         : fixe les classes de la ligne nLine avec le contenu du tableau classes
+ * getLineClasses(nLine)                  : restitue le tableau classes des classes liées à la ligne nLine
+ * clearLineClasses(nLine)                : supprimer toutes les classes liées à la colonne nCol (chaîne vide)
  */
 class ODTable extends ODContained
 {
@@ -866,26 +874,6 @@ class ODTable extends ODContained
         return $this;
     }
 
-    /*
-     * méthode interne à la classe OObject
-     */
-
-    private function getTitlePosConstants()
-    {
-        $retour = [];
-        if (empty($this->const_titlePos)) {
-            $constants = $this->getConstants();
-            foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TITLEPOS');
-                if ($pos !== false) $retour[$key] = $constant;
-            }
-            $this->const_titlePos= $retour;
-        } else {
-            $retour = $this->const_titlePos;
-        }
-        return $retour;
-    }
-
     public function showLine($nLine)
     {
         $nLine = (int) $nLine;
@@ -933,6 +921,7 @@ class ODTable extends ODContained
         $this->setProperties($properties);
         return $this;
     }
+
     public function findCellOnValue($value, $noCol = '', $noLine = '')
     {
         $crc = false;
@@ -1043,7 +1032,6 @@ class ODTable extends ODContained
         }
     }
 
-
     public function clearAllStyles()
     {
         $properties = $this->getProperties();
@@ -1088,6 +1076,134 @@ class ODTable extends ODContained
         return $this;
     }
 
+    public function addColClass($nCol, $class)
+    {
+        $class = (string) $class;
+        $nCol  = (int) $nCol;
+        $properties             = $this->getProperties();
+        $nbCols                 = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (!isset($properties['classesTab']['col'.$nCol])) { $properties['classesTab']['col'.$nCol] = ""; }
+        if (!empty($properties['classesTab']['col'.$nCol])) { $properties['classesTab']['col'.$nCol] .= " "; }
+        $properties['classesTab']['col'.$nCol] .= $class;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setColClasses($nCol, $classes)
+    {
+        if (is_array($classes)) { $classes = implode(" ", $classes); }
+        if (!is_string($classes)) { return false; }
+        $nCol  = (int) $nCol;
+        $properties             = $this->getProperties();
+        $nbCols                 = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (!isset($properties['classesTab']['col'.$nCol])) { $properties['classesTab']['col'.$nCol] = ""; }
+        $properties['classesTab']['col'.$nCol] = $classes;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getColClasses($nCol)
+    {
+        $nCol  = (int) $nCol;
+        $properties             = $this->getProperties();
+        $nbCols                 = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        return (isset($properties['classesTab']['col'.$nCol])) ? $properties['classesTab']['col'.$nCol] : false;
+    }
+
+    public function clearColClasses($nCol)
+    {
+        $nCol  = (int) $nCol;
+        $properties             = $this->getProperties();
+        $nbCols                 = sizeof($properties['cols']);
+        if ($nCol > $nbCols || $nCol < 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (isset($properties['classesTab']['col'.$nCol])) { unset($properties['classesTab']['col'.$nCol]); }
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+
+    public function addLineClass($nLine, $class)
+    {
+        $class = (string) $class;
+        $nLine = (int) $nLine;
+        $properties             = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine > $nbLines|| $nLine< 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (!isset($properties['classesTab']['line'.$nLine])) { $properties['classesTab']['line'.$nLine] = ""; }
+        if (!empty($properties['classesTab']['line'.$nLine])) { $properties['classesTab']['line'.$nLine] .= " "; }
+        $properties['classesTab']['line'.$nLine] .= $class;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setLineClasses($nLine, $classes)
+    {
+        if (is_array($classes)) { $classes = implode(" ", $classes); }
+        if (!is_string($classes)) { return false; }
+        $nLine = (int) $nLine;
+        $properties             = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine > $nbLines|| $nLine< 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (!isset($properties['classesTab']['line'.$nLine])) { $properties['classesTab']['line'.$nLine] = []; }
+        $properties['classesTab']['line'.$nLine] = $classes;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getLineClasses($nLine)
+    {
+        $nLine = (int) $nLine;
+        $properties             = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine > $nbLines|| $nLine< 1) return false;
+        return (isset($properties['classesTab']['line'.$nLine])) ? $properties['classesTab']['line'.$nLine] : false;
+    }
+
+    public function clearLineClasses($nLine)
+    {
+        $nLine = (int) $nLine;
+        $properties             = $this->getProperties();
+        $nbLines = sizeof($properties['datas']);
+        if ($nLine > $nbLines|| $nLine< 1) return false;
+        if (!isset($properties['classesTab'])) { $properties['classesTab'] = []; }
+        if (isset($properties['classesTab']['line'.$nLine])) {
+            $classes = $properties['classesTab'];
+            unset($classes['line'.$nLine]);
+            $properties['classesTab'] = $classes;
+        }
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    /*
+     * méthode interne à la classe OObject
+     */
+
+    private function getTitlePosConstants()
+    {
+        $retour = [];
+        if (empty($this->const_titlePos)) {
+            $constants = $this->getConstants();
+            foreach ($constants as $key => $constant) {
+                $pos = strpos($key, 'TITLEPOS');
+                if ($pos !== false) $retour[$key] = $constant;
+            }
+            $this->const_titlePos= $retour;
+        } else {
+            $retour = $this->const_titlePos;
+        }
+        return $retour;
+    }
 
     private function sortDatas()
     {

@@ -9,6 +9,7 @@ return array(
     'cols'       => array(),
     'datas'      => array(),
     'styles'     => array(),
+    'classesTab' => array(),
     'select'     => array(),
     'event'      => array(),
 );
