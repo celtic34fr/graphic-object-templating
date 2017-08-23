@@ -112,7 +112,7 @@ class OSContainer extends OObject
 				break;
 			case self::MODE_FIRST;
 				$children = $properties['children'];
-				$properties['childre'] = [];
+				$properties['children'] = [];
 				$properties['children'][$child->getId()] =
 					array($child->getId(), $child->getConverted());
 				$properties['children'] = array_merge($properties['children'], $children);
