@@ -28,10 +28,11 @@ use GraphicObjectTemplating\Objects\OObject;
  */
 class OSContainer extends OObject
 {
-	const MODE_LAST = "Last";
-	const MODE_FIRST = "First";
-	const MODE_BEFORE = "Before";
-	const MODE_AFTER = "After";
+	const MODE_LAST     = "Last";
+	const MODE_FIRST    = "First";
+	const MODE_BEFORE   = "Before";
+	const MODE_AFTER    = "After";
+	const MODE_NTH      = "Nth";
 
     public function __construct($id, $adrProperties)
     {
@@ -137,6 +138,20 @@ class OSContainer extends OObject
 					$properties['children'] = $newChildren;
 				}
 				break;
+            case self::MODE_NTH:
+                if (!empty($param) && (int) $param > 0 && (int) $param <= count($properties['children'])) {
+                    $compteur = 0;
+                    $newChildren = [];
+                    foreach ($properties['children'] as $id => $rChild) {
+                        $compteur++;
+                        if ($compteur == (int)$param) {
+                            $newChildren[$child->getId()] =
+                                array($child->getId(), $child->getConverted());
+                        }
+                        $newChildren[$id] = $rChild;
+                    }
+                }
+                break;
 		}
         $this->setProperties($properties);
         return $this;
