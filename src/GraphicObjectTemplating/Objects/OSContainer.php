@@ -28,6 +28,8 @@ use GraphicObjectTemplating\Objects\OObject;
  */
 class OSContainer extends OObject
 {
+	const MODE_LAST = "Last";
+	const MODE_FIRST = "First";
 
     public function __construct($id, $adrProperties)
     {
@@ -101,10 +103,21 @@ class OSContainer extends OObject
         return ((array_key_exists('height', $properties)) ? $properties['height'] : false);
     }
 
-    public function addChild(OObject $child) {
+    public function addChild(OObject $child, $mode = self::MODE_LAST, $param = null) {
         $properties = $this->getProperties();
-        $properties['children'][$child->getId()] =
-            array($child->getId(), $child->getConverted());
+        switch($mode) {
+			case self::MODE_LAST:
+				$properties['children'][$child->getId()] =
+					array($child->getId(), $child->getConverted());
+				break;
+			case self::MODE_FIRST;
+				$children = $properties['children'];
+				$properties['childre'] = [];
+				$properties['children'][$child->getId()] =
+					array($child->getId(), $child->getConverted());
+				$properties['children'] = array_merge($properties['children'], $children);
+				break;
+		}
         $this->setProperties($properties);
         return $this;
     }
