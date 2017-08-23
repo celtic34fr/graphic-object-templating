@@ -30,6 +30,8 @@ class OSContainer extends OObject
 {
 	const MODE_LAST = "Last";
 	const MODE_FIRST = "First";
+	const MODE_BEFORE = "Before";
+	const MODE_AFTER = "After";
 
     public function __construct($id, $adrProperties)
     {
@@ -116,6 +118,24 @@ class OSContainer extends OObject
 				$properties['children'][$child->getId()] =
 					array($child->getId(), $child->getConverted());
 				$properties['children'] = array_merge($properties['children'], $children);
+				break;
+			case self::MODE_BEFORE;
+			case self::MODE_AFTER;
+				if (!empty($param) && OObject::existObject($param) && $this->isChild($param)) {
+					$newChildren = [];
+					foreach ($properties['children'] as $id => $rChild) {
+						if ($id == $param && $mode == self::MODE_BEFORE) {
+							$newChildren[$child->getId()] =
+								array($child->getId(), $child->getConverted());
+						}
+						$newChildren[$id] = $rChild;
+						if ($id == $param && $mode == self::MODE_AFTER) {
+							$newChildren[$child->getId()] =
+								array($child->getId(), $child->getConverted());
+						}
+					}
+					$properties['children'] = $newChildren;
+				}
 				break;
 		}
         $this->setProperties($properties);
