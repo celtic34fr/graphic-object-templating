@@ -150,6 +150,7 @@ class OSContainer extends OObject
                         }
                         $newChildren[$id] = $rChild;
                     }
+                    $properties['children'] = $newChildren;
                 }
                 break;
 		}
