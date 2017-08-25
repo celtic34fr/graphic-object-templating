@@ -9,7 +9,7 @@ use GraphicObjectTemplating\Service\GotServices;
 use GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension;
 use GraphicObjectTemplating\Twig\Extension\GotTwigExtension;
 use GraphicObjectTemplating\Twig\Extension\LayoutExtension;
-use Zend\Mvc\Router\Http\Literal;
+use Zend\Router\Http\Literal;
 
 return array(
 
@@ -42,17 +42,20 @@ return array(
     ),
 
     'view_manager' => array(
+        'template_map' => [
+            'addons/macroLayout'      => __DIR__ . '/../view/addons/macroLayout.twig',
+        ],
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
     ),
 
-    'zfctwig' => array(
+/*    'zfctwig' => array(
         'extensions' => array(
             LayoutExtension::class,
             ColorConverterTwigExtension::class,
             GotTwigExtension::class,
         ),
-    ),
+    ),*/
 
 );

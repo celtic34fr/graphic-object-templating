@@ -2,6 +2,8 @@
 namespace GraphicObjectTemplating\Twig\Extension;
 
 
+use Twig_Filter;
+
 class ColorConverterTwigExtension extends \Twig_Extension
 {
 
@@ -13,11 +15,11 @@ class ColorConverterTwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'hexToRgb' => new \Twig_Filter_Method($this, 'hexToRgb'),
+            new Twig_Filter('hexToRgb', [$this, 'twigFilter_convert_hexToRgb']),
         );
     }
 
-    public function hexToRgb($hex, $returnAsArray = false)
+    public function twigFilter_convert_hexToRgb($hex, $returnAsArray = false)
     {
 
 	    $hex = str_replace("#", "", $hex);

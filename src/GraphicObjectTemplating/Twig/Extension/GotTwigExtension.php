@@ -3,16 +3,17 @@
 namespace GraphicObjectTemplating\Twig\Extension;
 
 use Twig_Extension;
+use Twig_Filter;
 
 class GotTwigExtension extends Twig_Extension
 {
     public function getFilters() {
         return array(
-            'urlresource'       => new \Twig_Filter_Method($this, 'getUrlResource'),
+            new Twig_Filter('urlresource', [$this, 'twigFilter_urlresource']),
         );
     }
 
-    public function getUrlResource($objet, $resourceName)
+    public function twigFilter_urlresource($objet, $resourceName)
     {
         $resources = $objet['resources'];
         foreach ($resources as $resource) {

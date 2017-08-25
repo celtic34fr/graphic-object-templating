@@ -1,0 +1,19 @@
+{% macro metaName(name, content) %}
+    <meta name="{{ name }}" content="{{ content }}">
+{% endmacro metaName %}
+
+{% macro metatHttpEquiv(name, content) %}
+    <meta http-equiv="{{ name }}" content="{{ content }}">
+{% endmacro metatHttpEquiv %}
+
+{% macro headLink(rel, type, href) %}
+    <link href="{{ href }}" rel="{{ ref }}" type="{{ type }}">
+{% endmacro headLink %}
+
+{% macro linkStylesheet(filePath) %}
+    <link href="{{ filePath }}" media="screen" rel="stylesheet" type="text/css">
+{% endmacro linkStylesheet %}
+
+{% macro scriptFile(filePath) %}
+    <link href="{{ filePath }}" media="screen" rel="stylesheet" type="text/css">
+{% endmacro scriptFile %}

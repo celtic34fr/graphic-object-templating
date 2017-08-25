@@ -2,21 +2,31 @@
 namespace GraphicObjectTemplating\Service\Factory;
  
 use GraphicObjectTemplating\Service\GotServices;
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
  
 class GotServicesFactory implements FactoryInterface
 {
     /**
-     * (non-PHPdoc)
-     * @see \Zend\ServiceManager\FactoryInterface::createService()
-     * @return GotServices
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $twigRender  = $serviceLocator->get('ZfcTwigRenderer');
-        
+        $twigRender  = $container->get('ZfcTwigRenderer');
         return new GotServices($twigRender);
-    } 
+    }
 }
 ?>

@@ -3,20 +3,31 @@
 namespace GraphicObjectTemplating\Controller\Factory;
 
 use GraphicObjectTemplating\Controller\GOTController;
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class GOTControllerFactory implements FactoryInterface
 {
     /**
-     * Create service
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return GOTController
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
      */
-    public function createService(ServiceLocatorInterface $controllerLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var ServiceLocatorInterface $serviceLocator */
-        $serviceLocator = $controllerLocator->getServiceLocator();
+        $serviceLocator = $container->getServiceLocator();
 
         return new GOTController( $serviceLocator );
     }
