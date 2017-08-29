@@ -8,6 +8,7 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use GraphicObjectTemplating\View\Helper\GotRender;
+use Zend\ServiceManager\ServiceManager;
 
 class GotRenderFactory implements FactoryInterface
 {
@@ -25,8 +26,8 @@ class GotRenderFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // $sl is instanceof ViewHelperManager, we need the real SL though
-        $rsl = $container->getServiceLocator();
-        return new GotRender($rsl);
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
+        return new GotRender($serviceManager);
     }
 }

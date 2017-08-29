@@ -23,49 +23,53 @@ use Zend\View\Model\ViewModel;
  */
 class GotServices
 {
-	private $_twigRender;
+    private $_serviceManager;
+    private $_twigRender;
 
-	public function __construct($tr)
+	public function __construct($sm, $tr)
 	{
+	    $this->_serviceManager = $sm;
 		$this->_twigRender = $tr;
 		return $this;
 	}
 	
 	public function render($object)
 	{
-		$html       = new ViewModel();
-		if (!($object instanceof OObject)) {
-		    $object = OObject::buildObject($object);
-        }
-        $properties = $object->getProperties();
-        $template   = $properties['template'];
-        $allow      = 'ALLOW';
+	    if ($object != null) {
+            $html       = new ViewModel();
+            if (!($object instanceof OObject)) {
+                $object = OObject::buildObject($object);
+            }
+            $properties = $object->getProperties();
+            $template   = $properties['template'];
+            $allow      = 'ALLOW';
 
-        switch($properties['typeObj']) {
-            case 'odcontained' :
-            case 'ottools':
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                break;
-            case 'oscontainer':
-            case 'ocobjects':
-                $content  = "";
-                $children = $object->getChildren();
-                if (!empty($children)) {
-                    foreach ($children as $key => $child) {
-                        $child = OObject::buildObject($child->getId());
+            switch($properties['typeObj']) {
+                case 'odcontained' :
+                case 'ottools':
+                    $html->setTemplate($template);
+                    $html->setVariable('objet', $properties);
+                    break;
+                case 'oscontainer':
+                case 'ocobjects':
+                    $content  = "";
+                    $children = $object->getChildren();
+                    if (!empty($children)) {
+                        foreach ($children as $key => $child) {
+                            $child = OObject::buildObject($child->getId());
 
-                        $rendu    = $this->render($child);
-                        $content .= $rendu;
+                            $rendu    = $this->render($child);
+                            $content .= $rendu;
+                        }
                     }
-                }
-                $html->setTemplate($template);
-                $html->setVariable('objet', $properties);
-                $html->setVariable('content', $content);
-                break;
+                    $html->setTemplate($template);
+                    $html->setVariable('objet', $properties);
+                    $html->setVariable('content', $content);
+                    break;
+            }
+            $renduHtml = $this->_twigRender->render($html);
+            return str_replace(array("\r\n", "\r", "\n"), "", $renduHtml);
         }
-		$renduHtml = $this->_twigRender->render($html);
-		return str_replace(array("\r\n", "\r", "\n"), "", $renduHtml);
 	}
 
     public function bootstrapClass($widthBT)
@@ -106,36 +110,38 @@ class GotServices
         if (!is_array($objets)) $objets = array(0 => $objets);
 
         foreach ($objets as $objet) {
-            $properties = $objet->getProperties();
-            $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
-            if (!empty($rscs) && ($rscs !== false)) {
-                $cssList = $rscs['css'];
-                $jsList  = $rscs['js'];
-                if (!empty($cssList)) {
-                    foreach ($cssList as $item) {
-                        if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
-                    }
-                }
-                if (!empty($jsList)) {
-                    foreach ($jsList as $item) {
-                        if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
-                    }
-                }
-            }
-
-            if ($objet instanceof OSContainer) {
-                $children = $objet->getChildren();
-                if (!empty($children)) {
-                    foreach ($children as $child) {
-                        $tmpArray = $this->headerChild($child);
-                        foreach ($tmpArray['css'] as $css) {
-                            if (!in_array($css, $cssScripts)) {
-                                $cssScripts[] = $css;
-                            }
+            if ($objet != null) {
+                $properties = $objet->getProperties();
+                $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
+                if (!empty($rscs) && ($rscs !== false)) {
+                    $cssList = $rscs['css'];
+                    $jsList  = $rscs['js'];
+                    if (!empty($cssList)) {
+                        foreach ($cssList as $item) {
+                            if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                         }
-                        foreach ($tmpArray['js'] as $js) {
-                            if (!in_array($js, $jsScripts)) {
-                                $jsScripts[] = $js;
+                    }
+                    if (!empty($jsList)) {
+                        foreach ($jsList as $item) {
+                            if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                        }
+                    }
+                }
+
+                if ($objet instanceof OSContainer) {
+                    $children = $objet->getChildren();
+                    if (!empty($children)) {
+                        foreach ($children as $child) {
+                            $tmpArray = $this->headerChild($child);
+                            foreach ($tmpArray['css'] as $css) {
+                                if (!in_array($css, $cssScripts)) {
+                                    $cssScripts[] = $css;
+                                }
+                            }
+                            foreach ($tmpArray['js'] as $js) {
+                                if (!in_array($js, $jsScripts)) {
+                                    $jsScripts[] = $js;
+                                }
                             }
                         }
                     }
@@ -177,7 +183,7 @@ class GotServices
 
         $result = call_user_func_array(array($object, $method),
             array(
-                'sl' => $this->getServiceLocator(),
+                'sl' => $this->get('ServiceManager'),
                 $params
             ));
 

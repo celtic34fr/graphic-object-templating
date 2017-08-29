@@ -8,7 +8,8 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
- 
+use Zend\ServiceManager\ServiceManager;
+
 class GotServicesFactory implements FactoryInterface
 {
     /**
@@ -25,8 +26,10 @@ class GotServicesFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
         $twigRender  = $container->get('ZfcTwigRenderer');
-        return new GotServices($twigRender);
+        return new GotServices($serviceManager, $twigRender);
     }
 }
 ?>

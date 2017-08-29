@@ -10,15 +10,15 @@ use Zend\View\Model\ViewModel;
 
 class GotRender extends AbstractHelper
 {
-    /** @var  ServiceManager $sl */
-    protected $sl;
+    /** @var  ServiceManager $sm */
+    protected $sm;
     protected $gotServices;
 
-    public function __construct($sl)
+    public function __construct($sm)
     {
-        /** @var ServiceManager sl */
-        $this->sl = $sl;
-        $this->gotServices = $sl->get("graphic.object.templating.services");
+        /** @var ServiceManager sm */
+        $this->sm = $sm;
+        $this->gotServices = $sm->get("graphic.object.templating.services");
         return $this;
     }
 

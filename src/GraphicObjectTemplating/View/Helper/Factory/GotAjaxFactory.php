@@ -9,6 +9,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use GraphicObjectTemplating\View\Helper\GotAjax;
+use Zend\ServiceManager\ServiceManager;
 
 class GotAjaxFactory implements FactoryInterface
 {
@@ -27,7 +28,8 @@ class GotAjaxFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         // $container is instanceof ViewHelperManager, we need the real SL though
-        $rsl = $container->getServiceLocator();
-        return new GotAjax($rsl);
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
+        return new GotAjax($serviceManager);
     }
 }

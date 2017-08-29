@@ -9,6 +9,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use GraphicObjectTemplating\View\Helper\GotHeader;
+use Zend\ServiceManager\ServiceManager;
 
 class GotHeaderFactory implements FactoryInterface
 {
@@ -26,8 +27,8 @@ class GotHeaderFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // $container is instanceof ViewHelperManager, we need the real SL though
-        $rsl = $container->getServiceLocator();
-        return new GotHeader($rsl);
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
+        return new GotHeader($serviceManager);
     }
 }

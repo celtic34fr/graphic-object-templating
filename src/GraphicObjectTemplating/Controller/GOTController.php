@@ -8,6 +8,7 @@ use GraphicObjectTemplating\Objects\OSContainer\OSForm;
 use Zend\Http\Request;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -21,7 +22,7 @@ class GOTController extends AbstractActionController
     /**
      * @param $applicationDetails
      */
-    public function __construct($serviceManager)
+    public function __construct(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
     }

@@ -9,6 +9,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use GraphicObjectTemplating\View\Helper\GotBootstrap;
+use Zend\ServiceManager\ServiceManager;
 
 class GotBootstrapFactory implements FactoryInterface
 {
@@ -26,8 +27,8 @@ class GotBootstrapFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // $container is instanceof ViewHelperManager, we need the real SL though
-        $rsl = $container->getServiceLocator();
-        return new GotBootstrap($rsl);
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
+        return new GotBootstrap($serviceManager);
     }
 }
