@@ -5,7 +5,7 @@
     "license":      "GPL 3.0",
     "homepage":     "https://github.com/celtic34fr/graphic-object-templating",
     "keywords": [
-        "zf2",
+        "zf3",
         "twig"
     ],
     "authors": [

@@ -6,7 +6,7 @@
 
     {% if display_exceptions is defined and not(display_exceptions is empty) %}
         {% if exception is defined and not(exception is empty) %}
-            {% if exception is objInstanceOf('Exception') %}
+            {% if exception is instanceof('Exception') %}
                 <h2>{{ translate('Additional information') }}:</h2>
                 <h3>{{ getclass(exception) }}</h3>
                 {% set arrayException = arrayexception(exception) %}

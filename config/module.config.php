@@ -9,6 +9,13 @@ use GraphicObjectTemplating\Service\GotServices;
 use GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension;
 use GraphicObjectTemplating\Twig\Extension\GotTwigExtension;
 use GraphicObjectTemplating\Twig\Extension\LayoutExtension;
+use GraphicObjectTemplating\View\Helper\Factory\GotBootstrapFactory;
+use GraphicObjectTemplating\View\Helper\Factory\GotHeaderFactory;
+use GraphicObjectTemplating\View\Helper\Factory\GotRenderFactory;
+use GraphicObjectTemplating\View\Helper\GotBootstrap;
+use GraphicObjectTemplating\View\Helper\GotHeader;
+use GraphicObjectTemplating\View\Helper\GotRender;
+use GraphicObjectTemplating\View\Helper\GotZendVersion;
 use Zend\Router\Http\Literal;
 
 return array(
@@ -49,13 +56,25 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-
-/*    'zfctwig' => array(
-        'extensions' => array(
-            LayoutExtension::class,
-            ColorConverterTwigExtension::class,
-            GotTwigExtension::class,
-        ),
-    ),*/
-
+    'view_helpers' => [
+        'factories' => [
+            GotRender::class    => GotRenderFactory::class,
+            GotBootstrap::class => GotBootstrapFactory::class,
+            GotHeader::class    => GotHeaderFactory::class,
+            'zfVersion'    => function($sm) {
+                return new GotZendVersion();
+            }
+        ],
+        'aliases' => [
+            'gotRender'     => GotRender::class,
+            'gotBootstrap'  => GotBootstrap::class,
+            'gotHeader'     => GotHeader::class
+        ],
+    ],
+    'zfctwig' => [
+        'extensions' => [
+            'layout'            => LayoutExtension::class,
+            'colorConverter'    => ColorConverterTwigExtension::class,
+        ],
+    ],
 );

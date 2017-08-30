@@ -7,7 +7,6 @@ use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use GraphicObjectTemplating\View\Helper\GotHeader;
 use Zend\ServiceManager\ServiceManager;
 
