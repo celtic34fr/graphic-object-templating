@@ -2,13 +2,6 @@
 
 namespace GraphicObjectTemplating;
 
-use GraphicObjectTemplating\View\Helper\Factory\GotBootstrapFactory;
-use GraphicObjectTemplating\View\Helper\Factory\GotHeaderFactory;
-use GraphicObjectTemplating\View\Helper\Factory\GotRenderFactory;
-use GraphicObjectTemplating\View\Helper\GotBootstrap;
-use GraphicObjectTemplating\View\Helper\GotHeader;
-use GraphicObjectTemplating\View\Helper\GotRender;
-use GraphicObjectTemplating\View\Helper\GotZendVersion;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
