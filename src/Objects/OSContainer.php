@@ -36,7 +36,9 @@ class OSContainer extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.php");
+        $path  = __DIR__ ;
+        $path .= "/../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.php";
+        $properties = include($path);
         parent::__construct($id, $adrProperties);
         foreach ($this->properties as $key => $property) {
             $properties[$key] = $property;

@@ -32,7 +32,9 @@ class ODContained extends OObject
 
     public function __construct($id, $adrProperties)
     {
-        $properties  = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php");
+        $path  = __DIR__ ;
+        $path .= "/../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php";
+        $properties = include($path);
         parent::__construct($id, trim($adrProperties));
         foreach ($this->properties as $key => $property) {
             $properties[$key] = $property;

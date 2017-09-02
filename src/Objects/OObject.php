@@ -132,7 +132,9 @@ class OObject
     {
         $objProperties = [];
         if (!empty($arrayData)) {
-            $objProperties = include __DIR__ . '/../../../view/graphic-object-templating/' . trim($arrayData);
+            $path  = __DIR__ ;
+            $path .= '/../../view/graphic-object-templating/' . trim($arrayData);
+            $objProperties = include $path;
         }
         $objProperties['id'] = $id;
         $this->id = $id;

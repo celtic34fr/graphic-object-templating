@@ -1,10 +1,14 @@
 {# tremplate pour l'objet ODBadge#}
 
-{% set objClass = "gotObject "~objet.badgeColor %}
+{% set objClasses = "gotObject " ~ objet.badgeColor %}
 {% if objet.position is not empty %}
     {% set objClasses = objClasses ~ " " ~ objet.position %}
 {% endif %}
+{% if objet.display is defined %} {# bouton mode affichage #}
+    {%  set objClasses = objClasses ~ " display-" ~ objet.display ~ " " %}
+{% endif %}
 
+{#{ dump(objet.badgeColor) }#}
 
 <span id="{{ objet.id }}"  data-objet="{{ objet.object }}" data-type="{{ objet.type }}"
       class="{{ objClasses }}"
@@ -59,7 +63,7 @@
         {% endif %}
     </style>
 
-    {{ objet.value }}
+    {{ objet.content | raw }}
 
     {% if objet.event is defined and objet.event is not empty %}
         <script id="{{ objet.id }}Script" type="text/javascript">

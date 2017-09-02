@@ -113,7 +113,6 @@ class ODBadge extends ODContained
         return $this;
     }
 
-
     public function setPosition($position = self::BADGEPOS_RIGHT)
     {
         $position = (string) $position;
@@ -129,7 +128,22 @@ class ODBadge extends ODContained
     public function getPosition()
     {
         $properties          = $this->getProperties();
-        return ((!empty($properties['position'])) ? $properties['posirion'] : false) ;
+        return ((!empty($properties['position'])) ? $properties['position'] : false) ;
+    }
+
+    public function setContent($content = "&nbsp")
+    {
+        $content = (string) $content;
+        $properties = $this->getProperties();
+        $properties['content'] = $content;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getContent()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['content'])) ? $properties['content'] : false) ;
     }
 
 
@@ -164,5 +178,6 @@ class ODBadge extends ODContained
         }
         return $retour;
     }
+
 
 }
