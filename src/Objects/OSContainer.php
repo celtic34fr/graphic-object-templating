@@ -34,7 +34,7 @@ class OSContainer extends OObject
 	const MODE_AFTER    = "After";
 	const MODE_NTH      = "Nth";
 
-    public function __construct($id, $adrProperties)
+    public function __construct($id, $adrProperties = null)
     {
         $path  = __DIR__ ;
         $path .= "/../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.php";

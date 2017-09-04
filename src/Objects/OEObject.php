@@ -2,12 +2,11 @@
 
 namespace GraphicObjectTemplating\Objects;
 
-use GraphicObjectTemplating\Objects\OSContainer\OSDiv;
-
-class OEObject extends OSDiv
+class OEObject extends OObject
 {
     public function __construct($id, $pathConfig, $className)
     {
+        // construction juste OOject sans autre chaose
         parent::__construct($id);
         $properties  = include($pathConfig);
         foreach ($this->properties as $key => $property) {

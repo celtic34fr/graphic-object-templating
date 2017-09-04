@@ -30,7 +30,7 @@ class ODContained extends OObject
 
     protected $const_icon;
 
-    public function __construct($id, $adrProperties)
+    public function __construct($id, $adrProperties = null)
     {
         $path  = __DIR__ ;
         $path .= "/../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php";
