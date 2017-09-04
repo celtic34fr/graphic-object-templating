@@ -26,7 +26,7 @@ class OEContained extends OEObject
             $tmpProperties = $tmpObj->getProperties();
             foreach ($tmpProperties as $key => $tmpProperty) {
                 if (!array_key_exists($key, $properties))
-                {$properties[$key] = $tmpProperties; }
+                        {$properties[$key] = $tmpProperties; }
 
             }
         }
@@ -37,7 +37,8 @@ class OEContained extends OEObject
     public function __call($funcName, $tArgs)
     {
         foreach($this->_tExtendInstances as &$object) {
-            if(method_exists($object, $funcName)) return call_user_func_array(array($object, $funcName), $tArgs);
+            if(method_exists($object, $funcName)) 
+             { return call_user_func_array(array($object, $funcName), $tArgs); }
         }
         throw new Exception("The $funcName method doesn't exist");
     }
@@ -45,7 +46,8 @@ class OEContained extends OEObject
     public function __get($varName) {
         foreach($this->_tExtendInstances as &$object) {
             $tDefinedVars   = get_defined_vars($object);
-            if(property_exists($tDefinedVars, $varName)) return $object->{$varName};
+            if(property_exists($tDefinedVars, $varName))
+                    { return $object->{$varName}; }
         }
         throw new Exception("The $varName attribute doesn't exist");
     }

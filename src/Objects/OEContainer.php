@@ -37,7 +37,8 @@ class OEContainer extends OEObject
     public function __call($funcName, $tArgs)
     {
         foreach($this->_tExtendInstances as &$object) {
-            if(method_exists($object, $funcName)) return call_user_func_array(array($object, $funcName), $tArgs);
+            if(method_exists($object, $funcName)) 
+            { return call_user_func_array(array($object, $funcName), $tArgs); }
         }
         throw new Exception("The $funcName method doesn't exist");
     }
