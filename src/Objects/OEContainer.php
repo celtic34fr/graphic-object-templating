@@ -8,6 +8,8 @@
 
 namespace GraphicObjectTemplating\Objects;
 
+use \Exception;
+
 /**
  * Description of OEContainer
  *
@@ -15,22 +17,18 @@ namespace GraphicObjectTemplating\Objects;
  */
 class OEContainer extends OEObject
 {
-    private $_tExtends = ['GraphicObjectTemplating\Objects\OSContainer'];
-    private $_tExtendIntances = [];
+    private $_tExtends        = 'GraphicObjectTemplating\Objects\OSContainer';
+    private $_tExtendIntances = "";
     
     public function __construct($id, $pathConfig, $className) {
         parent::__construct($id, $pathConfig, $className);
-        foreach ($this->_tExtends as $tExtend) {
-            $this->_tExtendIntances[] = new $tExtend($id);
-        }
+        $this->_tExtendIntances = new $this->_tExtends($id);
     }
 
     public function __call($funcName, $tArgs)
     {
-        foreach($this->_tExtendInstances as &$object) {
-            if(method_exists($object, $funcName)) 
-            { return call_user_func_array(array($object, $funcName), $tArgs); }
-        }
+        if(method_exists($this->_tExtendIntances, $funcName))
+            { return call_user_func_array(array($this->_tExtendIntances, $funcName), $tArgs); }
         throw new Exception("The $funcName method doesn't exist");
     }
 

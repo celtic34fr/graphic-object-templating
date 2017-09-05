@@ -47,12 +47,13 @@ class GotServices
             switch($properties['typeObj']) {
                 case 'odcontained' :
                 case 'ottools':
-                case 'oeobject':
+                case 'oecontained':
                     $html->setTemplate($template);
                     $html->setVariable('objet', $properties);
                     break;
                 case 'oscontainer':
                 case 'ocobjects':
+                case 'oecontainer':
                     $content  = "";
                     $children = $object->getChildren();
                     if (!empty($children)) {
