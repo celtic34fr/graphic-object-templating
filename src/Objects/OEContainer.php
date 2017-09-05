@@ -1,37 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: candidat
- * Date: 04/09/17
- * Time: 11:26
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 namespace GraphicObjectTemplating\Objects;
 
-use Exception;
-
+/**
+ * Description of OEContainer
+ *
+ * @author candidat
+ */
 class OEContainer extends OEObject
 {
     private $_tExtends = ['GraphicObjectTemplating\Objects\OSContainer'];
-    private $_tExtendInstances = [];
-
-    public function __construct($id, $pathConfig, $className)
-    {
+    private $_tExtendIntances = [];
+    
+    public function __construct($id, $pathConfig, $className) {
         parent::__construct($id, $pathConfig, $className);
-        $properties = $this->getProperties();
         foreach ($this->_tExtends as $tExtend) {
-            /** @var OObject $tmpObj */
-            $tmpObj = new $tExtend($id);
-            $tmpProperties = $tmpObj->getProperties();
-            $this->_tExtendInstances[] = $tmpObj;
-            foreach ($tmpProperties as $key => $tmpProperty) {
-                if (!array_key_exists($key, $properties))
-                    {$properties[$key] = $tmpProperties; }
-
-            }
+            $this->_tExtendIntances[] = new $tExtend($id);
         }
-        $this->setProperties($properties);
-        return $this;
     }
 
     public function __call($funcName, $tArgs)
