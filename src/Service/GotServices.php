@@ -114,18 +114,22 @@ class GotServices
         foreach ($objets as $objet) {
             if ($objet != null) {
                 $properties = $objet->getProperties();
+				$prefix = 'graphicobjecttemplating/objects/';
+               if ($properties['typeObj'] == 'oecontainer' || $properties['typeObj'] == 'oecontained') {
+					$prefix = 'gotextension/oeobjects/';
+				} 
                 $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
                 if (!empty($rscs) && ($rscs !== false)) {
                     $cssList = $rscs['css'];
                     $jsList  = $rscs['js'];
                     if (!empty($cssList)) {
                         foreach ($cssList as $item) {
-                            if (!in_array($item, $cssScripts)) $cssScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                            if (!in_array($item, $cssScripts)) $cssScripts[] = $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                         }
                     }
                     if (!empty($jsList)) {
                         foreach ($jsList as $item) {
-                            if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                            if (!in_array($item, $jsScripts)) $jsScripts[] = $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                         }
                     }
                 }
