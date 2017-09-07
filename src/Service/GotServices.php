@@ -115,7 +115,7 @@ class GotServices
             if ($objet != null) {
                 $properties = $objet->getProperties();
 				$prefix = 'graphicobjecttemplating/objects/';
-               if ($properties['typeObj'] == 'oecontainer' || $properties['typeObj'] == 'oecontained') {
+                if ($properties['typeObj'] == 'oecontainer' || $properties['typeObj'] == 'oecontained') {
 					$prefix = 'gotextension/oeobjects/';
 				} 
                 $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
