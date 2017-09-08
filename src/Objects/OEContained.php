@@ -1,4 +1,9 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: main
+ * Date: 07/09/17
+ * Time: 22:58
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,7 +13,8 @@
 
 namespace GraphicObjectTemplating\Objects;
 
-use \Exception;
+
+use Exception;
 
 /**
  * Description of OEContainer
@@ -19,10 +25,11 @@ class OEContained extends OEObject
 {
     private $_tExtends        = 'GraphicObjectTemplating\Objects\ODContained';
     private $_tExtendIntances = "";
-    
+
     public function __construct($id, $pathConfig, $className) {
         parent::__construct($id, $pathConfig, $className);
         $this->_tExtendIntances = new $this->_tExtends($id);
+        return $this;
     }
 
     public function __call($funcName, $tArgs)

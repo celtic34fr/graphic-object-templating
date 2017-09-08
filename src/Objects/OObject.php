@@ -343,7 +343,7 @@ class OObject
         $addClass = (string)$addClass;
         $properties = $this->getProperties();
         $classes = $properties['classes'];
-        if ($classes[strlen($classes) - 1] !== ' ') { $classes .= ' '; }
+        if (!empty($classes) && $classes[strlen($classes) - 1] !== ' ') { $classes .= ' '; }
         $classes .= trim($addClass);
         $properties['classes'] = $classes;
         $this->setProperties($properties);
