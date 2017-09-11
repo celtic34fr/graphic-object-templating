@@ -74,11 +74,11 @@ use Zend\Session\Container;
  * TU disAutoCenter         ; desactive l'auto centrage pour l'affichage de l'objet
  * TU getAutoCenter         : restitue sous forme d'un tableau des valeurs actuelles des paramètres de centrage automatique
  * getEvent($evt)           : pour les objects ayant le paramétrage d'évènement, restitution des paramètres
- * addJsCode($nom, $code)
- * setJsCodes(array $codes)
- * getJsCode($nom)
- * getJsCodes()
- * rmJsCode($nom)
+ * // addJsCode($nom, $code)
+ * // setJsCodes(array $codes)
+ * // getJsCode($nom)
+ * // getJsCodes()
+ * // rmJsCode($nom)
  */
 class OObject
 {
@@ -795,6 +795,8 @@ class OObject
         $item['html'] = $event .'|'. ($stopEvent) ? 'OUI' : 'NON';
         return $item;
     }
+
+    /*
     public function addJsCode($nom, $code)
     {
         $nom        = (string) $nom;
@@ -846,6 +848,7 @@ class OObject
         }
         return false;
     }
+    */
 
     /*
      * méthode interne à la classe OObject
