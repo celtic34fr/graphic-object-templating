@@ -74,11 +74,6 @@ use Zend\Session\Container;
  * TU disAutoCenter         ; desactive l'auto centrage pour l'affichage de l'objet
  * TU getAutoCenter         : restitue sous forme d'un tableau des valeurs actuelles des paramètres de centrage automatique
  * getEvent($evt)           : pour les objects ayant le paramétrage d'évènement, restitution des paramètres
- * addCssCode($nom, $code)
- * setCssCodes(array $codes)
- * getCssCode($nom)
- * getCodes()
- * rmCodeCss($nom)
  * addJsCode($nom, $code)
  * setJsCodes(array $codes)
  * getJsCode($nom)
@@ -800,59 +795,6 @@ class OObject
         $item['html'] = $event .'|'. ($stopEvent) ? 'OUI' : 'NON';
         return $item;
     }
-
-    public function addCssCode($nom, $code)
-    {
-        $nom        = (string) $nom;
-        $code       = (string) $code;
-        $properties = $this->getProperties();
-        $cssCode    = $properties['cssCode'];
-        if (!array_key_exists($nom, $cssCode)) {
-            $cssCode[$nom]          = $code;
-            $properties['cssCode']  = $cssCode;
-            $this->setProperties($properties);
-            return $this;
-        }
-        return false;
-    }
-
-    public function setCssCodes(array $codes)
-    {
-        $properties             = $this->getProperties();
-        $properties['cssCode']  = $codes;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getCssCode($nom)
-    {
-        $nom        = (string) $nom;
-        $properties = $this->getProperties();
-        $cssCode    = $properties['cssCode'];
-        if (array_key_exists($nom, $cssCode)) { return $cssCode[$nom]; }
-        return false;
-    }
-
-    public function getCssCodes()
-    {
-        $properties = $this->getProperties();
-        return (array_key_exists('cssCode', $properties) ? $properties['cssCode'] : false);
-    }
-
-    public function rmCssCode($nom)
-    {
-        $nom        = (string) $nom;
-        $properties = $this->getProperties();
-        $cssCode    = $properties['cssCode'];
-        if (array_key_exists($nom, $cssCode)) {
-            unset($cssCode[$nom]);
-            $properties['cssCode'] = $cssCode;
-            $this->setProperties($properties);
-            return $this;
-        }
-        return false;
-    }
-
     public function addJsCode($nom, $code)
     {
         $nom        = (string) $nom;
