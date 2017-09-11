@@ -51,6 +51,14 @@
             width: {{ objet.width }};
         }
         {% endif %}
+
+        {% if objet.cssCode is not empty %}
+        {% for selector, code in objet.cssCode %}
+        {{ selector | raw }} {
+        {{  code | raw }}
+        }
+        {% endfor %}
+        {% endif %}
     </style>
 
     <div id="{{ objet.id }}Content" role="dialog" aria-labelledby="{{ objet.id }}Heading">
