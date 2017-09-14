@@ -26,7 +26,7 @@ use Twig_NodeInterface;
  */
 class NodeSwitch extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $value, Twig_NodeInterface $cases, Twig_NodeInterface $default = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $value, Twig_Node $cases, Twig_Node $default = null, $lineno, $tag = null)
     {
         parent::__construct(array('value' => $value, 'cases' => $cases, 'default' => $default), array(), $lineno, $tag);
     }
@@ -52,7 +52,7 @@ class NodeSwitch extends Twig_Node
                 ->raw(":\n")
                 ->indent()
                 ->subcompile($this->getNode('cases')->getNode($i + 1))
-                ->addIndentation()
+                ->indent()
                 ->raw("break;\n")
             ;
         }
@@ -62,7 +62,7 @@ class NodeSwitch extends Twig_Node
                 ->write("default:\n")
                 ->indent()
                 ->subcompile($this->getNode('default'))
-                ->addIndentation()
+                ->indent()
                 ->raw("break;\n")
             ;
         }
