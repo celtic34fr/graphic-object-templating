@@ -1,6 +1,13 @@
 {# template objet ODImage #}
 
-<div id="{{ objet.id }}">
+{#{ dump(objet.classes) }#}
+{% set objClass = '' %}
+{% if objet.classes is not empty %}
+    {% set objClass = objClass ~ " " ~ objet.classes %}
+{% endif %}
+
+<div id="{{ objet.id }}" 
+{% if objClass is not empty %} class="{{ objClass }}" {% endif %}>
     <style>
         #{{ objet.id }} {
         {% if objet.autoCenter == true %}
