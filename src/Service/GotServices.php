@@ -26,16 +26,16 @@ class GotServices
     private $_serviceManager;
     private $_twigRender;
 
-	public function __construct($sm, $tr)
-	{
-	    $this->_serviceManager = $sm;
-		$this->_twigRender = $tr;
-		return $this;
-	}
-	
-	public function render($object)
-	{
-	    if ($object != null) {
+    public function __construct($sm, $tr)
+    {
+        $this->_serviceManager = $sm;
+        $this->_twigRender = $tr;
+        return $this;
+    }
+
+    public function render($object)
+    {
+        if ($object != null) {
             $html       = new ViewModel();
             if (!($object instanceof OObject)) {
                 $object = OObject::buildObject($object);
@@ -72,7 +72,7 @@ class GotServices
             $renduHtml = $this->_twigRender->render($html);
             return str_replace(array("\r\n", "\r", "\n"), "", $renduHtml);
         }
-	}
+    }
 
     public function bootstrapClass($widthBT)
     {
@@ -114,17 +114,19 @@ class GotServices
         foreach ($objets as $objet) {
             if ($objet != null) {
                 $properties = $objet->getProperties();
-				$prefix = 'graphicobjecttemplating/objects/';
-                if ($properties['typeObj'] == 'oescontainer' || $properties['typeObj'] == 'oecontained') {
-					$prefix = 'gotextension/oeobjects/';
-				} 
+                $prefix = 'graphicobjecttemplating/objects/';
+                if (array_key_exists('extension', $properties) && $properties['extension']) {
+                    $prefix = $properties['resourcces']['prefix'];
+                } 
                 $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
                 if (!empty($rscs) && ($rscs !== false)) {
                     $cssList = $rscs['css'];
                     $jsList  = $rscs['js'];
                     if (!empty($cssList)) {
                         foreach ($cssList as $item) {
-                            if (!in_array($item, $cssScripts)) $cssScripts[] = $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                            if (!in_array($item, $cssScripts)) {
+                                $cssScripts[] = $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                            }
                         }
                     }
                     if (!empty($jsList)) {
