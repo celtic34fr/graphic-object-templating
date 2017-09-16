@@ -17,11 +17,11 @@ namespace GraphicObjectTemplating\Objects;
 use Exception;
 
 /**
- * Description of OEContainer
+ * Description of OESContainer
  *
  * @author candidat
  */
-class OEContained extends OEObject
+class OEDContained extends OEObject
 {
     private $_tExtends        = 'GraphicObjectTemplating\Objects\ODContained';
     private $_tExtendIntances = "";

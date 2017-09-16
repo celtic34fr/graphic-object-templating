@@ -53,7 +53,7 @@ class GotServices
                     break;
                 case 'oscontainer':
                 case 'ocobjects':
-                case 'oecontainer':
+                case 'oescontainer':
                     $content  = "";
                     $children = $object->getChildren();
                     if (!empty($children)) {
@@ -115,7 +115,7 @@ class GotServices
             if ($objet != null) {
                 $properties = $objet->getProperties();
 				$prefix = 'graphicobjecttemplating/objects/';
-                if ($properties['typeObj'] == 'oecontainer' || $properties['typeObj'] == 'oecontained') {
+                if ($properties['typeObj'] == 'oescontainer' || $properties['typeObj'] == 'oecontained') {
 					$prefix = 'gotextension/oeobjects/';
 				} 
                 $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
