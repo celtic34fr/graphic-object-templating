@@ -45,8 +45,8 @@ use GraphicObjectTemplating\Objects\ODContained;
  */
 class ODInput extends ODContained
 {
-    const INPTYPE_TEXT     = "text";
-    const INPTYPE_PASSWORD = "password";
+    const INPTYPE_TEXT     = 'text';
+    const INPTYPE_PASSWORD = 'password';
     const INPTYPE_HIDDEN   = 'hidden';
     const INPTYPE_NUMBER   = 'number';
 
@@ -279,7 +279,7 @@ class ODInput extends ODContained
         if (empty($this->const_inpType)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TYPE');
+                $pos = strpos($key, 'INPTYPE');
                 if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_inpType = $retour;
