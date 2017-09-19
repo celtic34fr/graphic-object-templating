@@ -1,0 +1,50 @@
+{{ doctype() }}
+<html lang="en">
+<head>
+    {{ headTitle(translate('Application')).setSeparator(' - ').setAutoEscape(false) | raw }}
+    {{ headMeta()
+    .setCharset('utf-8')
+    .appendName('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    .appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+    .appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    .appendName('description', 'Metro, a sleek, intuitive, and powerful framework for faster and easier web development for Windows Metro Style.')
+    .appendName('keywords', 'HTML, CSS, JS, JavaScript, framework, metro, front-end, frontend, web development')
+    .appendName('author', 'Sergey Pimenov and Metro UI CSS contributors')
+    | raw }}
+    {% block meta %}{% endblock meta %}
+
+    {{ headLink({'rel':'shortcut icon', 'type':'image/vnd.microsoft.icon', 'href':basePath('img/favicon.ico') }) | raw }}
+    <!-- Le styles -->
+    {{ headLink()
+    .prependStylesheet(basePath('css/bootstrap-theme.min.css'))
+    .prependStylesheet(basePath('css/bootstrap.min.css'))
+    .prependStylesheet(basePath('graphicobjecttemplating/css/font-awesome.css'))
+    .prependStylesheet(basePath('graphicobjecttemplating/css/main.css'))
+    .prependStylesheet(basePath('css/style.css'))
+    | raw }}
+
+    <!-- bloc -->
+    {% block styleHead %}{% endblock styleHead %}
+    <!-- Le styles -->
+
+    <!-- Scripts -->
+
+    {{ headScript()
+    .prependFile(basePath('js/jquery-3.1.0.min.js'))
+    .prependFile(basePath('js/bootstrap.min.js'))
+    .prependFile(basePath('graphicobjecttemplating/js/main.js'))
+    | raw }}
+    <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/respond.min.js"></script><![endif]-->
+    <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/html5shiv.js"></script><![endif]-->
+
+    <!-- bloc -->
+    {% block scriptHead %}{% endblock scriptHead %}
+    <!-- Scripts -->
+</head>
+<body style="overflow-y: hidden;">
+    {% block contentBody %}{% endblock contentBody %}
+    {% block inline %}{% endblock inline %}
+    <div id="gotCallback" style="display: none;">{{ url("got-callback") }}</div>
+    <div id="divWork" style="display: none"></div>
+</body>
+</html>
