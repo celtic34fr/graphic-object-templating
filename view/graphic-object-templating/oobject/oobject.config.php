@@ -25,6 +25,7 @@ return array(
     ],
     'cssCode'       => [],
     'jsCode'        => [],
+    'metaDatas'     => [],
 
     // pour l"application
     'aclReference' => '',

@@ -79,6 +79,9 @@ use Zend\Session\Container;
  * // getJsCode($nom)
  * // getJsCodes()
  * // rmJsCode($nom)
+ * addMetaData($key, $value)
+ * setMetaDatas(array $metaDatas)
+ * getMetatDatas()
  */
 class OObject
 {
@@ -849,6 +852,28 @@ class OObject
         return false;
     }
     */
+
+    public function addMetaData($key, $value)
+    {
+        $properties = $this->getProperties();
+        $properties['metaDatas'][$key] = $value;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setMetaDatas(array $metaDatas)
+    {
+        $properties = $this->getProperties();
+        $properties['metaDatas'] = $metaDatas;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getMetaDatas()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('metaDatas', $properties) ? $properties['metaDatas'] : false);
+    }
 
     /*
      * méthode interne à la classe OObject

@@ -39,6 +39,11 @@
             {% endfor %}
             data-evt="{{ allEvt | slice(0, allEvt|length - 2) }}"
         {% endif %}
+        {% if objet.metaDatas is not empty %}
+            {% for key, value in objet.metaData %}
+                data-{{ key }} = "{{ value }}"
+            {% endfor %}
+        {% endif %}
 >
 
     <style>

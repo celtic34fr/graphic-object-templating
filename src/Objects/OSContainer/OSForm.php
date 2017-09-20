@@ -24,6 +24,10 @@ use GraphicObjectTemplating\Objects\OSContainer;
  * clearSubmits()
  * setSubmits(array $submits)
  * getSubmits()
+ * setReset($label, $nature = null)
+ * setResetLabel($label)
+ * setResetNature($nature = null)
+ * getReset()
  * isValid()
  * getFieldsIdentifers(string $object = null)
  * clearForm()
@@ -235,12 +239,35 @@ class OSForm extends OSContainer
         return ((!empty($properties['submits'])) ? $properties['submits'] : false) ;
     }
 
+    public function setReset($label, $nature = null)
+    {
+        $label = (string) $label;
+        $nature = (string) $nature;
+        /** @var ODButton $reset */
+        $reset = OObject::buildObject($this->getId().'Reset');
+        $reset->setLabel($label);
+        $reset->setNature($nature);
+    }
+
     public function setResetLabel($label)
     {
         $label = (string) $label;
         /** @var ODButton $reset */
         $reset = OObject::buildObject($this->getId().'Reset');
         $reset->setLabel($label);
+    }
+
+    public function setResetNature($nature = null)
+    {
+        $nature = (string) $nature;
+        /** @var ODButton $reset */
+        $reset = OObject::buildObject($this->getId().'Reset');
+        $reset->setNature($nature);
+    }
+
+    public function getReset()
+    {
+        return OObject::buildObject($this->getId().'Reset');
     }
 
     public function isValid($sm)
