@@ -21,7 +21,11 @@ class GotProperties extends AbstractHelper
 
     public function __invoke($object)
     {
-        $obj = OObject::buildObject($object);
-        return json_encode($obj->getProperties());
+        if ($object instanceof OObject) {
+            return $object->getProperties();
+        } else {
+            $obj = OObject::buildObject($object);
+            return $obj->getProperties();
+        }
     }
 }
