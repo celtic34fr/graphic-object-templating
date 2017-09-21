@@ -4,6 +4,7 @@ namespace GraphicObjectTemplating\View\Helper;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
+use GraphicObjectTemplating\Objects\OObject;
 
 class GotProperties extends AbstractHelper
 {
@@ -20,5 +21,7 @@ class GotProperties extends AbstractHelper
 
     public function __invoke($object)
     {
+        $obj = OObject::buildObject($object);
+        return json_encode($obj->getProperties());
     }
 }

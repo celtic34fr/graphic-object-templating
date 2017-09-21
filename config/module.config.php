@@ -11,10 +11,12 @@ use GraphicObjectTemplating\Twig\Extension\LayoutExtension;
 use GraphicObjectTemplating\View\Helper\Factory\GotBootstrapFactory;
 use GraphicObjectTemplating\View\Helper\Factory\GotHeaderFactory;
 use GraphicObjectTemplating\View\Helper\Factory\GotRenderFactory;
+use GraphicObjectTemplating\View\Helper\Factory\GotPropertiesFactory;
 use GraphicObjectTemplating\View\Helper\GotBootstrap;
 use GraphicObjectTemplating\View\Helper\GotHeader;
 use GraphicObjectTemplating\View\Helper\GotRender;
 use GraphicObjectTemplating\View\Helper\GotZendVersion;
+use GraphicObjectTemplating\View\Helper\GotProperties;
 use Zend\Router\Http\Literal;
 
 return array(
@@ -57,9 +59,10 @@ return array(
     ),
     'view_helpers' => [
         'factories' => [
-            GotRender::class    => GotRenderFactory::class,
-            GotBootstrap::class => GotBootstrapFactory::class,
-            GotHeader::class    => GotHeaderFactory::class,
+            GotRender::class     => GotRenderFactory::class,
+            GotBootstrap::class  => GotBootstrapFactory::class,
+            GotHeader::class     => GotHeaderFactory::class,
+            GotProperties::class => GotPropertiesFactory::class,
             'zfVersion'    => function($sm) {
                 return new GotZendVersion();
             }
@@ -67,7 +70,8 @@ return array(
         'aliases' => [
             'gotRender'     => GotRender::class,
             'gotBootstrap'  => GotBootstrap::class,
-            'gotHeader'     => GotHeader::class
+            'gotHeader'     => GotHeader::class,
+            'gotProperties' => GotProperties::class
         ],
     ],
     'zfctwig' => [
