@@ -239,14 +239,15 @@ class OSForm extends OSContainer
         return ((!empty($properties['submits'])) ? $properties['submits'] : false) ;
     }
 
-    public function setReset($label, $nature = null)
+    public function setReset($label = null, $nature = null, $class = null)
     {
         $label = (string) $label;
         $nature = (string) $nature;
         /** @var ODButton $reset */
         $reset = OObject::buildObject($this->getId().'Reset');
-        $reset->setLabel($label);
+        if (!empty($label)) { $reset->setLabel($label); }
         $reset->setNature($nature);
+        if (!empty($class)) { $reset->addClass($class); }
     }
 
     public function setResetLabel($label)
