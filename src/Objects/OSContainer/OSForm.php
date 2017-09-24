@@ -273,7 +273,7 @@ class OSForm extends OSContainer
 
     public function isValid($sm)
     {
-        $valid = "";
+        $valid = true;
 
         /* validation présence des champs requis */
         $requiredChildren = $this->getRequiredChildren();
@@ -287,7 +287,7 @@ class OSForm extends OSContainer
             }
             $valid = ($allRequired) ? '' : 'empty';
         }
-        /* validation par la méthode callback (métier) de validation des données */
+        /* validation par la méthode callback (métier) de validation des données devant retourner true ou false */
         if (empty($valid)) {
             $validMethod = $this->getValidMethod();
             if ($validMethod !== false) {

@@ -81,7 +81,12 @@ use Zend\Session\Container;
  * // rmJsCode($nom)
  * addMetaData($key, $value)
  * setMetaDatas(array $metaDatas)
- * getMetatDatas()
+ * getMetaDatas()
+ * addCustomProperty($name, $value, $default = null)
+ * getCustomProperty($name)
+ * setCustomProperty($name, $value)
+ * getCustomProperties()
+ * setCustomProperties(array $customProperties)
  */
 class OObject
 {
@@ -873,6 +878,68 @@ class OObject
     {
         $properties = $this->getProperties();
         return (array_key_exists('metaDatas', $properties) ? $properties['metaDatas'] : false);
+    }
+
+    public function addCustomProperty($name, $value, $default = null)
+    {
+        $name = (string) $name;
+
+        $properties = $this->getProperties();
+        if (!array_key_exists('customProperties', $properties)) { $properties['customProperties'] = []; }
+        if (!array_key_exists($name, $properties['customProperties'])) {
+            $item               = [];
+            $item['value']      = $value;
+            $item['default']    = $default;
+            $properties['customProperties'][$name] = $item;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function getCustomProperty($name)
+    {
+        $name = (string) $name;
+        $properties = $this->getProperties();
+        if (array_key_exists('customProperties', $properties)) {
+            $customProperties = $properties['customProperties'];
+            return (array_key_exists($name, $customProperties) ? $customProperties[$name] : false);
+        }
+        return false;
+    }
+
+    public function setCustomProperty($name, $value)
+    {
+        $name = (string) $name;
+
+        $properties = $this->getProperties();
+        if (array_key_exists('customProperties', $properties)) {
+            $customProperties = $properties['customProperties'];
+            if (array_key_exists($name, $customProperties)) {
+                $item               = [];
+                $item['value']      = $customProperties[$name]['default'];
+                if (!empty($value)) { $item['value']      = $value; }
+                $properties['customProperties'][$name] = $item;
+                $this->setProperties($properties);
+                return $this;
+            }
+        }
+        return false;
+    }
+
+    public function getCustomProperties()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('customProperties', $properties) ? $properties['customProperties'] : false);
+    }
+
+    public function setCustomProperties(array $customProperties = null)
+    {
+        $properties = $this->getProperties();
+        if (!array_key_exists('customProperties', $properties)) { $properties['customProperties'] = []; }
+        $properties['customProperties'] = $customProperties;
+        $this->setProperties($properties);
+        return $this;
     }
 
     /*
