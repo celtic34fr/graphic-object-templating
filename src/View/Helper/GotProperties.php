@@ -9,13 +9,11 @@ use GraphicObjectTemplating\Objects\OObject;
 class GotProperties extends AbstractHelper
 {
     protected $sm;
-    protected $gotServices;
 
     public function __construct($sm)
     {
         /** @var ServiceManager sl */
         $this->sm = $sm;
-        $this->gotServices = $sm->get("graphic.object.templating.services");
         return $this;
     }
 
