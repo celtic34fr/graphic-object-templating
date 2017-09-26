@@ -21,6 +21,8 @@ use GraphicObjectTemplating\Objects\OSContainer;
  * setValidMethod($obj, $method)
  * getValidMethod()
  * addSubmit($label, $nature, $class, $method, $stopevent = true)
+ * setSubmit($name, $label = null, $nature = null, $class =null, $method = null,
+ *      $stopevent = true)
  * clearSubmits()
  * setSubmits(array $submits)
  * getSubmits()
@@ -184,28 +186,55 @@ class OSForm extends OSContainer
         return ((!empty($properties['validMethod'])) ? $properties['validMethod'] : false) ;
     }
 
-    public function addSubmit($label, $nature, $class, $method, $stopevent = true)
+    public function addSubmit($name, $label, $nature, $class, $method, $stopevent = true)
     {
+        $name   = (string) $name;
+        $label  = (string) $label;
+        
         $properties = $this->getProperties();
         if (!array_key_exists('submits', $properties) || !is_array($properties['submits'])) {
             $properties['submits'] = [];
         }
-        $numBtn = count($properties['submits']);
-        $submit = new ODButton($this->getId().$numBtn);
-        $submit->setLabel($label);
-        $submit->evtClick($class, $method, $stopevent);
-        $submit->setNature($nature);
+        
+        if (!array_key_exists($name, $properties['submits'])) {
+            $numBtn = count($properties['submits']);
+            $submit = new ODButton($this->getId().'Btn'.$numBtn);
+            $submit->setLabel($label);
+            $submit->evtClick($class, $method, $stopevent);
+            $submit->setNature($nature);
 
-        $submit->setForm($this->getId());
-        $widthBT = 10 / (2 + $numBtn) - 1;
-        $submit->setWidthBT('O1:W'.(int)$widthBT);
+            $submit->setForm($this->getId());
+            $widthBT = 10 / (2 + $numBtn) - 1;
+            $submit->setWidthBT('O1:W'.(int)$widthBT);
 
-        $reset   = OObject::buildObject($this->getId().'Reset');
-        $reset->setWidthBT('O2:W'.(int)$widthBT);
+            $reset   = OObject::buildObject($this->getId().'Reset');
+            $reset->setWidthBT('O2:W'.(int)$widthBT);
 
-        $properties['submits'][] = $submit->getId();
-        $this->setProperties($properties);
-        return $this;
+            $properties['submits'][$nom] = $submit->getId();
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function setSubmit($name, $label = null, $nature = null, $class =null, 
+            $method = null, $stopevent = true)
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('submits', $properties)) {
+            $submits = $properties['submits'];
+            if (array_key_exists($name, $submits)) {
+                /** @var ODButton $object **/
+                $object = OObject::buildObject($submits[$name]);
+                if (!empty($label))     { $object->setLabel($label); }
+                if (!empty($nature))    { $object->setNature($nature); }
+                if (!empty($class) && !empty($method)) {
+                    $object->evtClick($class, $method, $stopevent);
+                }
+                return $this;
+            }
+        }
+        return false;
     }
 
     public function clearSubmits()
@@ -237,6 +266,23 @@ class OSForm extends OSContainer
     {
         $properties = $this->getProperties();
         return ((!empty($properties['submits'])) ? $properties['submits'] : false) ;
+    }
+
+    public function getSubmit($name)
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('submits', $properties)) {
+            $submits = $properties['submits'];
+            if (array_key_exists($name, $submits)) {
+                $object = OObject::buildObject($submits[$name]);
+                $clic   = $object->getClic();
+                return [
+                    $name, $object->getLabel(), $object->getNature(), 
+                        $clic['class'], $clic['method'], $clic['stopEvent']
+                ];
+            }
+        }
+        return false;
     }
 
     public function setReset($label = null, $nature = null, $class = null)

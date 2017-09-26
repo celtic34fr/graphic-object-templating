@@ -231,6 +231,15 @@ class ODButton extends ODContained
         return $this;
     }
 
+    public function getClick()
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('event', $properties)) {
+            $event = $properties['event'];
+            if (array_key_exists('clic', $event)) { return $event['clic']; }
+        }
+    }
+
     public function disClick()
     {
         $properties = $this->getProperties();
