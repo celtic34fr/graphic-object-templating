@@ -1091,6 +1091,16 @@ class OObject
         if (OObject::existObject($id)) {
             $gotObjList = OObject::validateSession();
             $objects = $gotObjList->offsetGet('objects');
+            $object = OObject::buildObject($id);
+            if ($object instanceof OSContainer || $object instanceof OESContainer) {
+                $children = $object->getChildren();
+                if ($children !== false) {
+                    /** @var OObject $child */
+                    foreach ($children as $child) {
+                        self::destroyObject($child->getId());
+                    }
+                }
+            }
             unset($objects[$id]);
             $gotObjList->offsetSet('objects', $objects);
             return true;
