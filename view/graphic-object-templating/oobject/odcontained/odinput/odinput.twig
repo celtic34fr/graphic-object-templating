@@ -107,7 +107,7 @@
             {% set infoBulle =
             infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
         {% endif %}
-        {% if infoBulle is defined and infoBulle is not empty %}
+        {% if infoBulle is defined and infoBulle.tltle is not empty %}
             {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
     />
@@ -128,7 +128,11 @@
         {% endif %}
     {% endif %}
 
-    {% if objet.infoBulle is not empty %}
+    {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {%  set type = objet.infoBulle.type %}
+        {%  set id = objet.id ~ "_" ~ objet.type %}
+        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+    {% elseif objet.erreur.libel is not empty and objet.type != "hidden" %}
         {%  set type = objet.infoBulle.type %}
         {%  set id = objet.id ~ "_" ~ objet.type %}
         {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
