@@ -210,7 +210,7 @@ class OSForm extends OSContainer
             $reset   = OObject::buildObject($this->getId().'Reset');
             $reset->setWidthBT('O2:W'.(int)$widthBT);
 
-            $properties['submits'][$nom] = $submit->getId();
+            $properties['submits'][$name] = $submit->getId();
             $this->setProperties($properties);
             return $this;
         }

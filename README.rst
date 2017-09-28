@@ -38,10 +38,10 @@ Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour 
 
 ::
 
-    <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>
+    <link href="{{ basePath() }}/graphicobjecttemplating/css/main.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ basePath() }}/graphicobjecttemplating/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ basePath() }}/graphicobjecttemplating/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/js/main.js"></script>
 
 Et il faut ajouter les deux lignes suivantes au début du bloc body
 
