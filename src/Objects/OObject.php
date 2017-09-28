@@ -927,7 +927,7 @@ class OObject
         return false;
     }
 
-    public function getCustomProperties()
+    public function getCustomProperties() : array
     {
         $properties = $this->getProperties();
         return (array_key_exists('customProperties', $properties) ? $properties['customProperties'] : false);

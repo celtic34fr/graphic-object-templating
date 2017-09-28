@@ -317,7 +317,7 @@ class OSForm extends OSContainer
         return OObject::buildObject($this->getId().'Reset');
     }
 
-    public function isValid($sm)
+    public function isValid($sm, $params = null)
     {
         $valid = true;
 
