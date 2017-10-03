@@ -4,7 +4,12 @@
 {% for evt, callback in events %}
     {% if callback is not empty and callback != "dummy"%}
         $('#{{ objet.id }}').{{ evt }}(function (e) {
+            {% switch(callback.class) %}
+            {% case 'javascript:' %}
+            eval('{{ callback.method }}');
+            {% default %}
             invokeAjax({{ objet.object }}_getData($('#{{ objet.id }}'), '{{ evt }}'), '{{ objet.id }}', '{{ evt }}', e);
+            {% endswitch %}
         });
     {% endif %}
 {% endfor %}
