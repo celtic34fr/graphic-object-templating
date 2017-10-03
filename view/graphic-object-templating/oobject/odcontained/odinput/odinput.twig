@@ -98,7 +98,7 @@
         {% if objet.state == false %} disabled {% endif %}
         {% if inputClass is not empty %} class="{{ inputClass }}" {% endif %}
         {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
-        {% if objet.infoBulle is not empty or (objet.erreur.libel is empty) %}
+        {% if objet.infoBulle.title is not empty or (objet.erreur.libel is empty) %}
             {%  set infoBulle = objet.infoBulle %}
         {% endif %}
         {% if objet.type != "hidden" and objet.erreur.libel is not empty %}

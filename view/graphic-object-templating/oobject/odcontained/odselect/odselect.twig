@@ -78,7 +78,7 @@
             {% if objet.state != true %} disabled {% endif %}
             {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
 
-            {% if objet.infoBulle is not empty %}
+            {% if objet.infoBulle.title is not empty %}
                 {% set infoBulle = objet.infoBulle %}
                 {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
             {% endif %}

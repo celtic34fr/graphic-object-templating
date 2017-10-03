@@ -2,7 +2,7 @@
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
 <div id="{{ objet.id }}"
-        {% if objet.infoBulle is not empty %}
+        {% if objet.infoBulle.title is not empty %}
             {%  set infoBulle = objet.infoBulle %}
             {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
         {% endif %}
@@ -29,7 +29,7 @@
         {% endif %}
         }
 
-        {% if objet.infoBulle is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
+        {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
         {% set id = objet.id %}
         {% set type = objet.infoBulle.type %}
         {% set css = objet.infoBulle.css %}
@@ -65,7 +65,7 @@
         {{ content | raw }}
     </div>
 
-    {% if objet.infoBulle is not empty %}
+    {% if objet.infoBulle.title is not empty %}
         {%  set type = objet.infoBulle.type %}
         {%  set id = objet.id %}
         {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
