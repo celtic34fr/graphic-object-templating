@@ -7,6 +7,7 @@ use GraphicObjectTemplating\Controller\GOTController;
 use GraphicObjectTemplating\Service\Factory\GotServicesFactory;
 use GraphicObjectTemplating\Service\GotServices;
 use GraphicObjectTemplating\Twig\Extension\ColorConverterTwigExtension;
+use GraphicObjectTemplating\Twig\Extension\GotTwigExtension;
 use GraphicObjectTemplating\Twig\Extension\LayoutExtension;
 use GraphicObjectTemplating\View\Helper\Factory\GotBootstrapFactory;
 use GraphicObjectTemplating\View\Helper\Factory\GotHeaderFactory;
@@ -78,6 +79,7 @@ return array(
         'extensions' => [
             'layout'            => LayoutExtension::class,
             'colorConverter'    => ColorConverterTwigExtension::class,
-        ],
+            'gotTwigExtension'  => GotTwigExtension::class,
+            ],
     ],
 );

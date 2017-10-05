@@ -47,7 +47,7 @@ class TokenParserSwitch extends Twig_TokenParser
             switch ($v->getValue()) {
                 case 'default':
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                    $default = $parser->subparse(array($this, 'decideIfEnd'));
+                    $default[] = $parser->subparse(array($this, 'decideIfEnd'));
                     break;
 
                 case 'case':

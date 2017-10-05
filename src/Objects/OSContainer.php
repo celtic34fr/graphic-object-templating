@@ -218,9 +218,16 @@ class OSContainer extends OObject
         return false ;
     }
 
-    public function convertValue($value) { return $this->setProperties($value); }
+    public function convertValue($value) {
+        $properties = $this->getProperties();
+        $properties['children'] = $value;
+        return $this->setProperties($properties);
+    }
 
-    public function getConverted() { return $this->getProperties(); }
+    public function getConverted() {
+        $properties = $this->getProperties();
+        return $properties['children'];
+    }
 
 
     public function addCssCode($nom, $code)
