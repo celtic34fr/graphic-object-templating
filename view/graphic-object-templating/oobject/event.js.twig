@@ -6,7 +6,7 @@
         $('#{{ objet.id }}').{{ evt }}(function (e) {
             {% switch(callback.class) %}
             {% case 'javascript:' %}
-            eval('{{ callback.method }}');
+            eval('{{ callback.method | raw }}');
             {% default %}
             invokeAjax({{ objet.object }}_getData($('#{{ objet.id }}'), '{{ evt }}'), '{{ objet.id }}', '{{ evt }}', e);
             {% endswitch %}
