@@ -1,5 +1,6 @@
 {# template de l'objet ODContent #}
 {% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+{% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes %} {% endif %}
 
 <div id="{{ objet.id }}"
         {% if objet.infoBulle.title is not empty and objet.erreur.libel is empty %}

@@ -8,6 +8,12 @@
 >
 
     <style>
+        {% if objet.style is not empty %}
+        #{{ objet.id }} {
+        {{ objet.style | raw }}
+        }
+        {% endif %}
+
         {% if objet.styles is not empty %}
         {% for line, lStyle in objet.styles %}
         {% for col, cStyle in lStyle %}
