@@ -28,7 +28,9 @@
         {% endif %}
     </style>
 
-    <div id="{{ objet.id }}_form">
+    {% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
+
+    <div id="{{ objet.id }}_form" class="{{ objClass }}">
         {{ content | raw }}
         <div class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12">
             {% for submitId in objet.submits %}

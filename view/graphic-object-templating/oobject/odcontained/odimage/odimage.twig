@@ -1,7 +1,7 @@
 {# template objet ODImage #}
 
 {#{ dump(objet.classes) }#}
-{% set objClass = '' %}
+{% set objClass = "gotObject "~gotBootstrap(objet.widthBT) %}
 {% if objet.classes is not empty %}
     {% set objClass = objClass ~ " " ~ objet.classes %}
 {% endif %}

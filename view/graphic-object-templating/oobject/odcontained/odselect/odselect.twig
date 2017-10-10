@@ -108,7 +108,7 @@
                 {% if objet.placeholder is not empty %}
                 placeholder: "{{ objet.placeholder }}", {% endif %}
                 {{ ( parms.allowClear is defined and parms.allowClear ) ? 'allowClear: true,' : 'allowClear: false,' }}
-                {% if objet.multiple is typeOf('int') %}
+                {% if objet.multiple is typeof('int') %}
                 maximumSelectionLength: {{ objet.multiple }}, {% endif %}
                 {% if params.searchBox == false %}
                 minimumResultsForSearch: Infinity, {% endif %}
