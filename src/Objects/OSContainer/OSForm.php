@@ -67,7 +67,7 @@ class OSForm extends OSContainer
         $this->setProperties($properties);
     }
     
-    public function addChild(OObject $child, $required = false) {
+    public function addChild(OObject $child, $required = false, $mode = self::MODE_LAST, $param = null) {
         $properties = $this->getProperties();
         if ($child instanceof ODContained) {
             if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
@@ -83,7 +83,7 @@ class OSForm extends OSContainer
             }
         }
         $this->setProperties($properties);
-        parent::addChild($child);
+        parent::addChild($child, $mode, $param);
         return $this;
     }
 
