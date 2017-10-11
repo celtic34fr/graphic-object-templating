@@ -1,67 +1,88 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: main
+ * Date: 11/10/17
+ * Time: 23:40
+ */
 
 namespace GraphicObjectTemplating\Objects\OSContainer;
 
-use GraphicObjectTemplating\Objects\ODContained\ODContent;
-use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
 
 /**
  * Class OSDialog
  * @package GraphicObjectTemplating\Objects\OSContainer
  *
- * objet de dialogue sur base jQuery Colorbox
- *
- * enaAccessible()
- * disAccessible()
- * enable()
- * disable()
- * setContent($content)
- * getContent()
- * setEffect($effect = self::EFFECT_NONE)
- * getEffect()
- * setClass($class = "")
- * getClass()
- * enaClickoff()
- * disClickoff()
- * setInner($inner = "modality-inner")
- * getInner()
- * setOuter($outer = "modality-outer")
- * getOuter()
- * enaKeyboard()
- * disKeyboard()
- * enaOpen()
- * disOpen()
- *
- * CmdOpenDialog()
- * CmdCloseDialog()
- * CmdToggleDialog()
+ * showBtnClose         : paramètre l'affichage de la croix de fermeture
+ * hideBtnClose         : paramètre de ne pas afficher la croix de fermeture
+ * setTitle($title)     : affecte un titre à la fenêtre modale
+ * getTitle()           : restitue le titre de la fenêtre modale
+ * setWidthDialog($width)   : largeur du dialogue en unité compatible internet
+ * getWidthDialog()         : restitue la largeur du dialogue en unité compatible internet
+ * setMinHeight($minHeight) : hauteur minimale du dialogue en unité compatible internet
+ * getMinHeight()           : restitue la hauteur minimale du dialogue en unité compatible internet
+ * setBgColor($bgColor)     : permet de fixer la couleur de fond du dialogue
+ * getBgColor()             : restitue la couleur de fond du dialogue
+ * setFgColor($fgColor)     : permet de fixer la couleur d'écriture dans le dialogue
+ * getFgColor()             : restitue la couleur d'écriture dans le dialogue
  */
 class OSDialog extends OSContainer
 {
-    const EFFECT_NONE            = "";
-    const EFFECT_SCALE_UP        = "scale_up";
-    const EFFECT_SCALE_DOWN      = "scale_down";
-    const EFFECT_SLIDE_LEFT      = "slide_left";
-    const EFFECT_SLIDE_RIGHT     = "slide_right";
-    const EFFECT_SLIDE_UP        = "slide_up";
-    const EFFECT_SLIDE_DOWN      = "slide_down";
-    const EFFECT_STICKY_TOP      = "sticky_top";
-    const EFFECT_STICKY_BOTTOM   = "sticky_bottom";
-    const EFFECT_HORIZONTAL_FLIP = "horizontal_flip";
-    const EFFECT_VERTICAL_FLIP   = "vertical_flip";
-    const EFFECT_SPIN_UP         = "spin_up";
-    const EFFECT_SPIN_DOWN       = "spin_down";
-    const EFFECT_FALL_LEFT       = "fall_left";
-    const EFFECT_FALL_RIGHT      = "fall_right";
-    const EFFECT_SWING_DOWN      = "swing_down";
-    const EFFECT_SWING_UP        = "swing_up";
-    const EFFECT_SWING_LEFT      = "swing_left";
-    const EFFECT_SWING_RIGHT     = "swing_right";
-    const EFFECT_FRONT_FLIP      = "front_flip";
-    const EFFECT_BACK_FLIP       = "back_flip";
+    const COLOR_BLACK         = 'black';
+    const COLOR_WHITE         = 'white';
+    const COLOR_LIME          = 'lime';
+    const COLOR_GREEN         = 'green';
+    const COLOR_EMERALD       = 'emerald';
+    const COLOR_TEAL          = 'teal';
+    const COLOR_BLUE          = 'blue';
+    const COLOR_CYAN          = 'cyan';
+    const COLOR_COBALT        = 'cobalt';
+    const COLOR_INDIGO        = 'indigo';
+    const COLOR_VIOLET        = 'violet';
+    const COLOR_PINK          = 'pink';
+    const COLOR_MAGENTA       = 'magenta';
+    const COLOR_CRIMSON       = 'crimson';
+    const COLOR_RED           = 'red';
+    const COLOR_ORANGE        = 'orange';
+    const COLOR_AMBER         = 'amber';
+    const COLOR_YELLOW        = 'yellow';
+    const COLOR_BROWN         = 'brown';
+    const COLOR_OLIVE         = 'olive';
+    const COLOR_STEEL         = 'steel';
+    const COLOR_MAUVE         = 'mauve';
+    const COLOR_TAUPE         = 'taupe';
+    const COLOR_GRAY          = 'gray';
+    const COLOR_DARK          = 'dark';
+    const COLOR_DARKER        = 'darker';
+    const COLOR_DARKBROWN     = 'darkBrown';
+    const COLOR_DARKCRIMSON   = 'darkCrimson';
+    const COLOR_DARKMAGENTA   = 'darkMagenta';
+    const COLOR_DARKINDIGO    = 'darkIndigo';
+    const COLOR_DARKCYAN      = 'darkCyan';
+    const COLOR_DARKCOBALT    = 'darkCobalt';
+    const COLOR_DARKTEAL      = 'darkTeal';
+    const COLOR_DARKEMERALD   = 'darkEmerald';
+    const COLOR_DARKGREEN     = 'darkGreen';
+    const COLOR_DARKORANGE    = 'darkOrange';
+    const COLOR_DARKRED       = 'darkRed';
+    const COLOR_DARKPINK      = 'darkPink';
+    const COLOR_DARKVIOLET    = 'darkViolet';
+    const COLOR_DARKBLUE      = 'darkBlue';
+    const COLOR_LIGHTBLUE     = 'lightBlue';
+    const COLOR_LIGHTRED      = 'lightRed';
+    const COLOR_LIGHTGREEN    = 'lightGreen';
+    const COLOR_LIGHTERBLUE   = 'lighterBlue';
+    const COLOR_LIGHTTEAL     = 'lightTeal';
+    const COLOR_LIGHTOLIVE    = 'lightOlive';
+    const COLOR_LIGHTORANGE   = 'lightOrange';
+    const COLOR_LIGHTPINK     = 'lightPink';
+    const COLOR_GRAYDARK      = 'grayDark';
+    const COLOR_GRAYDARKER    = 'grayDarker';
+    const COLOR_GRAYLIGHT     = 'grayLight';
+    const COLOR_GRAYLIGHTER   = 'grayLighter';
 
-    protected $const_effect;
+    protected $const_color;
 
     public function __construct($id) {
         parent::__construct($id, "oobject/oscontainer/osdialog/osdialog.config.php");
@@ -70,192 +91,117 @@ class OSDialog extends OSContainer
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
     }
 
-    public function enaAccessible()
+    public function showBtnClose()
     {
         $properties = $this->getProperties();
-        $properties['accessible'] = true;
+        $properties['btnClose'] = true;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function disAccessible()
+    public function hideBtnClose()
     {
         $properties = $this->getProperties();
-        $properties['enabled'] = false;
+        $properties['btnClose'] = false;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function enable()
+    public function setTitle($title)
     {
+        $title = (string) $title;
         $properties = $this->getProperties();
-        $properties['enabled'] = true;
+        $properties['title'] = $title;
         $this->setProperties($properties);
         return $this;
     }
 
-    public function disable()
+    public function getTitle()
     {
-        $properties = $this->getProperties();
-        $properties['enabled'] = false;
-        $this->setProperties($properties);
-        return $this;
+        $properties          = $this->getProperties();
+        return ((!empty($properties['title'])) ? $properties['title'] : false) ;
     }
-
-    public function setContent($content)
-    {
-        $properties = $this->getProperties();
-        if (!($content instanceof OObject)) {
-            $contenu = new ODContent($properties['id']."Content");
-            $contenu->setContent($content);
-            $this->addChild($contenu);
-        } else {
-            $this->addChild($content);
-        }
-        return $this;
-    }
-
-    public function getContent()
-    {
-        if ($this->$this->hasChildren()) return $this->getChildren();
-        return false;
-    }
-
-    public function setEffect($effect = self::EFFECT_NONE)
-    {
-        $effect = (string) $effect;
-        $effects = $this->getEffectsConstants();
-        if (!in_array($effect, $effects)) $effect = self::EFFECT_NONE;
-
-        $properties = $this->getProperties();
-        $properties['effect'] = $effect;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getEffect()
-    {
-        $properties = $this->getProperties();
-        return ((!empty($properties['effect'])) ? $properties['effect'] : false) ;
-    }
-
-    public function setClass($class = "")
-    {
-        $class = (string) $class;
-        if (!empty($class)) {
-            $properties = $this->getProperties();
-            $properties['class'] = $class;
-            $this->setProperties($properties);
-            return $this;
-        }
-        return false;
-    }
-
-    public function getClass()
-    {
-        $properties = $this->getProperties();
-        return ((!empty($properties['class'])) ? $properties['class'] : false) ;
-    }
-
-    public function enaClickoff()
-    {
-        $properties = $this->getProperties();
-        $properties['clickoff'] = true;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disClickoff()
-    {
-        $properties = $this->getProperties();
-        $properties['clickoff'] = false;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function setInner($inner = "modality-inner")
-    {
-        $inner = (string) $inner;
-        $properties = $this->getProperties();
-        $properties['inner'] = $inner;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getInner()
-    {
-        $properties = $this->getProperties();
-        return ((!empty($properties['inner'])) ? $properties['inner'] : false) ;
-    }
-
-    public function setOuter($outer = "modality-outer")
-    {
-        $outer = (string) $outer;
-        $properties = $this->getProperties();
-        $properties['outer'] = $outer;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function getOuter()
-    {
-        $properties = $this->getProperties();
-        return ((!empty($properties['outer'])) ? $properties['outer'] : false) ;
-    }
-
-    public function enaKeyboard()
-    {
-        $properties = $this->getProperties();
-        $properties['keyboard'] = true;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disKeyboard()
-    {
-        $properties = $this->getProperties();
-        $properties['keyboard'] = false;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function enaOpen()
-    {
-        $properties = $this->getProperties();
-        $properties['open'] = true;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    public function disOpen()
-    {
-        $properties = $this->getProperties();
-        $properties['open'] = false;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-
 
     public function CmdOpenDialog()
     {
         $item = [];
-
-        $item['id']   = $this->getId()."Command";
+        $item['id']   = $this->getId();
         $item['mode'] = "exec";
-        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.open();";
-
+        $item['html'] = 'openModal("#'.$this->getId().'");';
         return $item;
     }
+
+    public function setWidthDialog($widthDialog)
+    {
+        $widthDialog = (string) $widthDialog;
+        $properties = $this->getProperties();
+        $properties['widthDialog'] = $widthDialog;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getWidthDialog()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['widthDialog'])) ? $properties['widthDialog'] : false) ;
+    }
+
+    public function setMinHeight($minHeight)
+    {
+        $minHeight = (string) $minHeight;
+        $properties = $this->getProperties();
+        $properties['minHeight'] = $minHeight;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getMinHeight()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['minHeight'])) ? $properties['minHeight'] : false) ;
+    }
+
+    public function setBgColor($bgColor)
+    {
+        $bgColor  = (string) $bgColor;
+        $colors = $this->getColorConst();
+        if (!in_array($bgColor, $colors, true)) { $bgColor = self::COLOR_GRAYLIGHTER; }
+        $properties = $this->getProperties();
+        $properties['bgcolor'] = 'bg-'.$bgColor;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getBgColor()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['bgcolor'])) ? $properties['bgcolor'] : false);
+    }
+
+    public function setFgColor($fgColor)
+    {
+        $fgColor  = (string) $fgColor;
+        $colors = $this->getColorConst();
+        if (!in_array($fgColor, $colors, true)) { $fgColor = self::COLOR_GRAYLIGHTER; }
+        $properties = $this->getProperties();
+        $properties['fgcolor'] = 'fg-'.$fgColor;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getFgColor()
+    {
+        $properties = $this->getProperties();
+        return ((!empty($properties['fgcolor'])) ? $properties['fgcolor'] : false);
+    }
+
 
     public function CmdCloseDialog()
     {
         $item = [];
-
         $item['id']   = $this->getId."Command";
         $item['mode'] = "exec";
-        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.close();";
-
+        $item['html'] = 'closeModal("#'.$this->getId().'");';;
         return $item;
     }
 
@@ -271,21 +217,21 @@ class OSDialog extends OSContainer
     }
 
 
-
-    private function getEffectsConstants()
+    private function getColorConst()
     {
         $retour = [];
-        if (empty($this->const_effect)) {
+        if (empty($this->const_color)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'EFFECT');
-                if ($pos !== false) $retour[$key] = $constant;
+                $pos = strpos($key, 'COLOR');
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
-            $this->const_effect = $retour;
+            $this->const_color = $retour;
         } else {
-            $retour = $this->const_effect;
+            $retour = $this->const_color;
         }
         return $retour;
     }
-
 }

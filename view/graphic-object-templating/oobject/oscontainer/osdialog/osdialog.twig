@@ -1,93 +1,20 @@
 {# template de l'objet OSDialog #}
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
-<div id="{{ objet.id }}"
-        {% if objet.infoBulle.title is not empty %}
-            {%  set infoBulle = objet.infoBulle %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
-        {% endif %}
-        {% if objet.classes is not empty %} {% set objClass = objClass ~ " " ~ objet.classes  %} {% endif %}
-        {% if objClass is not empty %} class="{{ objClass }}" {% endif %}
->
+<style>
+    .modal-content {
+        width: {{ objet.widthDialog }};
+        position: relative;
+        min-height: {{ objet.minHeight }};
+        background: {{ objet.bgColor }};
+        color: {{ objet.fgColor }};
+    }
+</style>
 
-    <style>
-        #{{ objet.id }} {
-        {% if objet.autoCenter == true %}
-        {% set objClass = "" %}
-            width: {{ objet.autoCenterPx }};
-            height:  {{ objet.autoCenterPy }};
-            position: absolute;
-            top:0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-        {% endif %}
-            display: {{ objet.display }};
-        {% if objet.style is not empty %}
-        {{ objet.style | raw }}
-        {% endif %}
-        }
-
-        {% if objet.infoBulle.title is not empty and objet.infoBulle.css is not empty and objet.erreur.libel is empty %}
-        {% set id = objet.id %}
-        {% set type = objet.infoBulle.type %}
-        {% set css = objet.infoBulle.css %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
-        {% elseif objet.erreur.libel is not empty %}
-        {% set erreur = objet.erreur %}
-        {% set id = objet.id %}
-        {% set type = 'tooltip' %}
-        {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css} %}
-
-        #{{ id }} {
-            border:  solid 2px #{{ erreur.color }};
-        }
-        {% endif %}
-
-        {% if objet.width is not empty %}
-        #{{ objet.id }}Content {
-            width: {{ objet.width }};
-        }
-        {% endif %}
-
-        {% if objet.cssCode is not empty %}
-        {% for selector, code in objet.cssCode %}
-        {{ selector | raw }} {
-        {{  code | raw }}
-        }
-        {% endfor %}
-        {% endif %}
-    </style>
-
-    <div id="{{ objet.id }}Content" role="dialog" aria-labelledby="{{ objet.id }}Heading">
+<div class="overlay is-hidden {{ objClass }}" id="{{ objet.id }}">
+    <div class="modal-content">
+        {% if objet.btnClose %}<span class="button-close" onclick="closeModal('#{{ objet.id }}');"></span>{%  endif %}
+        <h3>{{ objet.title }}</h3>
         {{ content | raw }}
     </div>
-
-    {% if objet.infoBulle.title is not empty %}
-        {%  set type = objet.infoBulle.type %}
-        {%  set id = objet.id %}
-        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
-    {% endif %}
-
-    <script>
-        $(document).ready(function () {
-            $("#{{ objet.id }}Content").modality({
-                accessible: {{ (objet.accessible) ? "true" : "false" }},
-                blind: {{ (objet.blind) ? "true" : "false" }},
-            {% if objet.class is not empty %} class: "{{ objet.class }}", {% endif %}
-                clickoff: {{ (objet.clickoff) ? "true" : "false" }},
-            {% if objet.effect is not empty %} effect: "{{ objet.effect }}", {% endif %}
-                enabled: {{ (objet.enabled) ? "true" : "false" }},
-                inner: "{{ objet.inner }}",
-                keyborad: {{ (objet.keyboard) ? "true" : "false" }},
-                open: {{ (objet.open) ? "true" : "false" }},
-                outer: "{{ objet.outer }}",
-            });
-        });
-    </script>
-
-    <script id="{{ objet.id }}Command"></script>
 </div>
-

@@ -13,15 +13,16 @@ use Twig_Test;
 class LayoutExtension extends \Twig_Extension
 {
 
-    public function getFunctions() {
+    public function getFunctions()
+    {
         return array(
-            new Twig_Function('getclass',         array($this, 'twigFunction_getClass'), array('is_safe' => array('html'))),
-            new Twig_Function('gettype',          array($this, 'twigFunction_getType'), array('is_safe' => array('html'))),
-            new Twig_Function('arrayexception',   array($this, 'twigFunction_arrayException'), array('is_safe' => array('html'))),
-            new Twig_Function('checkBoolean',     array($this, 'twigFunction_isBoolean'), array('is_safe' => array('html'))), // KALANTwigExtension @author LAURE
-            new Twig_Function('substr',           array($this, 'twigFunction_subString'), array('is_safe' => array('html'))),
-            new Twig_Function('strpos',           array($this, 'twigFunction_strPos'), array('is_safe' => array('html'))),
-            new Twig_Function('instring',         array($this, 'twigFunction_inString'), array('is_safe' => array('html'))),
+            new Twig_Function('getclass', array($this, 'twigFunction_getClass'), array('is_safe' => array('html'))),
+            new Twig_Function('gettype', array($this, 'twigFunction_getType'), array('is_safe' => array('html'))),
+            new Twig_Function('arrayexception', array($this, 'twigFunction_arrayException'), array('is_safe' => array('html'))),
+            new Twig_Function('checkBoolean', array($this, 'twigFunction_isBoolean'), array('is_safe' => array('html'))), // KALANTwigExtension @author LAURE
+            new Twig_Function('substr', array($this, 'twigFunction_subString'), array('is_safe' => array('html'))),
+            new Twig_Function('strpos', array($this, 'twigFunction_strPos'), array('is_safe' => array('html'))),
+            new Twig_Function('instring', array($this, 'twigFunction_inString'), array('is_safe' => array('html'))),
         );
     }
 
@@ -30,10 +31,10 @@ class LayoutExtension extends \Twig_Extension
     {
         return [
             'ERROR_CONTROLLER_CANNOT_DISPATCH' => 'error-controller-cannot-dispatch',
-            'ERROR_CONTROLLER_NOT_FOUND'       => 'error-controller-not-found',
-            'ERROR_CONTROLLER_INVALID'         => 'error-controller-invalid',
-            'ERROR_EXCEPTION'                  => 'error-exception',
-            'ERROR_ROUTER_NO_MATCH'            => 'error-router-no-match',
+            'ERROR_CONTROLLER_NOT_FOUND' => 'error-controller-not-found',
+            'ERROR_CONTROLLER_INVALID' => 'error-controller-invalid',
+            'ERROR_EXCEPTION' => 'error-exception',
+            'ERROR_ROUTER_NO_MATCH' => 'error-router-no-match',
             'ERROR_MIDDLEWARE_CANNOT_DISPATCH' => 'error-middleware-cannot-dispatch',
         ];
     }
@@ -41,8 +42,8 @@ class LayoutExtension extends \Twig_Extension
     public function getTests()
     {
         return array(
-            new Twig_Test('instanceof',     [$this,'twigTest_instanceOf']),
-            new Twig_Test('typeof',         [$this,'twigTest_typeOf']),
+            new Twig_Test('instanceof', [$this, 'twigTest_instanceOf']),
+            new Twig_Test('typeof', [$this, 'twigTest_typeOf']),
         );
     }
 
@@ -56,7 +57,7 @@ class LayoutExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_Filter('update',   [$this, 'twigFilter_array_update']),
+            new Twig_Filter('update', [$this, 'twigFilter_array_update']),
         );
     }
 
@@ -79,8 +80,8 @@ class LayoutExtension extends \Twig_Extension
 
     public function twigFunction_inString($var1, $var2)
     { // is var1 in var2
-        $var1 = (string) $var1;
-        $var2 = (string) $var2;
+        $var1 = (string)$var1;
+        $var2 = (string)$var2;
         return (strpos($var2, $var1) !== false) ? true : false;
     }
 
@@ -101,38 +102,41 @@ class LayoutExtension extends \Twig_Extension
     public function twigFunction_arrayException(Exception $exception)
     {
         $retArray = [];
-        $retArray['File']          = $exception->getFile();
-        $retArray['Line']          = $exception->getLine();
-        $retArray['Message']       = $exception->getMessage();
+        $retArray['File'] = $exception->getFile();
+        $retArray['Line'] = $exception->getLine();
+        $retArray['Message'] = $exception->getMessage();
         $retArray['TraceAsString'] = $exception->getTraceAsString();
 
-        $tmpException              = $exception->getPrevious();
-        $arrayPrevious             = [];
+        $tmpException = $exception->getPrevious();
+        $arrayPrevious = [];
         while ($tmpException) {
-            $item                  = [];
-            $item['Class']         = get_class($tmpException);
-            $item['File']          = $tmpException->getFile();
-            $item['Line']          = $tmpException->getLine();
-            $item['Message']       = $tmpException->getMessage();
+            $item = [];
+            $item['Class'] = get_class($tmpException);
+            $item['File'] = $tmpException->getFile();
+            $item['Line'] = $tmpException->getLine();
+            $item['Message'] = $tmpException->getMessage();
             $item['TraceAsString'] = $tmpException->getTraceAsString();
 
-            $arrayPrevious[]       = $item;
-            $tmpException          = $tmpException->getPrevious();
+            $arrayPrevious[] = $item;
+            $tmpException = $tmpException->getPrevious();
         }
 
-        $retArray['Previous']      = $arrayPrevious;
+        $retArray['Previous'] = $arrayPrevious;
 
         return $retArray;
     }
-    
-	/**
-	 * Description of KALANTwigExtension
-	 * => permet le test sur le type d'un champs dans un template
-	 * @author LAURE
-	 */
-	public function twigFunction_isBoolean($var) { return is_bool($var); }
-	 
-    public function twigTest_typeOf($var, $type_test=null)
+
+    /**
+     * Description of KALANTwigExtension
+     * => permet le test sur le type d'un champs dans un template
+     * @author LAURE
+     */
+    public function twigFunction_isBoolean($var)
+    {
+        return is_bool($var);
+    }
+
+    public function twigTest_typeOf($var, $type_test = null)
     {
 
         switch ($type_test) {
@@ -169,9 +173,9 @@ class LayoutExtension extends \Twig_Extension
         }
     }
 
-    public function twigFunction_subString($str, $start, $len= null)
+    public function twigFunction_subString($str, $start, $len = null)
     {
-        if (intval($len) > 0 ) {
+        if (intval($len) > 0) {
             return substr($str, $start, $len);
         } else {
             return substr($str, $start);
@@ -203,7 +207,7 @@ class LayoutExtension extends \Twig_Extension
      *
      * @return array The replace values in array by array of keys / values
      */
-    function twig_array_update($arr1, $arr2)
+    public function twigFilter_array_update($arr1, $arr2)
     {
         if ($arr1 instanceof Traversable) {
             $arr1 = iterator_to_array($arr1);
