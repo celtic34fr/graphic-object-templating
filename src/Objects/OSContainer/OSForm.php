@@ -51,19 +51,21 @@ class OSForm extends OSContainer
         $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
-        
+        $properties = $this->getProperties();
+
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) { $this->setWidthBT(12); }
         $this->setForm($id);
 
-        $reset = new ODButton($this->getId().'Reset');
-        $reset->setLabel('Reset');
-        $reset->setForm($this->getId());
-        $reset->setNature(ODButton::NATURE_WARNING);
-        $reset->setType(ODButton::BTNTYPE_RESET);
-        $reset->setWidthBT('O2:W10');
-        $properties = $this->getProperties();
-        $properties['reset'] = $reset;
+        if (array_key_exists('reset', $properties) && empty($properties['reset'])) {
+            $reset = new ODButton($this->getId().'Reset');
+            $reset->setLabel('Reset');
+            $reset->setForm($this->getId());
+            $reset->setNature(ODButton::NATURE_WARNING);
+            $reset->setType(ODButton::BTNTYPE_RESET);
+            $reset->setWidthBT('O2:W10');
+            $properties['reset'] = $reset;
+        }
         $this->setProperties($properties);
     }
     
