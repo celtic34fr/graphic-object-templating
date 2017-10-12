@@ -1,4 +1,7 @@
 <?php
+
+use GraphicObjectTemplating\Objects\OSContainer\OSDialog;
+
 return [
     'object'        => 'osdialog',
     'typeObj'       => 'oscontainer',
@@ -6,8 +9,8 @@ return [
     'btnClose'      => true,
     'widthDialog'   => '100%',
     'minHeight'     => '200px',
-    'bgColor'       => '#FFF',
-    'fgColor'       => '#000',
+    'bgColor'       => 'bg-'.OSDialog::COLOR_WHITE,
+    'fgColor'       => 'fg-'.OSDialog::COLOR_BLACK,
 
     "resources"     => [
         "css" => [ 'osdialog.css' => "css/osdialog.css", ],

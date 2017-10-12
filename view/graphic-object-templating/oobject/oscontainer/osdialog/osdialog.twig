@@ -1,18 +1,17 @@
 {# template de l'objet OSDialog #}
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
+
 <style>
     .modal-content {
         width: {{ objet.widthDialog }};
         position: relative;
         min-height: {{ objet.minHeight }};
-        background: {{ objet.bgColor }};
-        color: {{ objet.fgColor }};
     }
 </style>
 
 <div class="overlay is-hidden {{ objClass }}" id="{{ objet.id }}">
-    <div class="modal-content">
+    <div class="modal-content {{ objet.bgColor}} {{ objet.fgColor }}">
         {% if objet.btnClose %}<span class="button-close" onclick="closeModal('#{{ objet.id }}');"></span>{%  endif %}
         <h3>{{ objet.title }}</h3>
         {{ content | raw }}

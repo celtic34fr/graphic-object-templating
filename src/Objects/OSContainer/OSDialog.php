@@ -167,7 +167,7 @@ class OSDialog extends OSContainer
         $colors = $this->getColorConst();
         if (!in_array($bgColor, $colors, true)) { $bgColor = self::COLOR_GRAYLIGHTER; }
         $properties = $this->getProperties();
-        $properties['bgcolor'] = 'bg-'.$bgColor;
+        $properties['bgColor'] = 'bg-'.$bgColor;
         $this->setProperties($properties);
         return $this;
     }
@@ -175,7 +175,7 @@ class OSDialog extends OSContainer
     public function getBgColor()
     {
         $properties = $this->getProperties();
-        return ((!empty($properties['bgcolor'])) ? $properties['bgcolor'] : false);
+        return ((!empty($properties['bgColor'])) ? $properties['bgColor'] : false);
     }
 
     public function setFgColor($fgColor)
@@ -184,7 +184,7 @@ class OSDialog extends OSContainer
         $colors = $this->getColorConst();
         if (!in_array($fgColor, $colors, true)) { $fgColor = self::COLOR_GRAYLIGHTER; }
         $properties = $this->getProperties();
-        $properties['fgcolor'] = 'fg-'.$fgColor;
+        $properties['fgColor'] = 'fg-'.$fgColor;
         $this->setProperties($properties);
         return $this;
     }
@@ -192,7 +192,7 @@ class OSDialog extends OSContainer
     public function getFgColor()
     {
         $properties = $this->getProperties();
-        return ((!empty($properties['fgcolor'])) ? $properties['fgcolor'] : false);
+        return ((!empty($properties['fgColor'])) ? $properties['fgColor'] : false);
     }
 
 
