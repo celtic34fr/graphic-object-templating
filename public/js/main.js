@@ -421,6 +421,21 @@ function odtoggle_getData(obj, evt) {
     return chps;
 }
 
+function osdialog_getData(obj, evt) {
+    var chps = "id=" + obj.attr("id");
+    chps = chps + "&value='" + obj.attr("id") + "'";
+    chps = chps + "&event='" + evt + "'";
+    var dataEvent   = obj.attr("data-evt");
+    if (dataEvent === evt) {
+        var classe      = obj.attr("data-"+evt+"-class");
+        var methode     = obj.attr("data-"+evt+"-method");
+        if ((classe.length > 0) && (methode.length >0)) {
+            chps = chps + "&callback='" + classe + '+' + methode + "'";
+        }
+    }
+    return chps;
+}
+
 /* méthode d'affection de valeur aux objets */
 
 /**
