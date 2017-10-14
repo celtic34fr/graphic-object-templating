@@ -195,6 +195,46 @@ class OSDialog extends OSContainer
         return ((!empty($properties['fgColor'])) ? $properties['fgColor'] : false);
     }
 
+    public function evtClose($class, $method, $stopEvent = true)
+    {
+        $class = (string)$class;
+        $method = (string)$method;
+        $properties = $this->getProperties();
+        if (!isset($properties['event'])) {
+            $properties['event'] = [];
+        }
+        if (!is_array($properties['event'])) {
+            $properties['event'] = [];
+        }
+
+        $properties['event']['click'] = [];
+        $properties['event']['click']['class'] = $class;
+        $properties['event']['click']['method'] = $method;
+        $properties['event']['click']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getClose()
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('event', $properties)) {
+            $event = $properties['event'];
+            if (array_key_exists('click', $event)) { return $event['click']; }
+        }
+    }
+
+    public function disClose()
+    {
+        $properties = $this->getProperties();
+        if (isset($properties['event']['click'])) {
+            unset($properties['event']['click']);
+        }
+        $this->setProperties($properties);
+        return $this;
+    }
+
 
     public function CmdCloseDialog()
     {

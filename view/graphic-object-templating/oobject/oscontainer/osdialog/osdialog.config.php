@@ -11,6 +11,7 @@ return [
     'minHeight'     => '200px',
     'bgColor'       => 'bg-'.OSDialog::COLOR_WHITE,
     'fgColor'       => 'fg-'.OSDialog::COLOR_BLACK,
+    'event'         => [],
 
     "resources"     => [
         "css" => [ 'osdialog.css' => "css/osdialog.css", ],

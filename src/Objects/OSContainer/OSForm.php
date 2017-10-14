@@ -4,6 +4,8 @@ namespace GraphicObjectTemplating\Objects\OSContainer;
 
 use GraphicObjectTemplating\Objects\ODContained;
 use GraphicObjectTemplating\Objects\ODContained\ODButton;
+use GraphicObjectTemplating\Objects\OEDContained;
+use GraphicObjectTemplating\Objects\OESContainer;
 use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
 
@@ -46,6 +48,9 @@ class OSForm extends OSContainer
     const ACTION_RESET  = 'reset';
     const ACTION_SETVAL = 'setVal';
 
+    const IN_FORM       = true;
+    const OUT_FORM      = false;
+
     public function __construct($id) {
         $parent = parent::__construct($id, 'oobject/oscontainer/osform/osform.config.php');
         $this->properties = $parent->properties;
@@ -69,23 +74,18 @@ class OSForm extends OSContainer
         $this->setProperties($properties);
     }
     
-    public function addChild(OObject $child, $required = false, $mode = self::MODE_LAST, $param = null) {
-        $properties = $this->getProperties();
-        if ($child instanceof ODContained) {
-            if (empty($properties['requireChildren'])) { $properties['requireChildren'] = []; }
-            if ($required && !in_array($child->getId(), $properties['requireChildren'])) {
-                $properties['requireChildren'][] = $child->getId();
-            }
-            $this->setProperties($properties);
-            $properties = $this->propageForm($child);
-        } elseif ( $child instanceof OSContainer) {
-            $children = $child->getChildren();
-            foreach ($children as $Ichild) {
-                $properties = $this->propageForm($Ichild);
+    public function addChild(OObject $child, $inForm = false, $mode = self::MODE_LAST, $param = null) {
+        parent::addChild($child, $mode, $param);
+        if ($inForm) {
+            if ($child instanceof ODContained || $child instanceof OEDContained) {
+                $child->setForm($this->getId());
+            } elseif ($child instanceof OSContainer || $child instanceof OESContainer) {
+                $childen = $child->getChildren();
+                foreach ($childen as $iChild) {
+                    $this->propageForm($iChild, $this->getId());
+                }
             }
         }
-        $this->setProperties($properties);
-        parent::addChild($child, $mode, $param);
         return $this;
     }
 
@@ -430,21 +430,15 @@ class OSForm extends OSContainer
         return $ret;
     }
 
-    private function propageForm(OObject $objet)
+    public function propageForm(OObject $objet, $idForm)
     {
-        $properties = $this->getProperties();
-        if ($objet instanceof ODContained) {
-            $objet->setForm($this->getId());
-            if (empty($properties['childrenIdent']))   { $properties['childrenIdent'] = []; }
-            if (!in_array($objet->getId(), $properties['childrenIdent'])) {
-                $properties['childrenIdent'][] = $objet->getId();
-            }
-        } elseif ( $objet instanceof OSContainer) {
+        if ($objet instanceof ODContained || $objet instanceof OEDContained) {
+            $objet->setForm($idForm);
+        } elseif ($objet instanceof OSContainer || $objet instanceof OESContainer) {
             $children = $objet->getChildren();
             foreach ($children as $child) {
-                $properties = $this->propageForm($child);
+                $this->propageForm($child, $idForm);
             }
         }
-        return $properties;
     }
 }

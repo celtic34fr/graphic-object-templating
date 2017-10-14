@@ -5,7 +5,6 @@ function hasClass(id, selector) {
     if ((" " + elemClassName + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1) {
         return true;
     }
-
     return false;
 }
 
