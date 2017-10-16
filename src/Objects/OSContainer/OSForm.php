@@ -333,7 +333,7 @@ class OSForm extends OSContainer
                     $allRequired = false;
                 }
             }
-            $valid = ($allRequired) ? '' : 'empty';
+            $valid = ($allRequired) ? '' : 'ERROR|empty';
         }
         /* validation par la méthode callback (métier) de validation des données devant retourner true ou false */
         if (empty($valid)) {

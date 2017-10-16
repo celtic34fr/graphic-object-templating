@@ -117,7 +117,7 @@ class GotServices
                 $properties = $objet->getProperties();
                 $prefix = 'graphicobjecttemplating/objects/';
                 if (array_key_exists('extension', $properties) && $properties['extension']) {
-                    $prefix = $properties['resourcces']['prefix'];
+                    $prefix = $properties['resources']['prefix'];
                 } 
                 $rscs = (isset($properties['resources'])) ? $properties['resources'] : "";
                 if (!empty($rscs) && ($rscs !== false)) {
@@ -229,7 +229,7 @@ class GotServices
         $properties = $objet->getProperties();
         $prefix = 'graphicobjecttemplating/objects/';
         if (array_key_exists('extension', $properties) && $properties['extension']) {
-            $prefix = $properties['resourcces']['prefix'];
+            $prefix = $properties['resources']['prefix'];
         } 
 
         if (!empty($rscs) && ($rscs !== false)) {
