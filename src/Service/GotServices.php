@@ -3,6 +3,7 @@ namespace GraphicObjectTemplating\Service;
 
 use GraphicObjectTemplating\Objects\OObject;
 use GraphicObjectTemplating\Objects\OSContainer;
+use GraphicObjectTemplating\Objects\OESContainer;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -136,7 +137,7 @@ class GotServices
                     }
                 }
 
-                if ($objet instanceof OSContainer) {
+                if ($objet instanceof OSContainer || $objet instanceof OESContainer) {
                     $children = $objet->getChildren();
                     if (!empty($children)) {
                         foreach ($children as $child) {
@@ -226,23 +227,27 @@ class GotServices
         $jsScripts  = [];
         $rscs = $objet->getResources();
         $properties = $objet->getProperties();
+        $prefix = 'graphicobjecttemplating/objects/';
+        if (array_key_exists('extension', $properties) && $properties['extension']) {
+            $prefix = $properties['resourcces']['prefix'];
+        } 
 
         if (!empty($rscs) && ($rscs !== false)) {
             $cssList = $rscs['css'];
             $jsList = $rscs['js'];
             if (!empty($cssList)) {
                 foreach ($cssList as $item) {
-                    if (!in_array($item, $cssScripts)) $cssScripts[] =  'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                    if (!in_array($item, $cssScripts)) $cssScripts[] =  $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                 }
             }
             if (!empty($jsList)) {
                 foreach ($jsList as $item) {
-                    if (!in_array($item, $jsScripts)) $jsScripts[] = 'graphicobjecttemplating/objects/'.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
+                    if (!in_array($item, $jsScripts)) $jsScripts[] = $prefix.$properties['typeObj'].'/'.$properties['object'].'/'.$item;
                 }
             }
         }
 
-        if ($objet instanceof OSContainer) {
+        if ($objet instanceof OSContainer || $objet instanceof OESContainer) {
             $children = $objet->getChildren();
             if (!empty($children)) {
                 foreach ($children as $child) {
