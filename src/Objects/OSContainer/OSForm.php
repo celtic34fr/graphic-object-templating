@@ -319,7 +319,7 @@ class OSForm extends OSContainer
         return OObject::buildObject($this->getId().'Reset');
     }
 
-    public function isValid($sm, $params = null)
+    public function isValid($sm)
     {
         $valid = true;
 
@@ -430,15 +430,16 @@ class OSForm extends OSContainer
         return $ret;
     }
 
-    public function propageForm(OObject $objet, $idForm)
+    public function propageForm(OObject $objet, $idForm = null)
     {
-        if ($objet instanceof ODContained || $objet instanceof OEDContained) {
-            $objet->setForm($idForm);
-        } elseif ($objet instanceof OSContainer || $objet instanceof OESContainer) {
+        if (empty($idForm)) { $idForm = $this->getId(); }
+        if ($objet instanceof OSContainer || $objet instanceof OESContainer) {
             $children = $objet->getChildren();
             foreach ($children as $child) {
                 $this->propageForm($child, $idForm);
             }
+        } else {
+            $objet->setForm($idForm);
         }
     }
 }
