@@ -38,4 +38,10 @@ class OEDContained extends OEObject
             { return call_user_func_array(array($this->_tExtendIntances, $funcName), $tArgs); }
         throw new Exception("The $funcName method doesn't exist");
     }
+
+    public function setTExtendInstances(OObject $object)
+    {
+        $this->_tExtendIntances = $object;
+        return $this;
+    }
 }

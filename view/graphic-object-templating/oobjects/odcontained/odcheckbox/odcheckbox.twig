@@ -20,7 +20,7 @@
             infoBulle | update({'title': erreur.libel, 'content': '', 'type': 'tooltip'}) %}
         {% endif %}
         {% if infoBulle is defined and infoBulle is not empty %}
-            {% include 'graphic-object-templating/oobject/infoBulle.twig'  with infoBulle %}
+            {% include 'graphic-object-templating/oobjects/infoBulle.twig'  with infoBulle %}
         {% endif %}
 
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
@@ -60,14 +60,14 @@
         {% set type = objet.infoBulle.type %}
         {% set css = objet.infoBulle.css %}
         {% set placement = objet.infoBulle.placement %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+        {% include 'graphic-object-templating/oobjects/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
         {% elseif objet.erreur.libel is not empty %}
         {% set erreur = objet.erreur %}
         {% set id = objet.id %}
         {% set type = 'tooltip' %}
         {% set css = "background-color: #" ~ erreur.backgroundColor ~ ";color: #" ~ erreur.color ~ ';' %}
         {% set placement = objet.infoBulle.placement %}
-        {% include 'graphic-object-templating/oobject/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
+        {% include 'graphic-object-templating/oobjects/infoBulle.css.twig'  with {"id": id, "type": type, "css": css, "placement": placement } %}
 
         #{{ id }} {
             border:  solid 2px #{{ erreur.color }};
@@ -118,7 +118,7 @@
     {% if objet.infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}
         {%  set id = objet.id %}
-        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+        {% include 'graphic-object-templating/oobjects/infoBulle.js.twig'  with {'id':id, 'type':type} %}
     {% endif %}
 </div>
 

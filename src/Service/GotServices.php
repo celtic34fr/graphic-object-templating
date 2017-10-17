@@ -48,7 +48,7 @@ class GotServices
             switch($properties['typeObj']) {
                 case 'odcontained' :
                 case 'ottools':
-                case 'oecontained':
+                case 'oedcontained':
                     $html->setTemplate($template);
                     $html->setVariable('objet', $properties);
                     break;

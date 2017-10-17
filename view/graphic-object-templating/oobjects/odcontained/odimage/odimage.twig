@@ -39,7 +39,7 @@
             $('document').ready(function () {
                 {% if objet.event is not empty %}
                 {% set events = objet.event %}
-                {% include 'graphic-object-templating/oobject/event.js.twig' with events %}
+                {% include 'graphic-object-templating/oobjects/event.js.twig' with events %}
                 {% endif %}
             });
         </script>
@@ -48,6 +48,6 @@
     {% if infoBulle.title is not empty %}
         {%  set type = infoBulle.type %}
         {%  set id = objet.id %}
-        {% include 'graphic-object-templating/oobject/infoBulle.js.twig'  with {'id':id, 'type':type} %}
+        {% include 'graphic-object-templating/oobjects/infoBulle.js.twig'  with {'id':id, 'type':type} %}
     {% endif %}
 </div>

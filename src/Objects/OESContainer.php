@@ -44,4 +44,10 @@ class OESContainer extends OEObject
         }
         return false;
     }
+
+    public function setTExtendInstances(OObject $object)
+    {
+        $this->_tExtendIntances = $object;
+        return $this;
+    }
 }
