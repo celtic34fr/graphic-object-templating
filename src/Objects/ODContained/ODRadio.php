@@ -51,7 +51,7 @@ class ODRadio extends ODContained
 
     public function __construct($id)
     {
-        parent::__construct($id, "oobject/odcontained/odradio/odradio.config.php");
+        parent::__construct($id, "oobjects/odcontained/odradio/odradio.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

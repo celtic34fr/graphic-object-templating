@@ -155,7 +155,7 @@ class OObject
         $this->name = $id;
 
         if (array_key_exists('typeObj', $objProperties)) {
-            $templateName = 'graphic-object-templating/oobject/' . $objProperties['typeObj'];
+            $templateName = 'graphic-object-templating/oobjects/' . $objProperties['typeObj'];
             $templateName .= '/' . $objProperties['object'] . '/' . $objProperties['template'];
             $objProperties['template'] = $templateName;
 

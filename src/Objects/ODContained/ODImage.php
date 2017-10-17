@@ -7,7 +7,7 @@ use GraphicObjectTemplating\Objects\ODContained;
 class ODImage extends ODContained
 {
     public function __construct($id) {
-        $parent = parent::__construct($id, "oobject/odcontained/odimage/odimage.config.php");
+        $parent = parent::__construct($id, "oobjects/odcontained/odimage/odimage.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
     }

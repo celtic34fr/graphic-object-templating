@@ -41,7 +41,7 @@ use Zend\ServiceManager\ServiceManager;
 class ODSelect extends ODContained
 {
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontained/odselect/odselect.config.php");
+        parent::__construct($id, "oobjects/odcontained/odselect/odselect.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

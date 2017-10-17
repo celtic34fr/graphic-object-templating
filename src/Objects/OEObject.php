@@ -21,7 +21,7 @@ class OEObject extends OObject
         }
 
         $properties['className'] = $className;
-        $templateName = 'graphic-object-templating/oeobject/' . $properties['typeObj'];
+        $templateName = 'graphic-object-templating/oeobjects/' . $properties['typeObj'];
         $templateName .= '/' . $properties['object'] . '/' . $properties['template'];
         $properties['template'] = $templateName;
 

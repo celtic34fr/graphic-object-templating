@@ -85,7 +85,7 @@ class OSDialog extends OSContainer
     protected $const_color;
 
     public function __construct($id) {
-        parent::__construct($id, "oobject/oscontainer/osdialog/osdialog.config.php");
+        parent::__construct($id, "oobjects/oscontainer/osdialog/osdialog.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);

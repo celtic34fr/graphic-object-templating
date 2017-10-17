@@ -60,7 +60,7 @@ class ODNotification extends ODContained
     protected $const_mesSize;
 
     public function __construct($id) {
-        parent::__construct($id, 'oobject/odcontained/odnotification/odnotification.config.php');
+        parent::__construct($id, 'oobjects/odcontained/odnotification/odnotification.config.php');
         $this->id = $id;
         $this->setDisplay();
         return $this;

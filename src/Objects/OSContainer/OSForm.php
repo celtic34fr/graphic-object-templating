@@ -52,7 +52,7 @@ class OSForm extends OSContainer
     const OUT_FORM      = false;
 
     public function __construct($id) {
-        $parent = parent::__construct($id, 'oobject/oscontainer/osform/osform.config.php');
+        $parent = parent::__construct($id, 'oobjects/oscontainer/osform/osform.config.php');
         $this->properties = $parent->properties;
         $this->id = $id;
         $this->setDisplay();
