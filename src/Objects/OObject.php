@@ -169,7 +169,7 @@ class OObject
         }
 
         /** ajout des attribut de base de chaque objet */
-        $properties = include __DIR__ . '/../../view/graphic-object-templating/oobject/oobject.config.php';
+        $properties = include __DIR__ . '/../../view/graphic-object-templating/oobjects/oobject.config.php';
         foreach ($objProperties as $key => $objProperty) {
             $properties[$key] = $objProperty;
         }
