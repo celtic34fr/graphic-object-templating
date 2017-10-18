@@ -63,6 +63,7 @@ class ODNotification extends ODContained
         parent::__construct($id, 'oobjects/odcontained/odnotification/odnotification.config.php');
         $this->id = $id;
         $this->setDisplay();
+        $this->enable();
         return $this;
     }
 

@@ -58,6 +58,8 @@ class ODBadge extends ODContained
         $parent = parent::__construct($id, "oobjects/odcontained/odbadge/odbadge.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
+        $this->enable();
+        return $this;
     }
 
     public function setWidthBT($widthBT)

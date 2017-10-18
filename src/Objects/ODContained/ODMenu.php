@@ -41,6 +41,7 @@ class ODMenu extends ODContained
         parent::__construct($id, "oobjects/odcontained/odmenu/odmenu.config.php");
         $this->id = $id;
         $this->setDisplay();
+        $this->enable();
         return $this;
     }
 

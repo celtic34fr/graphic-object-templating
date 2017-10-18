@@ -10,6 +10,8 @@ class ODImage extends ODContained
         $parent = parent::__construct($id, "oobjects/odcontained/odimage/odimage.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
+        $this->enable();
+        return $this;
     }
 
     public function setUrl($url)

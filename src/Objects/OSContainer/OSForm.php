@@ -72,6 +72,8 @@ class OSForm extends OSContainer
             $properties['reset'] = $reset;
         }
         $this->setProperties($properties);
+        $this->enable();
+        return $this;
     }
     
     public function addChild(OObject $child, $inForm = false, $mode = self::MODE_LAST, $param = null) {

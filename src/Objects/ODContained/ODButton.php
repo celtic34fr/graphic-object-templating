@@ -81,6 +81,7 @@ class ODButton extends ODContained
         if (!is_array($width) || empty($width)) {
             $this->setWidthBT(12);
         }
+        $this->enable();
         return $this;
     }
 

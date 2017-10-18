@@ -55,7 +55,7 @@ return array(
             'addons/macroLayout'      => __DIR__ . '/../view/addons/macroLayout.twig',
         ],
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            __NAMESPACE__ => __DIR__ . '/../view',
         ),
     ),
     'view_helpers' => [

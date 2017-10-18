@@ -89,6 +89,8 @@ class OSDialog extends OSContainer
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        $this->enable();
+        return $this;
     }
 
     public function showBtnClose()
