@@ -122,31 +122,8 @@ function getFormDatas(form) {
     eltSelection.each(function () {
         var obj = $(this);
         var evalString = "new "+obj.attr('data-objet')+'($("#'+obj.attr('id')+'#));';
-        var object = obj.attr('data-objet');
         var instance = eval(evalString);
-        var datas = '';
-
-        /*
-        switch (object) { // traitement suivant l'objet (type ODContained)
-            case "odbutton":
-                break;
-            case "odcontent":
-                odcontent_getData(obj, "");
-                break;
-            case "odinput":
-                datas = odinput_getData(obj, '');
-                break;
-            case "odselect":
-                datas = odselect_getData(obj, '');
-                break;
-            case "odcheckbox":
-                datas = odcheckbox_getData(obj, '');
-                break;
-            case "odtoggle":
-                datas = odtoggle_getData(obj, '');
-                break
-        }
-        */
+        var datas = instance.getData('');
 
         if (datas.length > 0) {
             datas = datas.replaceAll("&", "§");
@@ -172,29 +149,9 @@ function razFormDatas(form) {
 
     eltSelection.each(function () {
         var obj = $(this);
-        var object = obj.attr('data-objet');
-        var id = obj.attr('id');
-
-        switch (object) { // traitement suivant l'objet (type ODContained)
-            case "odbutton":
-                odbutton_setData(id, "");
-                break;
-            case "odcontent":
-                odcontent_setData(id, "");
-                break;
-            case "odinput":
-                odinput_setData(id, "");
-                break;
-            case "odcheckbox":
-                odcheckbox_setData(id, "");
-                break;
-            case "odselect":
-                odselect_setData(id, "");
-                break;
-            case "odradio":
-                odradio_setData(id, "");
-                break;
-        }
+        var evalString = "new "+obj.attr('data-objet')+'($("#'+obj.attr('id')+'#));';
+        var instance = eval(evalString);
+        var datas = instance.setData('');
     });
 }
 
@@ -222,26 +179,11 @@ function setFormDatas(form, datas) {
                     break;
             }
         });
-        switch (type) {
-            case "odbutton":
-                odbutton_setData(id, value);
-                break;
-            case "odcontent":
-                odcontent_setData(id, value);
-                break;
-            case "odinput":
-                odinput_setData(id, value);
-                break;
-            case "odcheckbox":
-                odcheckbox_setData(id, value);
-                break;
-            case "odselect":
-                odselect_setData(id, value);
-                break;
-            case "odradio":
-                odradio_setData(id, value);
-                break;
-        }
+
+        var obj = $('#'+id);
+        var evalString = "new "+obj.attr('data-objet')+'($("#'+obj.attr('id')+'#));';
+        var instance = eval(evalString);
+        var datas = instance.setData(value);
     })
 }
 
