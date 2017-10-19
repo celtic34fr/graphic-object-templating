@@ -44,6 +44,7 @@
 <body>
     <div id="gotCallback" style="display: none;">{{ url("got-callback") }}</div>
     <div id="divWork" style="display: none"></div>
+    {% block contentBody %}
     <div class="container">
         {% block content %}{{ content|raw }}{% endblock content %}
         <hr>
@@ -53,6 +54,7 @@
             {% endblock footer %}
         </footer>
     </div>
+    {% endblock contentBody %}
     {% block inline %}{% endblock inline %}
 </body>
 </html>
