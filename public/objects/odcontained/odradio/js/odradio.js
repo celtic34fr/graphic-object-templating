@@ -1,15 +1,15 @@
-function odcheckbox(obj) {
+function odradio(obj) {
     this.id = obj.attr('id');
+    this.data = obj.data();
     $this.options = [];
-    var checked = obj.find("input:checkbox:checked");
+    var checked = obj.find("input:checked");
     $.each(checked, function(){
         $this.options.push($(this).val());
     });
-    this.data = obj.data();
 }
 
-odcheckbox.prototype = {
-    getData: function (evt) {
+odradio.prototype = {
+    getDate: function (evt) {
         var chps = "id=" + this.id;
         chps = chps + "&value='" + this.options.join("$") + "'";
         chps = chps + "&evt='" + evt + "'";

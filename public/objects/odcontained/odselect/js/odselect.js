@@ -1,18 +1,17 @@
-function odcheckbox(obj) {
+function odradio(obj) {
     this.id = obj.attr('id');
+    this.data = obj.data();
     $this.options = [];
-    var checked = obj.find("input:checkbox:checked");
+    var checked = obj.find("select option:selected");
     $.each(checked, function(){
         $this.options.push($(this).val());
     });
-    this.data = obj.data();
 }
 
-odcheckbox.prototype = {
-    getData: function (evt) {
+odradio.prototype = {
+    getDate: function (evt) {
         var chps = "id=" + this.id;
         chps = chps + "&value='" + this.options.join("$") + "'";
-        chps = chps + "&evt='" + evt + "'";
         chps = chps + "&obj='OUI'";
         if (evt = this.data.evt) {
             var classe  = data['evt-'+evt+'-class'];
@@ -25,15 +24,19 @@ odcheckbox.prototype = {
     },
     setData: function (data) {
         if (data === "") { // raz des options sélectionnées
-            $("#"+this.id+" option").removeAttr("selected");
+            $("#"+ this.id +" option").removeAttr("selected");
             this.options = [];
         } else  {
-            if ($.isArray(data)) {
-                data.each(function(idx, val){
-                    $("#"+this.id+" option:nth_child("+val+")").attr("selected","selected");
-                    $this.options.push(val);
-                })
-            }
+            $.each(data.split("$"), function(ind,val){
+                if ($("#"+this.id+" select").hasClass("select2")) {
+                    $("#"+this.id+" select").select2();
+                    $("#"+this.id+" select").val(val).trigger("change");
+                } else {
+                    var selecteur = "#"+this.id+" option[value=" + val + "]";
+                    $(selecteur).attr('selected', 'selected');
+                }
+                $this.options.push(val);
+            });
         }
     }
 };
