@@ -1,10 +1,10 @@
-function odbadge(obj) {
+function odcontent(obj) {
     this.id = obj.attr('id');
     this.contenu = obj.attr('content');
     this.data = obj.data();
 }
 
-odbadge.prototype = {
+odcontent.prototype = {
     getData: function (evt) {
         var chps = "id=" + this.id + "&value='" + this.contenu + "'";
         if (evt = this.data.evt) {
