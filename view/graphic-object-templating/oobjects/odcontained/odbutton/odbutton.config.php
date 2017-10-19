@@ -8,12 +8,12 @@ return array(
     'type'       => '',
     'label'      => '',
     'icon'       => '',
-    'event'      => array(),
+    'event'      => [],
     'callback'   => '',
     'nature'     => 'btn btn-default',
 
-    'resources' => array(
-        'css' => array(  ),
-        'js'  => array(  )
-    )
+    'resources' => [
+        'css' => [],
+        'js'  => ['odbutton.js' => 'js/odbutton.js',],
+    ],
 );

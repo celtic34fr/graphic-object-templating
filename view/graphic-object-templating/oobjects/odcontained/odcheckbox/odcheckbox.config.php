@@ -1,16 +1,16 @@
 <?php
 
 return array(
-    "object"     => "odcheckbox",
-    "typeObj"    => "odcontained",
-    "template"   => "odcheckbox.twig",
-    "label"      => "",
-    "options"    => array(),
-    "forme"      => "horizontal",
-    "place"      => "left",
-    "event"      => array(),
-    "resources" => array(
-        "css" => array(  ),
-        "js"  => array(  )
-    )
+    'object'     => 'odcheckbox',
+    'typeObj'    => 'odcontained',
+    'template'   => 'odcheckbox.twig',
+    'label'      => '',
+    'options'    => [],
+    'forme'      => 'horizontal',
+    'place'      => 'left',
+    'event'      => [],
+    'resources' => [
+        'css' => [],
+        'js'  => ['odcheckbox.js' => 'js/odcheckbox.js',]
+    ],
 );
