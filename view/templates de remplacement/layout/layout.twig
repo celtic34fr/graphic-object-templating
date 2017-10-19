@@ -40,38 +40,22 @@
     {% block script %}{% endblock script %}
     <!-- Scripts -->
 </head>
-<body style="overflow-y: hidden;">
-<div id="gotCallback" style="display: none;">{{ url("got-callback") }}</div>
-<div id="divWork" style="display: none"></div>
+<body>
+    <div id="gotCallback" style="display: none;">{{ url("got-callback") }}</div>
+    <div id="divWork" style="display: none"></div>
 
-{{ gotRender(menuGOT) }}
-<div class="container">
-    {{ gotRender(breadcrumbsGOT) }}
-    {% block content %}{{ content|raw }}{% endblock content %}
-    <hr>
-    <footer>
-        <p>&copy; 2005 - 2014 by Zend Technologies Ltd. {{ translate('All rights reserved.') }}</p>
-    </footer>
-</div> <!-- /container -->
-{% block inline %}{% endblock inline %}
-{% if topModal == 'OUI' %}
-    {% if size is not defined or size is empty %} {% set size = 'large' %} {% endif %}
-<script type="application/javascript">
-        $(document).ready(function(){
-            showBSModal({
-                title: "{{ title }}",
-                body: "{{ corpus }}",
-                size: "{{ size }}",
-                actions: [{
-                    label: '{{ labelBtnOK }}',
-                    cssClass: 'btn-success',
-                    onClick: function (e) {
-                        $(e.target).parents('.modal').modal('hide');
-                    }
-                }]
-            });
-        });
-</script>
-{% endif %}
+    {{ gotRender(menuGOT) }}
+    <div class="container">
+        {{ gotRender(breadcrumbsGOT) }}
+        {% block content %}{{ content|raw }}{% endblock content %}
+        <hr>
+        <footer>
+            {% block footer %}
+                <p>&copy; 2005 - 2014 by Zend Technologies Ltd. {{ translate('All rights reserved.') }}</p>
+            {% endblock footer %}
+        </footer>
+    </div> <!-- /container -->
+
+    {% block inline %}{% endblock inline %}
 </body>
 </html>
