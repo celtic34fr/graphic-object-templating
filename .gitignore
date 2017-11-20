@@ -79,3 +79,4 @@ extras/documentation
 
 Supprimerait .idea/
 .idea/
+/nbproject/private/

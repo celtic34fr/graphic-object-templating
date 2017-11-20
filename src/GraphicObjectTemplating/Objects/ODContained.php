@@ -1,12 +1,12 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\OObject;
 
 /**
  * Class ODConta    ined
- * @package GraphicObjectTemplating\Objects
+ * @package GraphicObjectTemplating\OObjects
  * 
  * setName
  * getName
@@ -30,9 +30,11 @@ class ODContained extends OObject
 
     protected $const_icon;
 
-    public function __construct($id, $adrProperties)
+    public function __construct($id, $adrProperties = null)
     {
-        $properties  = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/odcontained/odcontained.config.php");
+        $path  = __DIR__ ;
+        $path .= "/../../view/graphic-object-templating/oobjects/odcontained/odcontained.config.php";
+        $properties = include($path);
         parent::__construct($id, trim($adrProperties));
         foreach ($this->properties as $key => $property) {
             $properties[$key] = $property;

@@ -23,17 +23,15 @@ class TokenParserSwitch extends Twig_TokenParser
 {
     /**
      * Parses a token and returns a node.
-     *
      * @param Twig_Token $token A Twig_Token instance
-     *
-     * @return Twig_NodeInterface A Twig_NodeInterface instance
+     * @return Twig_Node A Twig_NodeInterface instance
      */
     public function parse(Twig_Token $token)
     {
         $parser = $this->parser;
         $stream = $parser->getStream();
 
-        $default = null;
+        $default = array();
         $cases = array();
         $end = false;
 
@@ -47,7 +45,7 @@ class TokenParserSwitch extends Twig_TokenParser
             switch ($v->getValue()) {
                 case 'default':
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                    $default = $parser->subparse(array($this, 'decideIfEnd'));
+                    $default[] = $parser->subparse(array($this, 'decideIfEnd'));
                     break;
 
                 case 'case':
@@ -63,13 +61,13 @@ class TokenParserSwitch extends Twig_TokenParser
                     break;
 
                 default:
-                    throw new Twig_Error_Syntax(sprintf('Unexpected end of template. Twig was looking for the following tags "case", "default", or "endswitch" to close the "switch" block started at line %d)', $lineno), -1);
+                    throw new Twig_Error_Syntax(sprintf('Unexpected end of template. Twig was looking for the following tags "case", "default", or "endswitch" to close the "switch" block started at line %d)', $token->getLine()), -1);
             }
         }
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        return new NodeSwitch($name,new Twig_Node($cases), $default, $token->getLine(), $this->getTag());
+        return new NodeSwitch($name, new Twig_Node($cases), new Twig_Node($default), $token->getLine(), $this->getTag());
     }
 
     public function decideIfFork($token)

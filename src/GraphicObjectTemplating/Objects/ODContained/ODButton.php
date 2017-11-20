@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 use Zend\Session\Container;
 
 /**
@@ -74,13 +74,14 @@ class ODButton extends ODContained
 
     public function __construct($id)
     {
-        parent::__construct($id, 'oobject/odcontained/odbutton/odbutton.config.php');
+        parent::__construct($id, 'oobjects/odcontained/odbutton/odbutton.config.php');
         $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) {
             $this->setWidthBT(12);
         }
+        $this->enable();
         return $this;
     }
 
@@ -229,6 +230,15 @@ class ODButton extends ODContained
 
         $this->setProperties($properties);
         return $this;
+    }
+
+    public function getClick()
+    {
+        $properties = $this->getProperties();
+        if (array_key_exists('event', $properties)) {
+            $event = $properties['event'];
+            if (array_key_exists('clic', $event)) { return $event['clic']; }
+        }
     }
 
     public function disClick()

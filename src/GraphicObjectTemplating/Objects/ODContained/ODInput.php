@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 
 /**
  * Class ODInput
@@ -45,19 +45,20 @@ use GraphicObjectTemplating\Objects\ODContained;
  */
 class ODInput extends ODContained
 {
-    const INPTYPE_TEXT     = "text";
-    const INPTYPE_PASSWORD = "password";
+    const INPTYPE_TEXT     = 'text';
+    const INPTYPE_PASSWORD = 'password';
     const INPTYPE_HIDDEN   = 'hidden';
     const INPTYPE_NUMBER   = 'number';
 
     protected $const_inpType;
 
     public function __construct($id) {
-        parent::__construct($id, 'oobject/odcontained/odinput/odinput.config.php');
+        parent::__construct($id, 'oobjects/odcontained/odinput/odinput.config.php');
         $this->id = $id;
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        $this->enable();
         return $this;
     }
 
@@ -279,7 +280,7 @@ class ODInput extends ODContained
         if (empty($this->const_inpType)) {
             $constants = $this->getConstants();
             foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TYPE');
+                $pos = strpos($key, 'INPTYPE');
                 if ($pos !== false) $retour[$key] = $constant;
             }
             $this->const_inpType = $retour;

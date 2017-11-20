@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 
 /**
  * Class ODNotification
@@ -60,9 +60,10 @@ class ODNotification extends ODContained
     protected $const_mesSize;
 
     public function __construct($id) {
-        parent::__construct($id, 'oobject/odcontained/odnotification/odnotification.config.php');
+        parent::__construct($id, 'oobjects/odcontained/odnotification/odnotification.config.php');
         $this->id = $id;
         $this->setDisplay();
+        $this->enable();
         return $this;
     }
 

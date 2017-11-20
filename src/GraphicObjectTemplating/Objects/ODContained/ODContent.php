@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 
 /**
  * Class ODContent
@@ -18,10 +18,11 @@ use GraphicObjectTemplating\Objects\ODContained;
 class ODContent extends  ODContained
 {
     public function __construct($id) {
-        parent::__construct($id, "oobject/odcontained/odcontent/odcontent.config.php");
+        parent::__construct($id, "oobjects/odcontained/odcontent/odcontent.config.php");
         $this->setDisplay();
         $width = $this->getWidthBT();
         if (!is_array($width) || empty($width)) $this->setWidthBT(12);
+        $this->enable();
         return $this;
     }
 

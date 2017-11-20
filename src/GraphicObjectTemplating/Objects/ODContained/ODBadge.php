@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 
 /**
  * Class ODBadge
@@ -55,9 +55,11 @@ class ODBadge extends ODContained
     protected $const_badgePos;
 
     public function __construct($id) {
-        $parent = parent::__construct($id, "oobject/odcontained/odbadge/odbadge.config.php");
+        $parent = parent::__construct($id, "oobjects/odcontained/odbadge/odbadge.config.php");
         $this->properties = $parent->properties;
         $this->setDisplay();
+        $this->enable();
+        return $this;
     }
 
     public function setWidthBT($widthBT)
@@ -113,7 +115,6 @@ class ODBadge extends ODContained
         return $this;
     }
 
-
     public function setPosition($position = self::BADGEPOS_RIGHT)
     {
         $position = (string) $position;
@@ -129,7 +130,22 @@ class ODBadge extends ODContained
     public function getPosition()
     {
         $properties          = $this->getProperties();
-        return ((!empty($properties['position'])) ? $properties['posirion'] : false) ;
+        return ((!empty($properties['position'])) ? $properties['position'] : false) ;
+    }
+
+    public function setContent($content = "&nbsp")
+    {
+        $content = (string) $content;
+        $properties = $this->getProperties();
+        $properties['content'] = $content;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getContent()
+    {
+        $properties          = $this->getProperties();
+        return ((!empty($properties['content'])) ? $properties['content'] : false) ;
     }
 
 
@@ -164,5 +180,6 @@ class ODBadge extends ODContained
         }
         return $retour;
     }
+
 
 }

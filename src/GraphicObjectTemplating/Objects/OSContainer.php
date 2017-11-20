@@ -1,12 +1,12 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\OObject;
 
 /**
  * Class OSContainer
- * @package GraphicObjectTemplating\Objects
+ * @package GraphicObjectTemplating\OObjects
  *
  * width
  * height
@@ -25,6 +25,11 @@ use GraphicObjectTemplating\Objects\OObject;
  * getChildren
  * convertValue
  * getConverted
+ * addCssCode($nom, $code)
+ * setCssCodes(array $codes)
+ * getCssCode($nom)
+ * getCodes()
+ * rmCodeCss($nom)
  */
 class OSContainer extends OObject
 {
@@ -34,9 +39,11 @@ class OSContainer extends OObject
 	const MODE_AFTER    = "After";
 	const MODE_NTH      = "Nth";
 
-    public function __construct($id, $adrProperties)
+    public function __construct($id, $adrProperties = null)
     {
-        $properties = include(__DIR__ . "/../../../view/graphic-object-templating/oobject/oscontainer/oscontainer.config.php");
+        $path  = __DIR__ ;
+        $path .= "/../../view/graphic-object-templating/oobjects/oscontainer/oscontainer.config.php";
+        $properties = include($path);
         parent::__construct($id, $adrProperties);
         foreach ($this->properties as $key => $property) {
             $properties[$key] = $property;
@@ -211,8 +218,68 @@ class OSContainer extends OObject
         return false ;
     }
 
-    public function convertValue($value) { return $this->setProperties($value); }
+    public function convertValue($value) {
+        $properties = $this->getProperties();
+        $properties['children'] = $value;
+        return $this->setProperties($properties);
+    }
 
-    public function getConverted() { return $this->getProperties(); }
+    public function getConverted() {
+        $properties = $this->getProperties();
+        return $properties['children'];
+    }
+
+
+    public function addCssCode($nom, $code)
+    {
+        $nom        = (string) $nom;
+        $code       = (string) $code;
+        $properties = $this->getProperties();
+        $cssCode    = $properties['cssCode'];
+        if (!array_key_exists($nom, $cssCode)) {
+            $cssCode[$nom]          = $code;
+            $properties['cssCode']  = $cssCode;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function setCssCodes(array $codes)
+    {
+        $properties             = $this->getProperties();
+        $properties['cssCode']  = $codes;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getCssCode($nom)
+    {
+        $nom        = (string) $nom;
+        $properties = $this->getProperties();
+        $cssCode    = $properties['cssCode'];
+        if (array_key_exists($nom, $cssCode)) { return $cssCode[$nom]; }
+        return false;
+    }
+
+    public function getCssCodes()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('cssCode', $properties) ? $properties['cssCode'] : false);
+    }
+
+    public function rmCssCode($nom)
+    {
+        $nom        = (string) $nom;
+        $properties = $this->getProperties();
+        $cssCode    = $properties['cssCode'];
+        if (array_key_exists($nom, $cssCode)) {
+            unset($cssCode[$nom]);
+            $properties['cssCode'] = $cssCode;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
 
 }

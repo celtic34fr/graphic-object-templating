@@ -2,10 +2,8 @@
 
 namespace GraphicObjectTemplating;
 
-use GraphicObjectTemplating\View\Helper\GotZendVersion;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use GraphicObjectTemplating\View\Helper\Factory\GotRender;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Config\SessionConfig;
@@ -31,7 +29,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
      */
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return include __DIR__ . '/../config/module.config.php';
     }
 
     /**
@@ -53,17 +51,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
 
     public function getViewHelperConfig()
     {
-        return array(
-            'factories' => array(
-                'gotRender'    => 'GraphicObjectTemplating\View\Helper\Factory\GotRenderFactory',
-                'gotBootstrap' => 'GraphicObjectTemplating\View\Helper\Factory\GotBootstrapFactory',
-                'gotHeader'    => 'GraphicObjectTemplating\View\Helper\Factory\GotHeaderFactory',
-                'gotAjax'      => 'GraphicObjectTemplating\View\Helper\Factory\GotAjaxFactory',
-                'zfVersion'    => function($sm) {
-                    return new GotZendVersion();
-                }
-            ),
-        );
     }
 
     /*

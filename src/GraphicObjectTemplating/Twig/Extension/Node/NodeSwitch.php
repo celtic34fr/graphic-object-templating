@@ -12,10 +12,11 @@ namespace GraphicObjectTemplating\Twig\Extension\Node;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * refused in legal Twig version
  */
 use Twig_Compiler;
 use Twig_Node;
-use Twig_NodeInterface;
 
 /**
  * Represents an if node.
@@ -26,7 +27,7 @@ use Twig_NodeInterface;
  */
 class NodeSwitch extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $value, Twig_NodeInterface $cases, Twig_NodeInterface $default = null, $lineno, $tag = null)
+    public function __construct($value, Twig_Node $cases, $default = null, $lineno, $tag = null)
     {
         parent::__construct(array('value' => $value, 'cases' => $cases, 'default' => $default), array(), $lineno, $tag);
     }
@@ -52,7 +53,7 @@ class NodeSwitch extends Twig_Node
                 ->raw(":\n")
                 ->indent()
                 ->subcompile($this->getNode('cases')->getNode($i + 1))
-                ->addIndentation()
+                ->indent()
                 ->raw("break;\n")
             ;
         }
@@ -62,7 +63,7 @@ class NodeSwitch extends Twig_Node
                 ->write("default:\n")
                 ->indent()
                 ->subcompile($this->getNode('default'))
-                ->addIndentation()
+                ->indent()
                 ->raw("break;\n")
             ;
         }

@@ -1,13 +1,13 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
-use GraphicObjectTemplating\Objects\ODContained;
+use GraphicObjectTemplating\OObjects\ODContained;
 use Zend\Session\Container;
 
 /**
  * Class OObject
- * @package Application\Objects
+ * @package Application\OObjects
  *
  * properties   : tableau (objet Config()) stockant l'ensemble des attributs de l'objet
  *
@@ -50,6 +50,7 @@ use Zend\Session\Container;
  * TU static destroyObject  :
  * static buildObject       :
  * static clearObjects      :
+ * static formatRetour($idSource, $idCible, $mode, $code = null) : formate le tableau de retour de callback
  * getResources             :
  * addCssResource           :
  * getCssResource           :
@@ -74,6 +75,19 @@ use Zend\Session\Container;
  * TU disAutoCenter         ; desactive l'auto centrage pour l'affichage de l'objet
  * TU getAutoCenter         : restitue sous forme d'un tableau des valeurs actuelles des paramètres de centrage automatique
  * getEvent($evt)           : pour les objects ayant le paramétrage d'évènement, restitution des paramètres
+ * // addJsCode($nom, $code)
+ * // setJsCodes(array $codes)
+ * // getJsCode($nom)
+ * // getJsCodes()
+ * // rmJsCode($nom)
+ * addMetaData($key, $value)
+ * setMetaDatas(array $metaDatas)
+ * getMetaDatas()
+ * addCustomProperty($name, $value, $default = null)
+ * getCustomProperty($name)
+ * setCustomProperty($name, $value)
+ * getCustomProperties()
+ * setCustomProperties(array $customProperties)
  */
 class OObject
 {
@@ -132,7 +146,9 @@ class OObject
     {
         $objProperties = [];
         if (!empty($arrayData)) {
-            $objProperties = include __DIR__ . '/../../../view/graphic-object-templating/' . trim($arrayData);
+            $path  = __DIR__ ;
+            $path .= '/../../view/graphic-object-templating/' . trim($arrayData);
+            $objProperties = include $path;
         }
         $objProperties['id'] = $id;
         $this->id = $id;
@@ -140,11 +156,11 @@ class OObject
         $this->name = $id;
 
         if (array_key_exists('typeObj', $objProperties)) {
-            $templateName = 'graphic-object-templating/oobject/' . $objProperties['typeObj'];
+            $templateName = 'graphic-object-templating/oobjects/' . $objProperties['typeObj'];
             $templateName .= '/' . $objProperties['object'] . '/' . $objProperties['template'];
             $objProperties['template'] = $templateName;
 
-            $objName = 'GraphicObjectTemplating/Objects/';
+            $objName = 'GraphicObjectTemplating/OObjects/';
             $objName .= strtoupper(substr($objProperties['typeObj'], 0, 3));
             $objName .= strtolower(substr($objProperties['typeObj'], 3)) . '/';
             $objName .= strtoupper(substr($objProperties['object'], 0, 3));
@@ -154,7 +170,7 @@ class OObject
         }
 
         /** ajout des attribut de base de chaque objet */
-        $properties = include __DIR__ . '/../../../view/graphic-object-templating/oobject/oobject.config.php';
+        $properties = include __DIR__ . '/../../view/graphic-object-templating/oobjects/oobject.config.php';
         foreach ($objProperties as $key => $objProperty) {
             $properties[$key] = $objProperty;
         }
@@ -341,7 +357,7 @@ class OObject
         $addClass = (string)$addClass;
         $properties = $this->getProperties();
         $classes = $properties['classes'];
-        if ($classes[strlen($classes) - 1] !== ' ') { $classes .= ' '; }
+        if (!empty($classes) && $classes[strlen($classes) - 1] !== ' ') { $classes .= ' '; }
         $classes .= trim($addClass);
         $properties['classes'] = $classes;
         $this->setProperties($properties);
@@ -417,83 +433,60 @@ class OObject
 
     public function setWidthBT($widthBT)
     {
-        $wxs = 0;
-        $oxs = 0;
-        $wsm = 0;
-        $osm = 0;
-        $wmd = 0;
-        $omd = 0;
-        $wlg = 0;
-        $olg = 0;
+        $widthBTTab = [];
+        $widthBTTab['wxs'] = $widthBTTab['oxs'] = $widthBTTab['wsm'] = $widthBTTab['osm'] = 
+                $widthBTTab['wmd'] = $widthBTTab['omd'] = $widthBTTab['wlg'] = $widthBTTab['olg'] = 0;
 
         switch (true) {
             case (is_numeric($widthBT)):
-                $wxs = $widthBT;
-                $oxs = 0;
-                $wsm = $widthBT;
-                $osm = 0;
-                $wmd = $widthBT;
-                $omd = 0;
-                $wlg = $widthBT;
-                $olg = 0;
+                $widthBTTab['wxs'] = $widthBTTab['wsm'] = $widthBTTab['wmd'] = $widthBTTab['wlg'] = $widthBT;
                 break;
             default:
                 /** widthBT chaîne de caractères */
                 $widthBT = explode(':', $widthBT);
                 foreach ($widthBT as $item) {
                     $cle = strtoupper(substr($item, 0, 2));
-                    $key = str_split($cle);
                     switch ($cle) {
                         case 'WX' :
-                            $wxs = (int)substr($item, 2);
+                            $widthBTTab['wxs'] = (int)substr($item, 2);
                             break;
                         case 'WS' :
-                            $wsm = (int)substr($item, 2);
+                            $widthBTTab['wsm'] = (int)substr($item, 2);
                             break;
                         case 'WM' :
-                            $wmd = (int)substr($item, 2);
+                            $widthBTTab['wmd'] = (int)substr($item, 2);
                             break;
                         case 'WL' :
-                            $wlg = (int)substr($item, 2);
+                            $widthBTTab['wlg'] = (int)substr($item, 2);
                             break;
                         case 'OX' :
-                            $oxs = (int)substr($item, 2);
+                            $widthBTTab['oxs'] = (int)substr($item, 2);
                             break;
                         case 'OS' :
-                            $osm = (int)substr($item, 2);
+                            $widthBTTab['osm'] = (int)substr($item, 2);
                             break;
                         case 'OM' :
-                            $omd = (int)substr($item, 2);
+                            $widthBTTab['omd'] = (int)substr($item, 2);
                             break;
                         case 'OL' :
-                            $olg = (int)substr($item, 2);
+                            $widthBTTab['olg'] = (int)substr($item, 2);
                             break;
                         default:
-                            if ($key[0] === 'W') {
-                                $wxs = (int)substr($item, 1);
-                                $wsm = (int)substr($item, 1);
-                                $wmd = (int)substr($item, 1);
-                                $wlg = (int)substr($item, 1);
+                            if (substr($cle, 0, 1) === 'W') {
+                                $widthBTTab['wxs'] = $widthBTTab['wsm'] = 
+                                        $widthBTTab['wmd'] = $widthBTTab['wlg'] 
+                                        = (int)substr($item, 1);
                             }
-                            if ($key[0] === 'O') {
-                                $oxs = (int)substr($item, 1);
-                                $osm = (int)substr($item, 1);
-                                $omd = (int)substr($item, 1);
-                                $olg = (int)substr($item, 1);
+                            if (substr($cle, 0, 1) === 'O') {
+                                $widthBTTab['oxs'] = $widthBTTab['osm'] = 
+                                        $widthBTTab['omd'] = $widthBTTab['olg'] 
+                                        = (int)substr($item, 1);
                             }
                     }
                 }
         }
         $properties = $this->getProperties();
-        $properties['widthBT'] = [];
-        $properties['widthBT']['wxs'] = $wxs;
-        $properties['widthBT']['wsm'] = $wsm;
-        $properties['widthBT']['wmd'] = $wmd;
-        $properties['widthBT']['wlg'] = $wlg;
-        $properties['widthBT']['oxs'] = $oxs;
-        $properties['widthBT']['osm'] = $osm;
-        $properties['widthBT']['omd'] = $omd;
-        $properties['widthBT']['olg'] = $olg;
+        $properties['widthBT'] = $widthBTTab;
         $this->setProperties($properties);
         return $this;
     }
@@ -789,6 +782,193 @@ class OObject
         return $item;
     }
 
+    /*
+    public function addJsCode($nom, $code)
+    {
+        $nom        = (string) $nom;
+        $code       = (string) $code;
+        $properties = $this->getProperties();
+        $jsCode     = $properties['jsCode'];
+        if (!array_key_exists($nom, $jsCode)) {
+            $jsCode[$nom]           = $code;
+            $properties['jsCode']   = $jsCode;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function setJsCodes(array $codes)
+    {
+        $properties             = $this->getProperties();
+        $properties['jsCode']   = $codes;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getJsCode($nom)
+    {
+        $nom        = (string) $nom;
+        $properties = $this->getProperties();
+        $jsCode     = $properties['jsCode'];
+        if (array_key_exists($nom, $jsCode)) { return $jsCode[$nom]; }
+        return false;
+    }
+
+    public function getJsCodes()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('jsCode', $properties) ? $properties['jsCode'] : false);
+    }
+
+    public function rmJsCode($nom)
+    {
+        $nom        = (string) $nom;
+        $properties = $this->getProperties();
+        $jsCode     = $properties['jsCode'];
+        if (array_key_exists($nom, $jsCode)) {
+            unset($jsCode[$nom]);
+            $properties['jsCode'] = $jsCode;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+    */
+
+    public function addMetaData($key, $value)
+    {
+        $properties = $this->getProperties();
+        $properties['metaDatas'][$key] = $value;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function setMetaDatas(array $metaDatas)
+    {
+        $properties = $this->getProperties();
+        $properties['metaDatas'] = $metaDatas;
+        $this->setProperties($properties);
+        return $this;
+    }
+
+    public function getMetaDatas()
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('metaDatas', $properties) ? $properties['metaDatas'] : false);
+    }
+
+    public function addCustomProperty($name, $value, $default = null)
+    {
+        $name = (string) $name;
+
+        $properties = $this->getProperties();
+        if (!array_key_exists('customProperties', $properties)) { $properties['customProperties'] = []; }
+        if (!array_key_exists($name, $properties['customProperties'])) {
+            $item               = [];
+            $item['value']      = $value;
+            $item['default']    = $default;
+            $properties['customProperties'][$name] = $item;
+            $this->setProperties($properties);
+            return $this;
+        }
+        return false;
+    }
+
+    public function getCustomProperty($name)
+    {
+        $name = (string) $name;
+        $properties = $this->getProperties();
+        if (array_key_exists('customProperties', $properties)) {
+            $customProperties = $properties['customProperties'];
+            return (array_key_exists($name, $customProperties) ? $customProperties[$name] : false);
+        }
+        return false;
+    }
+
+    public function setCustomProperty($name, $value)
+    {
+        $name = (string) $name;
+
+        $properties = $this->getProperties();
+        if (array_key_exists('customProperties', $properties)) {
+            $customProperties = $properties['customProperties'];
+            if (array_key_exists($name, $customProperties)) {
+                $item               = [];
+                $item['value']      = $customProperties[$name]['default'];
+                if (!empty($value)) { $item['value']      = $value; }
+                $properties['customProperties'][$name] = $item;
+                $this->setProperties($properties);
+                return $this;
+            }
+        }
+        return false;
+    }
+
+    public function getCustomProperties() : array
+    {
+        $properties = $this->getProperties();
+        return (array_key_exists('customProperties', $properties) ? $properties['customProperties'] : false );
+    }
+
+    public function setCustomProperties(array $customProperties = null)
+    {
+        $properties = $this->getProperties();
+        if (!array_key_exists('customProperties', $properties)) { $properties['customProperties'] = []; }
+        $properties['customProperties'] = $customProperties;
+        $this->setProperties($properties);
+        return $this;
+    }
+    
+    public function retourAppend($idCible = null) {
+        $cible    = !empty($idCible) ? $idCible : $this->getId();
+        return $this->retourObject($this->getId(), $cible, 'append');;
+    }
+
+    public function retourUpdate($idCible = null) {
+        $cible    = !empty($idCible) ? $idCible : $this->getId();
+        return $this->retourObject($this->getId(), $cible, 'update');;
+    }
+
+    public function retourInnerUpdate($idCible = null) {
+        $cible    = !empty($idCible) ? $idCible : $this->getId();
+        return $this->retourObject($this->getId(), $cible, 'innerUpdate');;
+    }
+
+    public function retourRaz() {
+        return $this->retourObject($this->getId(), $this->getId(), 'raz');
+    }
+    
+    public function retourDelete() {
+        return $this->retourObject($this->getId(), $this->getId(), 'delete');
+    }
+    
+    public function retourExec($code) {
+        return $this->retourObject($this->getId(), $this->getId(), 'exec', $code);        
+    }
+    
+    public function retourExecID($idCible = null) {
+        $cible    = !empty($idCible) ? $idCible : $this->getId();
+        return $this->retourObject($this->getId(), $this->getId(), 'execID', $cible);        
+    }
+    
+    public function retourRedirect($url) {
+        return $this->retourObject($this->getId(), $this->getId(), 'redirect', $url);        
+    }
+    
+    public function retourEvent($eventFlag, $idCible = null) {
+        $cible    = !empty($idCible) ? $idCible : $this->getId();
+        return $this->retourObject($this->getId(), $cible, 'event', $eventFlag);        
+    }
+    
+    public function retourObject($idSource, $idCible, $mode, $code = null) {
+        $item = [];
+        $item['idSource']   = $idSource;
+        $item['idCible']    = $idCible;
+        $item['mode']       = $mode;
+        $item['code']       = $code;
+        return $item;
+    }
 
     /*
      * méthode interne à la classe OObject
@@ -799,7 +979,7 @@ class OObject
         return $ref->getConstants();
     }
 
-    protected function getDisplayConstants()
+    private function getDisplayConstants()
     {
         $retour = [];
         if (empty($this->const_display)) {
@@ -818,7 +998,7 @@ class OObject
         return $retour;
     }
 
-    protected function getInfoBullesConst()
+    private function getInfoBullesConst()
     {
         $retour = [];
         if (empty($this->const_infoBulle)) {
@@ -836,7 +1016,7 @@ class OObject
         return $retour;
     }
 
-    protected function getTypesConst()
+    private function getTypesConst()
     {
         $retour = [];
         if (empty($this->const_type)) {
@@ -854,7 +1034,7 @@ class OObject
         return $retour;
     }
 
-    protected function getTriggersConst()
+    private function getTriggersConst()
     {
         $retour = [];
         if (empty($this->const_trigger)) {
@@ -872,7 +1052,7 @@ class OObject
         return $retour;
     }
 
-    protected function getStatesConst()
+    private function getStatesConst()
     {
         $retour = [];
         if (empty($this->const_state)) {
@@ -939,6 +1119,16 @@ class OObject
         if (OObject::existObject($id)) {
             $gotObjList = OObject::validateSession();
             $objects = $gotObjList->offsetGet('objects');
+            $object = OObject::buildObject($id);
+            if ($object instanceof OSContainer || $object instanceof OESContainer) {
+                $children = $object->getChildren();
+                if ($children !== false) {
+                    /** @var OObject $child */
+                    foreach ($children as $child) {
+                        self::destroyObject($child->getId());
+                    }
+                }
+            }
             unset($objects[$id]);
             $gotObjList->offsetSet('objects', $objects);
             return true;
@@ -972,5 +1162,18 @@ class OObject
         $container  = OObject::validateSession();
         $container->offsetUnset('objects');
         return $container;
+    }
+    
+    /**
+     * static public function formatRetour
+     * @param type string $idSource
+     * @param type string $idCible
+     * @param type string $mode
+     * @param type string $code
+     * @return type array
+     */
+    static public function formatRetour($idSource, $idCible, $mode, $code = null) {
+        if (empty($idCible)) { $idCible = $idSource; }
+        return ['idSource'=>$idSource, 'idCible'=>$idCible, 'mode'=>$mode, 'code'=>$code];
     }
 }

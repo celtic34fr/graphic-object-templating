@@ -2,6 +2,12 @@
 Graphic Object Templating
 =========================
 
+!!!! ATTENTION !!!
+==================
+This version is being reorganized - redesign, the documentation may not be quite up to date.
+If you got problems do not hesitate to contact me:
+Gilbert ARMENGAUD <gilbert.armengaud@gmail.com>
+
 Introduction
 ------------
 Graphic Object Templating (GOT) est un framework pour construire des pages HTML5 avec des objets. Il permet aussi d'en gérer les inter-actions induites.
@@ -69,6 +75,13 @@ Après les avoir copiés dans les répertoires respectif, ilm vous faudra modifi
 
 Vous y trouverai également le fichier zfctwig.local.php que vous devrez copier dans le dopssier config/autoload de votre projet.
 
+
+!!!! ATTENTION !!!
+==================
+Cette version est en cours de réoganisation - refonte, la documentation n'est peut être pas tout à fait à jour.
+En cas de problème n'hésitez pas à me contacter :
+Gilbert ARMENGAUD <gilbert.armengaud@gmail.com>
+
 Utilisation
 -----------
 pour utiliser GOT, il faut en premier lieux, utiliser ces objets pour créer page ou section, article de page.
@@ -88,8 +101,7 @@ En cours de développement :
 
 * ODSelect_ : liste déroulante (HTML ou jQuery Select2)
 * ODCheckbox_ : case à cocher
-* ODRadio_ : radio bouton
-* ODMessage : affichage de message à l'écran (façon Windows 8)
+* ODNotification : affichage de message à l'écran (façon Windows 8)
 * ODTable_ : objet balise HTML <table></table>
 * ODBadge : badge de couleur contenant texte ou chiffre
 
@@ -97,7 +109,6 @@ En cours de développement :
 .. _ODContent: doc/objets/ODContent.rst
 .. _ODCheckbox: doc/objets/ODCheckbox.rst
 .. _ODInput: doc/objets/ODInput.rst
-.. _ODRadio: doc/objets/ODRadio.rst
 .. _ODSelect: doc/objets/ODSelect.rst
 .. _ODTable: doc/objets/ODTable.rst
 

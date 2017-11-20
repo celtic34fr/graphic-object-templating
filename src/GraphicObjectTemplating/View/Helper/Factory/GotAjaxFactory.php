@@ -2,16 +2,34 @@
 
 namespace GraphicObjectTemplating\View\Helper\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use GraphicObjectTemplating\View\Helper\GotAjax;
+use Zend\ServiceManager\ServiceManager;
 
 class GotAjaxFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $sl)
+    /**
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // $sl is instanceof ViewHelperManager, we need the real SL though
-        $rsl = $sl->getServiceLocator();
-        return new GotAjax($rsl);
+        // $container is instanceof ViewHelperManager, we need the real SL though
+        /** @var ServiceManager $serviceManager */
+        $serviceManager =  $container->get('ServiceManager');
+        return new GotAjax($serviceManager);
     }
 }
