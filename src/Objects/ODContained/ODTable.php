@@ -1,9 +1,9 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
-use graphicObjectTEmplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\ODContained;
+use graphicObjectTEmplating\OObjects\OObject;
 use Zend\Session\Container;
 
 /**

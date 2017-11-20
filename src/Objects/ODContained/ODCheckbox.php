@@ -1,9 +1,9 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\OObject;
+use GraphicObjectTemplating\OObjects\ODContained;
 use GraphicObjectTemplating\Service\GotServices;
 use Zend\ServiceManager\ServiceManager;
 
@@ -71,8 +71,10 @@ class ODCheckbox extends ODContained
     {
         $properties = $this->getProperties();
         $label      = (array_key_exists('label', $properties)) ? $properties['label'] : "";
-        if (array_key_exists('options',$properties) && sizeof($properties['options']) == 1 && $label == $properties['options'][0]['libel']) {
-            $properties['options'] = [];
+        if (array_key_exists('options',$properties) && sizeof($properties['options']) == 1 ) {
+            if ($label == $properties['options'][1]['libel']) {
+                $properties['options'] = [];
+            }
         }
         $types = $this->getCheckTypeConst();
         if (!in_array($type, $types)) $type = self::CHECKTYPE_DEFAULT;

@@ -1,29 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 07/09/17
- * Time: 22:58
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
 
 use Exception;
 
-/**
- * Description of OESContainer
- *
- * @author candidat
- */
 class OEDContained extends OEObject
 {
-    private $_tExtends        = 'GraphicObjectTemplating\Objects\ODContained';
+    private $_tExtends        = 'GraphicObjectTemplating\OObjects\ODContained';
     private $_tExtendIntances = "";
 
     public function __construct($id, $pathConfig, $className) {

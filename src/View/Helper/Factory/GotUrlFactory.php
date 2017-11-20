@@ -1,7 +1,8 @@
 <?php
-namespace GraphicObjectTemplating\Service\Factory;
 
-use GraphicObjectTemplating\Service\GotServices;
+namespace GraphicObjectTemplating\View\Helper\Factory;
+
+use GraphicObjectTemplating\View\Helper\GotUrl;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
@@ -9,7 +10,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceManager;
 
-class GotServicesFactory implements FactoryInterface
+class GotUrlFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -27,8 +28,6 @@ class GotServicesFactory implements FactoryInterface
     {
         /** @var ServiceManager $serviceManager */
         $serviceManager =  $container->get('ServiceManager');
-        $twigRender  = $container->get('ZfcTwigRenderer');
-        return new GotServices($serviceManager, $twigRender);
+        return new GotUrl($serviceManager);
     }
 }
-?>

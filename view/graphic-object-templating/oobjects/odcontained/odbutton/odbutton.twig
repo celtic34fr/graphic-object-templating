@@ -101,7 +101,7 @@
         {% endif %}
     </style>
 
-    {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ translate(objet.label) }}
+    {% if objet.icon is not empty %}<i class="{{ objet.icon }}"></i>{% endif %}{{ objet.label }}
 
     <script id="{{ objet.id }}Script" type="text/javascript">
         $('document').ready(function () {

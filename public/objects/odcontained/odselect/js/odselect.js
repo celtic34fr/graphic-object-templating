@@ -1,21 +1,21 @@
-function odradio(obj) {
+function odselect(obj) {
     this.id = obj.attr('id');
     this.data = obj.data();
-    $this.options = [];
+    this.options = [];
     var checked = obj.find("select option:selected");
     $.each(checked, function(){
         $this.options.push($(this).val());
     });
 }
 
-odradio.prototype = {
-    getDate: function (evt) {
+odselect.prototype = {
+    getData: function (evt) {
         var chps = "id=" + this.id;
         chps = chps + "&value='" + this.options.join("$") + "'";
         chps = chps + "&obj='OUI'";
         if (evt = this.data.evt) {
-            var classe  = data['evt-'+evt+'-class'];
-            var methode = data['evt-'+evt+'-method'];
+            var classe  = this.data['evt-'+evt+'-class'];
+            var methode = this.data['evt-'+evt+'-method'];
             if ((classe.length > 0) && (methode.length > 0)) {
                 chps = chps + "&callback='" + classe + "+" + methode +"'";
             }

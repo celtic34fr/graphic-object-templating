@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: main
- * Date: 11/10/17
- * Time: 23:40
- */
 
-namespace GraphicObjectTemplating\Objects\OSContainer;
+namespace GraphicObjectTemplating\OObjects\OSContainer;
 
-use GraphicObjectTemplating\Objects\OSContainer;
+use GraphicObjectTemplating\OObjects\ODContained\ODContent;
+use GraphicObjectTemplating\OObjects\OObject;
+use GraphicObjectTemplating\OObjects\OSContainer;
 
 /**
  * Class OSDialog
@@ -26,6 +22,8 @@ use GraphicObjectTemplating\Objects\OSContainer;
  * getBgColor()             : restitue la couleur de fond du dialogue
  * setFgColor($fgColor)     : permet de fixer la couleur d'écriture dans le dialogue
  * getFgColor()             : restitue la couleur d'écriture dans le dialogue
+ * setContent($content)     : affecte le contenu de $content en enfant du dialogue (directe si OObject, sinon via ODContent)
+ * getContent()             : restitue le contnu du dialogue au travers de l'objet enfant (ODContent ou autre)
  */
 class OSDialog extends OSContainer
 {
@@ -127,9 +125,10 @@ class OSDialog extends OSContainer
     public function CmdOpenDialog()
     {
         $item = [];
-        $item['id']   = $this->getId();
+        $item['idSource']   = $this->getId();
+        $item['idCible']   = $this->getId();
         $item['mode'] = "exec";
-        $item['html'] = 'openModal("#'.$this->getId().'");';
+        $item['code'] = 'openModal("#'.$this->getId().'");';
         return $item;
     }
 
@@ -225,6 +224,7 @@ class OSDialog extends OSContainer
             $event = $properties['event'];
             if (array_key_exists('click', $event)) { return $event['click']; }
         }
+        return false;
     }
 
     public function disClose()
@@ -241,9 +241,10 @@ class OSDialog extends OSContainer
     public function CmdCloseDialog()
     {
         $item = [];
-        $item['id']   = $this->getId."Command";
+        $item['idSource']   = $this->getId();
+        $item['idCible']   = $this->getId()."Command";
         $item['mode'] = "exec";
-        $item['html'] = 'closeModal("#'.$this->getId().'");';;
+        $item['code'] = 'closeModal("#'.$this->getId().'");';;
         return $item;
     }
 
@@ -251,9 +252,10 @@ class OSDialog extends OSContainer
     {
         $item = [];
 
-        $item['id']   = $this->getId."Command";
+        $item['idSource']   = $this->getId();
+        $item['idCible']   = $this->getId()."Command";
         $item['mode'] = "exec";
-        $item['html'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.toggle();";
+        $item['code'] = "var inst = $.modality.instances['".$this->getId()."Content']; inst.toggle();";
 
         return $item;
     }
@@ -275,5 +277,24 @@ class OSDialog extends OSContainer
             $retour = $this->const_color;
         }
         return $retour;
+    }
+
+    public function setContent($content)
+    {
+        $properties = $this->getProperties();
+        if (!($content instanceof OObject)) {
+            $contenu = new ODContent($properties['id']."Content");
+            $contenu->setContent($content);
+            $this->addChild($contenu);
+        } else {
+            $this->addChild($content);
+        }
+        return $this;
+    }
+
+    public function getContent()
+    {
+        if ($this->$this->hasChildren()) return $this->getChildren();
+        return false;
     }
 }

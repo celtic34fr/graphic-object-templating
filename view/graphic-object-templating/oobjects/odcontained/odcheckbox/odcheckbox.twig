@@ -28,7 +28,7 @@
             disabled
         {% endif %}
         {# callback appelée en ajax #}
-    data-class="GraphicObjectTemplating\Objects\ODContained\ODCheckbox" data-method="dispatchEvents"
+    data-class="GraphicObjectTemplating\OObjects\ODContained\ODCheckbox" data-method="dispatchEvents"
     {% if objet.event is not empty %}
         {% for evt, callback in objet.event %}
             {% if 'stopEvent' in callback|keys %}

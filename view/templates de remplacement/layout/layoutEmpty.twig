@@ -1,7 +1,7 @@
 {{ doctype() }}
 <html lang="en">
 <head>
-    {{ headTitle(translate('Application')).setSeparator(' - ').setAutoEscape(false) | raw }}
+    {{ headTitle('Application').setSeparator(' - ').setAutoEscape(false) | raw }}
     {{ headMeta()
     .setCharset('utf-8')
     .appendName('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
@@ -20,6 +20,7 @@
     .prependStylesheet(basePath('css/bootstrap.min.css'))
     .prependStylesheet(basePath('graphicobjecttemplating/css/font-awesome.css'))
     .prependStylesheet(basePath('graphicobjecttemplating/css/main.css'))
+    .prependStylesheet(basePath('graphicobjecttemplating/css/lobibox.min.css'))
     .prependStylesheet(basePath('css/style.css'))
     | raw }}
 
@@ -30,9 +31,10 @@
     <!-- Scripts -->
 
     {{ headScript()
-    .prependFile(basePath('js/jquery-3.1.0.min.js'))
-    .prependFile(basePath('js/bootstrap.min.js'))
+    .prependFile(basePath('graphicobjecttemplating/js/lobibox.min.js'))
     .prependFile(basePath('graphicobjecttemplating/js/main.js'))
+    .prependFile(basePath('js/bootstrap.min.js'))
+    .prependFile(basePath('js/jquery-3.1.0.min.js'))
     | raw }}
     <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/respond.min.js"></script><![endif]-->
     <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/html5shiv.js"></script><![endif]-->
@@ -42,6 +44,7 @@
     <!-- Scripts -->
 </head>
 <body>
+    <div id="gotCallback" style="display: none;">{{ url("got-update") }}</div>
     <div id="gotCallback" style="display: none;">{{ url("got-callback") }}</div>
     <div id="divWork" style="display: none"></div>
     {% block contentBody %}
@@ -50,7 +53,7 @@
         <hr>
         <footer>
             {% block footer %}
-                <p>&copy; 2005 - 2014 by Zend Technologies Ltd. {{ translate('All rights reserved.') }}</p>
+                <p>&copy; 2005 - 2014 by Zend Technologies Ltd. {{ 'All rights reserved.' }}</p>
             {% endblock footer %}
         </footer>
     </div>

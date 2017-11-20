@@ -1,9 +1,9 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\ODContained;
+namespace GraphicObjectTemplating\OObjects\ODContained;
 
-use GraphicObjectTemplating\Objects\ODContained;
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\ODContained;
+use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\Service\GotServices;
 use Zend\ServiceManager\ServiceManager;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\OObject;
 
 /**
  * Class ODConta    ined
- * @package GraphicObjectTemplating\Objects
+ * @package GraphicObjectTemplating\OObjects
  * 
  * setName
  * getName

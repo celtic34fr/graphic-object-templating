@@ -136,6 +136,7 @@ class LayoutExtension extends \Twig_Extension
         return is_bool($var);
     }
 
+
     public function twigTest_typeOf($var, $type_test = null)
     {
 

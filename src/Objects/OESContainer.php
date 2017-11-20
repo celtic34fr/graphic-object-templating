@@ -1,23 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
 use \Exception;
 
-/**
- * Description of OESContainer
- *
- * @author candidat
- */
 class OESContainer extends OEObject
 {
-    private $_tExtends        = 'GraphicObjectTemplating\Objects\OSContainer';
+    private $_tExtends        = 'GraphicObjectTemplating\OObjects\OSContainer';
     private $_tExtendIntances = "";
     
     public function __construct($id, $pathConfig, $className) {

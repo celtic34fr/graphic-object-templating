@@ -16,8 +16,8 @@ return array(
     "showAfterPrevious" => false,
     "delayMessage"      => 2000,
 
-    "resources" => array(
-        "css" => array( 'lobibox.css' => "css/lobibox.css", ),
-        "js"  => array( 'lobibox.js' => "js/lobibox.js", )
-    )
+    "resources" => [
+        "css" => [],
+        "js"  => [],
+    ]
 );

@@ -4,11 +4,12 @@
 {% for evt, callback in events %}
     {% if callback is not empty and callback != "dummy"%}
         $('#{{ objet.id }}').{{ evt }}(function (e) {
+            var {{ objet.id }} = new {{ objet.object }}($('#{{ objet.id }}'));
             {% switch(callback.class) %}
             {% case 'javascript:' %}
             eval('{{ callback.method | raw }}');
             {% default %}
-            invokeAjax({{ objet.object }}_getData($('#{{ objet.id }}'), '{{ evt }}'), '{{ objet.id }}', '{{ evt }}', e);
+            invokeAjax({{ objet.id }}.getData('{{ evt }}'), '{{ objet.id }}', '{{ evt }}', e);
             {% endswitch %}
         });
     {% endif %}

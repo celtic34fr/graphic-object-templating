@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: candidat
- * Date: 05/09/17
- * Time: 11:47
- */
 
-namespace GraphicObjectTemplating\Objects;
+namespace GraphicObjectTemplating\OObjects;
 
 
 class OEObject extends OObject

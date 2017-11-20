@@ -2,11 +2,8 @@
 
 namespace GraphicObjectTemplating\View\Helper;
 
-use GraphicObjectTemplating\Objects\ODContent;
-use GraphicObjectTemplating\Objects\OObject;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
-use Zend\View\Model\ViewModel;
 
 class GotRender extends AbstractHelper
 {

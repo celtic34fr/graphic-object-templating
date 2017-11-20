@@ -4,7 +4,7 @@ function odtable(obj) {
 }
 
 odtable.prototype = {
-    getDate: function (evt) {
+    getData: function (evt) {
         var chps = "id=" + this.id;
         chps = chps + "&value='" + this.select + "'";
         chps = chps + "&evt='" + evt + "'";

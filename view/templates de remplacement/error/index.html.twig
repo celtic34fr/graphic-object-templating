@@ -1,25 +1,25 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block content %}
-    <h1>{{ translate('An error occurred') }}</h1>
+    <h1>{{ 'An error occurred' }}</h1>
     <h2>{{ message }}</h2>
 
     {% if display_exceptions is defined and not(display_exceptions is empty) %}
         {% if exception is defined and not(exception is empty) %}
             {% if exception is instanceof('Exception') %}
-                <h2>{{ translate('Additional information') }}:</h2>
+                <h2>{{ 'Additional information' }}:</h2>
                 <h3>{{ getclass(exception) }}</h3>
                 {% set arrayException = arrayexception(exception) %}
                 <dl>
-                    <dt>{{ translate('File') }}:</dt>
+                    <dt>{{ 'File' }}:</dt>
                     <dd>
                         <pre class="prettyprint linenums">{{ arrayException.File }}:{{ arrayException.Line }}</pre>
                     </dd>
-                    <dt>{{ translate('Message') }}:</dt>
+                    <dt>{{ 'Message' }}:</dt>
                     <dd>
                         <pre class="prettyprint linenums">{{ arrayException.Message }}</pre>
                     </dd>
-                    <dt>{{ translate('Stack trace') }}:</dt>
+                    <dt>{{ 'Stack trace' }}:</dt>
                     <dd>
                         <pre class="prettyprint linenums">{{ arrayException.TraceAsString }}</pre>
                     </dd>
@@ -29,21 +29,21 @@
                 {% set break = false %}
                 {% if previousExArray is defined and not (previousExArray is empty)%}
                     <hr/>
-                    <h2>{{ translate('Previous exceptions') }}:</h2>
+                    <h2>{{ 'Previous exceptions' }}:</h2>
                     <ul class="unstyled">
                         {% for ex in previousExArray if not break%}
                             <li>
                                 <h3>{{ ex.Class }}</h3>
                                 <dl>
-                                    <dt>{{ translate('File') }}:</dt>
+                                    <dt>{{ 'File' }}:</dt>
                                     <dd>
                                         <pre class="prettyprint linenums">{{ ex.File }}:{{ ex.Line }}</pre>
                                     </dd>
-                                    <dt>{{ translate('Message') }}:</dt>
+                                    <dt>{{ 'Message' }}:</dt>
                                     <dd>
                                         <pre class="prettyprint linenums">{{ ex.Message }}</pre>
                                     </dd>
-                                    <dt>{{ translate('Stack trace') }}:</dt>
+                                    <dt>{{ 'Stack trace' }}:</dt>
                                     <dd>
                                         <pre class="prettyprint linenums">{{ ex.TraceAsString }}</pre>
                                     </dd>
@@ -60,6 +60,6 @@
             {% endif %}
         {% endif %}
     {% else %}
-        <h3>{{ translate('No Exception available') }}</h3>
+        <h3>{{ 'No Exception available' }}</h3>
     {% endif %}
 {% endblock content %}

@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphicObjectTemplating\Objects\OSContainer;
+namespace GraphicObjectTemplating\OObjects\OSContainer;
 
-use GraphicObjectTemplating\Objects\OSContainer;
+use GraphicObjectTemplating\OObjects\OSContainer;
 
 class OSDiv extends OSContainer
 {

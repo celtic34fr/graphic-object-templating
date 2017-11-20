@@ -2,18 +2,19 @@
 
 namespace GraphicObjectTemplating\View\Helper;
 
-use GraphicObjectTemplating\Objects\OSContainer;
+use GraphicObjectTemplating\Service\GotServices;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
 class GotHeader extends AbstractHelper
 {
+    /** @var  ServiceManager $sm */
     protected $sm;
+    /** @var  GotServices $gotServices */
     protected $gotServices;
 
-    public function __construct($sm)
+    public function __construct(ServiceManager $sm)
     {
-        /** @var ServiceManager sm */
         $this->sm = $sm;
         $this->gotServices = $sm->get("graphic.object.templating.services");
         return $this;

@@ -1,10 +1,16 @@
 function odcheckbox(obj) {
     this.id = obj.attr('id');
-    $this.options = [];
-    var checked = obj.find("input:checkbox:checked");
-    $.each(checked, function(){
-        $this.options.push($(this).val());
-    });
+    this.options = [];
+    var type = obj.find("input");
+    if (type.length > 0) {
+        var options = [];
+        $.each(type, function(i, input){
+            if (input.getAttribute('checked') !== null) {
+                options.push(input.getAttribute('value'));
+            }
+        });
+        this.options = options;
+    }
     this.data = obj.data();
 }
 
@@ -15,8 +21,8 @@ odcheckbox.prototype = {
         chps = chps + "&evt='" + evt + "'";
         chps = chps + "&obj='OUI'";
         if (evt = this.data.evt) {
-            var classe  = data['evt-'+evt+'-class'];
-            var methode = data['evt-'+evt+'-method'];
+            var classe  = this.data['evt-'+evt+'-class'];
+            var methode = this.data['evt-'+evt+'-method'];
             if ((classe.length > 0) && (methode.length > 0)) {
                 chps = chps + "&callback='" + classe + "+" + methode +"'";
             }
