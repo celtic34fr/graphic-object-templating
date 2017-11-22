@@ -24,6 +24,16 @@ return array(
 
     'router' => array(
         'routes' => array(
+            'got-update' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/got-udate',
+                    'defaults' => [
+                        'controller' => GOTController::class,
+                        'action'     => 'updateObjects',
+                    ],
+                ],
+            ],
             'got-callback' => [
                 'type' => Literal::class,
                 'options' => [
@@ -36,17 +46,17 @@ return array(
             ],
         ),
     ),
-    
+
     'service_manager' => array(
-		'factories' => array(
+        'factories' => array(
             GotServices::class                      => GotServicesFactory::class,
-			'graphic.object.templating.services'    => GotServicesFactory::class,
-		)
+            'graphic.object.templating.services'    => GotServicesFactory::class,
+        )
     ),
 
     'controllers' => array(
         'factories' => array(
-           GOTController::class => GOTControllerFactory::class,
+            GOTController::class => GOTControllerFactory::class,
         ),
     ),
 
@@ -72,7 +82,7 @@ return array(
             'gotRender'     => GotRender::class,
             'gotBootstrap'  => GotBootstrap::class,
             'gotHeader'     => GotHeader::class,
-            'gotProperties' => GotProperties::class
+            'gotProperties' => GotProperties::class,
         ],
     ],
     'zfctwig' => [
@@ -80,6 +90,6 @@ return array(
             'layout'            => LayoutExtension::class,
             'colorConverter'    => ColorConverterTwigExtension::class,
             'gotTwigExtension'  => GotTwigExtension::class,
-            ],
+        ],
     ],
 );

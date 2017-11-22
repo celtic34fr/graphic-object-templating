@@ -17,7 +17,127 @@ function invokeAjax(datas, idSource, event, e) {
     if (event !== undefined) {
         var dataKey   = 'data-'+event+'-stopevt';
         var stopEvent = $('#'+idSource).attr(dataKey);
-        console.log($('#'+idSource));
+        if (stopEvent === 'OUI' || stopEvent === undefined) {
+            e.stopImmediatePropagation();
+        }
+    }
+    var urlGotCallback = $("#gotCallback").html();
+    var tabDatas       = [];
+    $.ajax({
+        url:        urlGotCallback,
+        type:       'POST',
+        dataType:   'json',
+        async:      false,
+        data:       datas,
+
+        success: function (returnDatas, status) {
+            tabDatas = returnDatas;
+        },
+
+        error : function(xhr, textStatus, errorThrown) {
+            if (xhr.status === 0) {
+                alert('Not connected. Verify Network.');
+            } else if (xhr.status === 404) {
+                alert('Requested page not found. [404]');
+            } else if (xhr.status === 500) {
+                alert('Server Error [500].');
+            } else if (errorThrown === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (errorThrown === 'timeout') {
+                alert('Time out error.');
+            } else if (errorThrown === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Remote sever unavailable. Please try later, '+xhr.status+"//"+errorThrown+"//"+textStatus);
+            }
+        }
+    });
+    
+    $.each(tabDatas, function (i, ret) {
+        var id   = "";
+        var mode = "";
+        var code = "";
+        $.each(ret, function (j, k) {
+            switch (j) {
+                case 'id':
+                    id = k;
+                    break;
+                case 'mode':
+                    mode = k;
+                    break;
+                case 'code':
+                    code = k;
+                    break;
+            }
+        });
+        switch (mode) {
+            case 'rscs':
+                loadResources(id, code);
+                break;
+        }
+    });
+    $.each(tabDatas, function (i, ret) {
+        var id   = "";
+        var mode = "";
+        var code = "";
+        $.each(ret, function (j, k) {
+            switch (j) {
+                case 'id':
+                    id = k;
+                    break;
+                case 'mode':
+                    mode = k;
+                    break;
+                case 'code':
+                    code = k;
+                    break;
+            }
+        });
+        switch (mode) {
+            case "append":
+                $("#" + id).append(code);
+                if ($("#" + id).find("#" + id + "Script").length > 0)
+                    $.globalEval($("#" + id + "Script").innerText);
+                break;
+            case "update":
+                var updId = "#" + id;
+                $(updId).replaceWith(code);
+                break;
+            case "innerUpdate":
+                var updId = "#" + id;
+                $(updId).html(code);
+                break;
+            case "raz":
+                $("#" + id).html("");
+                break;
+            case "delete":
+                $("#" + id).remove();
+                break;
+            case "exec":
+                $.globalEval(code);
+                break;
+            case "execID":
+                var objet = $("#"+code);
+                var script = objet.html();
+                $.globalEval(script);
+                break;
+            case "redirect":
+                $(location).attr('href', code);
+                break;
+            case 'event': // format code : nomEvt|[OUI/NON]
+                var evt = code.substr(0, strpos(code, '|'));
+                var flg = code.substr(strpos(code, '|') + 1);
+                $('#'+id).attr('data-'+evt+'-stopevt', flg);
+                break;
+        }
+    });
+}
+
+function invokeAjaxOld(datas, idSource, event, e) {
+    // vérification propagation événement
+    if (event !== undefined) {
+        var dataKey   = 'data-'+event+'-stopevt';
+        var stopEvent = $('#'+idSource).attr(dataKey);
         if (stopEvent === 'OUI' || stopEvent === undefined) {
             e.stopImmediatePropagation();
         }
@@ -27,7 +147,7 @@ function invokeAjax(datas, idSource, event, e) {
         url:        urlGotCallback,
         type:       'POST',
         dataType:   'json',
-        async:      true,
+        async:      false,
         data:       datas,
 
         success: function (returnDatas, status) {
@@ -43,7 +163,7 @@ function invokeAjax(datas, idSource, event, e) {
                         case 'mode':
                             mode = k;
                             break;
-                        case 'html':
+                        case 'code':
                             code = k;
                             break;
                     }
@@ -75,13 +195,13 @@ function invokeAjax(datas, idSource, event, e) {
                     case "redirect":
                         $(location).attr('href', code);
                         break;
-                    case "goRoute":
-                        $(location).attr('href', code);
-                        break;
                     case 'event': // format code : nomEvt|[OUI/NON]
                         var evt = code.substr(0, strpos(code, '|'));
                         var flg = code.substr(strpos(code, '|') + 1);
                         $('#'+id).attr('data-'+evt+'-stopevt', flg);
+                        break;
+                    case 'rscs':
+                        loadResources(id, code);
                         break;
                 }
             });
@@ -107,7 +227,6 @@ function invokeAjax(datas, idSource, event, e) {
     });
 }
 
-
 /**
  * méthode getFormDatas
  * @param form
@@ -116,39 +235,21 @@ function invokeAjax(datas, idSource, event, e) {
  * méthode de récupération & formatage des données regroupées dans un 'formulaire'
  */
 function getFormDatas(form) {
-    var selection = "[data-form='" + form + "']";
     var formData = "";
-    var eltSelection = $('*').find(selection);
+    var eltSelection = $("*[data-form='" + form + "']");
 
-    eltSelection.each(function () {
-        var obj = $(this);
-        var object = obj.attr('data-objet');
-        var datas = '';
+    $.each(eltSelection, function (i, selection) {
+        var object     = selection.getAttribute('data-objet');
+        if (object != null && object.substring(object.length - 6, object.length) !== 'button') {
+            var evalString = "new "+object+'($("#'+selection.getAttribute('id')+'"));';
+            var instance = eval(evalString);
+            var datas = instance.getData('click');
 
-        switch (object) { // traitement suivant l'objet (type ODContained)
-            case "odbutton":
-                break;
-            case "odcontent":
-                odcontent_getData(obj, "");
-                break;
-            case "odinput":
-                datas = odinput_getData(obj, '');
-                break;
-            case "odselect":
-                datas = odselect_getData(obj, '');
-                break;
-            case "odcheckbox":
-                datas = odcheckbox_getData(obj, '');
-                break;
-            case "odtoggle":
-                datas = odtoggle_getData(obj, '');
-                break
-        }
-
-        if (datas.length > 0) {
-            datas = datas.replaceAll("&", "§");
-            datas = datas.replaceAll("\'", "*");
-            formData = formData + "|" + datas;
+            if (datas.length > 0) {
+                datas = datas.replaceAll("&", "§");
+                datas = datas.replaceAll("\'", "*");
+                formData = formData + "|" + datas;
+            }
         }
     });
     if (formData.length > 0) {
@@ -164,33 +265,15 @@ function getFormDatas(form) {
  * méthode d'initialisation des données regroupées dans un 'formulaire'
  */
 function razFormDatas(form) {
-    var selection = "[data-form='" + form + "']";
-    var eltSelection = $('*').find(selection);
+    var eltSelection = $("*[data-form='" + form + "']");
 
-    eltSelection.each(function () {
-        var obj = $(this);
-        var object = obj.attr('data-objet');
-        var id = obj.attr('id');
-
-        switch (object) { // traitement suivant l'objet (type ODContained)
-            case "odbutton":
-                odbutton_setData(id, "");
-                break;
-            case "odcontent":
-                odcontent_setData(id, "");
-                break;
-            case "odinput":
-                odinput_setData(id, "");
-                break;
-            case "odcheckbox":
-                odcheckbox_setData(id, "");
-                break;
-            case "odselect":
-                odselect_setData(id, "");
-                break;
-            case "odradio":
-                odradio_setData(id, "");
-                break;
+    $.each(eltSelection, function (i, obj) {
+        if (obj.dataset.objet !== 'odbutton') {
+            var evalString = "new "+obj.dataset.objet+'($("#'+obj.id+'"));';
+            console.log(evalString);
+            var instance   = eval(evalString);
+            console.log(instance);
+            instance.setData('');
         }
     });
 }
@@ -219,26 +302,11 @@ function setFormDatas(form, datas) {
                     break;
             }
         });
-        switch (type) {
-            case "odbutton":
-                odbutton_setData(id, value);
-                break;
-            case "odcontent":
-                odcontent_setData(id, value);
-                break;
-            case "odinput":
-                odinput_setData(id, value);
-                break;
-            case "odcheckbox":
-                odcheckbox_setData(id, value);
-                break;
-            case "odselect":
-                odselect_setData(id, value);
-                break;
-            case "odradio":
-                odradio_setData(id, value);
-                break;
-        }
+
+        var obj = $('#'+id);
+        var evalString = "new "+obj.attr('data-objet')+'($("#'+obj.attr('id')+'#));';
+        var instance = eval(evalString);
+        var datas = instance.setData(value);
     })
 }
 
@@ -589,11 +657,32 @@ String.prototype.replaceAll = function (str1, str2, ignore) {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
 }
 
-Object.prototype.hasAttr = function(name) {
-    return this.attr(name) !== undefined;
-};
+//Object.prototype.hasAttr = function(name) {
+//    return this.hasOwnProperty(name);
+//};
 
 function strpos(haystack, needle, offset) {
     var i = (haystack+'').indexOf(needle, (offset || 0));
     return i === -1 ? false : i;
+}
+
+function loadResources(type, url) {
+    var head    = document.getElementsByTagName('head')[0];
+    switch(type) {
+        case 'js' :
+            var script  = document.createElement('script');
+            script.src  = location.protocol + "//" + location.host + "/" + url;
+            break;
+        case 'css' :
+            var script  = document.createElement('link');
+            script.type = 'text/css';
+            script.rel  = 'stylesheet';
+            script.href = location.protocol + "//" + location.host + "/" + url;
+            break;
+    }
+    script.onload = function () {
+        console.log(url + ' loaded');
+        eval(script);
+    };
+    head.append(script);
 }

@@ -4,7 +4,7 @@ namespace GraphicObjectTemplating\View\Helper;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
-use GraphicObjectTemplating\Objects\OObject;
+use GraphicObjectTemplating\OObjects\OObject;
 
 class GotProperties extends AbstractHelper
 {
@@ -12,7 +12,7 @@ class GotProperties extends AbstractHelper
 
     public function __construct($sm)
     {
-        /** @var ServiceManager sl */
+        /** @var ServiceManager sm */
         $this->sm = $sm;
         return $this;
     }

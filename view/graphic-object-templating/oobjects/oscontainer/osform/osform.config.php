@@ -16,6 +16,6 @@ return [
 
     'resources' => [
         'css' => [ ],
-        'js'  => [ ],
+        'js'  => ['odbutton.js' => 'js/odbutton.js',],
     ]
 ];

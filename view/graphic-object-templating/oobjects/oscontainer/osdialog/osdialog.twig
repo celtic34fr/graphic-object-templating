@@ -1,9 +1,8 @@
 {# template de l'objet OSDialog #}
 {% set objClass = gotBootstrap(objet.widthBT) %}
 
-
 <style>
-    .modal-content {
+    #{{ objet.id }} .modal-content {
         width: {{ objet.widthDialog }};
         position: relative;
         min-height: {{ objet.minHeight }};

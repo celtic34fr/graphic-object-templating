@@ -1,4 +1,5 @@
 <?php
+
 return array(
     "object"     => "odtable",
     "typeObj"    => "odcontained",

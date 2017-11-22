@@ -1,6 +1,6 @@
 <?php
 
-use GraphicObjectTemplating\Objects\OSContainer\OSDialog;
+use GraphicObjectTemplating\OObjects\OSContainer\OSDialog;
 
 return [
     'object'        => 'osdialog',

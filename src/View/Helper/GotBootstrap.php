@@ -2,11 +2,8 @@
 
 namespace GraphicObjectTemplating\View\Helper;
 
-
-use Zend\Config\Config;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
-use Zend\View\Model\ViewModel;
 
 class GotBootstrap extends AbstractHelper
 {

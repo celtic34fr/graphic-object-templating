@@ -107,7 +107,7 @@
         <tbody>
         {% if objet.datas is empty %}
             <tr class="line lno1" data-lno="1">
-                <td colspan="{{ objet.cols|length }}" style="text-align: center">{{ translate("No data to show") | trim }}</td>
+                <td colspan="{{ objet.cols|length }}" style="text-align: center">No data to show</td>
             </tr>
         {% else %}
             {% for lno, data in objet.datas %}

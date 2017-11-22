@@ -1,13 +1,12 @@
 <?php
 namespace GraphicObjectTemplating\Service\Factory;
- 
+
 use GraphicObjectTemplating\Service\GotServices;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 
 class GotServicesFactory implements FactoryInterface
