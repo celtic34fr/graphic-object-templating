@@ -2,7 +2,7 @@
     "name":         "celtic34fr/graphic-object-templating",
     "description":  "build and react with your HTML5 pages throu objects",
     "type":         "library",
-    "license":      "GPL 3.0",
+    "license":      "GPL-3.0-or-later",
     "homepage":     "https://github.com/celtic34fr/graphic-object-templating",
     "keywords": [
         "zf2",
