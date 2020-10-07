@@ -1,6 +1,6 @@
 {
     "name":         "celtic34fr/graphic-object-templating",
-    "description":  "build and react with your HTML5 pages throu objects",
+    "description":  "build and react with your HTML5 pages throu objects library",
     "type":         "library",
     "license":      "GPL-3.0-or-later",
     "homepage":     "https://github.com/celtic34fr/graphic-object-templating",
@@ -16,9 +16,12 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "zendframework/zendframework": "~2.4",
-        "zf-commons/zfc-twig" : "^1.2"
+        "php": ">=7.4",
+        "laminas/laminas-session": "^2.9.1",
+        "laminas/laminas-view": "^2.11",
+        "laminas/laminas-router": "^3.3",
+        "laminas/laminas-servicemanager": "^3.4",
+        "laminas/laminas-mvc": "^3.1.1"
     },
     "autoload": {
         "psr-0": {
