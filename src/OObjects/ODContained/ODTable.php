@@ -110,7 +110,8 @@ class ODTable extends ODContained
             case 'nbColsHead':
                 return count($cols);
             case 'colsWidth':
-                throw new Exception("Attribut colsWidth accessible en écriture seleument");
+            case 'colsWidthBT':
+                throw new Exception("Attribut $key accessible en écriture seleument");
                 break;
             case 'line':
             case 'lines':
@@ -255,6 +256,7 @@ class ODTable extends ODContained
             case 'line':
             case 'lines':
             case 'colsWidth':
+            case 'colsWidthBT':
                 throw new Exception("Attribut $key accessible en écriture seulement");
             case 'colsHead':
                 return (count($cols) > 0);
@@ -395,6 +397,10 @@ class ODTable extends ODContained
                 break;
             case 'colsWidth':
                 $val = $this->validate_colsWith($val, $cols);
+                $key = 'cols';
+                break;
+            case 'colsWidthBT':
+                $val = $this->validate_colsWithBT($val, $cols);
                 $key = 'cols';
                 break;
             case 'line':
@@ -679,6 +685,32 @@ class ODTable extends ODContained
             $cols[$key]['width'] = $width;
         }
         return $cols;
+    }
+
+    /**
+     * @param $val
+     * @param $cols
+     * @return mixed
+     * @throws Exception
+     */
+    private function validate_colsWithBT($val, $cols)
+    {
+        if (!is_array($val)) {
+            throw new Exception("L'attribut colsWidth n'accepte que des tableaux unidimensionnels");
+        }
+
+        $nbCols = count($cols);
+        $nbVals = count($val);
+        if ($nbVals === 0 || $nbVals !== $nbCols) {
+            throw new Exception("Le tableau accepté par l'attribut colsWidth doit avoir le même nombre de colonne que l'objet actuel");
+        }
+
+        foreach ($val as $key => $width) {
+            $width = $this->validate_widthBT($width);
+            $cols[$key]['widthBT'] = $width;
+        }
+        return $cols;
+
     }
 
     /**
