@@ -36,7 +36,7 @@ class ODCheckbox extends ODContained
         'type', 'value', 'libel', 'placement', 'nature', 'state'
     ];
     const CHECKSWITCH = [
-        'type', 'value', 'libelYes', 'libelNo', 'natureYes', 'natureNo', 'state'
+        'type', 'value', 'libelYes', 'libelNo', 'natureYes', 'backgrYes', 'natureNo', 'backgrNo', 'state'
     ];
 
     /**
@@ -313,8 +313,10 @@ class ODCheckbox extends ODContained
             case self::CHECKTYPE_SWITCH:
                 $item['libelYes']   = $options['libelYes'];
                 $item['natureYes']  = $options['natureYes'];
+                $item['backgrYes']  = $options['backgrYes'];
                 $item['libelNo']    = $options['libelNo'];
                 $item['natureNo']   = $options['natureNo'];
+                $item['backgrNo']   = $options['backgrNo'];
                 break;
         }
         $item['check']                      = self::CHECKBOX_UNCHECK;
@@ -389,8 +391,10 @@ class ODCheckbox extends ODContained
      * -> value,    : value to return if checkbox is checked
      * -> libelYes  : text to present on left side
      * -> linelNo   : text to present on right side
-     * -> natureYes : Css for coding background and button color for Yes
-     * -> natureNo  : Css for coding background and button color for No
+     * -> natureYes : Css for coding button color for Yes
+     * -> backgrYes : Css for coding background color for Yes
+     * -> natureNo  : Css for coding button color for No
+     * -> backgrNo  : Css for coding background color for No
      * -> state     : enable / disable ckeckbox option
      */
     private function validate_optionArray(array $option)
