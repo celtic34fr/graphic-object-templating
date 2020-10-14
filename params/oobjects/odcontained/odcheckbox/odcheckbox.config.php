@@ -7,7 +7,6 @@ return [
     'typeObj'       => 'odcontained',
     'template'      => 'odcheckbox',
 
-    'type'              => ODCheckbox::CHECKTYPE_CHECKBOX,
     'label'             => null,
     'options'           => [],
     'forme'             => ODCheckbox::CHECKFORME_HORIZONTAL,
