@@ -40,25 +40,25 @@ use ReflectionException;
  */
 class ODTable extends ODContained
 {
-    const TABLE_PREFIX_HEADER           = 'h';  // entête accès à l'attribut cols
-    const TABLE_PREFIX_COLUMN           = 'c';  // accès à und colonne de l'attribut $datas
-    const TABLE_PREFIX_LINE             = 'l';  // accès à une ligne de l'attribut $datas
-    const TABLE_PREFIX_INTERSECT        = 'i';  // accès l'intersection ligne, colonne de l'attribut $datas
-    const TABLE_PREFIX_EVT_INTERSECT    = 'a';  // gestion évènement sur une intersection de l'attribut $datas
-    const TABLE_PREFIX_EVT_LINE         = 'e';  // gestion évènement sur une ligne de l'attribut $datas
-    const TABLE_PREFIX_EVT_COLUMN       = 'f';  // gestion évènement sur une colonne de l'attribut $datas
-    const TABLE_PREFIX_STYLE_INTERSECT  = 's';  // gestion de style sur une intersection de l'attribut $datas
-    const TABLE_PREFIX_STYLE_LINE       = 'r';  // gestion de style sur une ligne de l'attribut $datas
-    const TABLE_PREFIX_STYLE_COLUMN     = 'p';  // gestion de style sur une colonne de l'attributy $datas
+    const TABLE_PREFIX_HEADER = 'h';  // entête accès à l'attribut cols
+    const TABLE_PREFIX_COLUMN = 'c';  // accès à und colonne de l'attribut $datas
+    const TABLE_PREFIX_LINE = 'l';  // accès à une ligne de l'attribut $datas
+    const TABLE_PREFIX_INTERSECT = 'i';  // accès l'intersection ligne, colonne de l'attribut $datas
+    const TABLE_PREFIX_EVT_INTERSECT = 'a';  // gestion évènement sur une intersection de l'attribut $datas
+    const TABLE_PREFIX_EVT_LINE = 'e';  // gestion évènement sur une ligne de l'attribut $datas
+    const TABLE_PREFIX_EVT_COLUMN = 'f';  // gestion évènement sur une colonne de l'attribut $datas
+    const TABLE_PREFIX_STYLE_INTERSECT = 's';  // gestion de style sur une intersection de l'attribut $datas
+    const TABLE_PREFIX_STYLE_LINE = 'r';  // gestion de style sur une ligne de l'attribut $datas
+    const TABLE_PREFIX_STYLE_COLUMN = 'p';  // gestion de style sur une colonne de l'attributy $datas
 
-    const EVENT_CLICK   = 'click';
-    const EVENT_HOVER   = 'hover';
+    const EVENT_CLICK = 'click';
+    const EVENT_HOVER = 'hover';
 
     const TABLE_EVENT_HOVER = 'hover';
     const TABLE_EVENT_CLICK = 'click';
 
     private static array $const_prefix;
-    private static array $const_event;
+    private static array $const_events;
 
     /**
      * ODTable constructor.
@@ -128,10 +128,13 @@ class ODTable extends ODContained
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
-                if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
-                    throw new Exception("Attribut $key incorrect");
+                if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
+                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                        throw new Exception("Attribut $key incorrect");
+                    }
+                    return $this->getPrefix($prefix, $params, $cols, $datas, $events, $styles);
                 }
-                return $this->getPrefix($prefix, $params, $cols, $datas, $events, $styles);
+                return parent::__get($key);
         }
     }
 
@@ -225,7 +228,7 @@ class ODTable extends ODContained
      * @param int $params
      * @return array
      */
-    private function getColumnDatas(int $params) : array
+    private function getColumnDatas(int $params): array
     {
         $properties = $this->properties;
         $datas = $properties['datas'];
@@ -269,8 +272,10 @@ class ODTable extends ODContained
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
-                if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
-                    throw new Exception("Attribut $key incorrect");
+                if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
+                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                        throw new Exception("Attribut $key incorrect");
+                    }
                 }
                 return $this->issetPrefix($prefix, $params, $cols, $datas, $events, $styles);
         }
@@ -286,7 +291,7 @@ class ODTable extends ODContained
      * @return bool
      * @throws Exception
      */
-    public function issetPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles) : bool
+    public function issetPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles): bool
     {
         switch ($key) {
             case self::TABLE_PREFIX_HEADER:
@@ -378,6 +383,7 @@ class ODTable extends ODContained
         $cols = $this->properties['colsHead'];
         $datas = $this->properties['datas'];
         $events = $this->properties['events'];
+        $styles = $this->properties['styles'];
         switch ($key) {
             case 'nbColsHead':
             case 'nbLinesData':
@@ -440,7 +446,7 @@ class ODTable extends ODContained
                 if (max(array_keys($val)) > count($datas))
                     throw new Exception("Indice de tableau fourni supérieur au nombre de lignes du tableau");
                 $flag = true;
-                foreach ($val as  $line) {
+                foreach ($val as $line) {
                     $flag = $flag && (max(array_keys($line)) > count($cols));
                 }
                 if (!$flag)
@@ -449,13 +455,15 @@ class ODTable extends ODContained
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
-                if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
-                    throw new Exception("Attribut $key incorrect");
-                }
-                if (array_key_exists($prefix, $this->getPrefixContants())) {
-                    list($key, $val) = $this->setPrefix($prefix, $params, $cols, $datas, $events, $styles, $val);
-                } else {
-                    return parent::__set($key, $val);
+                if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
+                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                        throw new Exception("Attribut $key incorrect");
+                    }
+                    if (array_key_exists($prefix, $this->getPrefixContants())) {
+                        list($key, $val) = $this->setPrefix($prefix, $params, $cols, $datas, $events, $styles, $val);
+                    } else {
+                        return parent::__set($key, $val);
+                    }
                 }
         }
         $this->properties[$key] = $val;
@@ -473,7 +481,7 @@ class ODTable extends ODContained
      * @return array
      * @throws Exception
      */
-    public function setPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles, $val) : array
+    public function setPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles, $val): array
     {
         switch ($key) {
             case self::TABLE_PREFIX_HEADER:
@@ -755,19 +763,19 @@ class ODTable extends ODContained
      * @return array
      * @throws ReflectionException
      */
-    private function getEventContants(): array
+    private function getEventsContants(): array
     {
         $retour = [];
-        if (empty(self::$const_event)) {
+        if (empty(self::$const_events)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'TABLE_EVENT');
                 if ($pos !== false) {
                     $retour[$key] = $constant;
                 }
             }
-            self::$const_event = $retour;
+            self::$const_events = $retour;
         } else {
-            $retour = self::$const_event;
+            $retour = self::$const_events;
         }
         return $retour;
     }
