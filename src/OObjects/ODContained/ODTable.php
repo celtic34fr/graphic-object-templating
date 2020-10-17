@@ -57,8 +57,16 @@ class ODTable extends ODContained
     const TABLE_EVENT_HOVER = 'hover';
     const TABLE_EVENT_CLICK = 'click';
 
+    const TABLETITLEPOS_TOP_LEFT = "top_left";
+    const TABLETITLEPOS_TOP_CENTER = "top_center";
+    const TABLETITLEPOS_TOP_RIGHT = "opt_right";
+    const TABLETITLEPOS_BOTTOM_LEFT = "bottom_left";
+    const TABLETITLEPOS_BOTTOM_CENTER = "bottom_center";
+    const TABLETITLEPOS_BOTTOM_RIGHT = "bottom_right";
+
     private static array $const_prefix;
     private static array $const_events;
+    private static array $const_titlePos;
 
     /**
      * ODTable constructor.
@@ -275,8 +283,9 @@ class ODTable extends ODContained
                     if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new Exception("Attribut $key incorrect");
                     }
+                    return $this->issetPrefix($prefix, $params, $cols, $datas, $events, $styles);
                 }
-                return $this->issetPrefix($prefix, $params, $cols, $datas, $events, $styles);
+                return parent::__isset($key);
         }
     }
 
@@ -444,12 +453,21 @@ class ODTable extends ODContained
                     throw new Exception("L'attribut $key n'accepte que des tableaux bidimensionnels");
                 if (max(array_keys($val)) > count($datas))
                     throw new Exception("Indice de tableau fourni supérieur au nombre de lignes du tableau");
+                if (min(array_keys($val)) <= 0)
+                    throw new Exception("Indice de tableau fourni commance en dessous de 1, incompatible");
                 $flag = true;
                 foreach ($val as $line) {
                     $flag = $flag && (max(array_keys($line)) > count($cols));
                 }
                 if (!$flag)
                     throw new Exception("Indice de tableau second niveau fourni supérieur au nombre de colonnes du tableau");
+                break;
+            case 'title':
+            case 'titleStyle':
+                $val = (string) $val;
+                break;
+            case 'titlePos':
+                $val = $this->validate_titlePos($val);
                 break;
             default:
                 $prefix = $key[0];
@@ -779,4 +797,29 @@ class ODTable extends ODContained
         return $retour;
     }
 
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    private function getTitlePosContants(): array
+    {
+        $retour = [];
+        if (empty(self::$const_titlePos)) {
+            foreach (self::getConstants() as $key => $constant) {
+                $pos = strpos($key, 'TABLETITLEPOS');
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
+            }
+            self::$const_titlePos = $retour;
+        } else {
+            $retour = self::$const_titlePos;
+        }
+        return $retour;
+    }
+
+    private function validate_titlePos($val)
+    {
+        return in_array($val, $this->getTitlePosContants(), true) ? $val : self::TABLETITLEPOS_BOTTOM_CENTER;
+    }
 }
