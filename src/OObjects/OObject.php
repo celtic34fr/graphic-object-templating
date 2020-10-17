@@ -169,7 +169,7 @@ class OObject
             switch (true) {
                 case (is_numeric($val) and (int)$val <= 12):
                     $lxs = $lsm = $lmd = $llg = (int) $val;
-                    $ixs = $ism = $imd = $ilg = 12 - (int) $val;
+//                    $ixs = $ism = $imd = $ilg = 12 - (int) $val;
                     break;
                 default:
                     foreach (explode(':', $val) as $item) {

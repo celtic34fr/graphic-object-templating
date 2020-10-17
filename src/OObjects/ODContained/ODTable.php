@@ -71,9 +71,8 @@ class ODTable extends ODContained
         parent::__construct($id, $properties);
 
         $properties = $this->constructor($id, $properties);
+        if ((int)$properties['widthBT'] === 0) $properties['widthBT'] = $this->validate_widthBT(12);
         $this->properties = $properties;
-
-        if ((int)$this->widthBT === 0) $this->widthBT = 12;
     }
 
     /**
@@ -403,11 +402,11 @@ class ODTable extends ODContained
                 break;
             case 'colsWidth':
                 $val = $this->validate_colsWith($val, $cols);
-                $key = 'cols';
+                $key = 'colsHead';
                 break;
             case 'colsWidthBT':
                 $val = $this->validate_colsWithBT($val, $cols);
-                $key = 'cols';
+                $key = 'colsHead';
                 break;
             case 'line':
                 if (!is_array($val))
@@ -690,7 +689,7 @@ class ODTable extends ODContained
         }
 
         foreach ($val as $key => $width) {
-            $cols[$key]['width'] = $width;
+            $cols[$key + 1]['width'] = $width;
         }
         return $cols;
     }
@@ -715,7 +714,7 @@ class ODTable extends ODContained
 
         foreach ($val as $key => $width) {
             $width = $this->validate_widthBT($width);
-            $cols[$key]['widthBT'] = $width;
+            $cols[$key + 1]['widthBT'] = $width;
         }
         return $cols;
 
