@@ -6,6 +6,8 @@ namespace GraphicObjectTemplating\OObjects\ODContained;
 
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use GraphicObjectTemplating\OObjects\OObject;
+use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
 use ReflectionException;
 
 /**
@@ -14,11 +16,13 @@ use ReflectionException;
  *
  * attributs
  * ---------
- * colsHead     : entête de colonnes accessible en lecture / écriture (= remplacement)
- * colsWidth    : tableau largeur de colonnes accessible en écriture (= remplacement)
- * line         : attribut visant à ajouter une ligne de données en fin de tableau (écriture seulement)
- * lines        : attribut visant à ajouter plusieurs lignes de données en fin de tableau (écriture seulement)
- * datas        : données contenues dans le tableau accessible en lecture / écriture (= remplacement)
+ * colsHead       : entête de colonnes accessible en lecture / écriture (= remplacement)
+ * colsWidth      : tableau largeur de colonnes accessible en écriture (= remplacement)
+ * line           : attribut visant à ajouter une ligne de données en fin de tableau (écriture seulement)
+ * lines          : attribut visant à ajouter plusieurs lignes de données en fin de tableau (écriture seulement)
+ * datas          : données contenues dans le tableau accessible en lecture / écriture (= remplacement)
+ * btnsActions    : tableau des boutons actions à mettre dans le tableau
+ * btnsActionsPos : position dans le tableau de la colonne boutons action (début, fin ou Nème position)
  *
  *  * méthodes
  * --------
@@ -27,10 +31,16 @@ use ReflectionException;
  * __get(string $key)
  * getPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles)
  * getColumnDatas(int $params) : array
+ * getBtnAction(string $idBtn)
  * __isset(string $key) : bool
  * issetPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles) : bool
+ * issetBtnAction(string $idBtn) : bool
  * __set(string $key, $val)
  * setPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles, $val) : array
+ * setBtnAction(ODButton $btn)
+ * addBtnAction(ODButton $btn)
+ * rmBtnAction(string $idBtn)
+ * clearBtnsActions()
  * showCol(int $col = null)
  * hideCol(int $col = null)
  * validate_colsWith($val, $cols)
@@ -64,6 +74,9 @@ class ODTable extends ODContained
     const TABLETITLEPOS_BOTTOM_CENTER = "bottom_center";
     const TABLETITLEPOS_BOTTOM_RIGHT = "bottom_right";
 
+    const TABLEBTNSACTIONS_POSITION_DEBUT   = 1;
+    const TABLEBTNSACTIONS_POSITION_FIN     = PHP_FLOAT_MAX;
+
     private static array $const_prefix;
     private static array $const_events;
     private static array $const_titlePos;
@@ -91,6 +104,9 @@ class ODTable extends ODContained
     public function constructor($id, $properties): array
     {
         $properties = parent::constructor($id, $properties);
+        $btnsActions = $properties['btnsActions'];
+        $btnsActions->id = $this->id.'BtnsActions';
+        $properties['btnsActions'] = $btnsActions;
 
         $typeObj = $properties['typeObj'];
         $object = $properties['object'];
@@ -111,6 +127,7 @@ class ODTable extends ODContained
         $datas = $properties['datas'];
         $events = $properties['events'];
         $styles = $properties['styles'];
+        $btnsActions = $properties['btnsActions'];
         switch ($key) {
             case 'colsHead':
                 return $cols;
@@ -132,6 +149,9 @@ class ODTable extends ODContained
                 return $styles;
             case 'events':
                 return $events;
+            case 'btnsActions':
+                /** @var OSDiv $btnsActions */
+                return $btnsActions->children;
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
@@ -246,6 +266,16 @@ class ODTable extends ODContained
         }
 
         return $colDatas;
+    }
+
+    /**
+     * @param string $idBtn
+     * @return false|mixed
+     */
+    public function getBtnAction(string $idBtn)
+    {
+        $children = $this->btnsActions->children;
+        return array_key_exists($idBtn, $children) ? $children[$idBtn] : false;
     }
 
     /**
@@ -381,6 +411,16 @@ class ODTable extends ODContained
     }
 
     /**
+     * @param string $idBtn
+     * @return bool
+     */
+    public function issetBtnAction(string $idBtn) : bool
+    {
+        $children = $this->btnsActions->children;
+        return array_key_exists($idBtn, $children);
+    }
+
+    /**
      * @param string $key
      * @param $val
      * @return mixed|void|null
@@ -468,6 +508,26 @@ class ODTable extends ODContained
                 break;
             case 'titlePos':
                 $val = $this->validate_titlePos($val);
+                break;
+            case 'btnsActions':
+                if (!is_array($val))
+                    throw new Exception("L'attribut $key n'accepte que des tableaux monodimensionnels");
+                /** @var OSDiv $btnsActions */
+                $btnsActions = $this->btnsActions;
+                foreach ($val as $cle => $item) {
+                    if (!($item instanceof ODButton))
+                        throw new Exception("L'attribut $key n'accepte que des tableaux d'objet ODButton");
+                    if ($cle != $item->id)
+                        throw new Exception("Objet ODButton ".$item->id." référencé par clé $cle incohérente");
+                    $btnsActions->addChild($item);
+                }
+                break;
+            case 'btnsActionsPos':
+                if (strtolower(substr($val, -2)) === 'th' && is_numeric(substr($val, 0, -2))) {
+                    $val = strtolower($val);
+                } else {
+                    $val = $this->validate_btnsActionsPos($val);
+                }
                 break;
             default:
                 $prefix = $key[0];
@@ -655,6 +715,62 @@ class ODTable extends ODContained
     }
 
     /**
+     * @param ODButton $btn
+     * @throws Exception
+     */
+    public function setBtnAction(ODButton $btn)
+    {
+        $children = $this->btnsActions->children;
+        if (!array_key_exists($btn->id, $children))
+            throw new Exception("ODButton ".$btn->id." non présent dans tableau des boutons action en affectation, erreur");
+        $children = $this->btnsActions->children;
+        $children[$btn->id] = $btn;
+        $this->btnsActions->children = $children;
+    }
+
+    /**
+     * @param ODButton $btn
+     * @throws Exception
+     */
+    public function addBtnAction(ODButton $btn)
+    {
+        /** @var OSDiv $btnsActions */
+        $btnsActions = $this->btnsActions;
+        $children = $this->btnsActions->children;
+        if (array_key_exists($btn->id, $children))
+            throw new Exception("ODButton ".$btn->id." dèjà présent dans tableau des boutons action en ajout, erreur");
+        $children[$btn->id] = $btn;
+        $btnsActions->addChild($btn);
+        $this->btnsActions = $btnsActions;
+    }
+
+    /**
+     *
+     */
+    public function clearBtnsActions()
+    {
+        $this->btnsActions = new OSDiv($this->id.'BtnsAcations');
+    }
+
+    /**
+     * @param ODButton $btn
+     * @throws Exception
+     */
+    public function rmBtnAction($btnAction)
+    {
+        if ($btnAction instanceof OObject) $btnAction = $btnAction->id;
+        if (!is_string($btnAction)) {
+            throw new Exception("demande de suppression impossible, passer soit un objet OObject soit un identifiant");
+        }
+
+        if (!array_key_exists($btnAction, $this->btnsActions))
+            throw new Exception("ODButton ".$btnAction." non présent dans tableau des boutons action en suppression, erreur");
+        /** @var OSDiv $btnsActions */
+        $btnsActions = $this->btnsActions;
+        $this->btnsActions = $btnsActions->rmChild($btnAction);;
+    }
+
+    /**
      * @param int|null $col
      * @throws Exception
      */
@@ -818,8 +934,104 @@ class ODTable extends ODContained
         return $retour;
     }
 
+    /**
+     * @param $val
+     * @return mixed|string
+     * @throws ReflectionException
+     */
     private function validate_titlePos($val)
     {
         return in_array($val, $this->getTitlePosContants(), true) ? $val : self::TABLETITLEPOS_BOTTOM_CENTER;
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    private function getBtnsActionsPosContants(): array
+    {
+        $retour = [];
+        if (empty(self::$const_titlePos)) {
+            foreach (self::getConstants() as $key => $constant) {
+                $pos = strpos($key, 'TABLEBTNSACTIONS_POSITION');
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
+            }
+            self::$const_titlePos = $retour;
+        } else {
+            $retour = self::$const_titlePos;
+        }
+        return $retour;
+    }
+
+    /**
+     * @param $val
+     * @return mixed|string
+     * @throws ReflectionException
+     */
+    private function validate_btnsActionsPos($val)
+    {
+        return in_array($val, $this->getBtnsActionsPosContants(), true) ? $val : self::TABLEBTNSACTIONS_POSITION_FIN;
+    }
+
+    public function hideBtnsActions(int $noLine)
+    {
+        $datas = $this->datas;
+        if (!array_key_exists($noLine, $datas))
+            throw new Exception("Numéro de ligne $noLine inexistant");
+        $btnsActions = $this->btnsActions;
+        $hidden = implode("|", array_keys($btnsActions->children));
+        $btnsActionsHidden = $this->btnsActionsHidden;
+        $btnsActionsHidden[$noLine] = $hidden;
+        $this->btnsActionsHidden = $btnsActionsHidden;
+    }
+
+    public function showBtnsActions(int $noLine)
+    {
+        $datas = $this->datas;
+        if (!array_key_exists($noLine, $datas))
+            throw new Exception("Numéro de ligne $noLine inexistant");
+        $btnsActionsHidden = $this->btnsActionsHidden;
+        if (array_key_exists($noLine, $btnsActionsHidden))
+            unset($btnsActionsHidden[$noLine]);
+        $this->btnsActionsHidden = $btnsActionsHidden;
+    }
+
+    public function hideBtnAction($btnAction, int $noLine)
+    {
+        if ($btnAction instanceof ODButton) $btnAction = $btnAction->id;
+        if (!is_string($btnAction))
+            throw new Exception("demande de suppression visibilité de bouton action, passer soit un objet ODButton soit un identifiant");
+        $datas = $this->datas;
+        if (!array_key_exists($noLine, $datas))
+            throw new Exception("Numéro de ligne $noLine inexistant");
+        $btnsActionsHidden = $this->btnsActionsHidden;
+        if (array_key_exists($noLine, $btnsActionsHidden))
+            $btnsActionsHidden[$noLine] .= '|'.$btnAction;
+        else
+            $btnsActionsHidden[$noLine] = $btnAction;
+        $this->btnsActionsHidden = $btnsActionsHidden;
+    }
+
+    public function showBtnAction($btnAction, int $noLine)
+    {
+        if ($btnAction instanceof ODButton) $btnAction = $btnAction->id;
+        if (!is_string($btnAction))
+            throw new Exception("demande de suppression visibilité de bouton action, passer soit un objet ODButton soit un identifiant");
+        $datas = $this->datas;
+        if (!array_key_exists($noLine, $datas))
+            throw new Exception("Numéro de ligne $noLine inexistant");
+        $btnsActionsHidden = $this->btnsActionsHidden;
+        if (array_key_exists($noLine, $btnsActionsHidden)) {
+            $btns = explode('|', $btnsActionsHidden[$noLine]);
+            if (in_array($btnAction, $btns))
+                unset($btns[array_search($btnAction, $btns)]);
+            if (count($btns) > 0)
+                $btnsActionsHidden[$noLine] = implode('|', $btns);
+            else
+                unset($btnsActionsHidden[$noLine]);
+        }
+        $this->btnsActionsHidden = $btnsActionsHidden;
     }
 }
