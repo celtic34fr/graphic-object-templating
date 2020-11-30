@@ -106,7 +106,7 @@ class ODCheckbox extends ODContained
     {
         switch ($key) {
             case 'option':
-                throw new Exception("l'attribut optioon inaccessible, veuillez utilise les méthode spécidfique");
+                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             default:
                 return parent::__get($key);
         }

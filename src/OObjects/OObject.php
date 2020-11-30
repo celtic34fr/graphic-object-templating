@@ -34,6 +34,7 @@ use RuntimeException;
  * static getConstants() : array
  * getDisplayConstants(): array
  * getEventConstants() : array
+ * getCssColorConstants() : array
  */
 
 /** TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT */
@@ -52,9 +53,63 @@ class OObject
     const BOOLEAN_TRUE    = 'true';
     const BOOLEAN_FALSE   = 'false';
 
+    const CSS_COLOR_BLACK       = 'black';
+    const CSS_COLOR_WHITE       = 'white';
+    const CSS_COLOR_LIME        = 'lime';
+    const CSS_COLOR_GREEN       = 'green';
+    const CSS_COLOR_EMERALD     = 'emerald';
+    const CSS_COLOR_TEAL        = 'teal';
+    const CSS_COLOR_BLUE        = 'blue';
+    const CSS_COLOR_CYAN        = 'cyan';
+    const CSS_COLOR_COBALT      = 'cobalt';
+    const CSS_COLOR_INDIGO      = 'indigo';
+    const CSS_COLOR_VIOLET      = 'violet';
+    const CSS_COLOR_PINK        = 'pink';
+    const CSS_COLOR_MAGENTA     = 'magenta';
+    const CSS_COLOR_CRIMSON     = 'crimson';
+    const CSS_COLOR_RED         = 'red';
+    const CSS_COLOR_ORANGE      = 'orange';
+    const CSS_COLOR_AMBER       = 'amber';
+    const CSS_COLOR_YELLOW      = 'yellow';
+    const CSS_COLOR_BROWN       = 'brown';
+    const CSS_COLOR_OLIVE       = 'olive';
+    const CSS_COLOR_STEEL       = 'steel';
+    const CSS_COLOR_MAUVE       = 'mauve';
+    const CSS_COLOR_TAUPE       = 'taupe';
+    const CSS_COLOR_GRAY        = 'gray';
+    const CSS_COLOR_DARK        = 'dark';
+    const CSS_COLOR_DARKER      = 'darker';
+    const CSS_COLOR_DARKBROWN   = 'darkBrown';
+    const CSS_COLOR_DARKCRIMSON = 'darkCrimson';
+    const CSS_COLOR_DARKMAGENTA = 'darkMagenta';
+    const CSS_COLOR_DARKINDIGO  = 'darkIndigo';
+    const CSS_COLOR_DARKCYAN    = 'darkCyan';
+    const CSS_COLOR_DARKCOBALT  = 'darkCobalt';
+    const CSS_COLOR_DARKTEAL    = 'darkTeal';
+    const CSS_COLOR_DARKEMERALD = 'darkEmerald';
+    const CSS_COLOR_DARKGREEN   = 'darkGreen';
+    const CSS_COLOR_DARKORANGE  = 'darkOrange';
+    const CSS_COLOR_DARKRED     = 'darkRed';
+    const CSS_COLOR_DARKPINK    = 'darkPink';
+    const CSS_COLOR_DARKVIOLET  = 'darkViolet';
+    const CSS_COLOR_DARKBLUE    = 'darkBlue';
+    const CSS_COLOR_LIGHTBLUE   = 'lightBlue';
+    const CSS_COLOR_LIGHTRED    = 'lightRed';
+    const CSS_COLOR_LIGHTGREEN  = 'lightGreen';
+    const CSS_COLOR_LIGHTERBLUE = 'lighterBlue';
+    const CSS_COLOR_LIGHTTEAL   = 'lightTeal';
+    const CSS_COLOR_LIGHTOLIVE  = 'lightOlive';
+    const CSS_COLOR_LIGHTORANGE = 'lightOrange';
+    const CSS_COLOR_LIGHTPINK   = 'lightPink';
+    const CSS_COLOR_GRAYDARK    = 'grayDark';
+    const CSS_COLOR_GRAYDARKER  = 'grayDarker';
+    const CSS_COLOR_GRAYLIGHT   = 'grayLight';
+    const CSS_COLOR_GRAYLIGHTER = 'grayLighter';
+
+
     protected static array $const_display;
     protected static array $const_event;
-
+    protected static array $const_css_color;
 
     /**
      * OObject constructor.
@@ -415,7 +470,6 @@ class OObject
         return $retour;
     }
 
-
     /**
      * @return array
      * @throws ReflectionException
@@ -435,5 +489,31 @@ class OObject
             $retour = self::$const_event;
         }
         return $retour;
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    private function getCssColorConstants() : array
+    {
+        $retour = [];
+        if (empty(self::$const_css_color)) {
+            foreach (self::getConstants() as $key => $constant) {
+                $pos = strpos($key, 'CSS_COLOR');
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
+            }
+            self::$const_css_color = $retour;
+        } else {
+            $retour = self::$const_css_color;
+        }
+        return $retour;
+    }
+
+    public function validate_css_color(string $color)
+    {
+        return (in_array($key, $this->getCssColorConstants())) ? $key : false;
     }
 }
