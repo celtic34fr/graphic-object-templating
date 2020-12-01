@@ -142,6 +142,9 @@ class ODSelect extends ODContained
                 break;
             case 'format':
                 $val = $this->validate_format($val);
+                break;
+            case 'option':
+                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             default:
                 return parent::__set($key, $val);
         }
