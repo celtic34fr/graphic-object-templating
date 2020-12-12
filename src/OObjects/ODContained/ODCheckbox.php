@@ -4,9 +4,13 @@
 namespace GraphicObjectTemplating\OObjects\ODContained;
 
 
+use BadFunctionCallException;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use InvalidArgumentException;
+use LogicException;
 use ReflectionException;
+use UnexpectedValueException;
 
 class ODCheckbox extends ODContained
 {
@@ -98,7 +102,7 @@ class ODCheckbox extends ODContained
     public function __get(string $key)
     {
         if ($key == 'option') {
-            throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+            throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
         } else {
             return parent::__get($key);
         }
@@ -311,12 +315,12 @@ class ODCheckbox extends ODContained
                 $item['backgrNo']   = $options['backgrNo'];
                 break;
             default:
-                throw new \Exception('Unexpected value');
+                throw new UnexpectedValueException('Unexpected value');
         }
         $item['check']                      = self::CHECKBOX_UNCHECK;
         $item['state']                      = $options['state'];
         if (array_key_exists($options['value'], $this->options)) {
-            throw new Exception("Tableau des options : clé ".$options['value']
+            throw new LogicException("Tableau des options : clé ".$options['value']
                                                                             ." déjà présente, insertion impossible");
         }
         $this->options[$options['value']]   = $item;
@@ -330,7 +334,7 @@ class ODCheckbox extends ODContained
     {
         if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
             if (!array_key_exists($value, $this->options)) {
-                throw new Exception(" tableau des options : clé $value inconnue");
+                throw new InvalidArgumentException(" tableau des options : clé $value inconnue");
             }
             unset($this->options[$value]);
         }
@@ -346,7 +350,7 @@ class ODCheckbox extends ODContained
         $options = $this->validate_optionArray($options);
         if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
             if (!array_key_exists($value, $this->options)) {
-                throw new Exception(" tableau des options : clé $value inconnue");
+                throw new InvalidArgumentException(" tableau des options : clé $value inconnue");
             }
             $this->options[$value] = $options;
         }
@@ -361,11 +365,11 @@ class ODCheckbox extends ODContained
     {
         if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
             if (!array_key_exists($value, $this->options)) {
-                throw new Exception(" tableau des options : clé $value inconnue");
+                throw new InvalidArgumentException(" tableau des options : clé $value inconnue");
             }
             return $this->options[$value];
         }
-        throw new Exception("tableau options : clé d'accès incorrecte");
+        throw new InvalidArgumentException("tableau options : clé d'accès incorrecte");
     }
 
     /**
@@ -424,7 +428,7 @@ class ODCheckbox extends ODContained
                         $params = (bool)$params;
                         break;
                     default:
-                        throw new Exception("Paramètre $key incohérent dans un tableau de paramètres d'option");
+                        throw new UnexpectedValueException("Paramètre $key incohérent dans un tableau de paramètres d'option");
                 }
                 $option[$key] = $params;
                 $nbFields[$type] += 1;
@@ -433,10 +437,10 @@ class ODCheckbox extends ODContained
 
         if (!array_key_exists(self::CHECKTYPE_CHECKBOX, $nbFields)
             && !array_key_exists(self::CHECKTYPE_SWITCH, $nbFields)) {
-            throw new Exception("tableau de paramètre d'option non typé, veuillez corriger");
+            throw new InvalidArgumentException("tableau de paramètre d'option non typé, veuillez corriger");
         }
         if ($nbFields[$type] != $maxCount) {
-            throw new Exception("tableau paramètre d'option type $type incorrect, attendu $maxCount, trouvé "
+            throw new InvalidArgumentException("tableau paramètre d'option type $type incorrect, attendu $maxCount, trouvé "
                 .(int)$nbFields[$type] );
         }
 
@@ -550,7 +554,7 @@ class ODCheckbox extends ODContained
         if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
             return $this->options[$value]['state'] ? self::CHECKSTATE_ENABLE : self::CHECKSTATE_DISABLE;
         }
-        throw new Exception("Paramètre demande état option incorrect");
+        throw new InvalidArgumentException("Paramètre demande état option incorrect");
     }
 
     /**

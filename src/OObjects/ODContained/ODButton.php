@@ -6,7 +6,9 @@ namespace GraphicObjectTemplating\OObjects\ODContained;
 
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class ODButton
@@ -25,31 +27,30 @@ use ReflectionException;
  * validate_bType($val)
  * validate_bNature($val)
  */
-
 class ODButton extends ODContained
 {
     const BUTTONTYPE_CUSTOM = 'custom';
     const BUTTONTYPE_SUBMIT = 'submit';
-    const BUTTONTYPE_RESET  = 'reset';
-    const BUTTONTYPE_LINK   = 'link';
+    const BUTTONTYPE_RESET = 'reset';
+    const BUTTONTYPE_LINK = 'link';
 
-    const BUTTONNATURE_DEFAULT  = 'btn btn-default';
-    const BUTTONNATURE_PRIMARY  = 'btn btn-primary';
-    const BUTTONNATURE_SUCCESS  = 'btn btn-success';
-    const BUTTONNATURE_INFO     = 'btn btn-info';
-    const BUTTONNATURE_WARNING  = 'btn btn-warning';
-    const BUTTONNATURE_DANGER   = 'btn btn-danger';
-    const BUTTONNATURE_LINK     = 'btn btn-link';
-    const BUTTONNATURE_BLACK    = 'btn btn-black';
-    const BUTTONNATURE_CUSTOM   = 'btn btn-custom';
+    const BUTTONNATURE_DEFAULT = 'btn btn-default';
+    const BUTTONNATURE_PRIMARY = 'btn btn-primary';
+    const BUTTONNATURE_SUCCESS = 'btn btn-success';
+    const BUTTONNATURE_INFO = 'btn btn-info';
+    const BUTTONNATURE_WARNING = 'btn btn-warning';
+    const BUTTONNATURE_DANGER = 'btn btn-danger';
+    const BUTTONNATURE_LINK = 'btn btn-link';
+    const BUTTONNATURE_BLACK = 'btn btn-black';
+    const BUTTONNATURE_CUSTOM = 'btn btn-custom';
 
-    const BUTTONLINK_TARGET_BLANK   = '_blank';
-    const BUTTONLINK_TARGET_SELF    = '_self';
-    const BUTTONLINK_TARGET_PARENT  = '_parent';
-    const BUTTONLINK_TARGET_TOP     = '_top';
+    const BUTTONLINK_TARGET_BLANK = '_blank';
+    const BUTTONLINK_TARGET_SELF = '_self';
+    const BUTTONLINK_TARGET_PARENT = '_parent';
+    const BUTTONLINK_TARGET_TOP = '_top';
 
-    const EVENT_CLICK   = 'click';
-    const EVENT_HOVER   = 'hover';
+    const EVENT_CLICK = 'click';
+    const EVENT_HOVER = 'hover';
 
     private static array $const_type;
     private static array $const_nature;
@@ -61,14 +62,16 @@ class ODButton extends ODContained
      */
     public function __construct(string $id)
     {
-        $path = __DIR__. '/../../../params/oobjects/odcontained/odbutton/odbutton.config.php';
+        $path = __DIR__ . '/../../../params/oobjects/odcontained/odbutton/odbutton.config.php';
         $properties = require $path;
         parent::__construct($id, $properties);
 
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) { $this->widthBT = 12; }
+        if ((int)$this->widthBT === 0) {
+            $this->widthBT = 12;
+        }
     }
 
     /**
@@ -76,7 +79,7 @@ class ODButton extends ODContained
      * @param array $properties
      * @return array
      */
-    public function constructor($id, $properties) : array
+    public function constructor($id, $properties): array
     {
         $properties = parent::constructor($id, $properties);
 
@@ -96,9 +99,8 @@ class ODButton extends ODContained
     {
         if ($key == 'image') {
             return parent::__get('pathFile');
-        } else {
-            return parent::__get($key);
         }
+        return parent::__get($key);
     }
 
     /**
@@ -111,14 +113,16 @@ class ODButton extends ODContained
         switch ($key) {
             case 'type':
                 $val = $this->validate_bType($val);
-                $callback   = $this->event ? array_key_exists('click', $this->event) : false;
+                $callback = $this->event ? array_key_exists('click', $this->event) : false;
 
                 switch ($this->type) {
                     case self::BUTTONTYPE_LINK:
-                        if (!empty($this->form)) { $this->form = ''; }
+                        if (!empty($this->form)) {
+                            $this->form = '';
+                        }
                         if ($callback) {
                             $events = $this->event;
-                            $click  = $events['click'];
+                            $click = $events['click'];
                             $method = $click['method'];
                             if (!is_array($method)) {
                                 $method = explode('|', $method);
@@ -130,18 +134,22 @@ class ODButton extends ODContained
                                 $method = $params;
                                 $click['method'] = $method;
                                 $events['click'] = $click;
-                                $this->event     = $events;
+                                $this->event = $events;
                             }
                         }
                         break;
                     case self::BUTTONTYPE_RESET:
-                        if (!empty($this->form)) { $this->type = self::BUTTONTYPE_CUSTOM; }
+                        if (!empty($this->form)) {
+                            $this->type = self::BUTTONTYPE_CUSTOM;
+                        }
                         break;
                     case self::BUTTONTYPE_SUBMIT:
-                        if ($callback && !empty($this->form)) { $this->type = self::BUTTONTYPE_CUSTOM; }
+                        if ($callback && !empty($this->form)) {
+                            $this->type = self::BUTTONTYPE_CUSTOM;
+                        }
                         break;
                     default:
-                        throw new Exception('Unexpected value');
+                        throw new UnexpectedValueException('Unexpected value');
                 }
                 break;
             case 'nature':
@@ -149,19 +157,19 @@ class ODButton extends ODContained
                 break;
             case 'label':
             case 'icon':
-                $val = (string) $val;
+                $val = (string)$val;
                 break;
             case 'image':
-                $val = (string) $val;
+                $val = (string)$val;
                 $key = 'pathFile';
-                if (!file_exists($_SERVER["DOCUMENT_ROOT"]."/".$val)) {
-                    throw new Exception("Fichier image inexistant (" . $val . ")");
+                if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $val)) {
+                    throw new InvalidArgumentException("Fichier image inexistant (" . $val . ")");
                 }
-                $val = 'http://'.$_SERVER['HTTP_HOST']."/".$val;
+                $val = 'http://' . $_SERVER['HTTP_HOST'] . "/" . $val;
                 break;
             case 'form':
-                $val = (string) $val;
-                $callback   = array_key_exists('click', $this->event);
+                $val = (string)$val;
+                $callback = array_key_exists('click', $this->event);
                 $i = $this->type;
                 if ($i == self::BUTTONTYPE_LINK) {
                     if (!empty($this->form)) {

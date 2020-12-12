@@ -5,7 +5,10 @@ namespace GraphicObjectTemplating\OObjects;
 
 
 use Exception;
+use InvalidArgumentException;
+use LogicException;
 use RuntimeException;
+use UnexpectedValueException;
 
 /**
  * Class OSContainer
@@ -108,10 +111,10 @@ class OSContainer extends OObject
                         }
                     }
                     if (!$ok) {
-                        throw new Exception("Au moins un élément tableau d'enfant non objet");
+                        throw new UnexpectedValueException("Au moins un élément tableau d'enfant non objet");
                     }
                 } else {
-                    throw new Exception("Valeur paramètre 'children' no tableau");
+                    throw new InvalidArgumentException("Valeur paramètre 'children' no tableau");
                 }
                 break;
             default:
@@ -154,10 +157,10 @@ class OSContainer extends OObject
                 case self::MODE_AFTER:
                 case self::MODE_BEFORE:
                     if (!$params || is_numeric($params)) {
-                        throw new Exception("Paramètre insertion" . $params . " numeric au lieu string");
+                        throw new InvalidArgumentException("Paramètre insertion" . $params . " numeric au lieu string");
                     }
                     if (!array_key_exists($params, $children)) {
-                        throw new Exception("Paramètre nom enfant " . $params . " inconnu");
+                        throw new UnexpectedValueException("Paramètre nom enfant " . $params . " inconnu");
                     }
                     $new_children = [];
                     foreach ($children as $name=>$oChild) {
@@ -173,10 +176,10 @@ class OSContainer extends OObject
                     break;
                 case self::MODE_NTH:
                     if (!$params || !is_int($params)) {
-                        throw new Exception("Rang " . $params . " non numérique");
+                        throw new InvalidArgumentException("Rang " . $params . " non numérique");
                     }
                     if ((int)$params > count($this->children)) {
-                        throw new Exception("Numéro d'ordre " . $params . " supérieur au nombre d'enfant");
+                        throw new InvalidArgumentException("Numéro d'ordre " . $params . " supérieur au nombre d'enfant");
                     }
                     $new_children = [];
                     $compteur = 0;
@@ -190,12 +193,12 @@ class OSContainer extends OObject
                     $children = $new_children;
                     break;
                 default:
-                    throw new Exception('Unexpected value');
+                    throw new UnexpectedValueException('Unexpected value');
             }
             $this->children = $children;
             return true;
         }
-        throw new Exception("Objet ".$child->id." déjà présent");
+        throw new LogicException("Objet ".$child->id." déjà présent");
     }
 
     /**
@@ -209,7 +212,7 @@ class OSContainer extends OObject
             $child = $child->id;
         }
         if (!is_string($child)) {
-            throw new Exception("demande de suppression impossible, passer soit un objet OObject soit un identifiant");
+            throw new InvalidArgumentException("demande de suppression impossible, passer soit un objet OObject soit un identifiant");
         }
 
         /** @var array $children */
@@ -233,7 +236,7 @@ class OSContainer extends OObject
             $child = $child->id;
         }
         if (!is_string($child)) {
-            throw new Exception("Recherche impossible, passer soit un objet OObject soit un identifiant");
+            throw new InvalidArgumentException("Recherche impossible, passer soit un objet OObject soit un identifiant");
         }
 
         $path = $this->r_isChild($child, $this);

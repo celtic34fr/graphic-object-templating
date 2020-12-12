@@ -6,7 +6,9 @@ namespace GraphicObjectTemplating\OObjects\ODContained;
 
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class ODInput
@@ -91,16 +93,16 @@ class ODInput extends ODContained
                 $val = (int)$val;
                 switch (true) {
                     case !array_key_exists('maxLength', $this->properties):
-                        throw new Exception("Stucture objet ODInput altérée, manque maxLength");
+                        throw new UnexpectedValueException("Stucture objet ODInput altérée, manque maxLength");
                         break;
                     case !$this->properties['maxLength']:
                         $this->properties['maxLength'] = $val;
                         break;
                     case (int)$this->properties['maxLength'] < $val:
-                        throw new \RuntimeException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
+                        throw new InvalidArgumentException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
                         break;
                     default:
-                        throw new \Exception('Unexpected value');
+                        throw new UnexpectedValueException('Unexpected value');
                 }
                 $this->properties['minLength'] = $val;
                 break;
@@ -108,16 +110,16 @@ class ODInput extends ODContained
                 $val = (int)$val;
                 switch (true) {
                     case !array_key_exists('minLength', $this->properties):
-                        throw new Exception("Stucture objet ODInput altérée, manque minLength");
+                        throw new UnexpectedValueException("Stucture objet ODInput altérée, manque minLength");
                         break;
                     case !$this->properties['minLength']:
                         $this->properties['minLength'] = $val;
                         break;
                     case (int)$this->properties['minLength'] > $val:
-                        throw new \RuntimeException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
+                        throw new InvalidArgumentException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
                         break;
                     default:
-                        throw new \Exception('Unexpected value');
+                        throw new UnexpectedValueException('Unexpected value');
                 }
                 $this->properties['maxLength'] = $val;
                 break;
@@ -133,7 +135,7 @@ class ODInput extends ODContained
                         $inputWidthBT = 12 - (int)$val;
                         break;
                     default:
-                        throw new \Exception('Unexpected value');
+                        throw new UnexpectedValueException('Unexpected value');
                 }
 
                 $val = $this->validate_widthBT('W'.$val);
@@ -151,7 +153,7 @@ class ODInput extends ODContained
                         $labelWidthBT = 12 - (int)$val;
                         break;
                     default:
-                        throw new \Exception('Unexpected value');
+                        throw new UnexpectedValueException('Unexpected value');
                 }
                 if (is_numeric($val) && $val > 12) {
                     $val = 12;

@@ -4,10 +4,13 @@
 namespace GraphicObjectTemplating\OObjects\OSContainer;
 
 
+use BadFunctionCallException;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained\ODButton;
 use GraphicObjectTemplating\OObjects\OObject;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class OSForm
@@ -136,7 +139,7 @@ class OSForm extends OSDiv
                 }
                 break;
 			case 'btnsControls':
-				throw new Exception("Impossible d'affecter direment un bouton de contrôle, passez par les méthodes spéciales");
+				throw new BadFunctionCallException("Impossible d'affecter direment un bouton de contrôle, passez par les méthodes spéciales");
 				break;
             default:
                 return parent::__set($key, $val);
@@ -189,7 +192,7 @@ class OSForm extends OSDiv
                 }
                 break;
             default:
-                throw new \RuntimeException("Boutons de controle : mode de présentation ($val) inconnu");
+                throw new UnexpectedValueException("Boutons de controle : mode de présentation ($val) inconnu");
                 break;
         }
         $properties['btnsControls'] = $btnsControls;
@@ -280,11 +283,11 @@ class OSForm extends OSDiv
         $btnChildren = $btnCtrls->children;
         /** contrôle numéro d'ordre */
         if (array_key_exists($ord, $btnChildren)) {
-            throw new \Exception("Numéro d'ordre " . $ord . " déjà attribué");
+            throw new InvalidArgumentException("Numéro d'ordre " . $ord . " déjà attribué");
         }
         /** contrôle nature btn en fonction de ceux déjà affectés */
         if (!$this->validate_btnType($btn)) {
-            throw new \Exception("Impossible d'avoir 2 boutons de type RESET");
+            throw new UnexpectedValueException("Impossible d'avoir 2 boutons de type RESET");
         }
 
         if ($btn->type === ODButton::BUTTONTYPE_RESET) {

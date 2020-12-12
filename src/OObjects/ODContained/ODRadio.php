@@ -4,9 +4,12 @@
 namespace GraphicObjectTemplating\OObjects\ODContained;
 
 
+use BadFunctionCallException;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class ODRadio
@@ -118,7 +121,7 @@ class ODRadio extends ODContained
     public function __isset(string $key): bool
     {
         if ($key == 'option') {
-            throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+            throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
         } else {
             return parent::__isset($key);
         }
@@ -133,7 +136,7 @@ class ODRadio extends ODContained
     {
         switch ($key) {
             case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             case 'checked':
             case 'value':
                 $checked = [];
@@ -172,7 +175,7 @@ class ODRadio extends ODContained
                 $val = $this->validate_widthBT($val);
                 break;
             case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
                 break;
             case 'options':
                 $val = $this->validate_options($val);
@@ -426,7 +429,7 @@ class ODRadio extends ODContained
                     $option = (string)$option;
                     break;
                 default:
-                    throw new Exception("Paramètre d'option incorrect (".$key.")");
+                    throw new InvalidArgumentException("Paramètre d'option incorrect (".$key.")");
             }
             $options[$key] = array($option, $constant) ? $option : $default;
         }
@@ -442,12 +445,12 @@ class ODRadio extends ODContained
     {
         foreach ($val as $key => $options) {
             if (!array_key_exists('value', $options)) {
-                throw new Exception("Tableau de valeurs d'option sans valeur associée");
+                throw new UnexpectedValueException("Tableau de valeurs d'option sans valeur associée");
             }
             $options = $this->validate_option($options);
             $value = $options['value'];
             if (array_key_exists($value, $this->options)) {
-                throw new Exception("Valeur clé de Tableau de valeurs d'option dèjà utilisée");
+                throw new UnexpectedValueException("Valeur clé de Tableau de valeurs d'option dèjà utilisée");
             }
             $val[$key] = $options;
         }

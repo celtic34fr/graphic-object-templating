@@ -4,11 +4,16 @@
 namespace GraphicObjectTemplating\OObjects;
 
 
+use BadFunctionCallException;
+use BadMethodCallException;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained\ODButton;
+use GraphicObjectTemplating\OObjects\OSTech\OTInfoBulle;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
+use UnexpectedValueException;
 
 /**
  * Class OObject
@@ -36,74 +41,71 @@ use RuntimeException;
  * getEventConstants() : array
  * getCssColorConstants() : array
  */
-
-/** TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT */
-
 class OObject
 {
     public $id;
     public $properties;
 
-    const DISPLAY_NONE    = 'none';
-    const DISPLAY_BLOCK   = 'block';
-    const DISPLAY_INLINE  = 'inline';
+    const DISPLAY_NONE = 'none';
+    const DISPLAY_BLOCK = 'block';
+    const DISPLAY_INLINE = 'inline';
     const DISPLAY_INBLOCK = 'inline-block';
-    const NO_DISPLAY      = 'noDisplay';
+    const NO_DISPLAY = 'noDisplay';
 
-    const BOOLEAN_TRUE    = 'true';
-    const BOOLEAN_FALSE   = 'false';
+    const BOOLEAN_TRUE = 'true';
+    const BOOLEAN_FALSE = 'false';
 
-    const CSS_COLOR_BLACK       = 'black';
-    const CSS_COLOR_WHITE       = 'white';
-    const CSS_COLOR_LIME        = 'lime';
-    const CSS_COLOR_GREEN       = 'green';
-    const CSS_COLOR_EMERALD     = 'emerald';
-    const CSS_COLOR_TEAL        = 'teal';
-    const CSS_COLOR_BLUE        = 'blue';
-    const CSS_COLOR_CYAN        = 'cyan';
-    const CSS_COLOR_COBALT      = 'cobalt';
-    const CSS_COLOR_INDIGO      = 'indigo';
-    const CSS_COLOR_VIOLET      = 'violet';
-    const CSS_COLOR_PINK        = 'pink';
-    const CSS_COLOR_MAGENTA     = 'magenta';
-    const CSS_COLOR_CRIMSON     = 'crimson';
-    const CSS_COLOR_RED         = 'red';
-    const CSS_COLOR_ORANGE      = 'orange';
-    const CSS_COLOR_AMBER       = 'amber';
-    const CSS_COLOR_YELLOW      = 'yellow';
-    const CSS_COLOR_BROWN       = 'brown';
-    const CSS_COLOR_OLIVE       = 'olive';
-    const CSS_COLOR_STEEL       = 'steel';
-    const CSS_COLOR_MAUVE       = 'mauve';
-    const CSS_COLOR_TAUPE       = 'taupe';
-    const CSS_COLOR_GRAY        = 'gray';
-    const CSS_COLOR_DARK        = 'dark';
-    const CSS_COLOR_DARKER      = 'darker';
-    const CSS_COLOR_DARKBROWN   = 'darkBrown';
+    const CSS_COLOR_BLACK = 'black';
+    const CSS_COLOR_WHITE = 'white';
+    const CSS_COLOR_LIME = 'lime';
+    const CSS_COLOR_GREEN = 'green';
+    const CSS_COLOR_EMERALD = 'emerald';
+    const CSS_COLOR_TEAL = 'teal';
+    const CSS_COLOR_BLUE = 'blue';
+    const CSS_COLOR_CYAN = 'cyan';
+    const CSS_COLOR_COBALT = 'cobalt';
+    const CSS_COLOR_INDIGO = 'indigo';
+    const CSS_COLOR_VIOLET = 'violet';
+    const CSS_COLOR_PINK = 'pink';
+    const CSS_COLOR_MAGENTA = 'magenta';
+    const CSS_COLOR_CRIMSON = 'crimson';
+    const CSS_COLOR_RED = 'red';
+    const CSS_COLOR_ORANGE = 'orange';
+    const CSS_COLOR_AMBER = 'amber';
+    const CSS_COLOR_YELLOW = 'yellow';
+    const CSS_COLOR_BROWN = 'brown';
+    const CSS_COLOR_OLIVE = 'olive';
+    const CSS_COLOR_STEEL = 'steel';
+    const CSS_COLOR_MAUVE = 'mauve';
+    const CSS_COLOR_TAUPE = 'taupe';
+    const CSS_COLOR_GRAY = 'gray';
+    const CSS_COLOR_DARK = 'dark';
+    const CSS_COLOR_DARKER = 'darker';
+    const CSS_COLOR_DARKBROWN = 'darkBrown';
     const CSS_COLOR_DARKCRIMSON = 'darkCrimson';
     const CSS_COLOR_DARKMAGENTA = 'darkMagenta';
-    const CSS_COLOR_DARKINDIGO  = 'darkIndigo';
-    const CSS_COLOR_DARKCYAN    = 'darkCyan';
-    const CSS_COLOR_DARKCOBALT  = 'darkCobalt';
-    const CSS_COLOR_DARKTEAL    = 'darkTeal';
+    const CSS_COLOR_DARKINDIGO = 'darkIndigo';
+    const CSS_COLOR_DARKCYAN = 'darkCyan';
+    const CSS_COLOR_DARKCOBALT = 'darkCobalt';
+    const CSS_COLOR_DARKTEAL = 'darkTeal';
     const CSS_COLOR_DARKEMERALD = 'darkEmerald';
-    const CSS_COLOR_DARKGREEN   = 'darkGreen';
-    const CSS_COLOR_DARKORANGE  = 'darkOrange';
-    const CSS_COLOR_DARKRED     = 'darkRed';
-    const CSS_COLOR_DARKPINK    = 'darkPink';
-    const CSS_COLOR_DARKVIOLET  = 'darkViolet';
-    const CSS_COLOR_DARKBLUE    = 'darkBlue';
-    const CSS_COLOR_LIGHTBLUE   = 'lightBlue';
-    const CSS_COLOR_LIGHTRED    = 'lightRed';
-    const CSS_COLOR_LIGHTGREEN  = 'lightGreen';
+    const CSS_COLOR_DARKGREEN = 'darkGreen';
+    const CSS_COLOR_DARKORANGE = 'darkOrange';
+    const CSS_COLOR_DARKRED = 'darkRed';
+    const CSS_COLOR_DARKPINK = 'darkPink';
+    const CSS_COLOR_DARKVIOLET = 'darkViolet';
+    const CSS_COLOR_DARKBLUE = 'darkBlue';
+    const CSS_COLOR_LIGHTBLUE = 'lightBlue';
+    const CSS_COLOR_LIGHTRED = 'lightRed';
+    const CSS_COLOR_LIGHTGREEN = 'lightGreen';
     const CSS_COLOR_LIGHTERBLUE = 'lighterBlue';
-    const CSS_COLOR_LIGHTTEAL   = 'lightTeal';
-    const CSS_COLOR_LIGHTOLIVE  = 'lightOlive';
+    const CSS_COLOR_LIGHTTEAL = 'lightTeal';
+    const CSS_COLOR_LIGHTOLIVE = 'lightOlive';
     const CSS_COLOR_LIGHTORANGE = 'lightOrange';
-    const CSS_COLOR_LIGHTPINK   = 'lightPink';
-    const CSS_COLOR_GRAYDARK    = 'grayDark';
-    const CSS_COLOR_GRAYDARKER  = 'grayDarker';
-    const CSS_COLOR_GRAYLIGHT   = 'grayLight';
+    const CSS_COLOR_LIGHTPINK = 'lightPink';
+    const CSS_COLOR_GRAYDARK = 'grayDark';
+    const CSS_COLOR_GRAYDARKER = 'grayDarker';
+    const CSS_COLOR_GRAYLIGHT = 'grayLight';
     const CSS_COLOR_GRAYLIGHTER = 'grayLighter';
 
 
@@ -116,8 +118,9 @@ class OObject
      * @param string $id
      * @param array $properties
      */
-    public function __construct(string $id, array $properties)
-    {
+    public function __construct(string $id, array $properties) {
+        // TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT
+
         $this->properties = $this->constructor($id, $properties);
     }
 
@@ -126,9 +129,9 @@ class OObject
      * @param array $properties
      * @return array
      */
-    public function constructor(string $id, array $properties) : array
+    public function constructor(string $id, array $properties): array
     {
-        $path = __DIR__. '/../../params/oobjects/oobject.config.php';
+        $path = __DIR__ . '/../../params/oobjects/oobject.config.php';
         $this->id = $id;
         $oobj_properties = require $path;
         foreach ($oobj_properties as $key => $val) {
@@ -149,14 +152,14 @@ class OObject
         if (array_key_exists($key, $this->properties)) {
             return $this->properties[$key];
         }
-        return  false;
+        return false;
     }
 
     /**
      * @param string $key
      * @return bool
      */
-    public function __isset(string $key) : bool
+    public function __isset(string $key): bool
     {
         return array_key_exists($key, $this->properties);
     }
@@ -177,17 +180,20 @@ class OObject
             case 'state':
                 $val = (bool)$val;
                 break;
-//            case 'inforBulle':
-//                switch (true){
-//                    case (is_array($val)) :
-//    					$val = new OTInfoBulle($val);
-//    					break;
-//                    case !($val instanceOf OTInfoBulle) :
-//    					throw new RuntimeException("Attribut OTInfoBulle valeur fournie incorrecte");
-//				}
-//                break;
+            case 'inforBulle':
+                switch (true){
+                    case (is_array($val)) :
+    					$val = new OTInfoBulle($val);
+    					break;
+                    case !($val instanceOf OTInfoBulle) :
+    					throw new UnexpectedValueException("Attribut OTInfoBulle valeur fournie incorrecte");
+                        break;
+                    default:
+                        throw new BadFunctionCallException('Unexpected value');
+                }
+                break;
             case 'event':
-                throw new Exception("Affectation directe d'évènement impossible, passer par méthodes adaptées");
+                throw new BadFunctionCallException("Affectation directe d'évènement impossible, passer par méthodes adaptées");
                 break;
             case 'widthBT':
                 $val = $this->validate_widthBT($val);
@@ -213,10 +219,10 @@ class OObject
      * @param $val
      * @return false|string
      */
-    /** TODO tester l'insertion d'offset */
-    /** TODO voir l'ajout des class CSS col-chiffre et offset-chiffre */
     protected function validate_widthBT($val)
     {
+        // TODO: tester l'insertion d'offset
+        // TODO: voir l'ajout des class CSS col-chiffre et offset-chiffre
         if (!empty($val)) {
             $ret = [];
             $lxs = $lsm = $lmd = $llg = 0;
@@ -224,7 +230,6 @@ class OObject
 
             if (is_numeric($val) && (int)$val <= 12) {
                 $lxs = $lsm = $lmd = $llg = (int)$val;
-//                    $ixs = $ism = $imd = $ilg = 12 - (int) $val;
             } else {
                 foreach (explode(':', $val) as $item) {
                     $key = strtoupper($item);
@@ -327,9 +332,9 @@ class OObject
      * @param $properties
      * @return array
      */
-    public function merge_properties(array $add_properties, array $properties) : array
+    public function merge_properties(array $add_properties, array $properties): array
     {
-        foreach ($add_properties as $key=>$val) {
+        foreach ($add_properties as $key => $val) {
             if (!array_key_exists($key, $properties)) {
                 $properties[$key] = $val;
             }
@@ -356,7 +361,7 @@ class OObject
      * @return bool
      * @throws Exception
      */
-    public function setEvent(string $key, array $parms) : bool
+    public function setEvent(string $key, array $parms): bool
     {
         $validate_event = $this->validate_event($key);
         if ((bool)$validate_event !== false) {
@@ -368,7 +373,7 @@ class OObject
                 return true;
             }
         }
-        throw new RuntimeException("Evènement ".$key." tableau paramètres incorrects");
+        throw new InvalidArgumentException("Evènement " . $key . " tableau paramètres incorrects");
     }
 
     /**
@@ -394,15 +399,15 @@ class OObject
      * @return array
      * @throws Exception
      */
-    protected function validate_event_parms(array $parms) : array
+    protected function validate_event_parms(array $parms): array
     {
         $valid = array_key_exists('class', $parms) && $parms['class'];
         $valid = $valid && array_key_exists('method', $parms) && $parms['method'];
         $valid = $valid && array_key_exists('stopEvent', $parms) && is_bool($parms['stopEvent']);
 
         if ($valid) {
-            $class       = $parms['class'];
-            $method      = $parms['method'];
+            $class = $parms['class'];
+            $method = $parms['method'];
 
             switch (true) {
                 case ($class === 'javascript:') :
@@ -425,17 +430,17 @@ class OObject
                     }
 
                     if (!method_exists($current_obj, $method)) {
-                        throw new Exception("Méthode ".$method." inconue dans l'objet ".get_class($current_obj));
+                        throw new BadMethodCallException("Méthode " . $method . " inconue dans l'objet " . get_class($current_obj));
                     }
                     break;
                 default:
-                    throw new Exception("Paramètrage d'évènement mal construit");
+                    throw new InvalidArgumentException("Paramètrage d'évènement mal construit");
             }
             $parms['stopEvent'] = ($parms['stopEvent']) ? 'OUI' : 'NON';
 
             return $parms;
         }
-        throw new RuntimeException("Tableau Event incompatible");
+        throw new InvalidArgumentException("Tableau Event incompatible");
     }
 
     /**
@@ -444,12 +449,12 @@ class OObject
      * @param bool $stopEvent
      * @return array
      */
-    public static function formatEvent(string $class, string $method, bool $stopEvent) : array
+    public static function formatEvent(string $class, string $method, bool $stopEvent): array
     {
         return [
-            'class' => (string) $class,
-            'method' => (string) $method,
-            'stopEvent' => (bool) $stopEvent
+            'class' => (string)$class,
+            'method' => (string)$method,
+            'stopEvent' => (bool)$stopEvent
         ];
     }
 
@@ -473,7 +478,9 @@ class OObject
     private function getDisplayConstants(): array
     {
         $retour = [];
-        if (empty($this->constants)) { $this->constants = self::getConstants(); }
+        if (empty($this->constants)) {
+            $this->constants = self::getConstants();
+        }
         if (empty(self::$const_display)) {
             foreach ($this->constants as $key => $constant) {
                 $pos = strpos($key, 'DISPLAY');
@@ -493,7 +500,7 @@ class OObject
      * @return array
      * @throws ReflectionException
      */
-    private function getEventConstants() : array
+    private function getEventConstants(): array
     {
         $retour = [];
         if (empty(self::$const_event)) {
@@ -514,7 +521,7 @@ class OObject
      * @return array
      * @throws ReflectionException
      */
-    private function getCssColorConstants() : array
+    private function getCssColorConstants(): array
     {
         $retour = [];
         if (empty(self::$const_css_color)) {

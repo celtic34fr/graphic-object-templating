@@ -49,10 +49,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
         );
     }
 
-    public function getViewHelperConfig()
-    {
-    }
-
     /*
      * impltentation de Session
      */

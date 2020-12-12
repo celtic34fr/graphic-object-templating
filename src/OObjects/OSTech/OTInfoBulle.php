@@ -5,7 +5,9 @@ namespace GraphicObjectTemplating\OObjects\OSTech;
 
 
 use Exception;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class OTInfoBulle
@@ -109,7 +111,7 @@ class OTInfoBulle
                 $val = (int)$val > 0 ? (int)$val : 100;
                 break;
             default:
-                throw new Exception("Attribut " . $key . ' invalide (OTInfoBulle)');
+                throw new InvalidArgumentException("Attribut " . $key . ' invalide (OTInfoBulle)');
         }
 
         $this->properties[$key] = $val;
@@ -146,7 +148,7 @@ class OTInfoBulle
             }
         }
         if (count($properties)) {
-            throw new Exception("Attributs impcompatibles avec OTInfoBulle");
+            throw new UnexpectedValueException("Attributs impcompatibles avec OTInfoBulle");
         }
         return $return_properties;
     }

@@ -4,9 +4,12 @@
 namespace GraphicObjectTemplating\OObjects\ODContained;
 
 
+use BadFunctionCallException;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
+use InvalidArgumentException;
 use ReflectionException;
+use UnexpectedValueException;
 
 /**
  * Class ODSelect
@@ -90,7 +93,7 @@ class ODSelect extends ODContained
     {
         switch ($key) {
             case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             case 'selected':
             case 'value':
                 return !empty($this->getSelectedOption());
@@ -109,7 +112,7 @@ class ODSelect extends ODContained
         $properties = $this->properties;
         switch ($key) {
             case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             case 'selected':
             case 'value':
                 return $this->getSelectedOption();
@@ -139,14 +142,14 @@ class ODSelect extends ODContained
             case 'fgcolor':
                 $val = (string)$val;
                 if (!$this->validate_css_color($val)) {
-                    throw new Exception("l'attribut de couleur passé est incorrect : ".$val );
+                    throw new UnexpectedValueException("l'attribut de couleur passé est incorrect : ".$val );
                 }
                 break;
             case 'format':
                 $val = $this->validate_format($val);
                 break;
             case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
             default:
                 return parent::__set($key, $val);
         }
@@ -299,7 +302,7 @@ class ODSelect extends ODContained
                     $params = (bool)$params;
                     break;
                 default:
-                    throw new Exception("Paramètre $key incohérent dans un tableau de paramètres d'option");
+                    throw new InvalidArgumentException("Paramètre $key incohérent dans un tableau de paramètres d'option");
             }
             $option[$key] = $params;
             $nbParams++;
@@ -313,7 +316,7 @@ class ODSelect extends ODContained
             $nbParams++;
         }
         if ($nbParams != 4) {
-            throw new Exception("Nombre de Paramètre incohérent, attendu 4, trouvé " + count($option));
+            throw new InvalidArgumentException("Nombre de Paramètre incohérent, attendu 4, trouvé " + count($option));
         }
 
         return $option;

@@ -7,6 +7,7 @@ namespace GraphicObjectTemplating\OObjects\ODContained;
 use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
 use GraphicObjectTemplating\OObjects\OObject;
+use InvalidArgumentException;
 use ReflectionException;
 
 /**
@@ -124,7 +125,7 @@ class ODNotification extends ODContained
             case 'delay':
             case 'delayMessage':
                 if (!is_numeric($val)) {
-                    throw new Exception("paramètre de délais non numérique");
+                    throw new InvalidArgumentException("paramètre de délais non numérique");
                 }
                 $val = (int) $val;
                 break;
@@ -156,7 +157,7 @@ class ODNotification extends ODContained
             case 'height':
                 if ($val !== 'auto') {
                     if (!is_numeric($val)) {
-                        throw new Exception("paramètre $key non numérique");
+                        throw new InvalidArgumentException("paramètre $key non numérique");
                     }
                     $val = (int) $val;
                 }
