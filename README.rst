@@ -1,4 +1,3 @@
-
 Graphic Object Templating
 =========================
 
@@ -45,8 +44,10 @@ Il faut ajouter dans votre modèle 'layout.html.twig' les lignes suivantes pour 
 ::
 
     <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/main.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/awesome-bootstrap-checkbox.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="{{ basePath() }}/graphicobjecttemplating/gotMain/css/font-awesome.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/1.0.2/awesome-bootstrap-checkbox.min.css"
+        media="screen" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" media="screen"
+        rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{ basePath() }}/graphicobjecttemplating/gotMain/js/main.js"></script>
 
 Et il faut ajouter les deux lignes suivantes au début du bloc body
