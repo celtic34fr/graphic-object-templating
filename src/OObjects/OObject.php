@@ -12,7 +12,6 @@ use GraphicObjectTemplating\OObjects\OSTech\OTInfoBulle;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
-use RuntimeException;
 use UnexpectedValueException;
 
 /**
@@ -140,6 +139,16 @@ class OObject
             }
         }
         $properties['id'] = $id;
+        return $properties;
+    }
+
+    public function object_contructor($id, $properties)
+    {
+        $properties = $this->constructor($id, $properties);
+        $typeObj = $properties['typeObj'];
+        $object = $properties['object'];
+        $template = $properties['template'];
+        list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
         return $properties;
     }
 

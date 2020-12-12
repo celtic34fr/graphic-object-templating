@@ -52,7 +52,7 @@ class OSForm extends OSDiv
 
         $path = __DIR__ . '/../../../params/oobjects/oscontainer/osform/osform.config.php';
         $properties = require $path;
-        $properties = $this->constructor($id, $properties);
+        $properties = $this->object_contructor($id, $properties);
 
         $properties['btnsControls']->id = $properties['id'].'Ctrls';
 
@@ -70,25 +70,6 @@ class OSForm extends OSDiv
         if ((int)$this->widthBTctrls === 0) {
             $this->widthBTctrls = 12;
         }
-    }
-
-    /**
-     * @param string $id
-     * @param array $properties
-     * @return array
-     */
-    public function constructor($id, $properties) : array
-    {
-        $properties = parent::constructor($id, $properties);
-
-        $typeObj = $properties['typeObj'];
-        $object = 'osform';
-        $template = 'osform';
-
-        list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
-        $this->properties = $properties;
-
-        return $properties;
     }
 
     /**

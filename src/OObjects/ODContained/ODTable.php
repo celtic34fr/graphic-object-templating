@@ -113,11 +113,7 @@ class ODTable extends ODContained
         $btnsActions->id = $this->id.'BtnsActions';
         $properties['btnsActions'] = $btnsActions;
 
-        $typeObj = $properties['typeObj'];
-        $object = $properties['object'];
-        $template = $properties['template'];
-        list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
-
+        $properties = $this->object_contructor($id, $properties);
         return $properties;
     }
 

@@ -66,29 +66,12 @@ class ODButton extends ODContained
         $properties = require $path;
         parent::__construct($id, $properties);
 
-        $properties = $this->constructor($id, $properties);
+        $properties = $this->object_contructor($id, $properties);
         $this->properties = $properties;
 
         if ((int)$this->widthBT === 0) {
             $this->widthBT = 12;
         }
-    }
-
-    /**
-     * @param string $id
-     * @param array $properties
-     * @return array
-     */
-    public function constructor($id, $properties): array
-    {
-        $properties = parent::constructor($id, $properties);
-
-        $typeObj = $properties['typeObj'];
-        $object = $properties['object'];
-        $template = $properties['template'];
-        list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
-
-        return $properties;
     }
 
     /**

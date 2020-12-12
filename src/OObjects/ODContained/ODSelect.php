@@ -61,28 +61,11 @@ class ODSelect extends ODContained
         $properties = require $path;
         parent::__construct($id, $properties);
 
-        $properties = $this->constructor($id, $properties);
+        $properties = $this->object_contructor($id, $properties);
         if ((int)$properties['widthBT'] === 0) {
             $properties['widthBT'] = $this->validate_widthBT(12);
         }
         $this->properties = $properties;
-    }
-
-    /**
-     * @param string $id
-     * @param array $properties
-     * @return array
-     */
-    public function constructor($id, $properties): array
-    {
-        $properties = parent::constructor($id, $properties);
-
-        $typeObj = $properties['typeObj'];
-        $object = $properties['object'];
-        $template = $properties['template'];
-        list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
-
-        return $properties;
     }
 
     /**
