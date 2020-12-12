@@ -132,8 +132,9 @@ class OObject
         $this->id = $id;
         $oobj_properties = require $path;
         foreach ($oobj_properties as $key => $val) {
-            if (!array_key_exists($key, $properties))
+            if (!array_key_exists($key, $properties)) {
                 $properties[$key] = $val;
+            }
         }
         $properties['id'] = $id;
         return $properties;
@@ -221,62 +222,78 @@ class OObject
             $lxs = $lsm = $lmd = $llg = 0;
             $ixs = $ism = $imd = $ilg = 0;
 
-            switch (true) {
-                case (is_numeric($val) and (int)$val <= 12):
-                    $lxs = $lsm = $lmd = $llg = (int) $val;
+            if (is_numeric($val) && (int)$val <= 12) {
+                $lxs = $lsm = $lmd = $llg = (int)$val;
 //                    $ixs = $ism = $imd = $ilg = 12 - (int) $val;
-                    break;
-                default:
-                    foreach (explode(':', $val) as $item) {
-                        $key = strtoupper($item);
-                        switch (substr($key, 0, 2)) {
-                            case 'WL':
-                                $llg = (int) substr($key, 2);
-                                break;
-                            case 'WM':
-                                $lmd = (int) substr($key, 2);
-                                break;
-                            case 'WS':
-                                $lsm = (int) substr($key, 2);
-                                break;
-                            case 'WX':
-                                $lxs = (int) substr($key, 2);
-                                break;
-                            case 'OL':
-                                $ilg = (int) substr($key, 2);
-                                break;
-                            case 'OM':
-                                $imd = (int) substr($key, 2);
-                                break;
-                            case 'OS':
-                                $ism = (int) substr($key, 2);
-                                break;
-                            case 'OX':
-                                $ixs = (int) substr($key, 2);
-                                break;
-                            default:
-                                switch ($key[0]) {
-                                    case 'W':
-                                        $llg = (int) substr($key, 1);
-                                        $lmd = $lsm = $lxs = $llg;
-                                        break;
-                                    case 'O':
-                                        $ilg = (int) substr($key, 1);
-                                        $imd = $ism = $ixs = $ilg;
-                                        break;
-                                }
-                                break;
-                        }
+            } else {
+                foreach (explode(':', $val) as $item) {
+                    $key = strtoupper($item);
+                    switch (substr($key, 0, 2)) {
+                        case 'WL':
+                            $llg = (int)substr($key, 2);
+                            break;
+                        case 'WM':
+                            $lmd = (int)substr($key, 2);
+                            break;
+                        case 'WS':
+                            $lsm = (int)substr($key, 2);
+                            break;
+                        case 'WX':
+                            $lxs = (int)substr($key, 2);
+                            break;
+                        case 'OL':
+                            $ilg = (int)substr($key, 2);
+                            break;
+                        case 'OM':
+                            $imd = (int)substr($key, 2);
+                            break;
+                        case 'OS':
+                            $ism = (int)substr($key, 2);
+                            break;
+                        case 'OX':
+                            $ixs = (int)substr($key, 2);
+                            break;
+                        default:
+                            if ($key[0] == 'W') {
+                                $llg = (int)substr($key, 1);
+                                $lmd = $lsm = $lxs = $llg;
+                            } elseif ($key[0] == 'O') {
+                                $ilg = (int)substr($key, 1);
+                                $imd = $ism = $ixs = $ilg;
+                            }
+                            break;
                     }
-                    break;
+                }
             }
 
-            if ($llg) $ret['WL'] = 'WL'.$llg; if ($ilg) $ret['OL'] = 'OL'.$ilg;
-            if ($lmd) $ret['WM'] = 'WM'.$lmd; if ($imd) $ret['OM'] = 'OM'.$imd;
-            if ($lsm) $ret['WS'] = 'WS'.$lsm; if ($ism) $ret['OS'] = 'OS'.$ism;
-            if ($lxs) $ret['WX'] = 'WX'.$lxs; if ($ixs) $ret['OX'] = 'OX'.$ixs;
+            if ($llg) {
+                $ret['WL'] = 'WL' . $llg;
+            }
+            if ($ilg) {
+                $ret['OL'] = 'OL' . $ilg;
+            }
+            if ($lmd) {
+                $ret['WM'] = 'WM' . $lmd;
+            }
+            if ($imd) {
+                $ret['OM'] = 'OM' . $imd;
+            }
+            if ($lsm) {
+                $ret['WS'] = 'WS' . $lsm;
+            }
+            if ($ism) {
+                $ret['OS'] = 'OS' . $ism;
+            }
+            if ($lxs) {
+                $ret['WX'] = 'WX' . $lxs;
+            }
+            if ($ixs) {
+                $ret['OX'] = 'OX' . $ixs;
+            }
 
-            if (count($ret) > 0) return implode(':', $ret);
+            if (!empty($ret)) {
+                return implode(':', $ret);
+            }
         }
         return false;
     }
@@ -403,7 +420,9 @@ class OObject
                     break;
                 case (class_exists($class)):
                     $current_obj = $this;
-                    if ($class !== $this->className) $current_obj = new $class();
+                    if ($class !== $this->className) {
+                        $current_obj = new $class();
+                    }
 
                     if (!method_exists($current_obj, $method)) {
                         throw new Exception("Méthode ".$method." inconue dans l'objet ".get_class($current_obj));
@@ -514,6 +533,6 @@ class OObject
 
     public function validate_css_color(string $color)
     {
-        return (in_array($key, $this->getCssColorConstants())) ? $key : false;
+        return (in_array($color, $this->getCssColorConstants())) ? $color : false;
     }
 }

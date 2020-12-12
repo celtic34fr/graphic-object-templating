@@ -59,7 +59,9 @@ class ODSelect extends ODContained
         parent::__construct($id, $properties);
 
         $properties = $this->constructor($id, $properties);
-        if ((int)$properties['widthBT'] === 0) $properties['widthBT'] = $this->validate_widthBT(12);
+        if ((int)$properties['widthBT'] === 0) {
+            $properties['widthBT'] = $this->validate_widthBT(12);
+        }
         $this->properties = $properties;
     }
 
@@ -201,11 +203,9 @@ class ODSelect extends ODContained
     public function rmOption($value)
     {
         $value = (string)$value;
-        if (!empty($value)) {
-            if (array_key_exists($value, $this->options)) {
-                unset($this->options[$value]);
-                return $this;
-            }
+        if (!empty($value) && array_key_exists($value, $this->options)) {
+            unset($this->options[$value]);
+            return $this;
         }
         return false;
     }

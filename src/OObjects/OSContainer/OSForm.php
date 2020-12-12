@@ -55,10 +55,18 @@ class OSForm extends OSDiv
 
         $this->properties = $properties;
 
-        if ((int) $this->btnsWidthBT === 0) $this->btnsWidthBT = 2;
-        if ((int)$this->widthBT === 0) $this->widthBT = 12;
-        if ((int)$this->widthBTbody === 0) $this->widthBTbody = 12;
-        if ((int)$this->widthBTctrls === 0) $this->widthBTctrls = 12;
+        if ((int) $this->btnsWidthBT === 0) {
+            $this->btnsWidthBT = 2;
+        }
+        if ((int)$this->widthBT === 0) {
+            $this->widthBT = 12;
+        }
+        if ((int)$this->widthBTbody === 0) {
+            $this->widthBTbody = 12;
+        }
+        if ((int)$this->widthBTctrls === 0) {
+            $this->widthBTctrls = 12;
+        }
     }
 
     /**
@@ -87,8 +95,9 @@ class OSForm extends OSDiv
     public function __isset(string $key): bool
     {
         $rslt = parent::__isset($key);
-		if ($rslt === false)
-			$rslt = $this->btnsControls->__isset($key);
+		if ($rslt === false) {
+            $rslt = $this->btnsControls->__isset($key);
+        }
 		return $rslt;
     }
 
@@ -100,8 +109,9 @@ class OSForm extends OSDiv
     public function __get(string $key)
     {
         $rslt = parent::__get($key);
-		if ($rslt === false)
-			$rslt = $this->btnsControls->__get($key);
+		if ($rslt === false) {
+            $rslt = $this->btnsControls->__get($key);
+        }
 		return $rslt;
     }
 
@@ -121,8 +131,9 @@ class OSForm extends OSDiv
                 break;
             case 'btnsDisplay':
                 $val = $this->validate_dispBtns($val);
-                if ($val !== $this->properties['btnsDisplay'])
+                if ($val !== $this->properties['btnsDisplay']) {
                     $this->properties = $this->alter_btnsControls($val, $this->properties);
+                }
                 break;
 			case 'btnsControls':
 				throw new Exception("Impossible d'affecter direment un bouton de contrôle, passez par les méthodes spéciales");

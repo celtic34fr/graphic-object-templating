@@ -69,7 +69,9 @@ class ODCheckbox extends ODContained
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT === 0) $this->widthBT = 12;
+        if ((int)$this->widthBT === 0) {
+            $this->widthBT = 12;
+        }
     }
 
     /**
@@ -91,24 +93,14 @@ class ODCheckbox extends ODContained
 
     /**
      * @param string $key
-     * @return bool
-     */
-    public function __isset(string $key): bool
-    {
-        return parent::__isset($key);
-    }
-
-    /**
-     * @param string $key
      * @return mixed|void|null
      */
     public function __get(string $key)
     {
-        switch ($key) {
-            case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
-            default:
-                return parent::__get($key);
+        if ($key == 'option') {
+            throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+        } else {
+            return parent::__get($key);
         }
     }
 
@@ -318,6 +310,8 @@ class ODCheckbox extends ODContained
                 $item['natureNo']   = $options['natureNo'];
                 $item['backgrNo']   = $options['backgrNo'];
                 break;
+            default:
+                throw new \Exception('Unexpected value');
         }
         $item['check']                      = self::CHECKBOX_UNCHECK;
         $item['state']                      = $options['state'];
@@ -405,7 +399,9 @@ class ODCheckbox extends ODContained
         if ($type) {
             $maxCount =
                 ($type == self::CHECKTYPE_CHECKBOX) ? count(self::CHECKCHECKBOX) : count(self::CHECKSWITCH);
-            if (!array_key_exists($type, $nbFields)) $nbFields[$type] = 0;
+            if (!array_key_exists($type, $nbFields)) {
+                $nbFields[$type] = 0;
+            }
             foreach ($option as $key => $params) {
                 switch ($key) {
                     case 'type':
@@ -475,10 +471,8 @@ class ODCheckbox extends ODContained
      */
     public function checkOption($value)
     {
-        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['check'] = self::CHECKBOX_CHECK;
-            }
+        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
+            $this->options[$value]['check'] = self::CHECKBOX_CHECK;
         }
     }
 
@@ -487,10 +481,8 @@ class ODCheckbox extends ODContained
      */
     public function uncheckOption($value)
     {
-        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['check'] = self::CHECKBOX_UNCHECK;
-            }
+        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
+            $this->options[$value]['check'] = self::CHECKBOX_UNCHECK;
         }
     }
 
@@ -533,10 +525,8 @@ class ODCheckbox extends ODContained
      */
     public function enaOption($value)
     {
-        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['state'] = true;
-            }
+        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
+            $this->options[$value]['state'] = true;
         }
     }
 
@@ -545,10 +535,8 @@ class ODCheckbox extends ODContained
      */
     public function disOption($value)
     {
-        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['state'] = false;
-            }
+        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
+            $this->options[$value]['state'] = false;
         }
     }
 
@@ -559,10 +547,8 @@ class ODCheckbox extends ODContained
      */
     public function getStateOption($value)
     {
-        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value) {
-            if (array_key_exists($value, $this->options)) {
-                return $this->options[$value]['state'] ? self::CHECKSTATE_ENABLE : self::CHECKSTATE_DISABLE;
-            }
+        if (!is_bool($value) && !is_array($value) && !is_object($value) && $value && array_key_exists($value, $this->options)) {
+            return $this->options[$value]['state'] ? self::CHECKSTATE_ENABLE : self::CHECKSTATE_DISABLE;
         }
         throw new Exception("Paramètre demande état option incorrect");
     }

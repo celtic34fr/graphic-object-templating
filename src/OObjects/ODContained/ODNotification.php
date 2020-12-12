@@ -91,7 +91,9 @@ class ODNotification extends ODContained
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) $this->widthBT = 12;
+        if ((int)$this->widthBT ===0 ) {
+            $this->widthBT = 12;
+        }
     }
 
     /**
@@ -109,24 +111,6 @@ class ODNotification extends ODContained
         list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
 
         return $properties;
-    }
-
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function __isset(string $key) : bool
-    {
-        return parent::__isset($key);
-    }
-
-    /**
-     * @param string $key
-     * @return mixed|void|null
-     */
-    public function __get(string $key)
-    {
-        return parent::__get($key);
     }
 
     /**
@@ -204,7 +188,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationAction)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONACTION_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationAction = $retour;
         } else {
@@ -223,7 +209,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationPosition)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONPOSITION_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationPosition = $retour;
         } else {
@@ -242,7 +230,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationType)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONTYPE_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationType = $retour;
         } else {
@@ -261,7 +251,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationSize)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONSIZE_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationSize = $retour;
         } else {
@@ -280,7 +272,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationShow)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONSHOW_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationShow = $retour;
         } else {
@@ -299,7 +293,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationHide)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONHIDE_');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationHide = $retour;
         } else {
@@ -404,7 +400,9 @@ class ODNotification extends ODContained
         if (empty($this->const_NotificationIcon)) {
             foreach (self::getConstants() as $key => $constant) {
                 $pos = strpos($key, 'NOTIFICATIONICON');
-                if ($pos !== false) $retour[$key] = $constant;
+                if ($pos !== false) {
+                    $retour[$key] = $constant;
+                }
             }
             $this->const_NotificationIcon = $retour;
         } else {

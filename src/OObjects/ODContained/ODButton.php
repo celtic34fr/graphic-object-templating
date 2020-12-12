@@ -68,7 +68,7 @@ class ODButton extends ODContained
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) $this->widthBT = 12;
+        if ((int)$this->widthBT ===0 ) { $this->widthBT = 12; }
     }
 
     /**
@@ -90,25 +90,14 @@ class ODButton extends ODContained
 
     /**
      * @param string $key
-     * @return bool
-     */
-    public function __isset(string $key) : bool
-    {
-        return parent::__isset($key);
-    }
-
-    /**
-     * @param string $key
      * @return mixed|void|null
      */
     public function __get(string $key)
     {
-        switch ($key) {
-            case 'image':
-                return parent::__get('pathFile');
-                break;
-            default:
-                return parent::__get($key);
+        if ($key == 'image') {
+            return parent::__get('pathFile');
+        } else {
+            return parent::__get($key);
         }
     }
 
@@ -151,6 +140,8 @@ class ODButton extends ODContained
                     case self::BUTTONTYPE_SUBMIT:
                         if ($callback && !empty($this->form)) { $this->type = self::BUTTONTYPE_CUSTOM; }
                         break;
+                    default:
+                        throw new Exception('Unexpected value');
                 }
                 break;
             case 'nature':
@@ -163,21 +154,21 @@ class ODButton extends ODContained
             case 'image':
                 $val = (string) $val;
                 $key = 'pathFile';
-                if (!file_exists($_SERVER["DOCUMENT_ROOT"]."/".$val))
-                    throw new Exception("Fichier image inexistant (".$val.")");
+                if (!file_exists($_SERVER["DOCUMENT_ROOT"]."/".$val)) {
+                    throw new Exception("Fichier image inexistant (" . $val . ")");
+                }
                 $val = 'http://'.$_SERVER['HTTP_HOST']."/".$val;
                 break;
             case 'form':
                 $val = (string) $val;
                 $callback   = array_key_exists('click', $this->event);
-                switch ($this->type) {
-                    case self::BUTTONTYPE_LINK:
-                        if (!empty($this->form))
-                            $val = null;
-                        break;
-                    default:
-                        $this->type = $callback ? self::BUTTONTYPE_SUBMIT : self::BUTTONTYPE_CUSTOM;
-                        break;
+                $i = $this->type;
+                if ($i == self::BUTTONTYPE_LINK) {
+                    if (!empty($this->form)) {
+                        $val = null;
+                    }
+                } else {
+                    $this->type = $callback ? self::BUTTONTYPE_SUBMIT : self::BUTTONTYPE_CUSTOM;
                 }
                 break;
             default:

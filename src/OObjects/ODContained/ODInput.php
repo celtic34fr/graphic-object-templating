@@ -49,7 +49,9 @@ class ODInput extends ODContained
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) $this->widthBT = 12;
+        if ((int)$this->widthBT ===0 ) {
+            $this->widthBT = 12;
+        }
     }
 
     /**
@@ -67,24 +69,6 @@ class ODInput extends ODContained
 
         list($properties['template'], $properties['className']) = $this->set_Termplate_ClassName($typeObj, $object, $template);
         return $properties;
-    }
-
-    /**
-     * @param string $key
-     * @return mixed|void|null
-     */
-    public function __get(string $key)
-    {
-		return parent::__get($key);
-    }
-
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function __isset(string $key): bool
-    {
-		return parent::__isset($key);
     }
 
     /**
@@ -115,6 +99,8 @@ class ODInput extends ODContained
                     case (int)$this->properties['maxLength'] < $val:
                         throw new \RuntimeException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
                         break;
+                    default:
+                        throw new \Exception('Unexpected value');
                 }
                 $this->properties['minLength'] = $val;
                 break;
@@ -130,18 +116,24 @@ class ODInput extends ODContained
                     case (int)$this->properties['minLength'] > $val:
                         throw new \RuntimeException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
                         break;
+                    default:
+                        throw new \Exception('Unexpected value');
                 }
                 $this->properties['maxLength'] = $val;
                 break;
             case 'labelWidthBT':
                 $inputWidthBT = 0;
                 switch (true) {
-                    case ((is_string($val) && strtolower($val[0]) === 'w')):
+                    case (is_string($val) && strtolower($val[0]) === 'w'):
                         $val = (int)substr($val, 1);
                     case (is_numeric($val)):
-                        if ($val > 12) $val = 12;
+                        if ($val > 12) {
+                            $val = 12;
+                        }
                         $inputWidthBT = 12 - (int)$val;
                         break;
+                    default:
+                        throw new \Exception('Unexpected value');
                 }
 
                 $val = $this->validate_widthBT('W'.$val);
@@ -150,15 +142,19 @@ class ODInput extends ODContained
             case 'inputWidthBT':
                 $labelWidthBT = 0;
                 switch (true) {
-                    case ((is_string($val) && strtolower($val[0]) === 'w')):
+                    case (is_string($val) && strtolower($val[0]) === 'w'):
                         $val = (int)substr($val, 1);
                     case (is_numeric($val)):
-                        if ($val > 12) $val = 12;
+                        if ($val > 12) {
+                            $val = 12;
+                        }
                         $labelWidthBT = 12 - (int)$val;
                         break;
+                    default:
+                        throw new \Exception('Unexpected value');
                 }
-                if (is_numeric($val)) {
-                    if ($val > 12) $val = 12;
+                if (is_numeric($val) && $val > 12) {
+                    $val = 12;
                 }
 
                 $val = $this->validate_widthBT($val);

@@ -67,8 +67,9 @@ class OTInfoBulle
      */
     public function __construct(array $properties)
     {
-        if ($properties = $this->validate_properties($properties))
+        if ($properties = $this->validate_properties($properties)) {
             $this->properties = $properties;
+        }
     }
 
     /**
@@ -144,8 +145,9 @@ class OTInfoBulle
                 unset($properties[$key]);
             }
         }
-        if (count($properties))
+        if (count($properties)) {
             throw new Exception("Attributs impcompatibles avec OTInfoBulle");
+        }
         return $return_properties;
     }
 

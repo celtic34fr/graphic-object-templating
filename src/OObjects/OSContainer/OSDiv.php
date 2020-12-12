@@ -18,7 +18,9 @@ class OSDiv extends OSContainer
         $properties = $this->constructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) $this->widthBT = 12;
+        if ((int)$this->widthBT ===0 ) {
+            $this->widthBT = 12;
+        }
     }
 
     /**

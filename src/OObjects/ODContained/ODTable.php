@@ -92,7 +92,9 @@ class ODTable extends ODContained
         parent::__construct($id, $properties);
 
         $properties = $this->constructor($id, $properties);
-        if ((int)$properties['widthBT'] === 0) $properties['widthBT'] = $this->validate_widthBT(12);
+        if ((int)$properties['widthBT'] === 0) {
+            $properties['widthBT'] = $this->validate_widthBT(12);
+        }
         $this->properties = $properties;
     }
 
@@ -179,70 +181,83 @@ class ODTable extends ODContained
     {
         switch ($key) {
             case self::TABLE_PREFIX_HEADER:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $cols[$params];
                 break;
             case self::TABLE_PREFIX_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $this->getColumnDatas($params);
                 break;
             case self::TABLE_PREFIX_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $datas[$params];
                 break;
             case self::TABLE_PREFIX_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return $datas[$params[0]][$params[1]];
                 break;
             case self::TABLE_PREFIX_EVT_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $events[0][$params];
                 break;
             case self::TABLE_PREFIX_EVT_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $events[$params][0];
                 break;
             case self::TABLE_PREFIX_EVT_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return $events[$params[0]][$params[1]];
                 break;
             case self::TABLE_PREFIX_STYLE_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $styles[0][$params];
                 break;
             case self::TABLE_PREFIX_STYLE_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return $styles[$params][0];
                 break;
             case self::TABLE_PREFIX_STYLE_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return $styles[$params[0]][$params[1]];
                 break;
@@ -333,13 +348,15 @@ class ODTable extends ODContained
     {
         switch ($key) {
             case self::TABLE_PREFIX_HEADER:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return (!empty($cols[$params]));
                 break;
             case self::TABLE_PREFIX_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 $datasCol = $this->getColumnDatas($params);
                 $flag = false;
                 foreach ($datasCol as $dataCol) {
@@ -348,60 +365,71 @@ class ODTable extends ODContained
                 return $flag;
                 break;
             case self::TABLE_PREFIX_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return array_key_exists($params, $datas);
                 break;
             case self::TABLE_PREFIX_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return !empty($datas[$params[0]][$params[1]]);
                 break;
             case self::TABLE_PREFIX_EVT_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return !empty($events[0][$params]);
                 break;
             case self::TABLE_PREFIX_EVT_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return !empty($events[$params][0]);
                 break;
             case self::TABLE_PREFIX_EVT_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return !empty($events[$params[0]][$params[1]]);
                 break;
             case self::TABLE_PREFIX_STYLE_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return !empty($styles[0][$params]);
                 break;
             case self::TABLE_PREFIX_STYLE_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 return !empty($styles[$params][0]);
                 break;
             case self::TABLE_PREFIX_STYLE_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 return !empty($styles[$params[0]][$params[1]]);
                 break;
@@ -458,21 +486,25 @@ class ODTable extends ODContained
                 $key = 'colsHead';
                 break;
             case 'line':
-                if (!is_array($val))
+                if (!is_array($val)) {
                     throw new Exception("L'attribut line n'accepte que des tableaux unidimensionnels");
-                if (count($cols) !== count($val))
+                }
+                if (count($cols) !== count($val)) {
                     throw new Exception("Valeur donnée : nombre de colones incorrectes");
+                }
                 $datas = $this->properties['datas'];
                 $datas[] = $val;
                 $key = 'datas';
                 $val = $datas;
                 break;
             case 'lines':
-                if (!is_array($val))
+                if (!is_array($val)) {
                     throw new Exception("L'attribut line n'accepte que des tableaux bidimensionnels");
+                }
                 foreach ($val as $cols) {
-                    if (count($cols) !== count($val))
+                    if (count($cols) !== count($val)) {
                         throw new Exception("Valeur donnée (tableau) : nombre de colones incorrectes");
+                    }
                 }
                 $datas = $this->properties['datas'];
                 $datas = array_merge($val, $datas);
@@ -480,27 +512,33 @@ class ODTable extends ODContained
                 $val = $datas;
                 break;
             case 'datas':
-                if (!is_array($val))
+                if (!is_array($val)) {
                     throw new Exception("L'attribut datas n'accepte que des tableaux bidimensionnels");
+                }
                 foreach ($val as $cols) {
-                    if (count($cols) !== count($val))
+                    if (count($cols) !== count($val)) {
                         throw new Exception("Valeur donnée (tableau) : nombre de colones incorrectes");
+                    }
                 }
                 break;
             case 'styles':
             case 'events':
-                if (!is_array($val))
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux bidimensionnels");
-                if (max(array_keys($val)) > count($datas))
+                }
+                if (max(array_keys($val)) > count($datas)) {
                     throw new Exception("Indice de tableau fourni supérieur au nombre de lignes du tableau");
-                if (min(array_keys($val)) <= 0)
+                }
+                if (min(array_keys($val)) <= 0) {
                     throw new Exception("Indice de tableau fourni commance en dessous de 1, incompatible");
+                }
                 $flag = true;
                 foreach ($val as $line) {
                     $flag = $flag && (max(array_keys($line)) > count($cols));
                 }
-                if (!$flag)
+                if (!$flag) {
                     throw new Exception("Indice de tableau second niveau fourni supérieur au nombre de colonnes du tableau");
+                }
                 break;
             case 'title':
             case 'titleStyle':
@@ -510,15 +548,18 @@ class ODTable extends ODContained
                 $val = $this->validate_titlePos($val);
                 break;
             case 'btnsActions':
-                if (!is_array($val))
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux monodimensionnels");
+                }
                 /** @var OSDiv $btnsActions */
                 $btnsActions = $this->btnsActions;
                 foreach ($val as $cle => $item) {
-                    if (!($item instanceof ODButton))
+                    if (!($item instanceof ODButton)) {
                         throw new Exception("L'attribut $key n'accepte que des tableaux d'objet ODButton");
-                    if ($cle != $item->id)
-                        throw new Exception("Objet ODButton ".$item->id." référencé par clé $cle incohérente");
+                    }
+                    if ($cle != $item->id) {
+                        throw new Exception("Objet ODButton " . $item->id . " référencé par clé $cle incohérente");
+                    }
                     $btnsActions->addChild($item);
                 }
                 break;
@@ -562,27 +603,33 @@ class ODTable extends ODContained
     {
         switch ($key) {
             case self::TABLE_PREFIX_HEADER:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
+                }
                 $cols[$params]['libel'] = $val;
                 $val = $cols;
                 $key = 'colsHead';
                 break;
             case self::TABLE_PREFIX_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (!is_array($val))
+                }
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                if (count($val) !== count($datas))
+                }
+                if (count($val) !== count($datas)) {
                     throw new Exception("Nombre de lignes à modifier incorrect : " . count($val) . 'au lieu de ' . count($datas));
+                }
                 $val = $this->setColumnDatas($params, $val);
                 $key = 'datas';
                 break;
             case self::TABLE_PREFIX_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (count($cols) !== count($val))
+                }
+                if (count($cols) !== count($val)) {
                     throw new Exception("Valeur donnée : nombre de colones incorrectes");
+                }
                 $datas[$params] = $val;
                 $val = $datas;
                 $key = 'datas';
@@ -590,54 +637,78 @@ class ODTable extends ODContained
             case self::TABLE_PREFIX_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
+                }
                 foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
                         throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
                 }
                 $datas[$params[0]][$params[1]] = $val;
                 $val = $datas;
                 $key = 'datas';
                 break;
             case self::TABLE_PREFIX_EVT_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (!is_array($val))
+                }
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                if (!array_key_exists('evt', $val))
+                }
+                if (!array_key_exists('evt', $val)) {
                     throw new Exception("Tableau évènement sans code évènement");
+                }
                 $evt = $val['evt'];
                 unset($val['evt']);
-                if (!in_array($evt, $this->getEventContants()))
+                if (!in_array($evt, $this->getEventContants())) {
                     throw new Exception("Evènement $evt non géré");
+                }
                 $val = $this->validate_event_parms($val);
-                if ($val === false)
+                if ($val === false) {
                     throw new Exception("Tableau évènement mal construit");
-                if (!array_key_exists(0, $events)) $events[0] = [];
-                if (!array_key_exists($params, $events[0])) $events[0][$params] = [];
-                if (!array_key_exists($evt, $events[0][$params])) $events[0][$params][$evt] = [];
+                }
+                if (!array_key_exists(0, $events)) {
+                    $events[0] = [];
+                }
+                if (!array_key_exists($params, $events[0])) {
+                    $events[0][$params] = [];
+                }
+                if (!array_key_exists($evt, $events[0][$params])) {
+                    $events[0][$params][$evt] = [];
+                }
                 $events[0][$params][$evt] = $val;
                 $key = 'events';
                 $val = $events;
                 break;
             case self::TABLE_PREFIX_EVT_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (!is_array($val))
+                }
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                if (!array_key_exists('evt', $val))
+                }
+                if (!array_key_exists('evt', $val)) {
                     throw new Exception("Tableau évènement sans code évènement");
+                }
                 $evt = $val['evt'];
                 unset($val['evt']);
-                if (!in_array($evt, $this->getEventContants()))
+                if (!in_array($evt, $this->getEventContants())) {
                     throw new Exception("Evènement $evt non géré");
+                }
                 $val = $this->validate_event_parms($val);
-                if ($val === false)
+                if ($val === false) {
                     throw new Exception("Tableau évènement mal construit");
-                if (!array_key_exists($params, $events)) $events[$params] = [];
-                if (!array_key_exists(0, $events[$params])) $events[$params][0] = [];
-                if (!array_key_exists($evt, $events[$params][0])) $events[$params][0][$evt] = [];
+                }
+                if (!array_key_exists($params, $events)) {
+                    $events[$params] = [];
+                }
+                if (!array_key_exists(0, $events[$params])) {
+                    $events[$params][0] = [];
+                }
+                if (!array_key_exists($evt, $events[$params][0])) {
+                    $events[$params][0][$evt] = [];
+                }
                 $events[$params][0][$evt] = $val;
                 $key = 'events';
                 $val = $events;
@@ -645,48 +716,72 @@ class ODTable extends ODContained
             case self::TABLE_PREFIX_EVT_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
-                foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
-                        throw new Exception("Coordonnées de cellule $params incompatible");
                 }
-                if (!is_array($val))
+                foreach ($params as $idx => $param) {
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
+                        throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
+                }
+                if (!is_array($val)) {
                     throw new Exception("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                if (!array_key_exists('evt', $val))
+                }
+                if (!array_key_exists('evt', $val)) {
                     throw new Exception("Tableau évènement sans code évènement");
+                }
                 $evt = $val['evt'];
                 unset($val['evt']);
-                if (!in_array($evt, $this->getEventContants()))
+                if (!in_array($evt, $this->getEventContants())) {
                     throw new Exception("Evènement $evt non géré");
+                }
                 $val = $this->validate_event_parms($val);
-                if ($val === false)
+                if ($val === false) {
                     throw new Exception("Tableau évènement mal construit");
-                if (!array_key_exists($params[0], $events)) $events[$params[0]] = [];
-                if (!array_key_exists($params[1], $events[$params[0]])) $events[$params[0]][$params[1]] = [];
-                if (!array_key_exists($evt, $events[$params[0]][$param[1]])) $events[$params[0]][$params[1]][$evt] = [];
+                }
+                if (!array_key_exists($params[0], $events)) {
+                    $events[$params[0]] = [];
+                }
+                if (!array_key_exists($params[1], $events[$params[0]])) {
+                    $events[$params[0]][$params[1]] = [];
+                }
+                if (!array_key_exists($evt, $events[$params[0]][$param[1]])) {
+                    $events[$params[0]][$params[1]][$evt] = [];
+                }
                 $events[$params[0]][$params[1]][$evt] = $val;
                 $key = 'events';
                 $val = $events;
                 break;
             case self::TABLE_PREFIX_STYLE_COLUMN:
-                if ($params === 0 || $params > count($cols))
+                if ($params === 0 || $params > count($cols)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (!is_string($val))
+                }
+                if (!is_string($val)) {
                     throw new Exception("L'attribut $key n'accepte que des chaînes de caractères");
-                if (!array_key_exists(0, $styles)) $styles[0] = [];
-                if (!array_key_exists($params, $styles[0])) $styles[0][$params] = [];
+                }
+                if (!array_key_exists(0, $styles)) {
+                    $styles[0] = [];
+                }
+                if (!array_key_exists($params, $styles[0])) {
+                    $styles[0][$params] = [];
+                }
                 $events[0][$params] = $val;
                 $key = 'styles';
                 $val = $styles;
                 break;
             case self::TABLE_PREFIX_STYLE_LINE:
-                if ($params === 0 || $params > count($datas))
+                if ($params === 0 || $params > count($datas)) {
                     throw new Exception("Numéro de colonne $params incompatible");
-                if (!is_string($val))
+                }
+                if (!is_string($val)) {
                     throw new Exception("L'attribut $key n'accepte que des chaînes de caractères");
-                if (!array_key_exists($params, $styles)) $styles[$params] = [];
-                if (!array_key_exists(0, $styles[$params])) $styles[$params][0] = [];
+                }
+                if (!array_key_exists($params, $styles)) {
+                    $styles[$params] = [];
+                }
+                if (!array_key_exists(0, $styles[$params])) {
+                    $styles[$params][0] = [];
+                }
                 $events[$params][0] = $val;
                 $key = 'styles';
                 $val = $styles;
@@ -694,16 +789,23 @@ class ODTable extends ODContained
             case self::TABLE_PREFIX_STYLE_INTERSECT:
                 $params = explode('-', $params);
                 $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2)
+                if (count($params) !== 2) {
                     throw new Exception("Coordonnées de cellule $params incompatible");
-                foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx])
-                        throw new Exception("Coordonnées de cellule $params incompatible");
                 }
-                if (!is_string($val))
+                foreach ($params as $idx => $param) {
+                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
+                        throw new Exception("Coordonnées de cellule $params incompatible");
+                    }
+                }
+                if (!is_string($val)) {
                     throw new Exception("L'attribut $key n'accepte que des chaînes de caractères");
-                if (!array_key_exists($params[0], $styles)) $styles[$params[0]] = [];
-                if (!array_key_exists($params[1], $styles[$params[0]])) $events[$params[0]][$params[1]] = [];
+                }
+                if (!array_key_exists($params[0], $styles)) {
+                    $styles[$params[0]] = [];
+                }
+                if (!array_key_exists($params[1], $styles[$params[0]])) {
+                    $events[$params[0]][$params[1]] = [];
+                }
                 $events[$params[0]][$params[1]] = $val;
                 $key = 'styles';
                 $val = $styles;
@@ -721,8 +823,9 @@ class ODTable extends ODContained
     public function setBtnAction(ODButton $btn)
     {
         $children = $this->btnsActions->children;
-        if (!array_key_exists($btn->id, $children))
-            throw new Exception("ODButton ".$btn->id." non présent dans tableau des boutons action en affectation, erreur");
+        if (!array_key_exists($btn->id, $children)) {
+            throw new Exception("ODButton " . $btn->id . " non présent dans tableau des boutons action en affectation, erreur");
+        }
         $children = $this->btnsActions->children;
         $children[$btn->id] = $btn;
         $this->btnsActions->children = $children;
@@ -737,8 +840,9 @@ class ODTable extends ODContained
         /** @var OSDiv $btnsActions */
         $btnsActions = $this->btnsActions;
         $children = $this->btnsActions->children;
-        if (array_key_exists($btn->id, $children))
-            throw new Exception("ODButton ".$btn->id." dèjà présent dans tableau des boutons action en ajout, erreur");
+        if (array_key_exists($btn->id, $children)) {
+            throw new Exception("ODButton " . $btn->id . " dèjà présent dans tableau des boutons action en ajout, erreur");
+        }
         $children[$btn->id] = $btn;
         $btnsActions->addChild($btn);
         $this->btnsActions = $btnsActions;
@@ -758,16 +862,19 @@ class ODTable extends ODContained
      */
     public function rmBtnAction($btnAction)
     {
-        if ($btnAction instanceof OObject) $btnAction = $btnAction->id;
+        if ($btnAction instanceof OObject) {
+            $btnAction = $btnAction->id;
+        }
         if (!is_string($btnAction)) {
             throw new Exception("demande de suppression impossible, passer soit un objet OObject soit un identifiant");
         }
 
-        if (!array_key_exists($btnAction, $this->btnsActions))
-            throw new Exception("ODButton ".$btnAction." non présent dans tableau des boutons action en suppression, erreur");
+        if (!array_key_exists($btnAction, $this->btnsActions)) {
+            throw new Exception("ODButton " . $btnAction . " non présent dans tableau des boutons action en suppression, erreur");
+        }
         /** @var OSDiv $btnsActions */
         $btnsActions = $this->btnsActions;
-        $this->btnsActions = $btnsActions->rmChild($btnAction);;
+        $this->btnsActions = $btnsActions->rmChild($btnAction);
     }
 
     /**
@@ -779,8 +886,9 @@ class ODTable extends ODContained
         $properties = $this->properties;
         $colsHead = $properties['colsHead'];
         $colsHeadSize = count($colsHead);
-        if ($col === null || $col < 1 || $col > $colsHeadSize)
+        if ($col === null || $col < 1 || $col > $colsHeadSize) {
             throw new Exception("L'indice de colonne doit être numérique et entre 1 et $colsHeadSize");
+        }
 
         $colsHead[$col]['view'] = true;
         $properties['colsHead'] = $colsHead;
@@ -796,8 +904,9 @@ class ODTable extends ODContained
         $properties = $this->properties;
         $colsHead = $properties['colsHead'];
         $colsHeadSize = count($colsHead);
-        if ($col === null || $col < 1 || $col > $colsHeadSize)
+        if ($col === null || $col < 1 || $col > $colsHeadSize) {
             throw new Exception("L'indice de colonne doit être numérique et entre 1 et $colsHeadSize");
+        }
 
         $colsHead[$col]['view'] = false;
         $properties['colsHead'] = $colsHead;
@@ -885,8 +994,9 @@ class ODTable extends ODContained
         $properties = $this->properties;
         $datas = $properties['datas'];
         foreach ($val as $idx => $value) {
-            if ($idx === 0)
+            if ($idx === 0) {
                 throw new Exception("Indice de tableau commençant à 0 incompaticle");
+            }
             $datas[$idx][$params] = $value;
         }
         return $datas;
@@ -978,8 +1088,9 @@ class ODTable extends ODContained
     public function hideBtnsActions(int $noLine)
     {
         $datas = $this->datas;
-        if (!array_key_exists($noLine, $datas))
+        if (!array_key_exists($noLine, $datas)) {
             throw new Exception("Numéro de ligne $noLine inexistant");
+        }
         $btnsActions = $this->btnsActions;
         $hidden = implode("|", array_keys($btnsActions->children));
         $btnsActionsHidden = $this->btnsActionsHidden;
@@ -990,47 +1101,60 @@ class ODTable extends ODContained
     public function showBtnsActions(int $noLine)
     {
         $datas = $this->datas;
-        if (!array_key_exists($noLine, $datas))
+        if (!array_key_exists($noLine, $datas)) {
             throw new Exception("Numéro de ligne $noLine inexistant");
+        }
         $btnsActionsHidden = $this->btnsActionsHidden;
-        if (array_key_exists($noLine, $btnsActionsHidden))
+        if (array_key_exists($noLine, $btnsActionsHidden)) {
             unset($btnsActionsHidden[$noLine]);
+        }
         $this->btnsActionsHidden = $btnsActionsHidden;
     }
 
     public function hideBtnAction($btnAction, int $noLine)
     {
-        if ($btnAction instanceof ODButton) $btnAction = $btnAction->id;
-        if (!is_string($btnAction))
+        if ($btnAction instanceof ODButton) {
+            $btnAction = $btnAction->id;
+        }
+        if (!is_string($btnAction)) {
             throw new Exception("demande de suppression visibilité de bouton action, passer soit un objet ODButton soit un identifiant");
+        }
         $datas = $this->datas;
-        if (!array_key_exists($noLine, $datas))
+        if (!array_key_exists($noLine, $datas)) {
             throw new Exception("Numéro de ligne $noLine inexistant");
+        }
         $btnsActionsHidden = $this->btnsActionsHidden;
-        if (array_key_exists($noLine, $btnsActionsHidden))
-            $btnsActionsHidden[$noLine] .= '|'.$btnAction;
-        else
+        if (array_key_exists($noLine, $btnsActionsHidden)) {
+            $btnsActionsHidden[$noLine] .= '|' . $btnAction;
+        } else {
             $btnsActionsHidden[$noLine] = $btnAction;
+        }
         $this->btnsActionsHidden = $btnsActionsHidden;
     }
 
     public function showBtnAction($btnAction, int $noLine)
     {
-        if ($btnAction instanceof ODButton) $btnAction = $btnAction->id;
-        if (!is_string($btnAction))
+        if ($btnAction instanceof ODButton) {
+            $btnAction = $btnAction->id;
+        }
+        if (!is_string($btnAction)) {
             throw new Exception("demande de suppression visibilité de bouton action, passer soit un objet ODButton soit un identifiant");
+        }
         $datas = $this->datas;
-        if (!array_key_exists($noLine, $datas))
+        if (!array_key_exists($noLine, $datas)) {
             throw new Exception("Numéro de ligne $noLine inexistant");
+        }
         $btnsActionsHidden = $this->btnsActionsHidden;
         if (array_key_exists($noLine, $btnsActionsHidden)) {
             $btns = explode('|', $btnsActionsHidden[$noLine]);
-            if (in_array($btnAction, $btns))
+            if (in_array($btnAction, $btns)) {
                 unset($btns[array_search($btnAction, $btns)]);
-            if (count($btns) > 0)
+            }
+            if (!empty($btns)) {
                 $btnsActionsHidden[$noLine] = implode('|', $btns);
-            else
+            } else {
                 unset($btnsActionsHidden[$noLine]);
+            }
         }
         $this->btnsActionsHidden = $btnsActionsHidden;
     }

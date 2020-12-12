@@ -41,9 +41,7 @@ class ODContained extends OObject
 
         $path = __DIR__. '/../../params/oobjects/odcontained/odcontained.config.php';
         $odc_properties = require $path;
-        $properties = $this->merge_properties($odc_properties, $properties);
-
-        return $properties;
+        return $this->merge_properties($odc_properties, $properties);
     }
 
 }

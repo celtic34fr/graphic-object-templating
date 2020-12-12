@@ -55,8 +55,7 @@ class OSContainer extends OObject
 
         $path = __DIR__. '/../../params/oobjects/oscontainer/oscontainer.config.php';
         $odc_properties = require $path;
-        $properties = $this->merge_properties($odc_properties, $properties);
-        return $properties;
+        return $this->merge_properties($odc_properties, $properties);
     }
 
 
@@ -108,14 +107,16 @@ class OSContainer extends OObject
                             break;
                         }
                     }
-                    if (!$ok) throw new Exception("Au moins un élément tableau d'enfant non objet");
+                    if (!$ok) {
+                        throw new Exception("Au moins un élément tableau d'enfant non objet");
+                    }
                 } else {
                     throw new Exception("Valeur paramètre 'children' no tableau");
                 }
                 break;
             default:
                 $children = $this->properties['children'];
-                if (!array_key_exists($key, $children) and $val instanceof OObject) {
+                if (!array_key_exists($key, $children) && $val instanceof OObject) {
                     $this->properties['children'][$key] = $val;
                     return true;
                 }
@@ -152,10 +153,12 @@ class OSContainer extends OObject
                     break;
                 case self::MODE_AFTER:
                 case self::MODE_BEFORE:
-                    if (!$params || is_numeric($params))
-                        throw new Exception("Paramètre insertion".$params." numeric au lieu string");
-                    if (!array_key_exists($params, $children))
-                        throw new Exception("Paramètre nom enfant ".$params." inconnu");
+                    if (!$params || is_numeric($params)) {
+                        throw new Exception("Paramètre insertion" . $params . " numeric au lieu string");
+                    }
+                    if (!array_key_exists($params, $children)) {
+                        throw new Exception("Paramètre nom enfant " . $params . " inconnu");
+                    }
                     $new_children = [];
                     foreach ($children as $name=>$oChild) {
                         if (self::MODE_BEFORE && $name === $params) {
@@ -169,16 +172,19 @@ class OSContainer extends OObject
                     $children = $new_children;
                     break;
                 case self::MODE_NTH:
-                    if (!$params || !is_int($params))
-                        throw new Exception("Rang ".$params." non numérique");
-                    if ((int)$params > count($this->children))
-                        throw new Exception("Numéro d'ordre ".$params." supérieur au nombre d'enfant");
+                    if (!$params || !is_int($params)) {
+                        throw new Exception("Rang " . $params . " non numérique");
+                    }
+                    if ((int)$params > count($this->children)) {
+                        throw new Exception("Numéro d'ordre " . $params . " supérieur au nombre d'enfant");
+                    }
                     $new_children = [];
                     $compteur = 0;
                     foreach ($children as $name=>$oChild) {
                         $compteur++;
-                        if ($compteur === (int)$params)
+                        if ($compteur === (int)$params) {
                             $new_children[$child->id] = $child;
+                        }
                         $new_children[$name] = $oChild;
                     }
                     $children = $new_children;
@@ -199,7 +205,9 @@ class OSContainer extends OObject
      */
 	public function rmChild($child) 
 	{
-        if ($child instanceof OObject) $child = $child->id;
+        if ($child instanceof OObject) {
+            $child = $child->id;
+        }
         if (!is_string($child)) {
             throw new Exception("demande de suppression impossible, passer soit un objet OObject soit un identifiant");
         }
@@ -221,7 +229,9 @@ class OSContainer extends OObject
      */
     public function isChild($child)
     {
-        if ($child instanceof OObject) $child = $child->id;
+        if ($child instanceof OObject) {
+            $child = $child->id;
+        }
         if (!is_string($child)) {
             throw new Exception("Recherche impossible, passer soit un objet OObject soit un identifiant");
         }
@@ -244,7 +254,9 @@ class OSContainer extends OObject
         } else {
             foreach ($children as $childId => $childBody) {
                 $r_path = '.'.$this->r_isChild($child, $childBody);
-                if ($r_path) $path .= '.'.$child->id.'.'.$r_path;
+                if ($r_path) {
+                    $path .= '.' . $child->id . '.' . $r_path;
+                }
             }
         }
         return $path;
@@ -273,7 +285,9 @@ class OSContainer extends OObject
      */
     public function existChild($child)
     {
-        if ($child instanceof OObject) $child = $child->id;
+        if ($child instanceof OObject) {
+            $child = $child->id;
+        }
         return $this->r_isset($child, $this);
     }
 

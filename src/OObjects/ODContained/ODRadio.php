@@ -87,7 +87,9 @@ class ODRadio extends ODContained
         parent::__construct($id, $properties);
 
         $properties = $this->constructor($id, $properties);
-        if ((int)$properties['widthBT'] === 0) $properties['widthBT'] = $this->validate_widthBT(12);
+        if ((int)$properties['widthBT'] === 0) {
+            $properties['widthBT'] = $this->validate_widthBT(12);
+        }
         $this->properties = $properties;
     }
 
@@ -115,11 +117,10 @@ class ODRadio extends ODContained
      */
     public function __isset(string $key): bool
     {
-        switch ($key) {
-            case 'option':
-                throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
-            default:
-                return parent::__isset($key);
+        if ($key == 'option') {
+            throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+        } else {
+            return parent::__isset($key);
         }
     }
 
@@ -130,7 +131,6 @@ class ODRadio extends ODContained
      */
     public function __get(string $key)
     {
-        $properties = $this->properties;
         switch ($key) {
             case 'option':
                 throw new Exception("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
@@ -144,7 +144,7 @@ class ODRadio extends ODContained
                 }
                 return $checked;
             case 'states':
-                $state = [];
+                $states = [];
                 foreach ($this->options as $value => $option) {
                     if ($option['check'] === self::RADIOCHECK_CHECK) {
                         $states[$value] = $option['state'] ? 'enable' : 'disable';
@@ -219,11 +219,9 @@ class ODRadio extends ODContained
      */
     public function rmOption(string $value)
     {
-        if (!empty($value)) {
-            if (array_key_exists($value, $this->options)) {
-                unset($this->options[$value]);
-                return $this;
-            }
+        if (!empty($value) && array_key_exists($value, $this->options)) {
+            unset($this->options[$value]);
+            return $this;
         }
         return false;
     }
@@ -234,10 +232,8 @@ class ODRadio extends ODContained
      */
     public function getOption(string $value)
     {
-        if (!empty($value)) {
-            if (array_key_exists($value, $this->options)) {
-                return $this->options[$value];
-            }
+        if (!empty($value) && array_key_exists($value, $this->options)) {
+            return $this->options[$value];
         }
         return false;
     }
@@ -292,11 +288,9 @@ class ODRadio extends ODContained
      */
     public function enaOption(string $value)
     {
-        if (!empty($value)) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['state'] = self::RADIOSTATE_ENABLE;
-                return $this;
-            }
+        if (!empty($value) && array_key_exists($value, $this->options)) {
+            $this->options[$value]['state'] = self::RADIOSTATE_ENABLE;
+            return $this;
         }
         return false;
     }
@@ -308,11 +302,9 @@ class ODRadio extends ODContained
      */
     public function disOption(string $value)
     {
-        if (!empty($value)) {
-            if (array_key_exists($value, $this->options)) {
-                $this->options[$value]['state'] = self::RADIOSTATE_DISABLE;
-                return $this;
-            }
+        if (!empty($value) && array_key_exists($value, $this->options)) {
+            $this->options[$value]['state'] = self::RADIOSTATE_DISABLE;
+            return $this;
         }
         return false;
     }
