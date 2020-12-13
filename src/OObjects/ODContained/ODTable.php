@@ -77,8 +77,8 @@ class ODTable extends ODContained
     const TABLETITLEPOS_BOTTOM_CENTER = "bottom_center";
     const TABLETITLEPOS_BOTTOM_RIGHT = "bottom_right";
 
-    const TABLEBTNSACTIONS_POSITION_DEBUT   = 1;
-    const TABLEBTNSACTIONS_POSITION_FIN     = PHP_FLOAT_MAX;
+    const TABLEBTNSACTIONS_POSITION_DEBUT = 1;
+    const TABLEBTNSACTIONS_POSITION_FIN = PHP_FLOAT_MAX;
 
     private static array $const_prefix;
     private static array $const_events;
@@ -87,6 +87,10 @@ class ODTable extends ODContained
     const ERR_TABLEAU_EVENT_SANS_EVT_MSG = "Tableau évènement sans code évènement";
     const ERR_TABLEAU_EVENT_BAD_BUILD_MSG = "Tableau évènement mal construit";
     const PREFIX_MSG = "ODButton ";
+
+    const ERR_PREFIX_EVT_COLUMN = "Numéro de colonne ";
+    const ERR_PREFIX_EVT_LINE = "Numéro de Ligne ";
+    const ERR_PREFIX_EVT_INTERSECT = "Coordonnées de cellule  ";
 
     /**
      * ODTable constructor.
@@ -114,7 +118,7 @@ class ODTable extends ODContained
     {
         $properties = parent::constructor($id, $properties);
         $btnsActions = $properties['btnsActions'];
-        $btnsActions->id = $this->id.'BtnsActions';
+        $btnsActions->id = $this->id . 'BtnsActions';
         $properties['btnsActions'] = $btnsActions;
 
         return $this->object_contructor($id, $properties);
@@ -459,7 +463,7 @@ class ODTable extends ODContained
      * @param string $idBtn
      * @return bool
      */
-    public function issetBtnAction(string $idBtn) : bool
+    public function issetBtnAction(string $idBtn): bool
     {
         $children = $this->btnsActions->children;
         return array_key_exists($idBtn, $children);
@@ -559,7 +563,7 @@ class ODTable extends ODContained
                 break;
             case 'title':
             case 'titleStyle':
-                $val = (string) $val;
+                $val = (string)$val;
                 break;
             case 'titlePos':
                 $val = $this->validate_titlePos($val);
@@ -667,43 +671,39 @@ class ODTable extends ODContained
                 $key = 'datas';
                 break;
             case self::TABLE_PREFIX_EVT_COLUMN:
-                if ($params === 0 || $params > count($cols)) {
-                    throw new UnexpectedValueException("Numéro de colonne $params incompatible");
-                }
-                if (!is_array($val)) {
-                    throw new UnexpectedValueException("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                }
-                if (!array_key_exists('evt', $val)) {
-                    throw new InvalidArgumentException(self::ERR_TABLEAU_EVENT_SANS_EVT_MSG);
-                }
-                $evt = $val['evt'];
-                unset($val['evt']);
-                if (!in_array($evt, $this->getEventContants())) {
-                    throw new InvalidArgumentException("Evènement $evt non géré");
-                }
-                $val = $this->validate_event_parms($val);
-                if ($val === false) {
-                    throw new InvalidArgumentException(self::ERR_TABLEAU_EVENT_BAD_BUILD_MSG);
-                }
-                if (!array_key_exists(0, $events)) {
-                    $events[0] = [];
-                }
-                if (!array_key_exists($params, $events[0])) {
-                    $events[0][$params] = [];
-                }
-                if (!array_key_exists($evt, $events[0][$params])) {
-                    $events[0][$params][$evt] = [];
-                }
-                $events[0][$params][$evt] = $val;
-                $key = 'events';
-                $val = $events;
-                break;
             case self::TABLE_PREFIX_EVT_LINE:
-                if ($params === 0 || $params > count($datas)) {
-                    throw new UnexpectedValueException("Numéro de colonne $params incompatible");
+            case self::TABLE_PREFIX_EVT_INTERSECT:
+                switch ($key) {
+                    case self::TABLE_PREFIX_EVT_COLUMN:
+                        $prefix = self::ERR_PREFIX_EVT_COLUMN;
+                        if ($params === 0 || $params > count($cols)) {
+                            throw new UnexpectedValueException($prefix . "$params incompatible");
+                        }
+                        break;
+                    case self::TABLE_PREFIX_EVT_LINE:
+                        $prefix = self::ERR_PREFIX_EVT_LINE;
+                        if ($params === 0 || $params > count($datas)) {
+                            throw new UnexpectedValueException($prefix . "$params incompatible");
+                        }
+                        break;
+                    case self::TABLE_PREFIX_EVT_INTERSECT:
+                        $prefix = self::ERR_PREFIX_EVT_INTERSECT;
+                        $params = explode('-', $params);
+                        $ctrl = [count($cols), count($datas)];
+                        if (count($params) !== 2) {
+                            throw new InvalidArgumentException($prefix . "$params incompatible");
+                        }
+                        foreach ($params as $idx => $param) {
+                            if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
+                                throw new UnexpectedValueException($prefix . "$params incompatible");
+                            }
+                        }
+                        break;
+                    default:
+                        throw new UnexpectedValueException('Unexpected value');
                 }
                 if (!is_array($val)) {
-                    throw new UnexpectedValueException("L'attribut $key n'accepte que des tableaux unidimensionnels");
+                    throw new UnexpectedValueException($prefix . ": L'attribut $key n'accepte que des tableaux unidimensionnels");
                 }
                 if (!array_key_exists('evt', $val)) {
                     throw new InvalidArgumentException(self::ERR_TABLEAU_EVENT_SANS_EVT_MSG);
@@ -727,45 +727,6 @@ class ODTable extends ODContained
                     $events[$params][0][$evt] = [];
                 }
                 $events[$params][0][$evt] = $val;
-                $key = 'events';
-                $val = $events;
-                break;
-            case self::TABLE_PREFIX_EVT_INTERSECT:
-                $params = explode('-', $params);
-                $ctrl = [count($cols), count($datas)];
-                if (count($params) !== 2) {
-                    throw new InvalidArgumentException("Coordonnées de cellule $params incompatible");
-                }
-                foreach ($params as $idx => $param) {
-                    if (!is_numeric($param) || $param === 0 || $params > $ctrl[$idx]) {
-                        throw new UnexpectedValueException("Coordonnées de cellule $params incompatible");
-                    }
-                }
-                if (!is_array($val)) {
-                    throw new UnexpectedValueException("L'attribut $key n'accepte que des tableaux unidimensionnels");
-                }
-                if (!array_key_exists('evt', $val)) {
-                    throw new InvalidArgumentException(self::ERR_TABLEAU_EVENT_SANS_EVT_MSG);
-                }
-                $evt = $val['evt'];
-                unset($val['evt']);
-                if (!in_array($evt, $this->getEventContants())) {
-                    throw new UnexpectedValueException("Evènement $evt non géré");
-                }
-                $val = $this->validate_event_parms($val);
-                if ($val === false) {
-                    throw new InvalidArgumentException(self::ERR_TABLEAU_EVENT_BAD_BUILD_MSG);
-                }
-                if (!array_key_exists($params[0], $events)) {
-                    $events[$params[0]] = [];
-                }
-                if (!array_key_exists($params[1], $events[$params[0]])) {
-                    $events[$params[0]][$params[1]] = [];
-                }
-                if (!array_key_exists($evt, $events[$params[0]][$param[1]])) {
-                    $events[$params[0]][$params[1]][$evt] = [];
-                }
-                $events[$params[0]][$params[1]][$evt] = $val;
                 $key = 'events';
                 $val = $events;
                 break;
@@ -870,7 +831,7 @@ class ODTable extends ODContained
      */
     public function clearBtnsActions()
     {
-        $this->btnsActions = new OSDiv($this->id.'BtnsAcations');
+        $this->btnsActions = new OSDiv($this->id . 'BtnsAcations');
     }
 
     /**
