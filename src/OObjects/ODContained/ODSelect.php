@@ -94,7 +94,6 @@ class ODSelect extends ODContained
      */
     public function __get(string $key)
     {
-        $properties = $this->properties;
         switch ($key) {
             case 'option':
                 throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
@@ -176,7 +175,6 @@ class ODSelect extends ODContained
     {
         $options['value'] = $value;
         $options = $this->validate_optionArray($options);
-        $properties = $this->properties;
         if (array_key_exists($value, $this->options)) {
             $this->options[$value] = $options;
             return $this;
@@ -208,12 +206,12 @@ class ODSelect extends ODContained
         if (!empty($value)) {
             $options = $this->options;
             if (array_key_exists($value, $options)) {
-                if ($options[$value]['enable'] == true) {
+                if ($options[$value]['enable']) {
                     return 'enable';
-                };
-                if ($options[$value]['enable'] == false) {
+                }
+                if (!$options[$value]['enable']) {
                     return 'disable';
-                };
+                }
             }
         }
         return false;
