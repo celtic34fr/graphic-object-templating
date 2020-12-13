@@ -36,6 +36,8 @@ class ODInput extends ODContained
     const EVENT_KEYPRESS   	= 'keypress';
     const EVENT_KEYUP       = 'keyup';
 
+    const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
+
     private static $const_type;
 
     /**
@@ -85,7 +87,7 @@ class ODInput extends ODContained
                         throw new InvalidArgumentException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
                         break;
                     default:
-                        throw new UnexpectedValueException('Unexpected value');
+                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
                 }
                 $this->properties['minLength'] = $val;
                 break;
@@ -102,7 +104,7 @@ class ODInput extends ODContained
                         throw new InvalidArgumentException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
                         break;
                     default:
-                        throw new UnexpectedValueException('Unexpected value');
+                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
                 }
                 $this->properties['maxLength'] = $val;
                 break;
@@ -118,7 +120,7 @@ class ODInput extends ODContained
                         $inputWidthBT = 12 - (int)$val;
                         break;
                     default:
-                        throw new UnexpectedValueException('Unexpected value');
+                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
                 }
 
                 $val = $this->validate_widthBT('W'.$val);
@@ -136,7 +138,7 @@ class ODInput extends ODContained
                         $labelWidthBT = 12 - (int)$val;
                         break;
                     default:
-                        throw new UnexpectedValueException('Unexpected value');
+                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
                 }
                 if (is_numeric($val) && $val > 12) {
                     $val = 12;

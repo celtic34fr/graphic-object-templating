@@ -42,6 +42,12 @@ class OSForm extends OSDiv
     protected static array $const_type_btn;
     protected static array $const_disp_btn;
 
+    const O1W2 = 'O1:W2';
+    const O1W3 = 'O1:W3';
+    const O1W4 = 'O1:W4';
+    const O1W10 = "O1:W10";
+    const O2W4 = 'O2:W4';
+
     /**
      * OSForm constructor.
      * @param $id
@@ -151,19 +157,19 @@ class OSForm extends OSDiv
                 $widthBT = [];
                 switch (count($children)){
                     case 1:
-                        $widthBT[1] = $this->validate_widthBT('O1:W10');
+                        $widthBT[1] = $this->validate_widthBT(self::O1W10);
                         break;
                     case 2:
-                        $widthBT[1] = $this->validate_widthBT('O1:W4');
-                        $widthBT[2] = $this->validate_widthBT('O2:W4');
+                        $widthBT[1] = $this->validate_widthBT(self::O1W4);
+                        $widthBT[2] = $this->validate_widthBT(self::O2W4);
                         break;
                     case 3:
-                        $widthBT[1] = $this->validate_widthBT('O1:W3');
-                        $widthBT[2] = $this->validate_widthBT('O1:W3');
+                        $widthBT[1] = $this->validate_widthBT(self::O1W3);
+                        $widthBT[2] = $this->validate_widthBT(self::O1W3);
                         break;
                     default:
-                        $widthBT[1] = $this->validate_widthBT('O1:W2');
-                        $widthBT[2] = $this->validate_widthBT('O1:W2');
+                        $widthBT[1] = $this->validate_widthBT(self::O1W2);
+                        $widthBT[2] = $this->validate_widthBT(self::O1W2);
                         break;
                 }
                 foreach ($children as $idChild => $child) {
@@ -282,20 +288,20 @@ class OSForm extends OSDiv
             $widthBT = [];
             switch (count($btnChildren)) {
                 case 0:
-                    $widthBT[1] = "O1:W10";
+                    $widthBT[1] = self::O1W10;
                     $widthBT[2] = '';
                     break;
                 case 1:
-                    $widthBT[1] = "O1:W4";
-                    $widthBT[2] = 'O2:W4';
+                    $widthBT[1] = self::O1W4;
+                    $widthBT[2] = self::O2W4;
                     break;
                 case 2:
-                    $widthBT[1] = "O1:W3";
-                    $widthBT[2] = 'O1:W3';
+                    $widthBT[1] = self::O1W3;
+                    $widthBT[2] = self::O1W3;
                     break;
                 default:
-                    $widthBT[1] = "O1:W2";
-                    $widthBT[2] = 'O1:W2';
+                    $widthBT[1] = self::O1W2;
+                    $widthBT[2] = self::O1W2;
                     break;
             }
             if ($ord === 1) {

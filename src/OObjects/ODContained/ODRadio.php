@@ -78,6 +78,8 @@ class ODRadio extends ODContained
     protected static array  $const_check;
     protected static array  $const_type;
 
+    const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
+
 
     /**
      * ODTable constructor.
@@ -104,7 +106,7 @@ class ODRadio extends ODContained
     public function __isset(string $key): bool
     {
         if ($key == 'option') {
-            throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+            throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
         } else {
             return parent::__isset($key);
         }
@@ -119,7 +121,7 @@ class ODRadio extends ODContained
     {
         switch ($key) {
             case 'option':
-                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
             case 'checked':
             case 'value':
                 $checked = [];
@@ -158,7 +160,7 @@ class ODRadio extends ODContained
                 $val = $this->validate_widthBT($val);
                 break;
             case 'option':
-                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
                 break;
             case 'options':
                 $val = $this->validate_options($val);

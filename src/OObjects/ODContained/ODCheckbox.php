@@ -43,6 +43,8 @@ class ODCheckbox extends ODContained
         'type', 'value', 'libelYes', 'libelNo', 'natureYes', 'backgrYes', 'natureNo', 'backgrNo', 'state'
     ];
 
+    const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
+
     /**
      * @var mixed|void|null
      */
@@ -298,7 +300,7 @@ class ODCheckbox extends ODContained
                 $item['backgrNo']   = $options['backgrNo'];
                 break;
             default:
-                throw new UnexpectedValueException('Unexpected value');
+                throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
         }
         $item['check']                      = self::CHECKBOX_UNCHECK;
         $item['state']                      = $options['state'];

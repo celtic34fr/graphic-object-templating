@@ -51,6 +51,8 @@ class ODSelect extends ODContained
 
     protected static array $const_format;
 
+    const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
+
     /**
      * ODTable constructor.
      * @param string $id
@@ -76,7 +78,7 @@ class ODSelect extends ODContained
     {
         switch ($key) {
             case 'option':
-                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
             case 'selected':
             case 'value':
                 return !empty($this->getSelectedOption());
@@ -95,7 +97,7 @@ class ODSelect extends ODContained
         $properties = $this->properties;
         switch ($key) {
             case 'option':
-                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
             case 'selected':
             case 'value':
                 return $this->getSelectedOption();
@@ -132,7 +134,7 @@ class ODSelect extends ODContained
                 $val = $this->validate_format($val);
                 break;
             case 'option':
-                throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
+                throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
             default:
                 return parent::__set($key, $val);
         }
