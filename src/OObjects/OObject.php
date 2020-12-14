@@ -36,9 +36,7 @@ use UnexpectedValueException;
  * validate_event_parms(array $parms) : array
  * formatEvent(string $class, string $method, bool $stopEvent) : array
  * static getConstants() : array
- * getDisplayConstants(): array
- * getEventConstants() : array
- * getCssColorConstants() : array
+ * getConstantsGroup(): array
  */
 class OObject
 {
@@ -108,6 +106,7 @@ class OObject
     const CSS_COLOR_GRAYLIGHTER = 'grayLighter';
 
 
+    protected static array $const_global;
     protected static array $const_display;
     protected static array $const_event;
     protected static array $const_css_color;
@@ -117,7 +116,8 @@ class OObject
      * @param string $id
      * @param array $properties
      */
-    public function __construct(string $id, array $properties) {
+    public function __construct(string $id, array $properties)
+    {
         // TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT
 
         $this->properties = $this->constructor($id, $properties);
@@ -190,12 +190,12 @@ class OObject
                 $val = (bool)$val;
                 break;
             case 'inforBulle':
-                switch (true){
+                switch (true) {
                     case (is_array($val)) :
-    					$val = new OTInfoBulle($val);
-    					break;
-                    case !($val instanceOf OTInfoBulle) :
-    					throw new UnexpectedValueException("Attribut OTInfoBulle valeur fournie incorrecte");
+                        $val = new OTInfoBulle($val);
+                        break;
+                    case !($val instanceof OTInfoBulle) :
+                        throw new UnexpectedValueException("Attribut OTInfoBulle valeur fournie incorrecte");
                         break;
                     default:
                         throw new BadFunctionCallException('Unexpected value');
@@ -221,7 +221,7 @@ class OObject
      */
     public function validate_display(string $val): string
     {
-        return in_array($val, $this->getDisplayConstants(), true) ? $val : self::DISPLAY_BLOCK;
+        return in_array($val, $this->getConstantsGroup("DISPLAY_"), true) ? $val : self::DISPLAY_BLOCK;
     }
 
     /**
@@ -232,84 +232,37 @@ class OObject
     {
         // TODO: tester l'insertion d'offset
         // TODO: voir l'ajout des class CSS col-chiffre et offset-chiffre
-        if (!empty($val)) {
-            $ret = [];
-            $lxs = $lsm = $lmd = $llg = 0;
-            $ixs = $ism = $imd = $ilg = 0;
+        if (empty($val)) {
+            return false;
+        }
 
-            if (is_numeric($val) && (int)$val <= 12) {
-                $lxs = $lsm = $lmd = $llg = (int)$val;
-            } else {
-                foreach (explode(':', $val) as $item) {
-                    $key = strtoupper($item);
-                    switch (substr($key, 0, 2)) {
-                        case 'WL':
-                            $llg = (int)substr($key, 2);
-                            break;
-                        case 'WM':
-                            $lmd = (int)substr($key, 2);
-                            break;
-                        case 'WS':
-                            $lsm = (int)substr($key, 2);
-                            break;
-                        case 'WX':
-                            $lxs = (int)substr($key, 2);
-                            break;
-                        case 'OL':
-                            $ilg = (int)substr($key, 2);
-                            break;
-                        case 'OM':
-                            $imd = (int)substr($key, 2);
-                            break;
-                        case 'OS':
-                            $ism = (int)substr($key, 2);
-                            break;
-                        case 'OX':
-                            $ixs = (int)substr($key, 2);
-                            break;
-                        default:
-                            if ($key[0] == 'W') {
-                                $llg = (int)substr($key, 1);
-                                $lmd = $lsm = $lxs = $llg;
-                            } elseif ($key[0] == 'O') {
-                                $ilg = (int)substr($key, 1);
-                                $imd = $ism = $ixs = $ilg;
-                            }
-                            break;
-                    }
+        $val = [];
+        $val["WX"] = $val["WS"] = $val["WM"] = $val["WL"] = 0;
+        $val["OX"] = $val["OS"] = $val["OM"] = $val["OL"] = 0;
+        $prefixes = ["WX", "WS", "WM", "WL", "OX", "OS", "OM", "OL"];
+
+        if (is_numeric($val) and (int)$val <= 12) {
+            $val["WX"] = $val["WS"] = $val["WM"] = $val["WL"] = (int)$val;
+        } else {
+            foreach (explode(':', $val) as $item) {
+                $key = strtoupper($item);
+                $prefix = substr($key, 0, 2);
+                if (in_array($prefix, $prefixes)) {
+                    $val[$prefix] = (int)substr($key, 2);
+                } elseif (in_array($key[0], ["W", "O"])) {
+                    $val[$key[0]."L"] = (int)substr($key, 1);
+                    $val[$key[0]."M"] = $val[$key[0]."S"] = $val[$key[0]."X"] = $val[$key[0]."L"];
                 }
             }
-
-            if ($llg) {
-                $ret['WL'] = 'WL' . $llg;
-            }
-            if ($ilg) {
-                $ret['OL'] = 'OL' . $ilg;
-            }
-            if ($lmd) {
-                $ret['WM'] = 'WM' . $lmd;
-            }
-            if ($imd) {
-                $ret['OM'] = 'OM' . $imd;
-            }
-            if ($lsm) {
-                $ret['WS'] = 'WS' . $lsm;
-            }
-            if ($ism) {
-                $ret['OS'] = 'OS' . $ism;
-            }
-            if ($lxs) {
-                $ret['WX'] = 'WX' . $lxs;
-            }
-            if ($ixs) {
-                $ret['OX'] = 'OX' . $ixs;
-            }
-
-            if (!empty($ret)) {
-                return implode(':', $ret);
-            }
         }
-        return false;
+
+        foreach ($val as $key=>$value) {
+            if (!$value) { unset($val[$key]); }
+        }
+
+        if (!empty($val)) {
+            return implode(':', $val);
+        }
     }
 
     /**
@@ -400,7 +353,7 @@ class OObject
      */
     private function validate_event(string $key)
     {
-        return (in_array($key, $this->getEventConstants())) ? $key : false;
+        return (in_array($key, $this->getConstantsGroup('EVVENT_'))) ? $key : false;
     }
 
     /**
@@ -410,46 +363,45 @@ class OObject
      */
     protected function validate_event_parms(array $parms): array
     {
-        $valid = array_key_exists('class', $parms) && $parms['class'];
-        $valid = $valid && array_key_exists('method', $parms) && $parms['method'];
-        $valid = $valid && array_key_exists('stopEvent', $parms) && is_bool($parms['stopEvent']);
+        $valid = array_key_exists('class', $parms) and array_key_exists('method', $parms) and array_key_exists('stopEvent', $parms) and !empty($parms['class']) and !empty($parms['method']) and is_bool($parms['stopEvent']);
 
-        if ($valid) {
-            $class = $parms['class'];
-            $method = $parms['method'];
-
-            switch (true) {
-                case ($class === 'javascript:') :
-                    break;
-                case ($this->object === 'odbutton' && $this->type === ODButton::BUTTONTYPE_LINK):
-                    $params = [];
-                    if ($method !== 'none') {
-                        $method = explode('|', $method);
-                        foreach ($method as $item) {
-                            $item = explode(':', $item);
-                            $params[$item[0]] = $item[1];
-                        }
-                        $parms['method'] = $params;
-                    }
-                    break;
-                case (class_exists($class)):
-                    $current_obj = $this;
-                    if ($class !== $this->className) {
-                        $current_obj = new $class();
-                    }
-
-                    if (!method_exists($current_obj, $method)) {
-                        throw new BadMethodCallException("Méthode " . $method . " inconue dans l'objet " . get_class($current_obj));
-                    }
-                    break;
-                default:
-                    throw new InvalidArgumentException("Paramètrage d'évènement mal construit");
-            }
-            $parms['stopEvent'] = ($parms['stopEvent']) ? 'OUI' : 'NON';
-
-            return $parms;
+        if (!$valid) {
+            throw new InvalidArgumentException("Tableau Event incompatible");
         }
-        throw new InvalidArgumentException("Tableau Event incompatible");
+        $class = $parms['class'];
+        $method = $parms['method'];
+
+        switch (true) {
+            case ($this->object === 'odbutton' and $this->type === ODButton::BUTTONTYPE_LINK):
+                $params = [];
+                if ($method !== 'none') {
+                    $method = explode('|', $method);
+                    foreach ($method as $item) {
+                        $item = explode(':', $item);
+                        $params[$item[0]] = $item[1];
+                    }
+                    $parms['method'] = $params;
+                }
+                break;
+            case (class_exists($class)):
+                $current_obj = ($class === $this->className) ? $this : new $class;
+
+                if (!method_exists($current_obj, $method)) {
+                    throw new BadMethodCallException("Méthode " . $method . " inconue dans l'objet " . get_class($current_obj));
+                }
+                break;
+            default:
+                if (strtolower($class) !== 'javascript:') {
+                    throw new InvalidArgumentException("Paramètrage d'évènement mal construit");
+                }
+        }
+        if ($parms['stopEvent']) {
+            $parms['stopEvent'] = 'OUI';
+        } else {
+            $parms['stopEvent'] = 'NON';
+        }
+
+        return $parms;
     }
 
     /**
@@ -477,78 +429,26 @@ class OObject
      */
     public static function getConstants(): array
     {
-        return (new ReflectionClass(static::class))->getConstants();
+        if (empty(self::$const_global)) {
+            self::$const_global = (new ReflectionClass(static::class))->getConstants();
+        }
+        return self::$const_global;
     }
 
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getDisplayConstants(): array
+    public function getConstantsGroup(string $prefix): array
     {
+        $constants = getConstants();
         $retour = [];
-        if (empty($this->constants)) {
-            $this->constants = self::getConstants();
-        }
-        if (empty(self::$const_display)) {
-            foreach ($this->constants as $key => $constant) {
-                $pos = strpos($key, 'DISPLAY');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
+        foreach ($constants as $key => $constant) {
+            if (strpos($key, $prefix)) {
+                $retour[$key] = $constant;
             }
-            self::$const_display = $retour;
-        } else {
-            $retour = self::$const_display;
-        }
-
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getEventConstants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_event)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'EVENT');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_event = $retour;
-        } else {
-            $retour = self::$const_event;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getCssColorConstants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_css_color)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'CSS_COLOR');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_css_color = $retour;
-        } else {
-            $retour = self::$const_css_color;
         }
         return $retour;
     }
 
     public function validate_css_color(string $color)
     {
-        return (in_array($color, $this->getCssColorConstants())) ? $color : false;
+        return (in_array($color, $this->getConstantsGroup("CSS_COLOR_"))) ? $color : false;
     }
 }
