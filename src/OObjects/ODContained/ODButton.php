@@ -49,10 +49,6 @@ class ODButton extends ODContained
     const EVENT_CLICK = 'click';
     const EVENT_HOVER = 'hover';
 
-    private static array $const_type;
-    private static array $const_nature;
-    private static array $const_linkTarget;
-
     /**
      * ODInput constructor.
      * @param string $id
