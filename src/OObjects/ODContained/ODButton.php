@@ -21,9 +21,6 @@ use UnexpectedValueException;
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
- * getTypeConstants()
- * getNatureConstants()
- * getLinkTargetConstants()
  * validate_bType($val)
  * validate_bNature($val)
  */
@@ -91,145 +88,34 @@ class ODButton extends ODContained
      * @param $val
      * @return mixed|void|null
      */
-    public function __set(string $key, $val)
+    public function __set(string $key, string $val)
     {
-        switch ($key) {
-            case 'type':
-                $val = $this->validate_bType($val);
-                $callback = $this->event ? array_key_exists('click', $this->event) : false;
+        if (!$key) { return false; }
 
-                switch ($this->type) {
-                    case self::BUTTONTYPE_LINK:
-                        if (!empty($this->form)) {
-                            $this->form = '';
-                        }
-                        if ($callback) {
-                            $events = $this->event;
-                            $click = $events['click'];
-                            $method = $click['method'];
-                            if (!is_array($method)) {
-                                $method = explode('|', $method);
-                                $params = [];
-                                foreach ($method as $item) {
-                                    $item = explode(':', $item);
-                                    $params[$item[0]] = $item[1];
-                                }
-                                $method = $params;
-                                $click['method'] = $method;
-                                $events['click'] = $click;
-                                $this->event = $events;
-                            }
-                        }
-                        break;
-                    case self::BUTTONTYPE_RESET:
-                        if (!empty($this->form)) {
-                            $this->type = self::BUTTONTYPE_CUSTOM;
-                        }
-                        break;
-                    case self::BUTTONTYPE_SUBMIT:
-                        if ($callback && !empty($this->form)) {
-                            $this->type = self::BUTTONTYPE_CUSTOM;
-                        }
-                        break;
-                    default:
-                        throw new UnexpectedValueException('Unexpected value');
-                }
-                break;
-            case 'nature':
-                $val = $this->validate_bNature($val);
-                break;
-            case 'label':
-            case 'icon':
-                $val = (string)$val;
-                break;
-            case 'image':
-                $val = (string)$val;
-                $key = 'pathFile';
-                if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $val)) {
-                    throw new InvalidArgumentException("Fichier image inexistant (" . $val . ")");
-                }
-                $val = 'http://' . $_SERVER['HTTP_HOST'] . "/" . $val;
-                break;
-            case 'form':
-                $val = (string)$val;
-                $callback = array_key_exists('click', $this->event);
-                $i = $this->type;
-                if ($i == self::BUTTONTYPE_LINK) {
-                    if (!empty($this->form)) {
-                        $val = null;
-                    }
-                } else {
-                    $this->type = $callback ? self::BUTTONTYPE_SUBMIT : self::BUTTONTYPE_CUSTOM;
-                }
-                break;
-            default:
-                return parent::__set($key, $val);
+        if ($key === 'type') {
+            $val = $this->validate_bType($val);
+            $this->alter_event_on_callback($this->event and array_key_exists('click', $this->event));
+        } elseif ($key === 'nature') {
+            $val = $this->validate_bNature($val);
+        } elseif ($key === 'image') {
+            $key = 'pathFile';
+            if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $val)) {
+                throw new InvalidArgumentException("Fichier image inexistant (" . $val . ")");
+            }
+            $val = 'http://' . $_SERVER['HTTP_HOST'] . "/" . $val;
+        } elseif ($key === 'form') {
+            $callback = array_key_exists('click', $this->event);
+            $i = $this->type;
+            if ($i == self::BUTTONTYPE_LINK) {
+                $val = null;
+            } else {
+                $this->type = $callback ? self::BUTTONTYPE_SUBMIT : self::BUTTONTYPE_CUSTOM;
+            }
+        } else {
+            return parent::__set($key, $val);
         }
         $this->properties[$key] = $val;
         return true;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTypeConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_type)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'BUTTONTYPE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_type = $retour;
-        } else {
-            $retour = self::$const_type;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getNatureConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_nature)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'BUTTONNATURE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_nature = $retour;
-        } else {
-            $retour = self::$const_nature;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getLinkTargetConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_linkTarget)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'BUTTONLINK_TARGET');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_linkTarget = $retour;
-        } else {
-            $retour = self::$const_linkTarget;
-        }
-        return $retour;
     }
 
     /**
@@ -239,7 +125,7 @@ class ODButton extends ODContained
      */
     private function validate_bType($val)
     {
-        return in_array($val, $this->getTypeConstants(), true) ? $val : self::BUTTONTYPE_CUSTOM;
+        return in_array($val, $this->getConstantsGroup("BUTTONTYPE_"), true) ? $val : self::BUTTONTYPE_CUSTOM;
     }
 
     /**
@@ -249,6 +135,42 @@ class ODButton extends ODContained
      */
     private function validate_bNature($val)
     {
-        return in_array($val, $this->getNatureConstants(), true) ? $val : self::BUTTONNATURE_DEFAULT;
+        return in_array($val, $this->getConstantsGroup("BUTTONNATURE_"), true) ? $val : self::BUTTONNATURE_DEFAULT;
+    }
+
+    /**
+     * @param bool $callback
+     */
+    private function alter_event_on_callback(bool $callback)
+    {
+        switch ($this->type) {
+            case self::BUTTONTYPE_LINK:
+                $this->form = '';
+                if (!$callback) { break;}
+
+                $events = $this->event;
+                $method = $events['click']['method'];
+                if (is_array($method)) { break; }
+
+                $methodArray = explode('|', $method);
+                $method = [];
+                foreach ($methodArray as $item) {
+                    $item = explode(':', $item);
+                    $method[$item[0]] = $item[1];
+                }
+                $events['click']['method'] = $method;
+                $this->event = $events;
+                break;
+            case self::BUTTONTYPE_RESET:
+                $this->type = (empty($this->form)) ? $this->type : self::BUTTONTYPE_CUSTOM;
+                break;
+            case self::BUTTONTYPE_SUBMIT:
+                if ($callback and !empty($this->form)) {
+                    $this->type = self::BUTTONTYPE_CUSTOM;
+                }
+                break;
+            default:
+                throw new UnexpectedValueException('Unexpected value');
+        }
     }
 }
