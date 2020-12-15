@@ -76,79 +76,51 @@ class ODInput extends ODContained
                 break;
             case 'minLength':
                 $val = (int)$val;
-                switch (true) {
-                    case !array_key_exists('maxLength', $this->properties):
-                        throw new UnexpectedValueException("Stucture objet ODInput altérée, manque maxLength");
-                        break;
-                    case !$this->properties['maxLength']:
-                        $this->properties['maxLength'] = $val;
-                        break;
-                    case (int)$this->properties['maxLength'] < $val:
-                        throw new InvalidArgumentException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
-                        break;
-                    default:
-                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
+                if (!array_key_exists('maxLength', $this->properties)) {
+                    throw new UnexpectedValueException("Stucture objet ODInput altérée, manque maxLength");
+                } elseif ((int)$this->properties['maxLength'] < $val) {
+                    throw new InvalidArgumentException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
                 }
                 $this->properties['minLength'] = $val;
                 break;
             case 'maxLength':
                 $val = (int)$val;
-                switch (true) {
-                    case !array_key_exists('minLength', $this->properties):
-                        throw new UnexpectedValueException("Stucture objet ODInput altérée, manque minLength");
-                        break;
-                    case !$this->properties['minLength']:
-                        $this->properties['minLength'] = $val;
-                        break;
-                    case (int)$this->properties['minLength'] > $val:
-                        throw new InvalidArgumentException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
-                        break;
-                    default:
-                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
+                if (!array_key_exists('minLength', $this->properties)) {
+                    throw new UnexpectedValueException("Stucture objet ODInput altérée, manque minLength");
+                } elseif ((int)$this->properties['minLength'] > $val) {
+                    throw new InvalidArgumentException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
                 }
                 $this->properties['maxLength'] = $val;
                 break;
             case 'labelWidthBT':
                 $inputWidthBT = 0;
-                switch (true) {
-                    case (is_string($val) && strtolower($val[0]) === 'w'):
-                        $val = (int)substr($val, 1);
-                    case (is_numeric($val)):
-                        if ($val > 12) {
-                            $val = 12;
-                        }
-                        $inputWidthBT = 12 - (int)$val;
-                        break;
-                    default:
-                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
+                if (is_string($val) && strtolower($val[0]) === 'w') {
+                    $val = (int)substr($val, 1);
+                }
+                if (is_numeric($val) and ($val > 12)) {
+                    $val = 12;
                 }
 
+                $inputWidthBT = 12 - (int)$val;
                 $val = $this->validate_widthBT('W'.$val);
                 $properties['inputWidthBT'] = $this->validate_widthBT('W'.$inputWidthBT);
                 break;
             case 'inputWidthBT':
                 $labelWidthBT = 0;
-                switch (true) {
-                    case (is_string($val) && strtolower($val[0]) === 'w'):
-                        $val = (int)substr($val, 1);
-                    case (is_numeric($val)):
-                        if ($val > 12) {
-                            $val = 12;
-                        }
-                        $labelWidthBT = 12 - (int)$val;
-                        break;
-                    default:
-                        throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
+                if (is_string($val) && strtolower($val[0]) === 'w') {
+                    $val = (int)substr($val, 1);
                 }
-                if (is_numeric($val) && $val > 12) {
+                if (is_numeric($val) and ($val > 12)) {
                     $val = 12;
                 }
 
+                $labelWidthBT = 12 - (int)$val;
                 $val = $this->validate_widthBT($val);
                 $properties['labelWidthBT'] = $this->validate_widthBT($labelWidthBT);
                 break;
             case 'reveal_pwd':
-                $val = ($properties['type'] !== self::INPUTTYPE_PASSWORD) ? false : (bool)$val;
+                $val = (bool)$val;
+                if ($properties['type'] !== self::INPUTTYPE_PASSWORD) {$val = false;}
 				break;
             default:
                 return parent::__set($key, $val);
