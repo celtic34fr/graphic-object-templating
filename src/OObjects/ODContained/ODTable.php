@@ -47,9 +47,10 @@ use UnexpectedValueException;
  * showCol(int $col = null)
  * hideCol(int $col = null)
  * validate_colsWith($val, $cols)
- * getPrefixContants() : array
  * setColumnDatas(int $params, array $val) : array
  * getEventContants() : array
+ * getEventsContants() <=> getConstantsGroup("TABLE_EVENT_")
+ * getTitlePosContants() <=> getConstantsGroup("TABLETITLEPOS_")
  */
 class ODTable extends ODContained
 {
@@ -79,10 +80,6 @@ class ODTable extends ODContained
 
     const TABLEBTNSACTIONS_POSITION_DEBUT = 1;
     const TABLEBTNSACTIONS_POSITION_FIN = PHP_FLOAT_MAX;
-
-    private static array $const_prefix;
-    private static array $const_events;
-    private static array $const_titlePos;
 
     const ERR_TABLEAU_EVENT_SANS_EVT_MSG = "Tableau évènement sans code évènement";
     const ERR_TABLEAU_EVENT_BAD_BUILD_MSG = "Tableau évènement mal construit";
@@ -171,7 +168,7 @@ class ODTable extends ODContained
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
                 if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
-                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                    if (!in_array($prefix, $this->getConstantsGroup("TABLE_PREFIX_"), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new InvalidArgumentException("Attribut $key incorrect");
                     }
                     return $this->getPrefix($prefix, $params, $cols, $datas, $events, $styles);
@@ -344,7 +341,7 @@ class ODTable extends ODContained
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
                 if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
-                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                    if (!in_array($prefix, $this->getConstantsGroup("TABLE_PREFIX_"), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new InvalidArgumentException("Attribut $key incorrect");
                     }
                     return $this->issetPrefix($prefix, $params, $cols, $datas, $events, $styles);
@@ -595,10 +592,10 @@ class ODTable extends ODContained
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
                 if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
-                    if (!in_array($prefix, $this->getPrefixContants(), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
+                    if (!in_array($prefix, $this->getConstantsGroup("TABLE_PREFIX_"), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new InvalidArgumentException("Attribut $key incorrect");
                     }
-                    if (array_key_exists($prefix, $this->getPrefixContants())) {
+                    if (array_key_exists($prefix, $this->getConstantsGroup("TABLE_PREFIX_"))) {
                         list($key, $val) = $this->setPrefix($prefix, $params, $cols, $datas, $events, $styles, $val);
                     } else {
                         return parent::__set($key, $val);
@@ -942,27 +939,6 @@ class ODTable extends ODContained
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getPrefixContants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_prefix)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'TABLE_PREFIX');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_prefix = $retour;
-        } else {
-            $retour = self::$const_prefix;
-        }
-        return $retour;
-    }
-
-    /**
      * @param int $params
      * @param array $val
      * @return array
@@ -981,48 +957,6 @@ class ODTable extends ODContained
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getEventsContants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_events)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'TABLE_EVENT');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_events = $retour;
-        } else {
-            $retour = self::$const_events;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTitlePosContants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_titlePos)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'TABLETITLEPOS');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_titlePos = $retour;
-        } else {
-            $retour = self::$const_titlePos;
-        }
-        return $retour;
-    }
-
-    /**
      * @param $val
      * @return mixed|string
      * @throws ReflectionException
@@ -1033,34 +967,13 @@ class ODTable extends ODContained
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getBtnsActionsPosContants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_titlePos)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'TABLEBTNSACTIONS_POSITION');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_titlePos = $retour;
-        } else {
-            $retour = self::$const_titlePos;
-        }
-        return $retour;
-    }
-
-    /**
      * @param $val
      * @return mixed|string
      * @throws ReflectionException
      */
     private function validate_btnsActionsPos($val)
     {
-        return in_array($val, $this->getBtnsActionsPosContants(), true) ? $val : self::TABLEBTNSACTIONS_POSITION_FIN;
+        return in_array($val, $this->getConstantsGroup("TABLEBTNSACTIONS_POSITION_"), true) ? $val : self::TABLEBTNSACTIONS_POSITION_FIN;
     }
 
     public function hideBtnsActions(int $noLine)

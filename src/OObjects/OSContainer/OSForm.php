@@ -24,12 +24,12 @@ use UnexpectedValueException;
  * pubf __get(string $key)
  * pubf __set(string $key, $val)
  * pubf alter_btnsControls(string $val, array $properties) : array
- * prif getTypeBtnConstants() : array
- * prif getDispBtnConstants() : array
  * pubf addChild(OObject $child, string $mode = self::MODE_LAST, $params = null, $required = false)
  * prif validate_dispBtns($val) : string
  * pubf addBtnCtrl(ODButton $btn, int $ord)
  * prif validate_btnType(ODButton $btn) : bool
+ *
+ * getTypeBtnConstants() <=> getConstantsGroup("TYPE_BTN_")
  */
 class OSForm extends OSDiv
 {
@@ -38,9 +38,6 @@ class OSForm extends OSDiv
 
     const DISP_BTN_HORIZONTAL = 'H';
     const DISP_BTN_VERTICAL = 'V';
-
-    protected static array $const_type_btn;
-    protected static array $const_disp_btn;
 
     const O1W2 = 'O1:W2';
     const O1W3 = 'O1:W3';
@@ -187,48 +184,6 @@ class OSForm extends OSDiv
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTypeBtnConstants() : array
-    {
-        $retour = [];
-        if (empty(self::$const_type_btn)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'TYPE_BTN_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_type_btn = $retour;
-        } else {
-            $retour = self::$const_type_btn;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getDispBtnConstants() : array
-    {
-        $retour = [];
-        if (empty(self::$const_disp_btn)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'DISP_BTN_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_disp_btn = $retour;
-        } else {
-            $retour = self::$const_disp_btn;
-        }
-        return $retour;
-    }
-
-    /**
      * @param OObject $child
      * @param string $mode
      * @param null $params
@@ -255,7 +210,7 @@ class OSForm extends OSDiv
      */
     private function validate_dispBtns($val) : string
     {
-        return (in_array($val, $this->getDispBtnConstants())) ? $val : self::DISP_BTN_HORIZONTAL;
+        return (in_array($val, $this->getConstantsGroup("DISP_BTN_"))) ? $val : self::DISP_BTN_HORIZONTAL;
     }
 
     /**

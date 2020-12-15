@@ -46,23 +46,6 @@ class ODCheckbox extends ODContained
     const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
 
     /**
-     * @var mixed|void|null
-     */
-    private static $const_checktype;
-    /**
-     * @var mixed|void|null
-     */
-    private static $const_checkforme;
-    /**
-     * @var mixed|void|null
-     */
-    private static $const_checkplacement;
-    /**
-     * @var mixed|void|null
-     */
-    private static $const_checknature;
-
-    /**
      * ODInput constructor.
      * @param string $id
      */
@@ -135,49 +118,7 @@ class ODCheckbox extends ODContained
      */
     private function validate_checktype($val)
     {
-        return in_array($val, $this->getCheckTypeConstants(), true) ? $val : self::CHECKTYPE_CHECKBOX;
-    }
-
-    /**
-     * @return array|mixed|void
-     * @throws ReflectionException
-     */
-    private function getCheckTypeConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_checktype)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'CHECKTYPE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_checktype = $retour;
-        } else {
-            $retour = self::$const_checktype;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array|mixed|void
-     * @throws ReflectionException
-     */
-    private function getCheckNatureConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_checknature)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'CHECKNATURE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_checknature = $retour;
-        } else {
-            $retour = self::$const_checknature;
-        }
-        return $retour;
+        return in_array($val, $this->getConstantsGroup("CHECKTYPE_"), true) ? $val : self::CHECKTYPE_CHECKBOX;
     }
 
     /**
@@ -222,28 +163,7 @@ class ODCheckbox extends ODContained
      */
     private function validate_checkforme($val)
     {
-        return in_array($val, $this->getCheckFormeConstants(), true) ? $val : self::CHECKFORME_HORIZONTAL;
-    }
-
-    /**
-     * @return array|mixed|void
-     * @throws ReflectionException
-     */
-    private function getCheckFormeConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_checkforme)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'CHECKFORME');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_checkforme = $retour;
-        } else {
-            $retour = self::$const_checkforme;
-        }
-        return $retour;
+        return in_array($val, $this->getConstantsGroup("CHECKFORME_"), true) ? $val : self::CHECKFORME_HORIZONTAL;
     }
 
     /**
@@ -252,28 +172,7 @@ class ODCheckbox extends ODContained
      */
     private function validate_checkplacement($val)
     {
-        return in_array($val, $this->getCheckPlacementConstants(), true) ? $val : self::CHECKPLACEMENT_LEFT;
-    }
-
-    /**
-     * @return array|mixed|void
-     * @throws ReflectionException
-     */
-    private function getCheckPlacementConstants()
-    {
-        $retour = [];
-        if (empty(self::$const_checkplacement)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'CHECKPLACEMENT');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_checkplacement = $retour;
-        } else {
-            $retour = self::$const_checkplacement;
-        }
-        return $retour;
+        return in_array($val, $this->getConstantsGroup("CHECKPLACEMENT_"), true) ? $val : self::CHECKPLACEMENT_LEFT;
     }
 
     /**
@@ -452,7 +351,7 @@ class ODCheckbox extends ODContained
      */
     private function validate_checknature($val)
     {
-        return in_array($val, $this->getCheckNatureConstants(), true) ? $val : self::CHECKNATURE_DEFAULT;
+        return in_array($val, $this->getConstantsGroup("CHECKNATURE_"), true) ? $val : self::CHECKNATURE_DEFAULT;
     }
 
     /**

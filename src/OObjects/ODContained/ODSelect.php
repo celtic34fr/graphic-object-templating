@@ -41,15 +41,12 @@ use UnexpectedValueException;
  * getSelectedOption()
  * enaDispBySide() : ODSelect
  * enaDispUnder() : ODSelect
- * getFormatConstants() : array
  */
 class ODSelect extends ODContained
 {
     const ODSELECTFORMAT_BIG = " big";
     const ODSELECTFORMAT_NORMAL = '';
     const ODSELECTFORMAT_SMALL = ' small';
-
-    protected static array $const_format;
 
     const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
 
@@ -306,29 +303,8 @@ class ODSelect extends ODContained
     }
 
 
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    public function getFormatConstants(): array
-    {
-        $retour = [];
-        if (empty(self::$const_format)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'ODSELECTFORMAT_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_color = $retour;
-        } else {
-            $retour = $this->const_color;
-        }
-        return $retour;
-    }
-
     private function validate_format($val)
     {
-        return (array_key_exists($val, $this->getFormatConstants())) ? $val : self::ODSELECTFORMAT_NORMAL;
+        return (array_key_exists($val, $this->getConstantsGroup("ODSELECTFORMAT_"))) ? $val : self::ODSELECTFORMAT_NORMAL;
     }
 }

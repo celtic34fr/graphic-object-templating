@@ -40,7 +40,6 @@ use UnexpectedValueException;
  * addOption(string $value, array $options)
  * rmOption(string $value)
  * getOption(string $value)
- * getStateConstants() : array
  * setOption(string $value, array $options)
  * checkOption(string $value)
  * uncheckOption(string $value)
@@ -48,8 +47,6 @@ use UnexpectedValueException;
  * disOption(string $value)
  * enaDispBySide(): ODRadio
  * enaDispUnder() : ODRadio
- * getCheckConstants() : array
- * getTypeConstants() : array
  * validate_option(array $options) :array
  * validate_options(array $val) :array
  */
@@ -73,10 +70,6 @@ class ODRadio extends ODContained
 
     const RADIOFORM_HORIZONTAL  = 'radio-horizontal';
     const RADIOFORM_VERTICAL    = 'radio-vertical';
-
-    protected static array  $const_state;
-    protected static array  $const_check;
-    protected static array  $const_type;
 
     const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
 
@@ -323,72 +316,6 @@ class ODRadio extends ODContained
     }
 
 
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    public function getStateConstants() : array
-    {
-        $retour = [];
-        if (empty(self::$const_state)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'RADIOSTATE_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_state = $retour;
-        } else {
-            $retour = $this->const_state;
-        }
-
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    public function getCheckConstants() : array
-    {
-        $retour = [];
-        if (empty(self::$const_check)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'RADIOCHECK_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_check = $retour;
-        } else {
-            $retour = $this->const_check;
-        }
-
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTypeConstants() : array
-    {
-        $retour = [];
-        if (empty(self::$const_type)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'RADIOTYPE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_type = $retour;
-        } else {
-            $retour = $this->const_type;
-        }
-        return $retour;
-    }
-
     /**
      * @param array $options
      * @return array
@@ -399,15 +326,15 @@ class ODRadio extends ODContained
         foreach ($options as $key => $option) {
             switch ($key) {
                 case 'state':
-                    $constant = $this->getStateConstants();
+                    $constant = $this->getConstantsGroup("RADIOSTATE_");
                     $default = self::RADIOSTATE_ENABLE;
                     break;
                 case 'check':
-                    $constant = $this->getCheckConstants();
+                    $constant = $this->getConstantsGroup("RADIOCHECK_");
                     $default = self::RADIOCHECK_UNCHECK;
                     break;
                 case 'type':
-                    $constant = $this->getTypeConstants();
+                    $constant = $this->getConstantsGroup("RADIOTYPE_");
                     $default = self::RADIOTYPE_DEFAULT;
                     break;
                 case 'value':

@@ -38,8 +38,6 @@ class ODInput extends ODContained
 
     const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
 
-    private static $const_type;
-
     /**
      * ODInput constructor.
      * @param string $id
@@ -136,31 +134,6 @@ class ODInput extends ODContained
      */
     private function validate_iType($val) : string
     {
-        return (in_array($val, $this->getTypeConstants())) ? $val : self::INPUTTYPE_TEXT;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTypeConstants(): array
-    {
-        $retour = [];
-        if (empty(self::getConstants())) {
-            $this->constants = self::getConstants();
-        }
-        if (empty(self::$const_type)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'INPUTTYPE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            self::$const_type = $retour;
-        } else {
-            $retour = self::$const_type;
-        }
-
-        return $retour;
+        return (in_array($val, $this->getConstantsGroup("INPUTTYPE_"))) ? $val : self::INPUTTYPE_TEXT;
     }
 }

@@ -21,12 +21,6 @@ use ReflectionException;
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
- * getActionsConstants() : array
- * getPositionsConstants() : array
- * getTypesConstants() : array
- * getSizesConstants() : array
- * getShowsConstants() : array
- * getHidesConstants() : array
  * validate_notification_type(string $val)
  * validate_notification_size(string $val)
  * validate_notification_action(string $val)
@@ -70,14 +64,6 @@ class ODNotification extends ODContained
 
     const NOTIFICATIONICON_BOOTSTRAP    = 'bootstrap';
     const NOTIFICATIONICON_FONTAWESOME  = 'fontAwesome';
-
-    private array $const_NotificationAction;
-    private array $const_NotificationPosition;
-    private array $const_NotificationType;
-    private array $const_NotificationSize;
-    private array $const_NotificationShow;
-    private array $const_NotificationHide;
-    private array $const_NotificationIcon;
 
     /**
      * ODInput constructor.
@@ -163,139 +149,13 @@ class ODNotification extends ODContained
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getActionsConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationAction)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONACTION_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationAction = $retour;
-        } else {
-            $retour = $this->const_NotificationAction;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getPositionsConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationPosition)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONPOSITION_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationPosition = $retour;
-        } else {
-            $retour = $this->const_NotificationPosition;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTypesConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationType)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONTYPE_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationType = $retour;
-        } else {
-            $retour = $this->const_NotificationType;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getSizesConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationSize)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONSIZE_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationSize = $retour;
-        } else {
-            $retour = $this->const_NotificationSize;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getShowsConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationShow)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONSHOW_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationShow = $retour;
-        } else {
-            $retour = $this->const_NotificationShow;
-        }
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getHidesConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationHide)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONHIDE_');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationHide = $retour;
-        } else {
-            $retour = $this->const_NotificationHide;
-        }
-        return $retour;
-    }
-
-    /**
      * @param string $val
      * @return mixed|string
      * @throws ReflectionException
      */
     private function validate_notification_type(string $val)
     {
-        return in_array($val, $this->getTypesConstants(), true) ? $val : self::NOTIFICATIONTYPE_INFO;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONTYPE_"), true) ? $val : self::NOTIFICATIONTYPE_INFO;
     }
 
     /**
@@ -305,7 +165,7 @@ class ODNotification extends ODContained
      */
     private function validate_notification_size(string $val)
     {
-        return in_array($val, $this->getSizesConstants(), true) ? $val : self::NOTIFICATIONSIZE_NORMAL;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONSIZE_"), true) ? $val : self::NOTIFICATIONSIZE_NORMAL;
     }
 
     /**
@@ -315,7 +175,7 @@ class ODNotification extends ODContained
      */
     private function validate_notification_action(string $val)
     {
-        return in_array($val, $this->getActionsConstants(), true) ? $val : self::NOTIFICATIONACTION_INIT;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONACTION_"), true) ? $val : self::NOTIFICATIONACTION_INIT;
     }
 
     /**
@@ -325,7 +185,7 @@ class ODNotification extends ODContained
      */
     private function validate_notification_position(string $val)
     {
-        return in_array($val, $this->getPositionsConstants(), true) ? $val : self::NOTIFICATIONPOSITION_BR;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONPOSITION_"), true) ? $val : self::NOTIFICATIONPOSITION_BR;
     }
 
     /**
@@ -335,7 +195,7 @@ class ODNotification extends ODContained
      */
     private function validate_notification_show(string $val)
     {
-        return in_array($val, $this->getShowsConstants(), true) ? $val : self::NOTIFICATIONSHOW_ZOOMIN;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONSHOW_"), true) ? $val : self::NOTIFICATIONSHOW_ZOOMIN;
     }
 
     /**
@@ -345,7 +205,7 @@ class ODNotification extends ODContained
      */
     private function validate_notification_hide(string $val)
     {
-        return in_array($val, $this->getHidesConstants(), true) ? $val : self::NOTIFICATIONHIDE_ZOOMOUT;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONHIDE_"), true) ? $val : self::NOTIFICATIONHIDE_ZOOMOUT;
     }
 
     /**
@@ -371,27 +231,6 @@ class ODNotification extends ODContained
      */
     private function validate_notification_iconSource($val)
     {
-        return in_array($val, $this->getIconSourcesConstants(), true) ? $val : self::NOTIFICATIONICON_BOOTSTRAP;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getIconSourcesConstants() : array
-    {
-        $retour = [];
-        if (empty($this->const_NotificationIcon)) {
-            foreach (self::getConstants() as $key => $constant) {
-                $pos = strpos($key, 'NOTIFICATIONICON');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_NotificationIcon = $retour;
-        } else {
-            $retour = $this->const_NotificationIcon;
-        }
-        return $retour;
+        return in_array($val, $this->getConstantsGroup("NOTIFICATIONICON_"), true) ? $val : self::NOTIFICATIONICON_BOOTSTRAP;
     }
 }
