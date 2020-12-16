@@ -122,12 +122,12 @@ class ODSelect extends ODContained
             case 'bgcolor':
             case 'fgcolor':
                 $val = (string)$val;
-                if (!$this->validate_css_color($val)) {
+                if (!$this->validate_By_Constants($val, "CSS_COLOR_", false)) {
                     throw new UnexpectedValueException("l'attribut de couleur passé est incorrect : ".$val );
                 }
                 break;
             case 'format':
-                $val = $this->validate_format($val);
+                $val = $this->validate_By_Constants($val, "ODSELECTFORMAT_", self::ODSELECTFORMAT_NORMAL);
                 break;
             case 'option':
                 throw new BadFunctionCallException(self::ERR_BAD_FUNCTION_CALL_MSG);
@@ -300,11 +300,5 @@ class ODSelect extends ODContained
         }
 
         return $option;
-    }
-
-
-    private function validate_format($val)
-    {
-        return (array_key_exists($val, $this->getConstantsGroup("ODSELECTFORMAT_"))) ? $val : self::ODSELECTFORMAT_NORMAL;
     }
 }
