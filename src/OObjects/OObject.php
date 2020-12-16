@@ -226,32 +226,32 @@ class OObject
             return false;
         }
 
-        $val = [];
-        $val["WX"] = $val["WS"] = $val["WM"] = $val["WL"] = 0;
-        $val["OX"] = $val["OS"] = $val["OM"] = $val["OL"] = 0;
+        $rlt = [];
+        $rlt["WX"] = $rlt["WS"] = $rlt["WM"] = $rlt["WL"] = 0;
+        $rlt["OX"] = $rlt["OS"] = $rlt["OM"] = $rlt["OL"] = 0;
         $prefixes = ["WX", "WS", "WM", "WL", "OX", "OS", "OM", "OL"];
 
         if (is_numeric($val) and (int)$val <= 12) {
-            $val["WX"] = $val["WS"] = $val["WM"] = $val["WL"] = (int)$val;
+            $rlt["WX"] = $rlt["WS"] = $rlt["WM"] = $rlt["WL"] = (int)$val;
         } else {
             foreach (explode(':', $val) as $item) {
                 $key = strtoupper($item);
                 $prefix = substr($key, 0, 2);
                 if (in_array($prefix, $prefixes)) {
-                    $val[$prefix] = (int)substr($key, 2);
+                    $rlt[$prefix] = (int)substr($key, 2);
                 } elseif (in_array($key[0], ["W", "O"])) {
-                    $val[$key[0]."L"] = (int)substr($key, 1);
-                    $val[$key[0]."M"] = $val[$key[0]."S"] = $val[$key[0]."X"] = $val[$key[0]."L"];
+                    $rlt[$key[0]."L"] = (int)substr($key, 1);
+                    $rlt[$key[0]."M"] = $rlt[$key[0]."S"] = $rlt[$key[0]."X"] = $rlt[$key[0]."L"];
                 }
             }
         }
 
-        foreach ($val as $key=>$value) {
-            if (!$value) { unset($val[$key]); }
+        foreach ($rlt as $key=>$value) {
+            if (!$value) { unset($rlt[$key]); }
         }
 
         if (!empty($val)) {
-            return implode(':', $val);
+            return implode(':', $rlt);
         }
     }
 
