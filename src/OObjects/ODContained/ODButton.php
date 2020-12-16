@@ -21,8 +21,6 @@ use UnexpectedValueException;
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
- * validate_bType($val)
- * validate_bNature($val)
  */
 class ODButton extends ODContained
 {
@@ -89,10 +87,10 @@ class ODButton extends ODContained
         if (!$key) { return false; }
 
         if ($key === 'type') {
-            $val = $this->validate_bType($val);
+            $val = $this->validate_By_Constants($val, "BUTTONTYPE_", self::BUTTONTYPE_CUSTOM);
             $this->alter_event_on_callback($this->event and array_key_exists('click', $this->event));
         } elseif ($key === 'nature') {
-            $val = $this->validate_bNature($val);
+            $val = $this->validate_By_Constants($val, "BUTTONNATURE_", self::BUTTONNATURE_DEFAULT);
         } elseif ($key === 'image') {
             $key = 'pathFile';
             if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $val)) {
@@ -112,26 +110,6 @@ class ODButton extends ODContained
         }
         $this->properties[$key] = $val;
         return true;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_bType($val)
-    {
-        return in_array($val, $this->getConstantsGroup("BUTTONTYPE_"), true) ? $val : self::BUTTONTYPE_CUSTOM;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_bNature($val)
-    {
-        return in_array($val, $this->getConstantsGroup("BUTTONNATURE_"), true) ? $val : self::BUTTONNATURE_DEFAULT;
     }
 
     /**

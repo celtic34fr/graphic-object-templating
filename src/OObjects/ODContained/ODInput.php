@@ -21,7 +21,6 @@ use UnexpectedValueException;
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
- * validate_iType($val) : string
  * getTypeConstants(): array
  */
 class ODInput extends ODContained
@@ -70,7 +69,7 @@ class ODInput extends ODContained
         }
         switch ($key) {
             case 'type':
-                $val = $this->validate_iType($val);
+                $val = $this->validate_By_Constants($val, "INPUTTYPE_", self::INPUTTYPE_TEXT);
                 break;
             case 'autoFocus':
                 $val = (bool)$val;
@@ -105,14 +104,5 @@ class ODInput extends ODContained
         $properties[$key] = $val;
         $this->properties = $properties;
         return true;
-    }
-
-    /**
-     * @param $val
-     * @return string
-     */
-    private function validate_iType($val): string
-    {
-        return (in_array($val, $this->getConstantsGroup("INPUTTYPE_"))) ? $val : self::INPUTTYPE_TEXT;
     }
 }

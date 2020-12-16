@@ -21,12 +21,6 @@ use ReflectionException;
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
- * validate_notification_type(string $val)
- * validate_notification_size(string $val)
- * validate_notification_action(string $val)
- * validate_notification_position(string $val)
- * validate_notification_show(string $val)
- * validate_notification_hide(string $val)
  * enaDinstinctMessage()
  * disDinstinctMessage()
  */
@@ -99,16 +93,16 @@ class ODNotification extends ODContained
                 $val = (int) $val;
                 break;
             case 'type':
-                $val = $this->validate_notification_type($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONTYPE_", self::NOTIFICATIONTYPE_INFO);
                 break;
             case 'size':
-                $val = $this->validate_notification_size($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONSIZE_", self::NOTIFICATIONSIZE_NORMAL);
                 break;
             case 'action':
-                $val = $this->validate_notification_action($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONACTION_", self::NOTIFICATIONACTION_INIT);
                 break;
             case 'position':
-                $val = $this->validate_notification_position($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONPOSITION_", self::NOTIFICATIONPOSITION_BR);
                 break;
             case 'title':
             case 'body':
@@ -120,10 +114,10 @@ class ODNotification extends ODContained
                 }
                 break;
             case 'showClass':
-                $val = $this->validate_notification_show($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONSHOW_", self::NOTIFICATIONSHOW_ZOOMIN);
                 break;
             case 'hideClass':
-                $val = $this->validate_notification_hide($val);
+                $val = $this->validate_By_Constants($val, "NOTIFICATIONHIDE_", self::NOTIFICATIONHIDE_ZOOMOUT);
                 break;
             case 'width':
             case 'height':
@@ -149,66 +143,6 @@ class ODNotification extends ODContained
         }
         $this->properties[$key] = $val;
         return true;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_type(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONTYPE_"), true) ? $val : self::NOTIFICATIONTYPE_INFO;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_size(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONSIZE_"), true) ? $val : self::NOTIFICATIONSIZE_NORMAL;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_action(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONACTION_"), true) ? $val : self::NOTIFICATIONACTION_INIT;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_position(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONPOSITION_"), true) ? $val : self::NOTIFICATIONPOSITION_BR;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_show(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONSHOW_"), true) ? $val : self::NOTIFICATIONSHOW_ZOOMIN;
-    }
-
-    /**
-     * @param string $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_notification_hide(string $val)
-    {
-        return in_array($val, $this->getConstantsGroup("NOTIFICATIONHIDE_"), true) ? $val : self::NOTIFICATIONHIDE_ZOOMOUT;
     }
 
     /**

@@ -563,7 +563,7 @@ class ODTable extends ODContained
                 $val = (string)$val;
                 break;
             case 'titlePos':
-                $val = $this->validate_titlePos($val);
+                $val = $this->validate_By_Constants($val, "TABLETITLEPOS_", self::TABLETITLEPOS_BOTTOM_CENTER);
                 break;
             case 'btnsActions':
                 if (!is_array($val)) {
@@ -585,7 +585,7 @@ class ODTable extends ODContained
                 if (strtolower(substr($val, -2)) === 'th' && is_numeric(substr($val, 0, -2))) {
                     $val = strtolower($val);
                 } else {
-                    $val = $this->validate_btnsActionsPos($val);
+                    $val = $this->validate_By_Constants($val, "TABLEBTNSACTIONS_POSITION_", self::TABLEBTNSACTIONS_POSITION_FIN);
                 }
                 break;
             default:
@@ -954,26 +954,6 @@ class ODTable extends ODContained
             $datas[$idx][$params] = $value;
         }
         return $datas;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_titlePos($val)
-    {
-        return in_array($val, $this->getTitlePosContants(), true) ? $val : self::TABLETITLEPOS_BOTTOM_CENTER;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_btnsActionsPos($val)
-    {
-        return in_array($val, $this->getConstantsGroup("TABLEBTNSACTIONS_POSITION_"), true) ? $val : self::TABLEBTNSACTIONS_POSITION_FIN;
     }
 
     public function hideBtnsActions(int $noLine)

@@ -25,7 +25,6 @@ use UnexpectedValueException;
  * pubf __set(string $key, $val)
  * pubf alter_btnsControls(string $val, array $properties) : array
  * pubf addChild(OObject $child, string $mode = self::MODE_LAST, $params = null, $required = false)
- * prif validate_dispBtns($val) : string
  * pubf addBtnCtrl(ODButton $btn, int $ord)
  * prif validate_btnType(ODButton $btn) : bool
  *
@@ -117,7 +116,7 @@ class OSForm extends OSDiv
                 $val = $this->validate_widthBT($val);
                 break;
             case 'btnsDisplay':
-                $val = $this->validate_dispBtns($val);
+                $val = $this->validate_By_Constants($val, "DISP_BTN_", self::DISP_BTN_HORIZONTAL);
                 if ($val !== $this->properties['btnsDisplay']) {
                     $this->properties = $this->alter_btnsControls($val, $this->properties);
                 }
@@ -201,16 +200,6 @@ class OSForm extends OSDiv
             $require[$child->id] = false;
         }
         $this->required = $require;
-    }
-
-    /**
-     * @param $val
-     * @return string
-     * @throws ReflectionException
-     */
-    private function validate_dispBtns($val) : string
-    {
-        return (in_array($val, $this->getConstantsGroup("DISP_BTN_"))) ? $val : self::DISP_BTN_HORIZONTAL;
     }
 
     /**
