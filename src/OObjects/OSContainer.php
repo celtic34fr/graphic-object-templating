@@ -27,14 +27,13 @@ use UnexpectedValueException;
  * rmChild($child)
  * r_isset(string $key, OObject $child) : bool
  */
-
 class OSContainer extends OObject
 {
-    const MODE_LAST     = 'last';
-    const MODE_FIRST    = 'first';
-    const MODE_BEFORE   = 'before';
-    const MODE_AFTER    = 'after';
-    const MODE_NTH      = 'nth';
+    const MODE_LAST = 'last';
+    const MODE_FIRST = 'first';
+    const MODE_BEFORE = 'before';
+    const MODE_AFTER = 'after';
+    const MODE_NTH = 'nth';
 
     /**
      * OSContainer constructor.
@@ -52,11 +51,11 @@ class OSContainer extends OObject
      * @param array $properties
      * @return array
      */
-    public function constructor($id, $properties) : array
+    public function constructor($id, $properties): array
     {
         $properties = parent::constructor($id, $properties);
 
-        $path = __DIR__. '/../../params/oobjects/oscontainer/oscontainer.config.php';
+        $path = __DIR__ . '/../../params/oobjects/oscontainer/oscontainer.config.php';
         $odc_properties = require $path;
         return $this->merge_properties($odc_properties, $properties);
     }
@@ -66,7 +65,7 @@ class OSContainer extends OObject
      * @param string $key
      * @return bool
      */
-    public function __isset(string $key) : bool
+    public function __isset(string $key): bool
     {
         return $this->r_isset($key, $this) || array_key_exists($key, $this->properties);
     }
@@ -98,20 +97,15 @@ class OSContainer extends OObject
         switch ($key) {
             case 'form':
                 $val = (string)$val;
-				break;
+                break;
             case 'codeCSS':
                 break;
             case 'children':
                 if (is_array($val)) {
-                    $ok = true;
-                    foreach ($val as $cle=>$valeur){
+                    foreach ($val as $valeur) {
                         if (!($valeur instanceof OObject)) {
-                            $ok = false;
-                            break;
+                            throw new UnexpectedValueException("Au moins un élément tableau d'enfant non objet");
                         }
-                    }
-                    if (!$ok) {
-                        throw new UnexpectedValueException("Au moins un élément tableau d'enfant non objet");
                     }
                 } else {
                     throw new InvalidArgumentException("Valeur paramètre 'children' no tableau");
@@ -130,84 +124,83 @@ class OSContainer extends OObject
     }
 
     /**
-     * @param OObject $child    objet de type OObject (ou objet étendu) à insérer
-     * @param string $mode      mode d'insertion :
+     * @param OObject $child objet de type OObject (ou objet étendu) à insérer
+     * @param string $mode mode d'insertion :
      *                  MODE_LAST   : insertion en fin de tableau des enfants
      *                  MODE_AFTER  : insertion après l'enfant précidé par $params
      *                  MODE_BEFORE : insertion avant l'enfant précisé par $params
      *                  MODE_FIRST  : insertion en début de tableau des enfants
      *                  MODE_NTH    : insertion directe au rang donné par $params (numérique obligatoire)
-     * @param null $params      paramètre pour l'insertion :
+     * @param null $params paramètre pour l'insertion :
      *                  si numérique, correspond au d'insertion de child
      *                  si alphanumérique, clé de l'enfant avant ou après lequel on doit insérer child
      */
     public function addChild(OObject $child, string $mode = self::MODE_LAST, $params = null)
     {
-        if (!$this->existChild($child)) {
-            $children = (array) $this->children;
-            switch($mode) {
-                case self::MODE_LAST:
-                    $children[$child->id] = $child;
-                    break;
-                case self::MODE_FIRST:
-                    $newChild = [];
-                    $newChild[$child->id] = $child;
-                    $children = array_merge($newChild, $children);
-                    break;
-                case self::MODE_AFTER:
-                case self::MODE_BEFORE:
-                    if (!$params || is_numeric($params)) {
-                        throw new InvalidArgumentException("Paramètre insertion" . $params . " numeric au lieu string");
-                    }
-                    if (!array_key_exists($params, $children)) {
-                        throw new UnexpectedValueException("Paramètre nom enfant " . $params . " inconnu");
-                    }
-                    $new_children = [];
-                    foreach ($children as $name=>$oChild) {
-                        if (self::MODE_BEFORE && $name === $params) {
-                            $new_children[$name] = $oChild;
-                        }
-                        $newChildren[$child->id] = $child;
-                        if (self::MODE_AFTER && $name === $params){
-                            $new_children[$name] = $oChild;
-                        }
-                    }
-                    $children = $new_children;
-                    break;
-                case self::MODE_NTH:
-                    if (!$params || !is_int($params)) {
-                        throw new InvalidArgumentException("Rang " . $params . " non numérique");
-                    }
-                    if ((int)$params > count($this->children)) {
-                        throw new InvalidArgumentException("Numéro d'ordre " . $params . " supérieur au nombre d'enfant");
-                    }
-                    $new_children = [];
-                    $compteur = 0;
-                    foreach ($children as $name=>$oChild) {
-                        $compteur++;
-                        if ($compteur === (int)$params) {
-                            $new_children[$child->id] = $child;
-                        }
-                        $new_children[$name] = $oChild;
-                    }
-                    $children = $new_children;
-                    break;
-                default:
-                    throw new UnexpectedValueException('Unexpected value');
-            }
-            $this->children = $children;
-            return true;
+        if ($this->existChild($child)) {
+            throw new LogicException("Objet " . $child->id . " déjà présent");
         }
-        throw new LogicException("Objet ".$child->id." déjà présent");
+
+        $children = (array)$this->children;
+        $new_children = [];
+        $newChild[$child->id] = $child;
+
+        if ($mode === self::MODE_LAST) {
+            $children = array_merge($children, $new_children);
+        } elseif ($mode === self::MODE_FIRST) {
+            $children = array_merge($new_children, $children);
+        } else {
+            $children = $this->addChildABN($child, $mode, $params);
+        }
+        $this->children = $children;
+        return true;
     }
+
+    private function addChildABN($child, $mode, $params)
+    {
+        if (is_numeric($params)) {
+            throw new InvalidArgumentException("Paramètre insertion" . $params . " numeric au lieu string");
+        }
+
+        $children = $this->children;
+        $new_children = [];
+        if (!array_key_exists($params, $children)) {
+            throw new UnexpectedValueException("Paramètre nom enfant " . $params . " inconnu");
+        }
+
+        if (in_array($mode, [self::MODE_AFTER, self::MODE_BEFORE])) {
+            foreach ($children as $name => $oChild) {
+                if (self::MODE_BEFORE && $name === $params) {
+                    $new_children[$name] = $oChild;
+                }
+                $newChildren[$child->id] = $child;
+                if (self::MODE_AFTER && $name === $params) {
+                    $new_children[$name] = $oChild;
+                }
+            }
+        } else {
+            foreach ($children as $name => $oChild) {
+                for($compteur=1; $compteur < (int)$params; $compteur++) {
+                    $new_children[$name] = $oChild;
+                }
+                $new_children[$child->id] = $child;
+                for($compteur = (int)$params, $compteurMax = count($children); $compteur <= $compteurMax; $compteur++) {
+                    $new_children[$name] = $oChild;
+                }
+            }
+        }
+        return $new_children;
+    }
+
 
     /**
      * @param $child
      * @return $this|false
      * @throws Exception
      */
-	public function rmChild($child) 
-	{
+    public
+    function rmChild($child)
+    {
         if ($child instanceof OObject) {
             $child = $child->id;
         }
@@ -222,15 +215,16 @@ class OSContainer extends OObject
             $this->children = $children;
             return $this;
         }
-		return false;
-	}
+        return false;
+    }
 
     /**
      * @param $child
      * @return false|string
      * @throws Exception
      */
-    public function isChild($child)
+    public
+    function isChild($child)
     {
         if ($child instanceof OObject) {
             $child = $child->id;
@@ -249,14 +243,15 @@ class OSContainer extends OObject
      * @param string $path
      * @return string
      */
-    public function r_isChild(string $searchChild, OObject $child, string $path = '') : string
+    public
+    function r_isChild(string $searchChild, OObject $child, string $path = ''): string
     {
         $children = $child->children;
         if (array_key_exists($searchChild, $children)) {
-            $path .= '.'.$child->id;
+            $path .= '.' . $child->id;
         } else {
-            foreach ($children as $childId => $childBody) {
-                $r_path = '.'.$this->r_isChild($child, $childBody);
+            foreach ($children as $childBody) {
+                $r_path = '.' . $this->r_isChild($child, $childBody);
                 if ($r_path) {
                     $path .= '.' . $child->id . '.' . $r_path;
                 }
@@ -270,13 +265,16 @@ class OSContainer extends OObject
      * @param OObject $child
      * @return bool
      */
-    public function r_isset(string $key, OObject $child) : bool
+    public
+    function r_isset(string $key, OObject $child): bool
     {
         $r_isset = false;
         if ($child->children) {
             foreach ($child->children as $childId => $childBody) {
                 $r_isset = $r_isset || $this->r_isset($key, $childBody) || ($childId == $key);
-                if ($r_isset) { break; }
+                if ($r_isset) {
+                    break;
+                }
             }
         }
         return $r_isset;
@@ -286,7 +284,8 @@ class OSContainer extends OObject
      * @param OObject|string $child
      * @return bool
      */
-    public function existChild($child)
+    public
+    function existChild($child)
     {
         if ($child instanceof OObject) {
             $child = $child->id;
@@ -297,7 +296,8 @@ class OSContainer extends OObject
     /**
      * @return bool
      */
-    public function hasChild(): bool
+    public
+    function hasChild(): bool
     {
         return count($this->children) > 0;
     }
