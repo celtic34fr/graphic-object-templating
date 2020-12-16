@@ -113,8 +113,11 @@ class ODNotification extends ODContained
             case 'title':
             case 'body':
             case 'soundExt':
-            case 'soundPath': // TODO voir comment valider le path
+            case 'soundPath':
                 $val = (string) $val;
+                if ($val !== $this->truepath($val)) {
+                    throw new \UnexpectedValueException("cheamin d'accès aux notifications sonores inexistant");
+                }
                 break;
             case 'showClass':
                 $val = $this->validate_notification_show($val);
