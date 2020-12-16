@@ -32,9 +32,9 @@ class ODInput extends ODContained
     const INPUTTYPE_NUMBER = 'number';
     const INPUTTYPE_EMAIL = 'email';
 
-    const EVENT_CHANGE   	= 'change';
-    const EVENT_KEYPRESS   	= 'keypress';
-    const EVENT_KEYUP       = 'keyup';
+    const EVENT_CHANGE = 'change';
+    const EVENT_KEYPRESS = 'keypress';
+    const EVENT_KEYUP = 'keyup';
 
     const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
 
@@ -51,7 +51,7 @@ class ODInput extends ODContained
         $properties = $this->object_contructor($id, $properties);
         $this->properties = $properties;
 
-        if ((int)$this->widthBT ===0 ) {
+        if ((int)$this->widthBT === 0) {
             $this->widthBT = 12;
         }
     }
@@ -65,6 +65,9 @@ class ODInput extends ODContained
     public function __set(string $key, $val)
     {
         $properties = $this->properties;
+        if (!array_key_exists($key, $this->properties)) {
+            throw new UnexpectedValueException("Stucture objet ODInput altérée, manque attribut $key");
+        }
         switch ($key) {
             case 'type':
                 $val = $this->validate_iType($val);
@@ -72,39 +75,15 @@ class ODInput extends ODContained
             case 'autoFocus':
                 $val = (bool)$val;
                 break;
+            case 'maxLength':
             case 'minLength':
                 $val = (int)$val;
-                if (!array_key_exists('maxLength', $this->properties)) {
-                    throw new UnexpectedValueException("Stucture objet ODInput altérée, manque maxLength");
-                } elseif ((int)$this->properties['maxLength'] < $val) {
-                    throw new InvalidArgumentException("taille maxi (" . $this->properties['maxLength'] . ") inférieure à taille mini (" . $val . ")");
+                if (((int)$this->properties['maxLength'] < $val) or ((int)$this->properties['minLength'] > $val)) {
+                    throw new InvalidArgumentException("taille $val doit être comprise entre " . $this->properties['maxLength'] . " et " . $this->properties['minLength'] . ")");
                 }
-                $this->properties['minLength'] = $val;
-                break;
-            case 'maxLength':
-                $val = (int)$val;
-                if (!array_key_exists('minLength', $this->properties)) {
-                    throw new UnexpectedValueException("Stucture objet ODInput altérée, manque minLength");
-                } elseif ((int)$this->properties['minLength'] > $val) {
-                    throw new InvalidArgumentException("taille mini (" . $this->properties['minLength'] . ") supérieure à taille maxi (" . $val . ")");
-                }
-                $this->properties['maxLength'] = $val;
                 break;
             case 'labelWidthBT':
-                $inputWidthBT = 0;
-                if (is_string($val) && strtolower($val[0]) === 'w') {
-                    $val = (int)substr($val, 1);
-                }
-                if (is_numeric($val) and ($val > 12)) {
-                    $val = 12;
-                }
-
-                $inputWidthBT = 12 - (int)$val;
-                $val = $this->validate_widthBT('W'.$val);
-                $properties['inputWidthBT'] = $this->validate_widthBT('W'.$inputWidthBT);
-                break;
             case 'inputWidthBT':
-                $labelWidthBT = 0;
                 if (is_string($val) && strtolower($val[0]) === 'w') {
                     $val = (int)substr($val, 1);
                 }
@@ -112,14 +91,14 @@ class ODInput extends ODContained
                     $val = 12;
                 }
 
-                $labelWidthBT = 12 - (int)$val;
-                $val = $this->validate_widthBT($val);
-                $properties['labelWidthBT'] = $this->validate_widthBT($labelWidthBT);
+                $autreWidthBT = ($key === 'labelWidthBT') ? 'labelWidthBT' : 'inputWidthBT';
+                $autreWidthVal = 12 - (int)$val;
+                $val = $this->validate_widthBT('W' . $val);
+                $properties[$autreWidthBT] = $this->validate_widthBT('W' . $autreWidthVal);
                 break;
             case 'reveal_pwd':
-                $val = (bool)$val;
-                if ($properties['type'] !== self::INPUTTYPE_PASSWORD) {$val = false;}
-				break;
+                $val = ($properties['type'] !== self::INPUTTYPE_PASSWORD) ? flase : (bool)$val;
+                break;
             default:
                 return parent::__set($key, $val);
         }
@@ -132,7 +111,7 @@ class ODInput extends ODContained
      * @param $val
      * @return string
      */
-    private function validate_iType($val) : string
+    private function validate_iType($val): string
     {
         return (in_array($val, $this->getConstantsGroup("INPUTTYPE_"))) ? $val : self::INPUTTYPE_TEXT;
     }
