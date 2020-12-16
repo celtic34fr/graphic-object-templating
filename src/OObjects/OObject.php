@@ -429,18 +429,22 @@ class OObject
      */
     public static function getConstants(): array
     {
+        self::$const_global = null;
         if (empty(self::$const_global)) {
-            self::$const_global = (new ReflectionClass(static::class))->getConstants();
+            $reflectionClass = new ReflectionClass(static::class);
+            if ($reflectionClass && in_array('getConstants', get_class_methods($reflectionClass))) {
+                self::$const_global = $reflectionClass::getConstants();
+            }
         }
         return self::$const_global;
     }
 
     public function getConstantsGroup(string $prefix): array
     {
-        $constants = getConstants();
+        $constants = self::getConstants();
         $retour = [];
         foreach ($constants as $key => $constant) {
-            if (strpos($key, $prefix)) {
+            if (strpos($key, $prefix) !== false) {
                 $retour[$key] = $constant;
             }
         }
