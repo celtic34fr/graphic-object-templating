@@ -239,6 +239,9 @@ class OSForm extends OSDiv
         $btn->classes = "ospaddingV05";
         $btn->form = $this->id;
 
+        // affectation par défaut avant traitement de la valeur de widthBT
+        $btn->widthBT = 12;
+
         if ($this->btnsDisplay === self::DISP_BTN_HORIZONTAL) {
             $widthBT = [];
             switch (count($btnChildren)) {
@@ -259,21 +262,11 @@ class OSForm extends OSDiv
                     $widthBT[2] = self::O1W2;
                     break;
             }
-            if ($ord === 1) {
-                $btn->widthBT = $widthBT[1];
-            } else {
-                $btn->widthBT = $widthBT[2];
-            }
+            $btn->widthBT = $widthBT[1 + ($ord !== 1)];
             foreach ($btnChildren as $ind => $cBtn) {
-                if ($ind === 1) {
-                    $cBtn->widthBT = $widthBT[1];
-                } else {
-                    $cBtn->widthBT = $widthBT[2];
-                }
+                $cBtn->widthBT = $widthBT[1 + ($ind !== 1)];
                 $btnChildren[$ind] = $cBtn;
             }
-        } else {
-            $btn->widthBT = 12;
         }
 
         $btnChildren[$ord] = $btn;
