@@ -30,7 +30,7 @@ class ODCheckbox extends ODContained
     const CHECKNATURE_WARNING = "checkbox checkbox-warning";
     const CHECKNATURE_DANGER = "checkbox checkbox-danger";
 
-    const CHECKBOX_CHECK   = "check";
+    const CHECKBOX_CHECK = "check";
     const CHECKBOX_UNCHECK = "uncheck";
 
     const CHECKSTATE_ENABLE = 'enable';
@@ -69,11 +69,10 @@ class ODCheckbox extends ODContained
      */
     public function __get(string $key)
     {
-        if ($key == 'option') {
+        if ($key === 'option') {
             throw new BadFunctionCallException("l'attribut option inaccessible, veuillez utilise les méthode spécidfique");
-        } else {
-            return parent::__get($key);
         }
+        return parent::__get($key);
     }
 
     /**
@@ -85,7 +84,7 @@ class ODCheckbox extends ODContained
     {
         switch ($key) {
 //            case 'type':
-//                $val = $this->validate_checktype($val);
+//                $val = $this->validate_By_Constants($val, "CHECKTYPE_", self::CHECKTYPE_CHECKBOX);
 //                break;
             case 'label':
                 $val = (string)$val;
@@ -97,10 +96,10 @@ class ODCheckbox extends ODContained
                 $val = $this->validate_widthBT($val);
                 break;
             case 'forme':
-                $val = $this->validate_checkforme($val);
+                $val = $this->validate_By_Constants($val, "CHECKFORME_", self::CHECKFORME_HORIZONTAL);
                 break;
             case 'placement':
-                $val = $this->validate_checkplacement($val);
+                $val = $this->validate_By_Constants($val, "CHECKPLACEMENT_", self::CHECKPLACEMENT_LEFT);
                 break;
             case 'options':
                 $val = $this->validate_optionsArray($val);
@@ -110,15 +109,6 @@ class ODCheckbox extends ODContained
         }
         $this->properties[$key] = $val;
         return true;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     */
-    private function validate_checktype($val)
-    {
-        return in_array($val, $this->getConstantsGroup("CHECKTYPE_"), true) ? $val : self::CHECKTYPE_CHECKBOX;
     }
 
     /**
@@ -158,24 +148,6 @@ class ODCheckbox extends ODContained
     }
 
     /**
-     * @param $val
-     * @return mixed|string
-     */
-    private function validate_checkforme($val)
-    {
-        return in_array($val, $this->getConstantsGroup("CHECKFORME_"), true) ? $val : self::CHECKFORME_HORIZONTAL;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     */
-    private function validate_checkplacement($val)
-    {
-        return in_array($val, $this->getConstantsGroup("CHECKPLACEMENT_"), true) ? $val : self::CHECKPLACEMENT_LEFT;
-    }
-
-    /**
      * @param $value
      * @param array $options
      * @throws Exception
@@ -186,28 +158,28 @@ class ODCheckbox extends ODContained
         $item = [];
         switch ($options['type']) {
             case self::CHECKTYPE_CHECKBOX:
-                $item['libel']      = $options['libel'];
-                $item['nature']     = $options['nature'];
-                $item['value']      = $value;
+                $item['libel'] = $options['libel'];
+                $item['nature'] = $options['nature'];
+                $item['value'] = $value;
                 break;
             case self::CHECKTYPE_SWITCH:
-                $item['libelYes']   = $options['libelYes'];
-                $item['natureYes']  = $options['natureYes'];
-                $item['backgrYes']  = $options['backgrYes'];
-                $item['libelNo']    = $options['libelNo'];
-                $item['natureNo']   = $options['natureNo'];
-                $item['backgrNo']   = $options['backgrNo'];
+                $item['libelYes'] = $options['libelYes'];
+                $item['natureYes'] = $options['natureYes'];
+                $item['backgrYes'] = $options['backgrYes'];
+                $item['libelNo'] = $options['libelNo'];
+                $item['natureNo'] = $options['natureNo'];
+                $item['backgrNo'] = $options['backgrNo'];
                 break;
             default:
                 throw new UnexpectedValueException(self::ERR_UNEXPECTED_VALUE_MSG);
         }
-        $item['check']                      = self::CHECKBOX_UNCHECK;
-        $item['state']                      = $options['state'];
+        $item['check'] = self::CHECKBOX_UNCHECK;
+        $item['state'] = $options['state'];
         if (array_key_exists($options['value'], $this->options)) {
-            throw new LogicException("Tableau des options : clé ".$options['value']
-                                                                            ." déjà présente, insertion impossible");
+            throw new LogicException("Tableau des options : clé " . $options['value']
+                . " déjà présente, insertion impossible");
         }
-        $this->options[$options['value']]   = $item;
+        $this->options[$options['value']] = $item;
     }
 
     /**
@@ -282,7 +254,7 @@ class ODCheckbox extends ODContained
     private function validate_optionArray(array $option)
     {
         $type = array_key_exists('type', $option) ? $option['type'] : null;
-        $type = $this->validate_checktype($type);
+        $type = $this->validate_By_Constants($type, "CHECKTYPE_", self::CHECKTYPE_CHECKBOX);
         $nbFields = [];
         if ($type) {
             $maxCount =
@@ -303,10 +275,10 @@ class ODCheckbox extends ODContained
                         $params = (string)$params;
                         break;
                     case 'placement':
-                        $params = $this->validate_checkplacement($params);
+                        $params = $this->validate_By_Constants($params, "CHECKPLACEMENT_", self::CHECKPLACEMENT_LEFT);
                         break;
                     case 'nature':
-                        $params = $this->validate_checknature($params);
+                        $params = $this->validate_By_Constants($params, "CHECKNATURE_", self::CHECKNATURE_DEFAULT);
                         break;
                     case 'state':
                         $params = (bool)$params;
@@ -325,7 +297,7 @@ class ODCheckbox extends ODContained
         }
         if ($nbFields[$type] != $maxCount) {
             throw new InvalidArgumentException("tableau paramètre d'option type $type incorrect, attendu $maxCount, trouvé "
-                .(int)$nbFields[$type] );
+                . (int)$nbFields[$type]);
         }
 
         return $option;
@@ -342,16 +314,6 @@ class ODCheckbox extends ODContained
             $options[$idx] = $this->validate_optionArray($option);
         }
         return $options;
-    }
-
-    /**
-     * @param $val
-     * @return mixed|string
-     * @throws ReflectionException
-     */
-    private function validate_checknature($val)
-    {
-        return in_array($val, $this->getConstantsGroup("CHECKNATURE_"), true) ? $val : self::CHECKNATURE_DEFAULT;
     }
 
     /**
@@ -468,7 +430,7 @@ class ODCheckbox extends ODContained
     {
         $states = [];
         foreach ($this->options as $value => $option) {
-                $states[] = $value ? self::CHECKSTATE_ENABLE : self::CHECKSTATE_DISABLE;
+            $states[] = $value ? self::CHECKSTATE_ENABLE : self::CHECKSTATE_DISABLE;
         }
         return $states;
     }

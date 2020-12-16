@@ -25,7 +25,6 @@ use UnexpectedValueException;
  * __get(string $key)
  * __isset(string $key) : bool
  * __set(string $key, $val)
- * validate_display(string $val): string
  * validate_widthBT($val)
  * set_Termplate_ClassName($typeObj, $object, $template): array
  * merge_properties(array $add_properties, array $properties) : array
@@ -37,6 +36,7 @@ use UnexpectedValueException;
  * formatEvent(string $class, string $method, bool $stopEvent) : array
  * static getConstants() : array
  * getConstantsGroup(): array
+ * validate_By_Constants($val, string $cle_contants, $default)
  */
 class OObject
 {
@@ -183,7 +183,7 @@ class OObject
     {
         switch ($key) {
             case 'display':
-                $val = $this->validate_display($val);
+                $val = $this->validate_By_Constants($val, "DISPLAY_", self::DISPLAY_BLOCK);
                 break;
             case 'autoCenter':
             case 'state':
@@ -212,16 +212,6 @@ class OObject
         }
         $this->properties[$key] = $val;
         return true;
-    }
-
-    /**
-     * @param string $val
-     * @return string
-     * @throws ReflectionException
-     */
-    public function validate_display(string $val): string
-    {
-        return in_array($val, $this->getConstantsGroup("DISPLAY_"), true) ? $val : self::DISPLAY_BLOCK;
     }
 
     /**
@@ -451,11 +441,6 @@ class OObject
         return $retour;
     }
 
-    public function validate_css_color(string $color)
-    {
-        return (in_array($color, $this->getConstantsGroup("CSS_COLOR_"))) ? $color : false;
-    }
-
     /**
      * This function is to replace PHP's extremely buggy realpath().
      * @param string The original path, can be relative etc.
@@ -490,5 +475,16 @@ class OObject
 
         // put initial separator that could have been lost
         return !$unipath ? '/'.$path : $path;
+    }
+
+    /**
+     * @param $val
+     * @param string $cle_contants
+     * @param $default
+     * @return mixed
+     */
+    public function validate_By_Constants($val, string $cle_contants, $default)
+    {
+        return (in_array($val, $this->getConstantsGroup($cle_contants), true)) ? $val : $default;
     }
 }
