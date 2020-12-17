@@ -182,8 +182,6 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
     private function OSContainerValidation($object)
     {
-        var_dump(get_class_methods($object));
-
         $this->assertArrayHasKey('children', $object->properties);
         $this->assertTrue(empty($object->children));
 
