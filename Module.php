@@ -2,13 +2,15 @@
 
 namespace GraphicObjectTemplating;
 
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Session\Config\SessionConfig;
-use Zend\Session\Container;
-use Zend\Session\SessionManager;
+
+
+use Laminas\ModuleManager\Feature\AutoloaderProviderInterface;
+use Laminas\ModuleManager\Feature\ConfigProviderInterface;
+use Laminas\ModuleManager\Feature\ViewHelperProviderInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\Config\SessionConfig;
+use Laminas\Session\Container;
+use Laminas\Session\SessionManager;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
     ViewHelperProviderInterface
@@ -29,7 +31,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
      */
     public function getConfig()
     {
-        return include __DIR__ . '/../config/module.config.php';
+        // TODO: Implement getConfig() method.
     }
 
     /**
@@ -59,5 +61,10 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface,
         $sessionManager = new SessionManager($sessionConfig);
         $sessionManager->start();
         Container::setDefaultManager($sessionManager);
+    }
+
+    public function getViewHelperConfig()
+    {
+        // TODO: Implement getViewHelperConfig() method.
     }
 }
