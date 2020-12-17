@@ -116,11 +116,12 @@ class OObject
      * @param string $id
      * @param array $properties
      */
-    public function __construct(string $id, array $properties)
+    public function __construct(string $id, array $properties = null)
     {
         // TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT
-
-        $this->properties = $this->constructor($id, $properties);
+        if ($properties) {
+            $this->properties = $this->constructor($id, $properties);
+        }
     }
 
     /**
