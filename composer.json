@@ -25,7 +25,7 @@
         "laminas/laminas-test": "3.5.x-dev"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "GraphicObjectTemplating\\": "src/"
         },
         "classmap": [

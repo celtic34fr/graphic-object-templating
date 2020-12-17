@@ -119,9 +119,7 @@ class OObject
     public function __construct(string $id, array $properties = null)
     {
         // TODO : revoir la mise en oeuvre et gestion des infoBulle qque soit l'objet GOT
-        if ($properties) {
-            $this->properties = $this->constructor($id, $properties);
-        }
+        $this->properties = $this->constructor($id, $properties);
     }
 
     /**
@@ -129,8 +127,9 @@ class OObject
      * @param array $properties
      * @return array
      */
-    public function constructor(string $id, array $properties): array
+    public function constructor(string $id, array $properties = null): array
     {
+        if ($properties === null) { $properties = []; }
         $path = __DIR__ . '/../../params/oobjects/oobject.config.php';
         $this->id = $id;
         $oobj_properties = require $path;
@@ -140,6 +139,7 @@ class OObject
             }
         }
         $properties['id'] = $id;
+        $properties['name'] = ($properties['name']) ? $properties['name'] : $id;
         return $properties;
     }
 

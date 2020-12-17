@@ -2,6 +2,6 @@
 
 return [
     'children'  => [],
-    'form'      => '',
+    'form'      => null,
     'codeCss'   => [],
 ];

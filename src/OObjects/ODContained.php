@@ -24,7 +24,7 @@ class ODContained extends OObject
      * @param string $id
      * @param array $properties
      */
-    public function __construct(string $id, array $properties)
+    public function __construct(string $id, array $properties = null)
     {
         parent::__construct($id, $properties);
         $this->properties = $this->constructor($id, $properties);
@@ -35,7 +35,7 @@ class ODContained extends OObject
      * @param array $properties
      * @return array
      */
-    public function constructor($id, $properties) : array
+    public function constructor(string $id, array $properties = null) : array
     {
         $properties = parent::constructor($id, $properties);
 

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'value'         => null,
+    'valeur'        => null,
     'form'          => null,
     'default'       => null,
     'event'         => [],
