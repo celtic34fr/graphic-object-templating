@@ -19,7 +19,7 @@ class ObjectControllerTest extends AbstractControllerTestCase
         $configOverrides = [];
 
         $this->setApplicationConfig(ArrayUtils::merge(
-            [],
+            include __DIR__ . '/../../config/module.config.php',
             $configOverrides
         ));
 
