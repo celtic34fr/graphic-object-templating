@@ -339,15 +339,15 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->validate_methods($object, $methods);
     }
 
-//    public function testODTableCreation()
-//    {
-//        $object = new ODTable('test');
+    public function testODTableCreation()
+    {
+        $object = new ODTable('test');
 
 //        var_dump($object);
 //        var_dump(get_class_methods($object));
 
 //        $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
-//    }
+    }
 
 //    public function testODSelectCreation()
 //    {
