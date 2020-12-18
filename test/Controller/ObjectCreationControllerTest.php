@@ -130,17 +130,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue(is_array($object->eventChk));
         $this->assertTrue(empty($object->eventChk));
 
-        $this->assertArrayHasKey('labelWidthBT', $object->properties);
-        $this->assertTrue($object->labelWidthBT === null);
-
-        $this->assertArrayHasKey('inputWidthBT', $object->properties);
-        $this->assertTrue($object->inputWidthBT === null);
-
-        $this->assertArrayHasKey('checkLabelWidthBT', $object->properties);
-        $this->assertTrue($object->checkLabelWidthBT === null);
-
-        $this->assertArrayHasKey('checkInputWidthBT', $object->properties);
-        $this->assertTrue($object->checkInputWidthBT === null);
+        $this->validate_label_input_BT($object);
 
         $this->assertArrayHasKey('placement', $object->properties);
         $this->assertNotTrue($object->placement === null);
@@ -335,17 +325,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertNotTrue($object->place === null);
         $this->assertTrue($object->place === ODRadio::RADIOPLACEMENT_LEFT);
 
-        $this->assertArrayHasKey('labelWidthBT', $object->properties);
-        $this->assertTrue($object->labelWidthBT === null);
-
-        $this->assertArrayHasKey('inputWidthBT', $object->properties);
-        $this->assertTrue($object->inputWidthBT === null);
-
-        $this->assertArrayHasKey('checkLabelWidthBT', $object->properties);
-        $this->assertTrue($object->checkLabelWidthBT === null);
-
-        $this->assertArrayHasKey('checkInputWidthBT', $object->properties);
-        $this->assertTrue($object->checkInputWidthBT === null);
+        $this->validate_label_input_BT($object);
 
         $this->assertArrayHasKey('placement', $object->properties);
         $this->assertNotTrue($object->placement === null);
@@ -591,5 +571,20 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
                 method_exists($object, $method)
             );
         }
+    }
+
+    private function validate_label_input_BT($object)
+    {
+        $this->assertArrayHasKey('labelWidthBT', $object->properties);
+        $this->assertTrue($object->labelWidthBT === null);
+
+        $this->assertArrayHasKey('inputWidthBT', $object->properties);
+        $this->assertTrue($object->inputWidthBT === null);
+
+        $this->assertArrayHasKey('checkLabelWidthBT', $object->properties);
+        $this->assertTrue($object->checkLabelWidthBT === null);
+
+        $this->assertArrayHasKey('checkInputWidthBT', $object->properties);
+        $this->assertTrue($object->checkInputWidthBT === null);
     }
 }
