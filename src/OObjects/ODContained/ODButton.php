@@ -82,7 +82,7 @@ class ODButton extends ODContained
      * @param $val
      * @return mixed|void|null
      */
-    public function __set(string $key, string $val)
+    public function __set(string $key, $val)
     {
         if (!$key) { return false; }
 

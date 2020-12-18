@@ -339,7 +339,7 @@ class ODCheckbox extends ODContained
     /**
      *
      */
-    public function checkAllOption()
+    public function checkAllOptions()
     {
         foreach ($this->options as $value => $option) {
             $this->options[$value]['check'] = self::CHECKBOX_CHECK;
@@ -349,7 +349,7 @@ class ODCheckbox extends ODContained
     /**
      *
      */
-    public function uncheckAllOption()
+    public function uncheckAllOptions()
     {
         foreach ($this->options as $value => $option) {
             $this->options[$value]['check'] = self::CHECKBOX_UNCHECK;
@@ -359,7 +359,7 @@ class ODCheckbox extends ODContained
     /**
      * @return array
      */
-    public function getCheckedOption()
+    public function getCheckedOptions()
     {
         $checked = [];
         foreach ($this->options as $value => $option) {
