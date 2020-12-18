@@ -115,54 +115,12 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertFalse($object->acPy !== null);
 
         /** test existance méthodes */
-        $this->assertTrue(
-            method_exists($object, '__construct')
-        );
-        $this->assertTrue(
-            method_exists($object, 'constructor')
-        );
-        $this->assertTrue(
-            method_exists($object, 'object_contructor')
-        );
-        $this->assertTrue(
-            method_exists($object, '__get')
-        );
-        $this->assertTrue(
-            method_exists($object, '__isset')
-        );
-        $this->assertTrue(
-            method_exists($object, '__set')
-        );
-        $this->assertTrue(
-            method_exists($object, 'set_Termplate_ClassName')
-        );
-        $this->assertTrue(
-            method_exists($object, 'merge_properties')
-        );
-        $this->assertTrue(
-            method_exists($object, 'getEvent')
-        );
-        $this->assertTrue(
-            method_exists($object, 'setEvent')
-        );
-        $this->assertTrue(
-            method_exists($object, 'issetEvent')
-        );
-        $this->assertTrue(
-            method_exists($object, 'formatEvent')
-        );
-        $this->assertTrue(
-            method_exists($object, 'getConstants')
-        );
-        $this->assertTrue(
-            method_exists($object, 'getConstantsGroup')
-        );
-        $this->assertTrue(
-            method_exists($object, 'truepath')
-        );
-        $this->assertTrue(
-            method_exists($object, 'validate_By_Constants')
-        );
+        $methods = [
+            '__construct', 'constructor', 'object_contructor', '__get', '__isset', '__set', 'set_Termplate_ClassName',
+            'merge_properties', 'getEvent', 'setEvent', 'issetEvent', 'formatEvent', 'getConstants', 'truepath',
+            'validate_By_Constants'
+        ];
+        $this->validate_methods($object, $methods);
     }
 
     private function ODContainedValidation($object)
@@ -192,26 +150,18 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue(empty($object->codeCss));
 
         /** test existance méthodes */
-        $this->assertTrue(
-            method_exists($object, 'addChild')
-        );
-        $this->assertTrue(
-            method_exists($object, 'rmChild')
-        );
-        $this->assertTrue(
-            method_exists($object, 'isChild')
-        );
-        $this->assertTrue(
-            method_exists($object, 'r_isChild')
-        );
-        $this->assertTrue(
-            method_exists($object, 'r_isset')
-        );
-        $this->assertTrue(
-            method_exists($object, 'existChild')
-        );
-        $this->assertTrue(
-            method_exists($object, 'hasChild')
-        );
+        $methods = [
+            'addChild', 'rmChild', 'isChild', 'r_isChild', 'r_isset', 'existChild', 'hasChild'
+        ];
+        $this->validate_methods($object, $methods);
+    }
+
+    private function validate_methods($object, array $methods)
+    {
+        foreach ($methods as $method) {
+            $this->assertTrue(
+                method_exists($object, $method)
+            );
+        }
     }
 }
