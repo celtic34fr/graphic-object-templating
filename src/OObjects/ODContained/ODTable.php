@@ -111,7 +111,7 @@ class ODTable extends ODContained
      * @param array $properties
      * @return array
      */
-    public function constructor($id, $properties): array
+    public function constructor(string $id, array $properties = null): array
     {
         $properties = parent::constructor($id, $properties);
         $btnsActions = $properties['btnsActions'];

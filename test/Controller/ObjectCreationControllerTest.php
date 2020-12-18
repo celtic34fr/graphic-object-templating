@@ -9,8 +9,13 @@ use GraphicObjectTemplating\OObjects\ODContained\ODButton;
 use GraphicObjectTemplating\OObjects\ODContained\ODCheckbox;
 use GraphicObjectTemplating\OObjects\ODContained\ODInput;
 use GraphicObjectTemplating\OObjects\ODContained\ODNotification;
+use GraphicObjectTemplating\OObjects\ODContained\ODRadio;
+use GraphicObjectTemplating\OObjects\ODContained\ODSelect;
+use GraphicObjectTemplating\OObjects\ODContained\ODTable;
 use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\OObjects\OSContainer;
+use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
+use GraphicObjectTemplating\OObjects\OSContainer\OSForm;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
 
@@ -54,6 +59,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $object = new ODButton('test');
 
         $this->OObjectValidationFinal($object, 'odbutton', 'odcontained');
+        $this->ODContainedValidation($object);
 
         $this->assertArrayHasKey('type', $object->properties);
         $this->assertTrue($object->type === ODButton::BUTTONTYPE_CUSTOM);
@@ -97,6 +103,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $object = new ODCheckbox('test');
 
         $this->OObjectValidationFinal($object, 'odcheckbox', 'odcontained');
+        $this->ODContainedValidation($object);
 
         $this->assertArrayHasKey('label', $object->properties);
         $this->assertTrue($object->label === null);
@@ -159,6 +166,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $object = new ODInput('test');
 
         $this->OObjectValidationFinal($object, 'odinput', 'odcontained');
+        $this->ODContainedValidation($object);
 
         $this->assertArrayHasKey('type', $object->properties);
         $this->assertTrue($object->type === ODInput::INPUTTYPE_TEXT);
@@ -208,10 +216,8 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
     {
         $object = new ODNotification('test');
 
-//        var_dump($object);
-//        var_dump(get_class_methods($object));
-
         $this->OObjectValidationFinal($object, 'odnotification', 'odcontained');
+        $this->ODContainedValidation($object);
 
         $this->assertArrayHasKey('type', $object->properties);
         $this->assertTrue($object->type === ODNotification::NOTIFICATIONTYPE_INFO);
@@ -297,6 +303,82 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->validate_methods($object, $methods);
     }
 
+    public function testODRadioCreation()
+    {
+        $object = new ODRadio('test');
+
+        $this->OObjectValidationFinal($object, 'odradio', 'odcontained');
+        $this->ODContainedValidation($object);
+
+        $this->assertArrayHasKey('label', $object->properties);
+        $this->assertTrue($object->label === null);
+
+        $this->assertArrayHasKey('options', $object->properties);
+        $this->assertTrue(is_array($object->options));
+        $this->assertTrue(empty($object->options));
+
+        $this->assertArrayHasKey('forme', $object->properties);
+        $this->assertNotTrue($object->forme === null);
+        $this->assertTrue($object->forme === ODRadio::RADIOFORM_HORIZONTAL);
+
+        $this->assertArrayHasKey('hMargin', $object->properties);
+        $this->assertNotTrue($object->hMargin === null);
+        $this->assertTrue(is_string($object->hMargin));
+        $this->assertTrue($object->hMargin === "0");
+
+        $this->assertArrayHasKey('vMargin', $object->properties);
+        $this->assertNotTrue($object->vMargin === null);
+        $this->assertTrue(is_string($object->vMargin));
+        $this->assertTrue($object->vMargin === "0");
+
+        $this->assertArrayHasKey('place', $object->properties);
+        $this->assertNotTrue($object->place === null);
+        $this->assertTrue($object->place === ODRadio::RADIOPLACEMENT_LEFT);
+
+        $this->assertArrayHasKey('labelWidthBT', $object->properties);
+        $this->assertTrue($object->labelWidthBT === null);
+
+        $this->assertArrayHasKey('inputWidthBT', $object->properties);
+        $this->assertTrue($object->inputWidthBT === null);
+
+        $this->assertArrayHasKey('checkLabelWidthBT', $object->properties);
+        $this->assertTrue($object->checkLabelWidthBT === null);
+
+        $this->assertArrayHasKey('checkInputWidthBT', $object->properties);
+        $this->assertTrue($object->checkInputWidthBT === null);
+
+        $this->assertArrayHasKey('placement', $object->properties);
+        $this->assertNotTrue($object->placement === null);
+        $this->assertTrue($object->placement === ODRadio::RADIOPLACEMENT_LEFT);
+
+        /** test existance méthodes */
+        $methods = [
+            'enaDispBySide', 'enaDispUnder', 'addOption', 'rmOption', 'setOption',
+            'getOption', 'checkOption', 'uncheckOption', 'enaOption', 'disOption',
+        ];
+        $this->validate_methods($object, $methods);
+    }
+
+//    public function testODTableCreation()
+//    {
+//        $object = new ODTable('test');
+
+//        var_dump($object);
+//        var_dump(get_class_methods($object));
+
+//        $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
+//    }
+
+//    public function testODSelectCreation()
+//    {
+//        $object = new ODSelect('test');
+
+//        var_dump($object);
+//        var_dump(get_class_methods($object));
+
+//        $this->OObjectValidationFinal($object, 'odselect', 'odcontained');
+//    }
+
     /** OSContainer and relatives objects */
     public function testOSContainerCreation()
     {
@@ -304,6 +386,67 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
         $this->OObjectValidationOnly($object);
         $this->OSContainerValidation($object);
+    }
+
+    public function testOSDivCreation()
+    {
+        $object = new OSDiv('test');
+
+        $this->OObjectValidationFinal($object, 'osdiv', 'oscontainer');
+        $this->OSContainerValidation($object);
+    }
+
+    public function testOSFormCreation()
+    {
+        $object = new OSForm('test');
+
+//        var_dump($object);
+        var_dump(get_class_methods($object));
+
+        $this->OObjectValidationFinal($object, 'osform', 'oscontainer');
+        $this->OSContainerValidation($object);
+
+        $this->assertArrayHasKey('title', $object->properties);
+        $this->assertTrue($object->title === null);
+
+        $this->assertArrayHasKey('origine', $object->properties);
+        $this->assertTrue(is_array($object->origine));
+        $this->assertTrue(empty($object->origine));
+
+        $this->assertArrayHasKey('hidden', $object->properties);
+        $this->assertTrue(is_array($object->hidden));
+        $this->assertTrue(empty($object->hidden));
+
+        $this->assertArrayHasKey('required', $object->properties);
+        $this->assertTrue(is_array($object->required));
+        $this->assertTrue(empty($object->required));
+
+        $this->assertArrayHasKey('submitEnter', $object->properties);
+        $this->assertTrue($object->submitEnter !== null);
+        $this->assertFalse($object->submitEnter);
+
+        $this->assertArrayHasKey('btnsControls', $object->properties);
+        $this->assertTrue($object->btnsControls !== null);
+        $this->assertTrue(get_class($object->btnsControls) === OSDiv::class);
+        $this->assertTrue($object->btnsControls->id == $object->id."Ctrls");
+
+        $this->assertArrayHasKey('btnsDisplay', $object->properties);
+        $this->assertTrue($object->btnsDisplay === OSForm::DISP_BTN_HORIZONTAL);
+
+        $this->assertArrayHasKey('btnsWidthBT', $object->properties);
+        $this->assertTrue($object->btnsWidthBT === "2:2:2:2");
+
+        $this->assertArrayHasKey('widthBTbody', $object->properties);
+        $this->assertTrue($object->widthBTbody === "12:12:12:12");
+
+        $this->assertArrayHasKey('widthBTctrls', $object->properties);
+        $this->assertTrue($object->widthBTctrls === "12:12:12:12");
+
+        /** test existance méthodes */
+        $methods = [
+            'alter_btnsControls', 'addBtnCtrl',
+        ];
+        $this->validate_methods($object, $methods);
     }
 
 
@@ -419,6 +562,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue($object->default === null);
 
         $this->assertArrayHasKey('event', $object->properties);
+        $this->assertTrue(is_array($object->event));
         $this->assertTrue(empty($object->event));
     }
 

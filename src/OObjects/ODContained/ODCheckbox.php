@@ -337,23 +337,25 @@ class ODCheckbox extends ODContained
     }
 
     /**
-     *
+     * @return bool
      */
     public function checkAllOptions()
     {
         foreach ($this->options as $value => $option) {
             $this->options[$value]['check'] = self::CHECKBOX_CHECK;
         }
+        return true;
     }
 
     /**
-     *
+     * @return bool
      */
     public function uncheckAllOptions()
     {
         foreach ($this->options as $value => $option) {
             $this->options[$value]['check'] = self::CHECKBOX_UNCHECK;
         }
+        return true;
     }
 
     /**
