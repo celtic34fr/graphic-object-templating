@@ -344,7 +344,7 @@ class OObject
      */
     private function validate_event(string $key)
     {
-        return (in_array($key, $this->getConstantsGroup('EVVENT_'))) ? $key : false;
+        return (in_array($key, $this->getConstantsGroup('EVENT_'))) ? $key : false;
     }
 
     /**

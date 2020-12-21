@@ -10,7 +10,6 @@ use GraphicObjectTemplating\OObjects\ODContained\ODCheckbox;
 use GraphicObjectTemplating\OObjects\ODContained\ODInput;
 use GraphicObjectTemplating\OObjects\ODContained\ODNotification;
 use GraphicObjectTemplating\OObjects\ODContained\ODRadio;
-use GraphicObjectTemplating\OObjects\ODContained\ODSelect;
 use GraphicObjectTemplating\OObjects\ODContained\ODTable;
 use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\OObjects\OSContainer;
@@ -346,7 +345,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 //        var_dump($object);
 //        var_dump(get_class_methods($object));
 
-//        $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
+        $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
     }
 
 //    public function testODSelectCreation()
@@ -381,7 +380,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $object = new OSForm('test');
 
 //        var_dump($object);
-        var_dump(get_class_methods($object));
+//        var_dump(get_class_methods($object));
 
         $this->OObjectValidationFinal($object, 'osform', 'oscontainer');
         $this->OSContainerValidation($object);
