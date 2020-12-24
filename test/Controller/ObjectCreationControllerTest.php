@@ -343,10 +343,10 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
     {
         $object = new ODTable('test');
 
-        var_dump("**");
-        var_dump($object->properties["name"]);
+//        var_dump("**");
+//        var_dump($object->properties["name"]);
 //        var_dump(get_class_methods($object));
-        var_dump("**");
+//        var_dump("**");
 
         $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
     }
