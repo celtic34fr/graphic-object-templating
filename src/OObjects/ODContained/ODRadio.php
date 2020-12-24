@@ -33,7 +33,6 @@ use UnexpectedValueException;
  * méthodes
  * --------
  * __construct($id)         constructeur de l'objet, obligation de fournir $id identifiant de l'objet
- * constructor($id, $properties): array
  * __isset(string $key): bool
  * __get(string $key)
  * __set(string $key, $val)

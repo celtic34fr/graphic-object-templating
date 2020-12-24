@@ -19,7 +19,6 @@ use UnexpectedValueException;
  * méthodes
  * --------
  * pubf __construct($id)
- * pubf constructor($id, $properties) : array
  * pubf __isset(string $key): bool
  * pubf __get(string $key)
  * pubf __set(string $key, $val)

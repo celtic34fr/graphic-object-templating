@@ -17,11 +17,7 @@ use UnexpectedValueException;
  * méthodes
  * --------
  * __construct(string $id)
- * constructor($id, $properties) : array
- * __isset(string $key) : bool
- * __get(string $key)
  * __set(string $key, $val)
- * getTypeConstants(): array
  */
 class ODInput extends ODContained
 {

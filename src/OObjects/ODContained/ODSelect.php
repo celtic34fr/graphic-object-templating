@@ -29,11 +29,12 @@ use UnexpectedValueException;
  *
  * selected     : meta attribut retournant un tableau des valeurs des options sélectionnées
  *
- *  * méthodes
+ * méthodes
  * --------
  * __construct(string $id)
- * constructor($id, $properties) : array
+ * __isset(string $key)
  * __get(string $key)
+ * __set(string $key, $val)
  * addOption($value, array $options)
  * setOption($value, array $options)
  * rmOption($value)
@@ -41,6 +42,7 @@ use UnexpectedValueException;
  * getSelectedOption()
  * enaDispBySide() : ODSelect
  * enaDispUnder() : ODSelect
+ * validate_optionArray(array $option)
  */
 class ODSelect extends ODContained
 {

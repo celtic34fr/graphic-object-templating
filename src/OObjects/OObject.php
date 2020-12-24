@@ -22,6 +22,7 @@ use UnexpectedValueException;
  * --------
  * __construct(string $id, array $properties)
  * constructor(string $id, array $properties) : array
+ * object_contructor($id, $properties)
  * __get(string $key)
  * __isset(string $key) : bool
  * __set(string $key, $val)
@@ -29,13 +30,14 @@ use UnexpectedValueException;
  * set_Termplate_ClassName($typeObj, $object, $template): array
  * merge_properties(array $add_properties, array $properties) : array
  * getEvent($key)
- * setEvent(string $key, array $parms) : bool
+ * setEvent(string $key, array $parms): bool
  * issetEvent($key)
  * validate_event(string $key)
- * validate_event_parms(array $parms) : array
- * formatEvent(string $class, string $method, bool $stopEvent) : array
- * static getConstants() : array
- * getConstantsGroup(): array
+ * validate_event_parms(array $parms): array
+ * formatEvent(string $class, string $method, bool $stopEvent): array
+ * static getConstants(): array
+ * getConstantsGroup(string $prefix): array
+ * truepath($path)
  * validate_By_Constants($val, string $cle_contants, $default)
  */
 class OObject
@@ -430,6 +432,9 @@ class OObject
         return self::$const_global;
     }
 
+    /**
+     * 
+     */
     public function getConstantsGroup(string $prefix): array
     {
         $constants = self::getConstants();

@@ -10,6 +10,36 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\This;
 use UnexpectedValueException;
 
+/**
+ * Class ODTable
+ * @package GraphicObjectTemplating\OObjects\ODContained
+ *
+ * méthodes
+ * --------
+ * __construct(string $id)
+ * __get(string $key)
+ * getPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles)
+ * getColumnDatas(int $params): array
+ * getBtnAction(string $idBtn)
+ * __isset(string $key): bool
+ * issetPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles): bool
+ * issetBtnAction(string $idBtn): bool
+ * __set(string $key, $val)
+ * setPrefix(string $key, $params, array $cols, array $datas, array $events, array $styles, $val): array
+ * setColumnDatas(int $params, array $val): array
+ * validate_colsWithBT($val, $cols)
+ * validate_colsWith($val, $cols)
+ * setBtnAction(ODButton $btn)
+ * addBtnAction(ODButton $btn)
+ * clearBtnsActions()
+ * rmBtnAction($btnAction)
+ * showCol(int $col = null)
+ * hideCol(int $col = null)
+ * hideBtnsActions(int $noLine)
+ * showBtnsActions(int $noLine)
+ * hideBtnAction($btnAction, int $noLine)
+ * showBtnAction($btnAction, int $noLine)
+ */
 class ODTable extends ODContained
 {
     const TABLE_PREFIX_HEADER = 'h';  // entête accès à l'attribut cols

@@ -17,15 +17,19 @@ use UnexpectedValueException;
  * méthodes
  * --------
  * __construct(string $id, array $properties)
+ * constructor($id, $properties = null): array
  * __isset(string $key) : bool
  * __get(string $key)
  * __set(string $key, $val)
  *
  * addChild(OObject $child, string $mode = self::MODE_LAST, $params = null)
+ * addChildABN($child, $mode, $params)
+ * rmChild($child)
  * isChild($child) : bool
  * r_isChild(string $searchChild, OObject $child, string $path = '') : string
- * rmChild($child)
  * r_isset(string $key, OObject $child) : bool
+ * existChild($child)
+ * hasChild(): bool
  */
 class OSContainer extends OObject
 {
@@ -156,6 +160,9 @@ class OSContainer extends OObject
         return true;
     }
 
+    /**
+     * 
+     */
     private function addChildABN($child, $mode, $params)
     {
         if (is_numeric($params)) {

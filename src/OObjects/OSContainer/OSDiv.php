@@ -6,6 +6,14 @@ namespace GraphicObjectTemplating\OObjects\OSContainer;
 
 use GraphicObjectTemplating\OObjects\OSContainer;
 
+/**
+ * Class OSDiv
+ * @package GraphicObjectTemplating\OObjects\OSContainer
+ *
+ * méthodes
+ * --------
+ * __construct($id)
+ */
 class OSDiv extends OSContainer
 {
     public function __construct($id)

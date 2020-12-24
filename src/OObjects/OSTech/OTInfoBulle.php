@@ -22,12 +22,15 @@ use UnexpectedValueException;
  *
  * méthodes privées
  * ----------------
+ * validate_properties(array $properties)
  * validate_type($val)
  * validate_placement($val)
  * validate_trigger($val)
  * getTypeConstants(): array
  * getPlacementConstants(): array
  * getTriggerConstants(): array
+ * 
+ * TODO remplacer les 3 dernières méthodes par les appel à validate_By_Constants()
  */
 class OTInfoBulle
 {
@@ -136,6 +139,10 @@ class OTInfoBulle
         return array_key_exists($key, $this->properties);
     }
 
+    /**
+     * @param $properties
+     * @return mixed|string
+     */
     public function validate_properties(array $properties)
     {
         $return_properties = [];

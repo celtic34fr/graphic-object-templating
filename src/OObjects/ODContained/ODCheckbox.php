@@ -12,6 +12,37 @@ use LogicException;
 use ReflectionException;
 use UnexpectedValueException;
 
+/**
+ * Class ODCheckbox
+ * @package GraphicObjectTemplating\OObjects\ODContained
+ *
+ * méthodes
+ * --------
+ * __construct(string $id)
+ * __get(string $key)
+ * __set(string $key, $val)
+ * enaDispBySide()
+ * enaDispUnder()
+ * enaCheckBySide()
+ * enaCheckUnder()
+ * addOption($value, array $options)
+ * rmOption($value)
+ * setOption($value, array $options)
+ * getOption($value)
+ * validate_optionArray(array $option)
+ * validate_optionsArray(array $options)
+ * checkOption($value)
+ * uncheckOption($value)
+ * checkAllOptions()
+ * uncheckAllOptions()
+ * getCheckedOptions()
+ * enaOption($value)
+ * disOption($value)
+ * getStateOption($value)
+ * enaAllOptions()
+ * disAllOptions()
+ * getStateOptions()
+ */
 class ODCheckbox extends ODContained
 {
     const CHECKFORME_HORIZONTAL = 'horizontal';
