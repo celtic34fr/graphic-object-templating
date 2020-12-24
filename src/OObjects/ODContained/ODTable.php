@@ -7,7 +7,6 @@ use Exception;
 use GraphicObjectTemplating\OObjects\ODContained;
 use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
 use InvalidArgumentException;
-use phpDocumentor\Reflection\Types\This;
 use UnexpectedValueException;
 
 /**
@@ -73,6 +72,9 @@ class ODTable extends ODContained
     const ERR_PREFIX_EVT_COLUMN = "Numéro de colonne ";
     const ERR_PREFIX_EVT_LINE = "Numéro de Ligne ";
     const ERR_PREFIX_EVT_INTERSECT = "Coordonnées de cellule  ";
+
+    const OMMIT_KEYS_PREFIX = ['widthBT', 'typeObj', 'object', 'children', 'name', 'display', 'lastAccess', 'state',
+        'classes', 'autoCenter', 'acPx', 'acPy', 'className', 'template'];
 
     /**
      * ODTable constructor.
@@ -141,7 +143,7 @@ class ODTable extends ODContained
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
-                if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
+                if (!in_array($key, self::OMMIT_KEYS_PREFIX)) {
                     if (!in_array($prefix, $this->getConstantsGroup("TABLE_PREFIX_"), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new InvalidArgumentException("Attribut $key incorrect");
                     }
@@ -314,7 +316,7 @@ class ODTable extends ODContained
             default:
                 $prefix = $key[0];
                 $params = (int)substr($key, 1);
-                if (!in_array($key, ['widthBT', 'typeObj', 'object', 'children'])) {
+                if (!in_array($key, self::OMMIT_KEYS_PREFIX)) {
                     if (!in_array($prefix, $this->getConstantsGroup("TABLE_PREFIX_"), true) || (!is_numeric($params) && $prefix !== self::TABLE_PREFIX_INTERSECT)) {
                         throw new InvalidArgumentException("Attribut $key incorrect");
                     }

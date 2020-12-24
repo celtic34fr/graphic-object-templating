@@ -15,6 +15,7 @@ use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\OObjects\OSContainer;
 use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
 use GraphicObjectTemplating\OObjects\OSContainer\OSForm;
+use InvalidArgumentException;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
 
@@ -342,8 +343,10 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
     {
         $object = new ODTable('test');
 
-//        var_dump($object);
+        var_dump("**");
+        var_dump($object->properties["name"]);
 //        var_dump(get_class_methods($object));
+        var_dump("**");
 
         $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
     }
@@ -438,7 +441,6 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertFalse($object->id === 'moi');
 
         $this->assertArrayNotHasKey('test', $object->properties);
-        $this->assertTrue($object->test === false);
 
         $this->assertArrayHasKey('name', $object->properties);
         $this->assertTrue($object->name === 'test');
@@ -585,5 +587,11 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
         $this->assertArrayHasKey('checkInputWidthBT', $object->properties);
         $this->assertTrue($object->checkInputWidthBT === null);
+    }
+
+    private function invalidAttribute($object, $attrb)
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->assertTrue($object->$attrb === false);
     }
 }

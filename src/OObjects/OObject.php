@@ -422,11 +422,11 @@ class OObject
      */
     public static function getConstants(): array
     {
-        self::$const_global = null;
+        self::$const_global = [];
         if (empty(self::$const_global)) {
             $reflectionClass = new ReflectionClass(static::class);
             if ($reflectionClass && in_array('getConstants', get_class_methods($reflectionClass))) {
-                self::$const_global = $reflectionClass::getConstants();
+                self::$const_global = $reflectionClass->getConstants();
             }
         }
         return self::$const_global;
