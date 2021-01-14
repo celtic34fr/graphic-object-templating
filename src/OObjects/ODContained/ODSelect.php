@@ -58,7 +58,7 @@ class ODSelect extends ODContained
      */
     public function __construct(string $id)
     {
-        $path = __DIR__ . '/../../../params/oobjects/odcontained/odtable/odtable.config.php';
+        $path = __DIR__ . '/../../../params/oobjects/odcontained/odselect/odselect.config.php';
         $properties = require $path;
         parent::__construct($id, $properties);
 

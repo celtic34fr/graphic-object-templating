@@ -9,11 +9,11 @@ return [
 
     'options'       => [],
     'multiple'      => false,
-    'label'         => '',
-    'labelClass'    => '',
-    'selectClass'   => '',
-    'placeholder'   => '',
-    'format'        => '',
+    'label'         => null,
+    'labelClass'    => null,
+    'selectClass'   => null,
+    'placeholder'   => null,
+    'format'        => null,
     'bgColor'       => ODSelect::CSS_COLOR_WHITE,
     'fgColor'       => ODSelect::CSS_COLOR_BLACK,
 ];

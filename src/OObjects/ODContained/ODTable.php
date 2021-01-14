@@ -73,8 +73,10 @@ class ODTable extends ODContained
     const ERR_PREFIX_EVT_LINE = "Numéro de Ligne ";
     const ERR_PREFIX_EVT_INTERSECT = "Coordonnées de cellule  ";
 
-    const OMMIT_KEYS_PREFIX = ['widthBT', 'typeObj', 'object', 'children', 'name', 'display', 'lastAccess', 'state',
-        'classes', 'autoCenter', 'acPx', 'acPy', 'className', 'template'];
+    const OMMIT_KEYS_PREFIX = ['widthBT', 'typeObj', 'object', 'children', 'name', 'display', 'lastAccess', 'state', 'classes', 'autoCenter',
+        'acPx', 'acPy', 'className', 'template', 'valeur', 'form', 'default', 'event', 'title', 'titlePos', 'titleStyle', 'btnsActions',
+        'btnsActionsPos', 'btnsActionsHidden',
+    ];
 
     /**
      * ODTable constructor.
@@ -93,7 +95,6 @@ class ODTable extends ODContained
         $btnsActions = $properties['btnsActions'];
         $btnsActions->id = $this->id . 'BtnsActions';
         $properties['btnsActions'] = $btnsActions;
-
         $this->properties = $properties;
     }
 

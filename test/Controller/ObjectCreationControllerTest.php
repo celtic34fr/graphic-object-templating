@@ -11,6 +11,8 @@ use GraphicObjectTemplating\OObjects\ODContained\ODInput;
 use GraphicObjectTemplating\OObjects\ODContained\ODNotification;
 use GraphicObjectTemplating\OObjects\ODContained\ODRadio;
 use GraphicObjectTemplating\OObjects\ODContained\ODTable;
+use GraphicObjectTemplating\OObjects\ODContained\ODSelect;
+use GraphicObjectTemplating\OObjects\ODContained\ODTextarea;
 use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\OObjects\OSContainer;
 use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
@@ -21,6 +23,7 @@ use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
 
 class ObjectCreationControllerTest extends AbstractControllerTestCase
 {
+    const ALL_BT_COLS_12 = "12:12:12:12";
 
     public function setUp() : void
     {
@@ -343,23 +346,164 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
     {
         $object = new ODTable('test');
 
-//        var_dump("**");
-//        var_dump($object->properties["name"]);
-//        var_dump(get_class_methods($object));
-//        var_dump("**");
-
         $this->OObjectValidationFinal($object, 'odtable', 'odcontained');
+        $this->ODContainedValidation($object);
+
+        $this->assertArrayHasKey('colsHead', $object->properties);
+        $this->assertTrue(is_array($object->colsHead));
+        $this->assertTrue($object->colsHead === []);
+
+        $this->assertArrayHasKey('datas', $object->properties);
+        $this->assertTrue(is_array($object->datas));
+        $this->assertTrue($object->datas === []);
+
+        $this->assertArrayHasKey('events', $object->properties);
+        $this->assertTrue(is_array($object->events));
+        $this->assertTrue($object->events === []);
+
+        $this->assertArrayHasKey('styles', $object->properties);
+        $this->assertTrue(is_array($object->styles));
+        $this->assertTrue($object->styles === []);
+
+        $this->assertArrayHasKey('title', $object->properties);
+        $this->assertTrue($object->title === null);
+
+        $this->assertArrayHasKey('titlePos', $object->properties);
+        $this->assertNotTrue($object->titlePos === null);
+        $this->assertTrue($object->titlePos == ODTable::TABLETITLEPOS_BOTTOM_CENTER);
+
+        $this->assertArrayHasKey('titleStyle', $object->properties);
+        $this->assertTrue($object->titleStyle === null);
+
+        $this->assertArrayHasKey('btnsActions', $object->properties);
+        $this->assertTrue($object->btnsActions !== null);
+        $this->assertTrue(get_class($object->properties['btnsActions']) === OSDiv::class);
+        $this->assertTrue($object->properties['btnsActions']->id == $object->id."BtnsActions");
+        $this->assertTrue(is_array($object->btnsActions));
+        $this->assertTrue($object->btnsActions === []);
+
+        $this->assertArrayHasKey('btnsActionsPos', $object->properties);
+        $this->assertTrue($object->btnsActionsPos === ODTable::TABLEBTNSACTIONS_POSITION_FIN);
+
+        $this->assertArrayHasKey('btnsActionsHidden', $object->properties);
+        $this->assertTrue(is_array($object->btnsActionsHidden));
+        $this->assertTrue($object->btnsActionsHidden === []);
+
+        /** test existance méthodes */
+        $methods = [
+            'getPrefix', 'getColumnDatas', 'getBtnAction', 'issetPrefix', 'issetBtnAction', 'setPrefix', 'setColumnDatas',
+            'validate_colsWithBT', 'validate_colsWith', 'setBtnAction', 'addBtnAction', 'clearBtnsActions', 'rmBtnAction',
+            'showCol', 'hideCol', 'hideBtnsActions', 'showBtnsActions', 'hideBtnAction', 'showBtnAction',
+        ];
+        $this->validate_methods($object, $methods);
     }
 
-//    public function testODSelectCreation()
-//    {
-//        $object = new ODSelect('test');
+    public function testODSelectCreation()
+    {
+        $object = new ODSelect('test');
+
+        $this->OObjectValidationFinal($object, 'odselect', 'odcontained');
+        $this->ODContainedValidation($object);
+
+        $this->assertArrayHasKey('options', $object->properties);
+        $this->assertTrue(is_array($object->options));
+        $this->assertTrue($object->options === []);
+
+        $this->assertArrayHasKey('multiple', $object->properties);
+        $this->assertTrue($object->multiple !== null);
+        $this->assertFalse($object->multiple);
+
+        $this->assertArrayHasKey('label', $object->properties);
+        $this->assertTrue($object->label === null);
+
+        $this->assertArrayHasKey('labelClass', $object->properties);
+        $this->assertTrue($object->labelClass === null);
+
+        $this->assertArrayHasKey('selectClass', $object->properties);
+        $this->assertTrue($object->selectClass === null);
+
+        $this->assertArrayHasKey('placeholder', $object->properties);
+        $this->assertTrue($object->placeholder === null);
+
+        $this->assertArrayHasKey('format', $object->properties);
+        $this->assertTrue($object->format === null);
+
+        $this->assertArrayHasKey('bgColor', $object->properties);
+        $this->assertNotTrue($object->bgColor === null);
+        $this->assertTrue($object->bgColor == ODSelect::CSS_COLOR_WHITE);
+
+        $this->assertArrayHasKey('fgColor', $object->properties);
+        $this->assertNotTrue($object->fgColor === null);
+        $this->assertTrue($object->fgColor == ODSelect::CSS_COLOR_BLACK);
+
+        /** test existance méthodes */
+        $methods = [
+            'addOption', 'setOption', 'rmOption', 'getStateOption', 'getSelectedOption', 'enaDispBySide', 'enaDispUnder',
+            'validate_optionArray',
+        ];
+        $this->validate_methods($object, $methods);
+    }
+
+    public function testODTextareaCreation()
+    {
+        $object = new ODTextarea('test');
 
 //        var_dump($object);
 //        var_dump(get_class_methods($object));
 
-//        $this->OObjectValidationFinal($object, 'odselect', 'odcontained');
-//    }
+        $this->OObjectValidationFinal($object, 'odtextarea', 'odcontained');
+        $this->ODContainedValidation($object);
+
+        $this->assertArrayHasKey('cols', $object->properties);
+        $this->assertTrue($object->cols === null);
+
+        $this->assertArrayHasKey('rows', $object->properties);
+        $this->assertTrue($object->rows === null);
+
+        $this->assertArrayHasKey('maxLength', $object->properties);
+        $this->assertTrue($object->maxLength === null);
+
+        $this->assertArrayHasKey('placeholder', $object->properties);
+        $this->assertTrue($object->placeholder === null);
+
+        $this->assertArrayHasKey('text', $object->properties);
+        $this->assertTrue($object->text === null);
+
+        $this->assertArrayHasKey('event', $object->properties);
+        $this->assertTrue(is_array($object->event));
+        $this->assertTrue($object->event === []);
+
+        $this->assertArrayHasKey('textareaWidth', $object->properties);
+        $this->assertTrue($object->textareaWidth === null);
+
+        $this->assertArrayHasKey('labelWidthBT', $object->properties);
+        $this->assertTrue($object->labelWidthBT === null);
+
+        $this->assertArrayHasKey('resize', $object->properties);
+        $this->assertNotTrue($object->resize === null);
+        $this->assertTrue($object->resize == ODTextarea::TEXTAREA_RESIZEBOTH);
+
+        $this->assertArrayHasKey('wysiwyg', $object->properties);
+        $this->assertTrue($object->wysiwyg !== null);
+        $this->assertFalse($object->wysiwug);
+
+        $this->assertArrayHasKey('plugins', $object->properties);
+        $this->assertTrue($object->plugins === null);
+
+        $this->assertArrayHasKey('toolbar', $object->properties);
+        $this->assertTrue($object->toolbar === null);
+
+        $this->assertArrayHasKey('imgListUrl', $object->properties);
+        $this->assertTrue($object->imgListUrl === null);
+
+        $this->assertArrayHasKey('lnkListUrl', $object->properties);
+        $this->assertTrue($object->lnkListUrl === null);
+
+        /** test existance méthodes */
+        $methods = [
+        ];
+        $this->validate_methods($object, $methods);
+    }
 
     /** OSContainer and relatives objects */
     public function testOSContainerCreation()
@@ -381,9 +525,6 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
     public function testOSFormCreation()
     {
         $object = new OSForm('test');
-
-//        var_dump($object);
-//        var_dump(get_class_methods($object));
 
         $this->OObjectValidationFinal($object, 'osform', 'oscontainer');
         $this->OSContainerValidation($object);
@@ -419,10 +560,10 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue($object->btnsWidthBT === "2:2:2:2");
 
         $this->assertArrayHasKey('widthBTbody', $object->properties);
-        $this->assertTrue($object->widthBTbody === "12:12:12:12");
+        $this->assertTrue($object->widthBTbody === self::ALL_BT_COLS_12);
 
         $this->assertArrayHasKey('widthBTctrls', $object->properties);
-        $this->assertTrue($object->widthBTctrls === "12:12:12:12");
+        $this->assertTrue($object->widthBTctrls === self::ALL_BT_COLS_12);
 
         /** test existance méthodes */
         $methods = [
@@ -528,7 +669,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
         $this->assertArrayHasKey('widthBT', $object->properties);
         $this->assertNotFalse($object->widthBT !== null);
-        $this->assertTrue($object->widthBT === "12:12:12:12");
+        $this->assertTrue($object->widthBT === self::ALL_BT_COLS_12);
     }
 
     private function ODContainedValidation($object)
