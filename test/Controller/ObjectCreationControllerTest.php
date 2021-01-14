@@ -501,6 +501,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
         /** test existance méthodes */
         $methods = [
+            'enaDispBySide', 'enaDispUnder', 'enaResize', 'disResize', 'enaVertiResize', 'enaHorizResize',
         ];
         $this->validate_methods($object, $methods);
     }

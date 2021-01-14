@@ -9,38 +9,7 @@ use GraphicObjectTemplating\OObjects\ODContained;
  * @package ZF3_GOT\OObjects\ODContained
  *
  * __construct(string $id)
- * __get($key)
- * enaDispBySide()
- * enaDispUnder()
- *
- * getCols()
- * setCols($cols)
- * getRows()
- * setRows($rows)
- * getMaxLength()
- * setMaxLength($maxLength)
- * setPlaceholder   : affecte le texte à montrer quand la zone de saisie est vide (l'invite de saisie)
- * getPlaceholder   : restitue le texte affiché quand la zone de saisie est vide
- * setText($text)
- * getText()
- * evtChange        : évènement changement de valeur, paramètre callback
- *      callback : "nomModule/nomObjet/nomMéthode"
- *          si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
- *          si nomModule == 'Object' :
- *              si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"
- *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/ODContainer/nomObjet/nomMéthode"
- * disChange        : désactivation de l'évènement changement de valeur
- * evtKeyup         : évènement touche frappée (à chaque saisie de caractère), paramètre callback
- *      callback : "nomModule/nomObjet/nomMéthode"
- *          si nomObjet contient 'Controller' -> "nomModule/Controller/nomObjet/nomMéthode"
- *          si nomModule == 'Object' :
- *              si nomObjet commence par 'OD' -> "GraphicObjectTemplating/Objects/ODContained/nomObjet/nomMéthode"
- *              si nomObjet commence par 'OS' -> "GraphicObjectTemplating/Objects/ODContainer/nomObjet/nomMéthode"
- * disKeyup         : désactivation de l'évènement touche frappée
- * setLabel         : attribut un label, une étiquette à la zone de saisie
- * getLabel         : restitue le label, l'étiquette affectée à la zone de saisie
- * setLabelWidthBT  : attribut une largeur (Bootstrap Twitter) au label (tableau de valeur en rapport des 4 médias gérés)
- * getLabelWidthBT  : restitue la largeur (Bootstrap Twitter) du label (tableau de valeur en rapport des 4 médias gérés)
+ * __set($key, $val)
  * enaDispBySide()  : disposition label à coté zone de saisie Textarea
  * enaDispUnder()   : disposition label, et dessous zone de saisie Textarea
  *                  ATTENTION : un setLabelWidthBT après ces 2 dernières commandes annule l'effet attendu pour exécuter
@@ -78,17 +47,45 @@ class ODTextarea extends ODContained
 
     /**
      * @param string $key
+     * @param $val
      * @return mixed|void|null
      */
-    public function __get(string $key)
+    public function __set(string $key, $val)
     {
-        $properties = $this->properties;
         switch ($key) {
-            case 'enaResize':
+            case 'cols':
+            case 'rows':
+            case 'maxLength':
+                $val = (int) $val;
+                $val = ($val === 0) ? "" : $val;
+                break;
+            case 'placeholder':
+            case 'text':
+            case 'label':
+                $val = (string) $val;
+                break;
+            case 'labelWidthBT':
+            case 'textareaWidthBT':
+                if (is_string($val) && strtolower($val[0]) === 'w') {
+                    $val = (int)substr($val, 1);
+                }
+                if (is_numeric($val) and ($val > 12)) {
+                    $val = 12;
+                }
+
+                $autreWidthBT = ($key === 'labelWidthBT') ? 'labelWidthBT' : 'textareaWidthBT';
+                $autreWidthVal = 12 - (int)$val;
+                $val = $this->validate_widthBT('W' . $val);
+                $properties[$autreWidthBT] = $this->validate_widthBT('W' . $autreWidthVal);
+                break;
+            case 'resize':
+                $val = $this->validate_By_Constants($val, "TEXTAREA_RESIZE", self::TEXTAREA_RESIZEBOTH);
                 break;
             default:
-                return parent::__get($key);
+                return parent::__set($key, $val);
         }
+        $this->properties[$key] = $val;
+        return true;
     }
 
     /**
@@ -114,240 +111,11 @@ class ODTextarea extends ODContained
     }
 
     /**
-     * @return bool
-     */
-    /* public function getCols()
-    {
-        $properties = $this->getProperties();
-        return (array_key_exists('cols', $properties) ? $properties['cols'] : false);
-    } */
-
-    /**
-     * @param $cols
-     * @return $this
-     */
-    public function setCols($cols)
-    {
-        $cols = (int) $cols;
-        $properties = $this->getProperties();
-
-        if ($cols > 0) { $properties['cols'] = $cols; }
-        else { $properties['cols'] = ""; }
-
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getRows()
-    {
-        $properties = $this->getProperties();
-        return (array_key_exists('rows', $properties) ? $properties['rows'] : false);
-    } */
-
-    /**
-     * @param $rows
-     * @return $this
-     */
-    public function setRows($rows)
-    {
-        $rows = (int) $rows;
-        $properties = $this->getProperties();
-
-        if ($rows > 0) { $properties['rows'] = $rows; }
-        else { $properties['rows'] = ""; }
-
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getMaxLength()
-    {
-        $properties = $this->getProperties();
-        return (array_key_exists('maxLength', $properties) ? $properties['maxLength'] : false);
-    } */
-
-    /**
-     * @param $maxLength
-     * @return $this
-     */
-    public function setMaxLength($maxLength)
-    {
-        $maxLength = (int) $maxLength;
-        $properties = $this->getProperties();
-
-        if ($maxLength > 0) { $properties['maxLength'] = $maxLength; }
-        else { $properties['maxLength'] = ""; }
-
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @param $placeholder
-     * @return $this
-     */
-    public function setPlaceholder($placeholder)
-    {
-        $placeholder = (string) $placeholder;
-        $properties                = $this->getProperties();
-        $properties['placeholder'] = $placeholder;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getPlaceholder()
-    {
-        $properties                = $this->getProperties();
-        return ((!empty($properties['placeholder'])) ? $properties['placeholder'] : false) ;
-    } */
-
-    /**
-     * @param $text
-     * @return $this
-     */
-    public function setText($text)
-    {
-        $text = (string) $text;
-        $properties         = $this->getProperties();
-        $properties['text'] = $text;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getText()
-    {
-        $properties                = $this->getProperties();
-        return ((!empty($properties['text'])) ? $properties['text'] : false) ;
-    } */
-
-    /**
-     * @param $class
-     * @param $method
-     * @param bool $stopEvent
-     * @return $this
-     */
-    public function evtChange($class, $method, $stopEvent = true)
-    {
-        $properties = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event']= [];
-        $properties['event']['change'] = [];
-        $properties['event']['change']['class'] = $class;
-        $properties['event']['change']['method'] = $method;
-        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disChange()
-    {
-        $properties             = $this->getProperties();
-        if (isset($properties['event']['change'])) unset($properties['event']['change']);
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @param $class
-     * @param $method
-     * @param bool $stopEvent
-     * @return $this
-     */
-    public function evtKeyup($class, $method, $stopEvent = true)
-    {
-        $properties = $this->getProperties();
-        if(!isset($properties['event'])) $properties['event']= [];
-        $properties['event']['keyup'] = [];
-        $properties['event']['keyup']['class'] = $class;
-        $properties['event']['keyup']['method'] = $method;
-        $properties['event']['keyup']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disKeyup()
-    {
-        $properties             = $this->getProperties();
-        if (isset($properties['event']["keyup"])) unset($properties['event']["keyup"]);
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @param $label
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $label = (string) $label;
-        $properties          = $this->getProperties();
-        $properties['label'] = $label;
-        $this->setProperties($properties);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getLabel()
-    {
-        $properties            = $this->getProperties();
-        return ((array_key_exists('label', $properties)) ? $properties['label'] : false);
-    } */
-
-    /**
-     * @param $widthBT
-     * @return $this|bool
-     */
-    public function setLabelWidthBT($widthBT)
-    {
-        if (!empty($labelWidthBT)) {
-            $widthLabTxtBT = self::formatLabelBT($labelWidthBT);
-
-            $properties = $this->getProperties();
-            $properties['labelWidthBT']     = $widthLabTxtBT['labelWidthBT'];
-            $properties['textareaWidthBT']  = $widthLabTxtBT['textareaWidthBT'];
-            $this->setProperties($properties);
-            return $this;
-        }
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    /* public function getLabelWidthBT()
-    {
-        $properties                = $this->getProperties();
-        return ((!empty($properties['labelWidthBT'])) ? $properties['labelWidthBT'] : false) ;
-    } */
-
-    /**
      * @return $this
      */
     public function enaResize()
     {
-        $properties = $this->getProperties();
-        $properties['resize'] = self::TEXTAREA_RESIZEBOTH;
-
-        $this->setProperties($properties);
+        $this->resize = self::TEXTAREA_RESIZEBOTH;
         return $this;
     }
 
@@ -356,10 +124,7 @@ class ODTextarea extends ODContained
      */
     public function disResize()
     {
-        $properties = $this->getProperties();
-        $properties['resize'] = self::TEXTAREA_RESIZENONE;
-
-        $this->setProperties($properties);
+        $this->resize = self::TEXTAREA_RESIZENONE;
         return $this;
     }
 
@@ -368,10 +133,7 @@ class ODTextarea extends ODContained
      */
     public function enaVertiResize()
     {
-        $properties = $this->getProperties();
-        $properties['resize'] = self::TEXTAREA_RESIZEVERTI;
-
-        $this->setProperties($properties);
+        $this->resize = self::TEXTAREA_RESIZEVERTI;
         return $this;
     }
 
@@ -380,36 +142,73 @@ class ODTextarea extends ODContained
      */
     public function enaHorizResize()
     {
-        $properties = $this->getProperties();
-        $properties['resize'] = self::TEXTAREA_RESIZEHORIZ;
-
-        $this->setProperties($properties);
+        $this->resize = self::TEXTAREA_RESIZEHORIZ;
         return $this;
     }
 
-    /** **************************************************************************************************
-     * méthodes privées de la classe                                                                     *
-     * *************************************************************************************************** */
+
+
+
+
+
+    /** procédure mis en commentaire pour vérification, voire suppression */
+
 
     /**
-     * @return array
-     * @throws \ReflectionException
+     * @param $class
+     * @param $method
+     * @param bool $stopEvent
+     * @return $this
      */
-    private function getResizeConstants()
-    {
-        $retour = [];
-        if (empty($this->const_resize)) {
-            $constants = $this->getConstants();
-            foreach ($constants as $key => $constant) {
-                $pos = strpos($key, 'TEXTAREA_RESIZE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_resize = $retour;
-        } else {
-            $retour = $this->const_resize;
-        }
-        return $retour;
-    }
+//    public function evtChange($class, $method, $stopEvent = true)
+//    {
+//        $properties = $this->getProperties();
+//        if(!isset($properties['event'])) $properties['event']= [];
+//        $properties['event']['change'] = [];
+//        $properties['event']['change']['class'] = $class;
+//        $properties['event']['change']['method'] = $method;
+//        $properties['event']['change']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+//        $this->setProperties($properties);
+//        return $this;
+//    }
+
+    /**
+     * @return $this
+     */
+//    public function disChange()
+//    {
+//        $properties             = $this->getProperties();
+//        if (isset($properties['event']['change'])) unset($properties['event']['change']);
+//        $this->setProperties($properties);
+//        return $this;
+//    }
+
+    /**
+     * @param $class
+     * @param $method
+     * @param bool $stopEvent
+     * @return $this
+     */
+//    public function evtKeyup($class, $method, $stopEvent = true)
+//    {
+//        $properties = $this->getProperties();
+//        if(!isset($properties['event'])) $properties['event']= [];
+//        $properties['event']['keyup'] = [];
+//        $properties['event']['keyup']['class'] = $class;
+//        $properties['event']['keyup']['method'] = $method;
+//        $properties['event']['keyup']['stopEvent'] = ($stopEvent) ? 'OUI' : 'NON';
+//        $this->setProperties($properties);
+//        return $this;
+//    }
+
+    /**
+     * @return $this
+     */
+//    public function disKeyup()
+//    {
+//        $properties             = $this->getProperties();
+//        if (isset($properties['event']["keyup"])) unset($properties['event']["keyup"]);
+//        $this->setProperties($properties);
+//        return $this;
+//    }
 }
