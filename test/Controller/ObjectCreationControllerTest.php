@@ -473,8 +473,8 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue(is_array($object->event));
         $this->assertTrue($object->event === []);
 
-        $this->assertArrayHasKey('textareaWidth', $object->properties);
-        $this->assertTrue($object->textareaWidth === null);
+        $this->assertArrayHasKey('textareaWidthBT', $object->properties);
+        $this->assertTrue($object->textareaWidthBT === null);
 
         $this->assertArrayHasKey('labelWidthBT', $object->properties);
         $this->assertTrue($object->labelWidthBT === null);
