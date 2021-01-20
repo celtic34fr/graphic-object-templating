@@ -253,9 +253,12 @@ class OObject
             if (!$value) { unset($rlt[$key]); }
         }
 
-        if (!empty($val)) {
-            return implode(':', $rlt);
+        $rlt_str = "";
+        foreach ($rlt as $key=>$value) {
+            $rlt_str .= $key . sprintf("%02d", $value) . ':';
         }
+        if ($rlt_str) { $rlt_str = substr($rlt_str, 0, strlen($rlt_str) - 1); }
+        return $rlt_str;
     }
 
     /**

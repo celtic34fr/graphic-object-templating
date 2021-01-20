@@ -23,7 +23,7 @@ use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
 
 class ObjectCreationControllerTest extends AbstractControllerTestCase
 {
-    const ALL_BT_COLS_12 = "12:12:12:12";
+    const ALL_BT_COLS_12 = "WL12:WM12:WS12:WX12";
 
     public function setUp() : void
     {
@@ -558,7 +558,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue($object->btnsDisplay === OSForm::DISP_BTN_HORIZONTAL);
 
         $this->assertArrayHasKey('btnsWidthBT', $object->properties);
-        $this->assertTrue($object->btnsWidthBT === "2:2:2:2");
+        $this->assertTrue($object->btnsWidthBT === "WL02:WM02:WS02:WX02");
 
         $this->assertArrayHasKey('widthBTbody', $object->properties);
         $this->assertTrue($object->widthBTbody === self::ALL_BT_COLS_12);
