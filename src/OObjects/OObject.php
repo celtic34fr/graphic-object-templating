@@ -195,7 +195,12 @@ class OObject
             case 'inforBulle':
                 switch (true) {
                     case (is_array($val)) :
-                        $val = new OTInfoBulle($val);
+                        $ib = new OTInfoBulle();
+                        if ($ib->validate_properties($val)) {
+                            $val = new OTInfoBulle($val);
+                        } else {
+                            throw new UnexpectedValueException("Attribut OTInfoBulle valeur fournie incorrecte");
+                        }
                         break;
                     case !($val instanceof OTInfoBulle) :
                         throw new UnexpectedValueException("Attribut OTInfoBulle valeur fournie incorrecte");

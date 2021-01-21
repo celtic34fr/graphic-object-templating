@@ -6,8 +6,10 @@ namespace Controller;
 
 use BadFunctionCallException;
 use GraphicObjectTemplating\OObjects\OObject;
+use GraphicObjectTemplating\OObjects\OSTech\OTInfoBulle;
 use http\Exception;
 use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
+use UnexpectedValueException;
 
 class ObjectMethodeControllerTest extends AbstractControllerTestCase
 {
@@ -112,6 +114,29 @@ class ObjectMethodeControllerTest extends AbstractControllerTestCase
 //        var_dump($object->widthBT);
 
         // TODO : contrôle affectation à infoBulle
+        $ib_array = ['setIB' => 'coucou', 'otype' => OTInfoBulle::IBTYPE_TOOLTIP];
+        try {
+            $object->infoBulle = $ib_array;
+        } catch (UnexpectedValueException $e) {
+            $this->assertTrue(true);
+        } catch (\Exception $e) {
+            throw new \Exception("une erreur est survenue : ".$e->getMessage());
+        }
+
+        $ib_array = ['setIB' => false, 'type' => self::IBTYPE_TOOLTIP, 'animation' => true, 'delay_show' => 500,
+            'delay_hide' => 100, 'html'=>OObject::BOOLEAN_FALSE, 'placement'=>self::IBPLACEMENT_TOP, 'title'=>null,
+            'content'=>null, 'trigger'=>self::IBTRIGGER_HOVER];
+        try {
+            $object->infoBulle = $ib_array;
+        } catch (UnexpectedValueException $e) {
+            $this->assertTrue(true);
+        } catch (\Exception $e) {
+            throw new \Exception("une erreur est survenue : ".$e->getMessage());
+        }
+
+        $ib_obj = new OTInfoBulle($ib_array);
+        $object->infoBulle = $ib_obj;
+        $this->assertTrue($object->infoBulle === $ib_obj);
 
     }
 }

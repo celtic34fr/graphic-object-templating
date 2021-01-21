@@ -155,7 +155,7 @@ class OTInfoBulle
             }
         }
         if (count($properties)) {
-            throw new UnexpectedValueException("Attributs impcompatibles avec OTInfoBulle");
+            throw new UnexpectedValueException("Attributs incompatibles avec OTInfoBulle");
         }
         return $return_properties;
     }
