@@ -5,6 +5,7 @@ namespace GraphicObjectTemplating\OObjects\OSTech;
 
 
 use Exception;
+use GraphicObjectTemplating\OObjects\OObject;
 use InvalidArgumentException;
 use ReflectionException;
 use UnexpectedValueException;
@@ -37,7 +38,7 @@ class OTInfoBulle
     /**
      * @var array $properties
      */
-    private $properties;
+    public $properties;
 
     const IBTYPE_TOOLTIP = 'tooltip';
     const IBTYPE_POPOVER = 'popover';

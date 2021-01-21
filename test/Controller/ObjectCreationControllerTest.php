@@ -17,6 +17,7 @@ use GraphicObjectTemplating\OObjects\OObject;
 use GraphicObjectTemplating\OObjects\OSContainer;
 use GraphicObjectTemplating\OObjects\OSContainer\OSDiv;
 use GraphicObjectTemplating\OObjects\OSContainer\OSForm;
+use GraphicObjectTemplating\OObjects\OSTech\OTInfoBulle;
 use InvalidArgumentException;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractControllerTestCase;
@@ -646,6 +647,55 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
 
         $this->assertArrayHasKey('height', $object->properties);
         $this->assertFalse($object->height !== null);
+
+        $this->assertArrayHasKey('infoBulle', $object->properties);
+        $this->assertTrue($object->infoBulle instanceof OTInfoBulle);
+
+        $infoBulle = $object->infoBulle;
+
+//        var_dump($infoBulle);
+
+        $this->assertArrayHasKey('setIB', $infoBulle->properties);
+        $this->assertFalse($infoBulle->setIB === true);
+
+        $this->assertArrayHasKey('type', $infoBulle->properties);
+        $this->assertTrue($infoBulle->type !== null);
+        $this->assertTrue($infoBulle->type === OTInfoBulle::IBTYPE_TOOLTIP);
+
+        $this->assertArrayHasKey('animation', $infoBulle->properties);
+        $this->assertTrue($infoBulle->animation !== null);
+        $this->assertTrue($infoBulle->animation === true);
+
+        $this->assertArrayHasKey('delay_show', $infoBulle->properties);
+        $this->assertTrue($infoBulle->delay_show !== null);
+        $this->assertTrue(is_int($infoBulle->delay_show));
+        $this->assertTrue($infoBulle->delay_show === 500);
+
+        $this->assertArrayHasKey('delay_hide', $infoBulle->properties);
+        $this->assertTrue($infoBulle->delay_hide !== null);
+        $this->assertTrue(is_int($infoBulle->delay_hide));
+        $this->assertTrue($infoBulle->delay_hide === 100);
+
+        $this->assertArrayHasKey('html', $infoBulle->properties);
+        $this->assertTrue($infoBulle->html !== null);
+        $this->assertTrue(is_string($infoBulle->html));
+        $this->assertTrue($infoBulle->html === 'false');
+
+        $this->assertArrayHasKey('placement', $infoBulle->properties);
+        $this->assertTrue($infoBulle->placement !== null);
+        $this->assertTrue(is_string($infoBulle->placement));
+        $this->assertTrue($infoBulle->placement === OTInfoBulle::IBPLACEMENT_TOP);
+
+        $this->assertArrayHasKey('title', $infoBulle->properties);
+        $this->assertFalse($infoBulle->title !== null);
+
+        $this->assertArrayHasKey('content', $infoBulle->properties);
+        $this->assertFalse($infoBulle->content !== null);
+
+        $this->assertArrayHasKey('trigger', $infoBulle->properties);
+        $this->assertTrue($infoBulle->trigger !== null);
+        $this->assertTrue(is_string($infoBulle->trigger));
+        $this->assertTrue($infoBulle->trigger === OTInfoBulle::IBTRIGGER_HOVER);
     }
 
     private function OObjectValidationFinal($object, $objectStr, $typObjStr)

@@ -142,6 +142,8 @@ class OObject
         }
         $properties['id'] = $id;
         $properties['name'] = ($properties['name']) ? $properties['name'] : $id;
+        $ib_obj = new OTInfoBulle(OTInfoBulle::FIELDS);
+        $properties['infoBulle'] = $ib_obj;
         return $properties;
     }
 
