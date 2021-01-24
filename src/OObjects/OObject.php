@@ -443,7 +443,8 @@ class OObject
     }
 
     /**
-     * 
+     * @param string $prefix
+     * @return array
      */
     public function getConstantsGroup(string $prefix): array
     {

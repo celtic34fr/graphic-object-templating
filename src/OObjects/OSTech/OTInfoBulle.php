@@ -7,6 +7,7 @@ namespace GraphicObjectTemplating\OObjects\OSTech;
 use Exception;
 use GraphicObjectTemplating\OObjects\OObject;
 use InvalidArgumentException;
+use ReflectionClass;
 use ReflectionException;
 use UnexpectedValueException;
 
@@ -27,9 +28,9 @@ use UnexpectedValueException;
  * validate_type($val)
  * validate_placement($val)
  * validate_trigger($val)
- * getTypeConstants(): array
- * getPlacementConstants(): array
- * getTriggerConstants(): array
+ * getConstants(): array
+ * getConstantsGroup(): array
+ * validate_By_Constants(): array
  * 
  * TODO remplacer les 3 dernières méthodes par les appel à validate_By_Constants()
  */
@@ -67,11 +68,13 @@ class OTInfoBulle
      */
     private $const_placement;
 
+    protected static array $const_global;
+
     /**
      * OTInfoBulle constructor.
      * @param array $properties
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties = [])
     {
         if ($properties = $this->validate_properties($properties)) {
             $this->properties = $properties;
@@ -95,8 +98,12 @@ class OTInfoBulle
                 $val = $this->validate_type($val);
                 break;
             case 'html':
-                $val = (bool)$val;
-                $val = $val ? OObject::BOOLEAN_TRUE : OObject::BOOLEAN_FALSE;
+                if (empty($val) or ($val === 0)) {
+                    $val = OObject::BOOLEAN_FALSE;
+                } else {
+                    $val = OObject::BOOLEAN_TRUE;
+                }
+                $val = (in_array($val, [OObject::BOOLEAN_FALSE, OObject::BOOLEAN_TRUE])) ? $val : (bool)$val;
                 break;
             case 'placement':
                 $val = $this->validate_placement($val);
@@ -104,7 +111,7 @@ class OTInfoBulle
             case 'trigger':
                 $val = $this->validate_trigger($val);
                 break;
-            case 'tile':
+            case 'title':
             case 'content':
                 $val = (string)$val;
                 break;
@@ -169,7 +176,8 @@ class OTInfoBulle
      */
     private function validate_type($val)
     {
-        return in_array($val, $this->getTypeConstants()) ? $val : self::IBTYPE_TOOLTIP;
+        $val = $this->validate_By_Constants($val, "IBTYPE_", self::IBTYPE_TOOLTIP);
+        return $val;
     }
 
     /**
@@ -179,7 +187,8 @@ class OTInfoBulle
      */
     private function validate_placement($val)
     {
-        return in_array($val, $this->getPlacementConstants()) ? $val : self::IBPLACEMENT_TOP;
+        $val = $this->validate_By_Constants($val, "IBPLACEMENT_", self::IBPLACEMENT_TOP);
+        return $val;
     }
 
     /**
@@ -189,81 +198,50 @@ class OTInfoBulle
      */
     private function validate_trigger($val)
     {
-        return in_array($val, $this->getTriggerConstants()) ? $val : self::IBTRIGGER_HOVER;
+        $val = $this->validate_By_Constants($val, "IBTRIGGER_", self::IBTRIGGER_HOVER);
+        return $val;
     }
 
     /**
      * @return array
      * @throws ReflectionException
      */
-    private function getTypeConstants(): array
+    public static function getConstants(): array
     {
-        $retour = [];
-        if (empty($this->constants)) {
-            $this->constants = OObject::getConstants();
-        }
-        if (empty($this->const_display)) {
-            foreach ($this->constants as $key => $constant) {
-                $pos = strpos($key, 'IDTYPE');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
+        self::$const_global = [];
+        if (empty(self::$const_global)) {
+            $reflectionClass = new ReflectionClass(static::class);
+            if ($reflectionClass && in_array('getConstants', get_class_methods($reflectionClass))) {
+                self::$const_global = $reflectionClass->getConstants();
             }
-            $this->const_type = $retour;
-        } else {
-            $retour = $this->const_type;
         }
+        return self::$const_global;
+    }
 
+    /**
+     * @param string $prefix
+     * @return array
+     */
+    public function getConstantsGroup(string $prefix): array
+    {
+        $constants = self::getConstants();
+        $retour = [];
+        foreach ($constants as $key => $constant) {
+            if (strpos($key, $prefix) !== false) {
+                $retour[$key] = $constant;
+            }
+        }
         return $retour;
     }
 
     /**
-     * @return array
-     * @throws ReflectionException
+     * @param $val
+     * @param string $cle_contants
+     * @param $default
+     * @return mixed
      */
-    private function getPlacementConstants(): array
+    public function validate_By_Constants($val, string $cle_contants, $default)
     {
-        $retour = [];
-        if (empty($this->constants)) {
-            $this->constants = OObject::getConstants();
-        }
-        if (empty($this->const_display)) {
-            foreach ($this->constants as $key => $constant) {
-                $pos = strpos($key, 'IDPLACEMENT');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_placement = $retour;
-        } else {
-            $retour = $this->const_placement;
-        }
-
-        return $retour;
-    }
-
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    private function getTriggerConstants(): array
-    {
-        $retour = [];
-        if (empty($this->constants)) {
-            $this->constants = OObject::getConstants();
-        }
-        if (empty($this->const_display)) {
-            foreach ($this->constants as $key => $constant) {
-                $pos = strpos($key, 'IDTRIGGER');
-                if ($pos !== false) {
-                    $retour[$key] = $constant;
-                }
-            }
-            $this->const_trigger = $retour;
-        } else {
-            $retour = $this->const_trigger;
-        }
-
-        return $retour;
+        return (in_array($val, $this->getConstantsGroup($cle_contants), true)) ? $val : $default;
     }
 }
