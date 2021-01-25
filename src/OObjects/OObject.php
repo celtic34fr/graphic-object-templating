@@ -113,6 +113,11 @@ class OObject
     protected static array $const_event;
     protected static array $const_css_color;
 
+    protected static $oobject_attributes = ["id", "name", "className", "display", "object", "typeObj", "template",
+        "widthBT", "lastAccess", "state", "classes","width", "height", "autoCenter", "acPx", "acPy", "infoBulle",
+        "setIB", "type", "animation", "delay_show", "delay_hide", "html", "placement", "title", "content", "trigger" ];
+
+
     /**
      * OObject constructor.
      * @param string $id
@@ -131,7 +136,9 @@ class OObject
      */
     public function constructor(string $id, array $properties = null): array
     {
-        if ($properties === null) { $properties = []; }
+        if ($properties === null) {
+            $properties = [];
+        }
         $path = __DIR__ . '/../../params/oobjects/oobject.config.php';
         $this->id = $id;
         $oobj_properties = require $path;
@@ -250,21 +257,25 @@ class OObject
                 if (in_array($prefix, $prefixes)) {
                     $rlt[$prefix] = (int)substr($key, 2);
                 } elseif (in_array($key[0], ["W", "O"])) {
-                    $rlt[$key[0]."L"] = (int)substr($key, 1);
-                    $rlt[$key[0]."M"] = $rlt[$key[0]."S"] = $rlt[$key[0]."X"] = $rlt[$key[0]."L"];
+                    $rlt[$key[0] . "L"] = (int)substr($key, 1);
+                    $rlt[$key[0] . "M"] = $rlt[$key[0] . "S"] = $rlt[$key[0] . "X"] = $rlt[$key[0] . "L"];
                 }
             }
         }
 
-        foreach ($rlt as $key=>$value) {
-            if (!$value) { unset($rlt[$key]); }
+        foreach ($rlt as $key => $value) {
+            if (!$value) {
+                unset($rlt[$key]);
+            }
         }
 
         $rlt_str = "";
-        foreach ($rlt as $key=>$value) {
+        foreach ($rlt as $key => $value) {
             $rlt_str .= $key . sprintf("%02d", $value) . ':';
         }
-        if ($rlt_str) { $rlt_str = substr($rlt_str, 0, strlen($rlt_str) - 1); }
+        if ($rlt_str) {
+            $rlt_str = substr($rlt_str, 0, strlen($rlt_str) - 1);
+        }
         return $rlt_str;
     }
 
@@ -463,11 +474,12 @@ class OObject
      * @param string The original path, can be relative etc.
      * @return string The resolved path, it might not exist.
      */
-    public function truepath($path){
+    public function truepath($path)
+    {
         // whether $path is unix or not
-        $unipath=strlen($path)==0 || $path[0] !== '/';
+        $unipath = strlen($path) == 0 || $path[0] !== '/';
         // attempts to detect if path is relative in which case, add cwd
-        if(strpos($path,':')===false && $unipath) {
+        if (strpos($path, ':') === false && $unipath) {
             $path = getcwd() . DIRECTORY_SEPARATOR . $path;
         }
         // resolve path parts (single dot, double dot and double delimiters)
@@ -484,14 +496,14 @@ class OObject
                 $absolutes[] = $part;
             }
         }
-        $path=implode(DIRECTORY_SEPARATOR, $absolutes);
+        $path = implode(DIRECTORY_SEPARATOR, $absolutes);
         // resolve any symlinks
-        if(file_exists($path) && linkinfo($path)>0) {
+        if (file_exists($path) && linkinfo($path) > 0) {
             $path = readlink($path);
         }
 
         // put initial separator that could have been lost
-        return !$unipath ? '/'.$path : $path;
+        return !$unipath ? '/' . $path : $path;
     }
 
     /**
@@ -503,5 +515,28 @@ class OObject
     public function validate_By_Constants($val, string $cle_contants, $default)
     {
         return (in_array($val, $this->getConstantsGroup($cle_contants), true)) ? $val : $default;
+    }
+
+    /**
+     * @param OObject $object
+     * @return array
+     */
+    public function get_all_attributes(): array
+    {
+        $attributes = array_keys($this->properties);
+        foreach ($this->properties as $property) {
+            if (is_object($property)) {
+                $property = $property->properties;
+            }
+            if (is_array($property)) {
+                $tmp_attributes = array_keys($property);
+                foreach ($tmp_attributes as $tmp_attribute) {
+                    if (!in_array($tmp_attribute, $attributes)) {
+                        $attributes[] = $tmp_attribute;
+                    }
+                }
+            }
+        }
+        return $attributes;
     }
 }

@@ -52,6 +52,9 @@ class ODSelect extends ODContained
 
     const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
 
+    protected static $odselect_attributes = ['object', 'typeObj', 'template', 'options', 'multiple', 'label',
+        'labelClass', 'selectClass', 'placeholder', 'format', 'bgColor', 'fgColor'];
+
     /**
      * ODTable constructor.
      * @param string $id

@@ -28,6 +28,9 @@ class ODTextarea extends ODContained
 
     private $const_resize;
 
+    protected static $odtextarea_attributes =  ["cols", "rows", "maxLength", "placeholder", "text", 'event',
+        'textareaWidthBT', 'labelWidthBT', 'resize', 'wysiwyg', 'plugins', 'toolbar', 'imgListUrl', 'lnkListUrl'];
+
     /**
      * ODTable constructor.
      * @param string $id

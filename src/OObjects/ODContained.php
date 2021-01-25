@@ -19,6 +19,8 @@ use RuntimeException;
 
 class ODContained extends OObject
 {
+    protected static $odcontained_attributes = ['valeur', 'form', 'default', 'event'];
+
     /**
      * ODContained constructor.
      * @param string $id

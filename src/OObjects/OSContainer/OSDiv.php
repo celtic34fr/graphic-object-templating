@@ -16,6 +16,8 @@ use GraphicObjectTemplating\OObjects\OSContainer;
  */
 class OSDiv extends OSContainer
 {
+    protected static $osdiv_attributes = [];
+
     public function __construct($id)
     {
         $path = __DIR__ . '/../../../params/oobjects/oscontainer/osdiv/osdiv.config.php';

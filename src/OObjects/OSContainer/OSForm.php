@@ -43,6 +43,9 @@ class OSForm extends OSDiv
     const O1W10 = "O1:W10";
     const O2W4 = 'O2:W4';
 
+    protected static $osform_attributes = ["title", "origine", "hidden", "required", "submitEnter", "btnsControls",
+        "btnsWidthBT", "widthBTbody", "widthBTctrls"];
+
     /**
      * OSForm constructor.
      * @param $id

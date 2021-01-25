@@ -55,6 +55,10 @@ class ODNotification extends ODContained
     const NOTIFICATIONHIDE_ROLLOUT      = 'rollOut';
 
     const NOTIFICATIONICON_BOOTSTRAP    = 'bootstrap';
+    protected static $odnotification_attributes = ['type', 'title', 'body', 'size', 'action', 'sound', 'soundExt',
+        'soundPath', 'delay', 'delayIndicator', 'position', 'showAfterPrevious', 'delayMessage', 'showClass',
+        'hideClass', 'icon', 'iconSource', 'width', 'height', 'closable', 'closeOnClick'];
+
     const NOTIFICATIONICON_FONTAWESOME  = 'fontAwesome';
 
     /**

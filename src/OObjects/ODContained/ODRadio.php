@@ -72,6 +72,9 @@ class ODRadio extends ODContained
 
     const ERR_BAD_FUNCTION_CALL_MSG = "l'attribut option inaccessible, veuillez utiliser les méthodes spécidfiques";
 
+    protected static $odradio_attributes = ['label', 'options', 'forme', 'hMargin', 'vMargin', 'place', 'labelWidthBT',
+        'inputWidthBT', 'checkLabelWidthBT', 'checkInputWidthBT', 'placement'];
+
 
     /**
      * ODTable constructor.

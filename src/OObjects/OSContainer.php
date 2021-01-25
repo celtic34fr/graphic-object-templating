@@ -39,6 +39,8 @@ class OSContainer extends OObject
     const MODE_AFTER = 'after';
     const MODE_NTH = 'nth';
 
+    protected static $oscontrainer_attributes = ['children', 'form', 'codeCss'];
+
     /**
      * OSContainer constructor.
      * @param string $id
@@ -100,9 +102,9 @@ class OSContainer extends OObject
     {
         switch ($key) {
             case 'form':
+            case 'codeCss':
+                // TODO Q: comment valider que codeCss est bien du code CSS ?
                 $val = (string)$val;
-                break;
-            case 'codeCSS':
                 break;
             case 'children':
                 if (is_array($val)) {

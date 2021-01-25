@@ -33,6 +33,9 @@ class ODInput extends ODContained
 
     const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
 
+    protected static $obinput_attributes = ['type', 'size', 'minLength', 'maxLength', 'label', 'placeholder',
+        'labelWidthBT', 'inputWidthBT', 'autoFocus', 'mask', 'valMin', 'valMax', 'reveal_pwd'];
+
     /**
      * ODInput constructor.
      * @param string $id

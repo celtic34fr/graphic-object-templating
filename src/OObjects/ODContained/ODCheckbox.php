@@ -76,6 +76,9 @@ class ODCheckbox extends ODContained
 
     const ERR_UNEXPECTED_VALUE_MSG = "Unexpected value";
 
+    protected static $odcheckbox_attributes = ['label', 'options', 'forme', 'hMargin', 'vMargin', 'eventChk',
+        'labelWidthBT', 'inputWidthBT', 'checkLabelWidthBT', 'checkInputWidthBT', 'placement'];
+
     /**
      * ODInput constructor.
      * @param string $id

@@ -613,47 +613,7 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertArrayHasKey('acPy', $object->properties);
         $this->assertFalse($object->acPy !== null);
 
-        /** test existance méthodes */
-        $methods = [
-            '__construct', 'constructor', 'object_contructor', '__get', '__isset', '__set', 'set_Termplate_ClassName',
-            'merge_properties', 'getEvent', 'setEvent', 'issetEvent', 'formatEvent', 'getConstants', 'truepath',
-            'validate_By_Constants'
-        ];
-        $this->validate_methods($object, $methods);
-    }
-
-    private function OObjectValidationOnly($object)
-    {
-        $this->OObjectValidationBase($object);
-
-        $this->assertArrayHasKey('className', $object->properties);
-        $this->assertTrue(empty($object->className));
-        $this->assertNotTrue(get_class($object) === $object->className);
-
-        $this->assertArrayHasKey('object', $object->properties);
-        $this->assertFalse($object->object !== null);
-
-        $this->assertArrayHasKey('typeObj', $object->properties);
-        $this->assertFalse($object->typeObj !== null);
-
-        $this->assertArrayHasKey('template', $object->properties);
-        $this->assertFalse($object->template !== null);
-
-        $this->assertArrayHasKey('widthBT', $object->properties);
-        $this->assertFalse($object->widthBT !== null);
-
-        $this->assertArrayHasKey('width', $object->properties);
-        $this->assertFalse($object->width !== null);
-
-        $this->assertArrayHasKey('height', $object->properties);
-        $this->assertFalse($object->height !== null);
-
-        $this->assertArrayHasKey('infoBulle', $object->properties);
-        $this->assertTrue($object->infoBulle instanceof OTInfoBulle);
-
         $infoBulle = $object->infoBulle;
-
-//        var_dump($infoBulle);
 
         $this->assertArrayHasKey('setIB', $infoBulle->properties);
         $this->assertFalse($infoBulle->setIB === true);
@@ -696,6 +656,48 @@ class ObjectCreationControllerTest extends AbstractControllerTestCase
         $this->assertTrue($infoBulle->trigger !== null);
         $this->assertTrue(is_string($infoBulle->trigger));
         $this->assertTrue($infoBulle->trigger === OTInfoBulle::IBTRIGGER_HOVER);
+
+        /** test existance méthodes */
+        $methods = [
+            '__construct', 'constructor', 'object_contructor', '__get', '__isset', '__set', 'set_Termplate_ClassName',
+            'merge_properties', 'getEvent', 'setEvent', 'issetEvent', 'formatEvent', 'getConstants', 'truepath',
+            'validate_By_Constants'
+        ];
+        $this->validate_methods($object, $methods);
+
+        $attributes = $object->get_all_attributes();
+
+//        var_dump($object->get_all_attributes());
+    }
+
+    private function OObjectValidationOnly($object)
+    {
+        $this->OObjectValidationBase($object);
+
+        $this->assertArrayHasKey('className', $object->properties);
+        $this->assertTrue(empty($object->className));
+        $this->assertNotTrue(get_class($object) === $object->className);
+
+        $this->assertArrayHasKey('object', $object->properties);
+        $this->assertFalse($object->object !== null);
+
+        $this->assertArrayHasKey('typeObj', $object->properties);
+        $this->assertFalse($object->typeObj !== null);
+
+        $this->assertArrayHasKey('template', $object->properties);
+        $this->assertFalse($object->template !== null);
+
+        $this->assertArrayHasKey('widthBT', $object->properties);
+        $this->assertFalse($object->widthBT !== null);
+
+        $this->assertArrayHasKey('width', $object->properties);
+        $this->assertFalse($object->width !== null);
+
+        $this->assertArrayHasKey('height', $object->properties);
+        $this->assertFalse($object->height !== null);
+
+        $this->assertArrayHasKey('infoBulle', $object->properties);
+        $this->assertTrue($object->infoBulle instanceof OTInfoBulle);
     }
 
     private function OObjectValidationFinal($object, $objectStr, $typObjStr)

@@ -45,6 +45,9 @@ class ODButton extends ODContained
     const EVENT_CLICK = 'click';
     const EVENT_HOVER = 'hover';
 
+    protected static$odbutton_attributes = ['type', 'label', 'icon', 'pathFile', 'nature', 'custom', 'customBorder',
+        'customColor', 'left', 'top'];
+
     /**
      * ODInput constructor.
      * @param string $id

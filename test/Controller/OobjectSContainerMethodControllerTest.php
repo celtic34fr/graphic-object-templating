@@ -30,6 +30,9 @@ class OobjectSContainerMethodControllerTest extends AbstractControllerTestCase
     {
         $object = new OSContainer('test');
 
+        $this->assertTrue($object->__isset('form'));
+        $this->assertTrue($object->__isset('children'));
+        $this->assertTrue($object->__isset('codeCss'));
         $this->assertTrue($object->__isset('display'));
         $this->assertFalse($object->__isset('toto'));
     }
@@ -40,15 +43,20 @@ class OobjectSContainerMethodControllerTest extends AbstractControllerTestCase
 
         $this->assertTrue($object->__get('display') == 'block');
         $this->assertTrue(empty($object->children));
+        $this->assertTrue(empty($object->codeCss));
+        $this->assertTrue($object->__get('form') === null);
         $this->assertFalse($object->__get('autoCenter'));
 
-        $this->assertTrue($object->name === "test");
         $this->assertNotTrue($object->id === 'coucou');
+        $this->assertTrue($object->display === OSContainer::DISPLAY_BLOCK);
+        $this->assertTrue($object->widthBT === null);
     }
 
     public function testOSContainerSet()
     {
         $object = new OSContainer('test');
+
+//        var_dump($object);
 
         $object->__set('name', 'coucou');
         $this->assertTrue($object->name === "coucou");
@@ -57,11 +65,17 @@ class OobjectSContainerMethodControllerTest extends AbstractControllerTestCase
         $object->display = OSContainer::DISPLAY_NONE;
         $this->assertTrue($object->display === OSContainer::DISPLAY_NONE);
         $this->assertNotTrue($object->display === OSContainer::DISPLAY_BLOCK);
-        $object->display = 'coucou';
+        $object->display = 'Test';
         $this->assertTrue($object->display === OSContainer::DISPLAY_BLOCK);
-        $this->assertNotTrue($object->display === "coucou");
+        $this->assertNotTrue($object->display === 'Test');
 
-//        var_dump($object);
+        $object->form = 'Test';
+        $this->assertNotTrue($object->form === null);
+        $this->assertTrue($object->form ===  'Test');
+
+        $object->codeCss = 'Coucou';
+        $this->assertNotTrue($object->codeCss === null);
+        $this->assertTrue($object->codeCss ===  'Coucou');
     }
 
 }
