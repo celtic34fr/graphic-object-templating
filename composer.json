@@ -41,6 +41,6 @@
     "target-dir": "GraphicObjectTemplating/",
     "minimum-stability": "dev",
     "scripts": {
-        "unit-test": "phpunit --testdox"
+        "test": "phpunit --testdox"
     }
 }
