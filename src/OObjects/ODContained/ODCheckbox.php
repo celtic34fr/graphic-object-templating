@@ -68,7 +68,7 @@ class ODCheckbox extends ODContained
     const CHECKSTATE_DISABLE = 'disable';
 
     const CHECKCHECKBOX = [
-        'type', 'value', 'libel', 'placement', 'nature', 'state'
+        'type', 'value', 'libel', 'placement', 'nature', 'state', 'check'
     ];
     const CHECKSWITCH = [
         'type', 'value', 'libelYes', 'libelNo', 'natureYes', 'backgrYes', 'natureNo', 'backgrNo', 'state'
@@ -209,11 +209,14 @@ class ODCheckbox extends ODContained
         }
         $item['check'] = self::CHECKBOX_UNCHECK;
         $item['state'] = $options['state'];
+        $item["type"] = $options['type'];
         if (array_key_exists($options['value'], $this->options)) {
             throw new LogicException("Tableau des options : clé " . $options['value']
                 . " déjà présente, insertion impossible");
         }
-        $this->options[$options['value']] = $item;
+        $this_options = $this->options;
+        $this_options[$options['value']] = $item;
+        $this->options = $this_options;
     }
 
     /**
@@ -306,6 +309,8 @@ class ODCheckbox extends ODContained
                     case 'libelNo':
                     case 'natureYes':
                     case 'natureNo':
+                    case 'backgrYes':
+                    case 'backgrNo':
                         $params = (string)$params;
                         break;
                     case 'placement':
@@ -316,6 +321,9 @@ class ODCheckbox extends ODContained
                         break;
                     case 'state':
                         $params = (bool)$params;
+                        break;
+                    case 'check':
+                        $params = $this->validate_By_Constants($params, "CHECKBOX_", self::CHECKBOX_UNCHECK);
                         break;
                     default:
                         throw new UnexpectedValueException("Paramètre $key incohérent dans un tableau de paramètres d'option");
