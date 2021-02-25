@@ -26,6 +26,7 @@ class ODInput extends ODContained
     const INPUTTYPE_PASSWORD = 'password';
     const INPUTTYPE_NUMBER = 'number';
     const INPUTTYPE_EMAIL = 'email';
+    const INPUTTYPE_DATE = 'date';
 
     const EVENT_CHANGE = 'change';
     const EVENT_KEYPRESS = 'keypress';
